@@ -349,13 +349,13 @@
                                 </td>
                                 <td>
                                   <span
-                                    *ngIf="driver.driverType != 'contractor'"
+                                    *ngIf="driver.driverType !== 'contractor'"
                                     >{{
                                       driver.startDate | date: "yyyy/MM/dd"
                                     }}</span
                                   >
                                   <span
-                                    *ngIf="driver.driverType == 'contractor'"
+                                    *ngIf="driver.driverType === 'contractor'"
                                     >{{
                                       driver.contractStart | date: "yyyy/MM/dd"
                                     }}</span

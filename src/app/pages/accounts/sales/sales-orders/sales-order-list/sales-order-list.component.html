@@ -186,7 +186,7 @@
                         <td style="width: 6%; overflow: inherit !important" alignFrozen="right" pFrozenColumn
                           [frozen]="true">
                           <div class="dropdown dropright">
-                            <button [disabled]="salesOrd.status != 'open'" (click)="op.toggle($event)" pButton
+                            <button [disabled]="salesOrd.status !== 'open'" (click)="op.toggle($event)" pButton
                               type="button" class="bg-transparent border-0" data-toggle="dropdown" aria-expanded="false"
                               aria-haspopup="true" icon="fas fa-ellipsis-v"  style="color: #000;"></button>
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">

@@ -1,131 +1,119 @@
-
 <section class="body">
 
-  <div class="inner-wrapper">
+    <div class="inner-wrapper">
 
-   <section role="main" class="content-body pl-1 pt-0 pr-0">
-      <header class="page-header pr19 pl11">
-        <form>
-         <div class="row" style="padding-top:10px;">
-              <div class="col-md-2 col-lg-2">
-               <div class="input-group input-group-md mb-3">
-                  <input type="text" autocomplete="off" placeholder="Search Geofence" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
-                </div>
-                <div *ngIf="suggestedGeofences?.length > 0" class="result-suggestions">
-                  <ul>
-                     <li *ngFor="let suggestedGeofence of suggestedGeofences" style="cursor: pointer;" (click)="setGeofence(suggestedGeofence.geofenceID, suggestedGeofence.geofenceName)"
-                     >{{ suggestedGeofence.geofenceName }}</li>
-                  </ul>
-               </div>
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <form>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" autocomplete="off" placeholder="Search Geofence" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
+                            </div>
+                            <div *ngIf="suggestedGeofences?.length > 0" class="result-suggestions">
+                                <ul>
+                                    <li *ngFor="let suggestedGeofence of suggestedGeofences" style="cursor: pointer;" (click)="setGeofence(suggestedGeofence.geofenceID, suggestedGeofence.geofenceName)">{{ suggestedGeofence.geofenceName }}</li>
+                                </ul>
+                            </div>
 
-              </div>
-              <div class="col-md-2 col-lg-2 pl-0">
-                 <ng-select
-                    [(ngModel)]="type"
-                    name="type"
-                    placeholder="Select Type"
-                    class="form-control populate">
-                    <ng-option *ngFor="let item of geofenceTypes;"
-                        value="{{item.typeID}}"
-                     > {{item.geofenceType}}
-                     </ng-option>
-                 </ng-select>
-              </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pl-0">
+                            <ng-select [(ngModel)]="type" name="type" placeholder="Select Type" class="form-control populate">
+                                <ng-option *ngFor="let item of geofenceTypes;" value="{{item.typeID}}"> {{item.geofenceType}}
+                                </ng-option>
+                            </ng-select>
+                        </div>
 
-              <div class="col-md-2 col-lg-2 pl-0">
-                 <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
-                 <button class="btn btn-sm btn-success" (click)="resetFilter()" type="button">Reset</button>
-              </div>
+                        <div class="col-md-2 col-lg-2 pl-0">
+                            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                            <button class="btn btn-sm btn-success" (click)="resetFilter()" type="button">Reset</button>
+                        </div>
 
-              <div class="col-md-6 col-lg-6 text-right pr-1">
-                 <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                    <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                       <a class="dropdown-item text-1" href="javascript:;">Import</a>
-                       <a class="dropdown-item text-1" href="javascript:;">Export</a>
+                        <div class="col-md-6 col-lg-6 text-right pr-1">
+                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                    <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Export</a>
+                                </div>
+                            </div>
+                            <a routerLink="/fleet/geofence/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Geofence</a>
+                        </div>
                     </div>
-                 </div>
-                 <a routerLink="/fleet/geofence/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Geofence</a>
-              </div>
-           </div>
-        </form>
-     </header>
+                </form>
+            </header>
 
-     <section class="m-2">
-      <div class="row mb-3">
-         <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-               <div class="form-group row pt-1">
-                  <div class="col-lg-12">
-                     <table class="row-border hover table table-bordered table-striped mb-0 geofence-table">
-                        <thead>
-                           <tr>
-                              <th style="width: 20%;" class="border-0 text-left">Geofence Name</th>
-                              <th style="width: 20%;" class="border-0">Location</th>
-                              <th style="width: 20%;" class="border-0">Type</th>
-                              <th style="width: 30%;" class="border-0">Description</th>
-                              <th class="border-0 text-right">Actions</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr *ngIf="geofences.length == 0" class="text-center">
-                              <td colspan="6">{{dataMessage}}</td>
-                           </tr>
-                           <tr *ngFor="let geofence of geofences;let i = index" class="" style="cursor: pointer;">
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row pt-1">
+                                <div class="col-lg-12">
+                                    <table class="row-border hover table table-bordered table-striped mb-0 geofence-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 20%;" class="border-0 text-left">Geofence Name</th>
+                                                <th style="width: 20%;" class="border-0">Location</th>
+                                                <th style="width: 20%;" class="border-0">Type</th>
+                                                <th style="width: 30%;" class="border-0">Description</th>
+                                                <th class="border-0 text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf="geofences.length === 0" class="text-center">
+                                                <td colspan="6">{{dataMessage}}</td>
+                                            </tr>
+                                            <tr *ngFor="let geofence of geofences;let i = index" class="" style="cursor: pointer;">
 
-                              <td style="width: 20%;" class="border-0 text-left" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.geofenceName}}</td>
-                              <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.location}}</td>
-                              <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofencesTypes[geofence.geofenceType]}}</td>
-                              <td style="width: 30%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.description ? geofence.description : '-'}}</td>
-                              <td class="border-0 text-right">
-                                 <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <td style="width: 20%;" class="border-0 text-left" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.geofenceName}}</td>
+                                                <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.location}}</td>
+                                                <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofencesTypes[geofence.geofenceType]}}</td>
+                                                <td style="width: 30%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.description ? geofence.description : '-'}}</td>
+                                                <td class="border-0 text-right">
+                                                    <div class="dropdown dropright">
+                                                        <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                        <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                       <a class="dropdown-item" routerLink="/fleet/geofence/edit/{{geofence.geofenceID}}">Edit</a>
-                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateGeofence(geofence.isDeleted, geofence.geofenceID, geofence.geofenceName)">Delete</a>
+                                                        <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                            <a class="dropdown-item" routerLink="/fleet/geofence/edit/{{geofence.geofenceID}}">Edit</a>
+                                                            <a href="javascript:;" class="dropdown-item" (click)="deactivateGeofence(geofence.isDeleted, geofence.geofenceID, geofence.geofenceName)">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="border-0">
+                                                    <div *ngIf="visibleIndex === i" class="subheader">
+                                                        <div id="map" style="height: 400px;"></div>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row mt-3 dtPaginate" *ngIf="geofences.length > 0">
+                                        <div class="col-6">
+                                            Showing {{ geoStartPoint }} to {{ geoEndPoint }} of {{ totalRecords }} enteries
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="geoPrev">Prev</button>
+                                            <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="geoNext">Next</button>
+                                        </div>
                                     </div>
-                                    </div>
-                              </td>
-                              <td class="border-0">
-                                 <div *ngIf="visibleIndex === i" class="subheader">
-                                    <div id="map" style="height: 400px;"></div>
 
-                                 </div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <div class="row mt-3 dtPaginate" *ngIf="geofences.length > 0">
-                        <div class="col-6">
-                           Showing {{ geoStartPoint }} to {{ geoEndPoint }} of {{ totalRecords }} enteries
+
+                                </div>
+
+
+                            </div>
                         </div>
-                        <div class="col-6 text-right">
-                           <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="geoPrev">Prev</button>
-                           <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="geoNext">Next</button>
-                        </div>
-                     </div>
+                    </div>
+                </div>
+
+            </section>
 
 
-                  </div>
-
-
-               </div>
-            </div>
-         </div>
-      </div>
-
-   </section>
-
-
-    </section>
-  </div>
+        </section>
+    </div>
 
 
 
 </section>
-
-
-
-

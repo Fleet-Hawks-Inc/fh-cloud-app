@@ -32,9 +32,9 @@
                     class="input-group input-group-md mb-3"
                     *ngIf="
                       orderFiltr.category != 'customer' &&
-                      orderFiltr.category != 'orderType' &&
-                      orderFiltr.category != 'orderStatus'
-                    "
+        ========================================              orderFiltr.category != 'orderType' &&
+       =               orderFiltr.category != 'orderStatus'
+        =            "
                   >
                     <input
                       type="text"
@@ -50,7 +50,7 @@
                     name="searchValue"
                     placeholder="Search By
                     Customer"
-                    *ngIf="orderFiltr.category == 'customer'"
+                    *ngIf="orderFiltr.category === 'customer'"
                   >
                     <ng-option
                       *ngFor="let data of customersObjects | keyvalue"
@@ -65,7 +65,7 @@
                     name="searchValue"
                     placeholder="Search By Order
                     Status"
-                    *ngIf="orderFiltr.category == 'orderStatus'"
+                    *ngIf="orderFiltr.category === 'orderStatus'"
                   >
                     <ng-option
                       *ngFor="let data of statusData"
@@ -80,7 +80,7 @@
                     name="searchValue"
                     placeholder="Search By Order
                     Type"
-                    *ngIf="orderFiltr.category == 'orderType'"
+                    *ngIf="orderFiltr.category === 'orderType'"
                   >
                     <ng-option value="FTL"> FTL</ng-option>
                     <ng-option value="LTL"> LTL</ng-option>
@@ -623,7 +623,7 @@
                             >
                               <ng-template pTemplate>
                                 <a
-                                  *ngIf="order.orderStatus != 'delivered'"
+                                  *ngIf="order.orderStatus !== 'delivered'"
                                   (click)="op.hide(); editOrder(order.orderID)"
                                   class="dropdown-item"
                                   >Edit</a
@@ -651,8 +651,8 @@
                                 <a
                                   *ngIf="
                                     order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'
-                                  "
+                       ========================================             order.orderStatus == 'confirmed'
+                        =          "
                                   class="dropdown-item"
                                   href="javascript:;"
                                   (click)="op.hide(); deactivateOrder(order)"

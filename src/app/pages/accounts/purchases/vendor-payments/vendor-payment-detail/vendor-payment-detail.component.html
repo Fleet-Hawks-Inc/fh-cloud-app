@@ -238,7 +238,7 @@
                                 {{ data.amount | number: "1.2-2" }}
                                 {{ paymentData.currency }}
                               </span>
-                              <span *ngIf="data.trxType != 'debit'">
+                              <span *ngIf="data.trxType !== 'debit'">
                                 0.00
                               </span>
                             </td>
@@ -247,7 +247,7 @@
                                 {{ data.amount | number: "1.2-2" }}
                                 {{ paymentData.currency }}
                               </span>
-                              <span *ngIf="data.trxType != 'credit'">
+                              <span *ngIf="data.trxType !== 'credit'">
                                 0.00
                               </span>
                             </td>

@@ -46,7 +46,7 @@
                               <label
                                 class="btn btn-outline btn-fleet mr-2"
                                 [ngClass]="{
-                                  active: attachedWith == 'Vehicle'
+                                  active: attachedWith === 'Vehicle'
                                 }"
                                 style="width: 110px"
                               >
@@ -63,7 +63,7 @@
                             <div class="radio pull-left">
                               <label
                                 class="btn btn-outline btn-fleet mr-2"
-                                [ngClass]="{ active: attachedWith == 'Asset' }"
+                                [ngClass]="{ active: attachedWith === 'Asset' }"
                                 style="width: 110px"
                               >
                                 <input
@@ -82,7 +82,7 @@
                     </div>
                     <div
                       id="attachedVehicleDiv"
-                      *ngIf="attachedWith == 'Vehicle'"
+                      *ngIf="attachedWith === 'Vehicle'"
                     >
                       <div class="row">
                         <div class="col-lg-10">
@@ -108,7 +108,7 @@
                         </div>
                       </div>
                     </div>
-                    <div id="attachedAssetDiv" *ngIf="attachedWith == 'Asset'">
+                    <div id="attachedAssetDiv" *ngIf="attachedWith === 'Asset'">
                       <div class="row">
                         <div class="col-lg-10">
                           <label

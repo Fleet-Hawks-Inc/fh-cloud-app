@@ -1,57 +1,27 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header">
-        <div class="row">
-          <div class="col header-title">
-            <label class="mt-0 mb-0">Vehicle Details</label>
-          </div>
-          <div class="col header-buttons">
-            <button
-              id="btnLocation"
-              *ngIf="deviceInfo.deviceType"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              (click)="locationDetails()"
-              icon="fas fa-light fa-location-crosshairs"
-              pTooltip="See Live Location"
-            ></button>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row">
+                    <div class="col header-title">
+                        <label class="mt-0 mb-0">Vehicle Details</label>
+                    </div>
+                    <div class="col header-buttons">
+                        <button id="btnLocation" *ngIf="deviceInfo.deviceType" type="button" pButton class="mr-1" tooltipPosition="left" (click)="locationDetails()" icon="fas fa-light fa-location-crosshairs" pTooltip="See Live Location"></button>
 
-            <button
-              id="btnVehicleEdit"
-              routerLink="/fleet/vehicles/edit/{{ vehicleID }}"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="fas fa-light fa-pen"
-              pTooltip="Edit"
-            ></button>
-            <button
-              id="btnVehicleList"
-              routerLink="/fleet/vehicles/list/{{ sessionID }}"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="fas fa-light fa-list"
-              pTooltip="List"
-            ></button>
-          </div>
-        </div>
-      </header>
+                        <button id="btnVehicleEdit" routerLink="/fleet/vehicles/edit/{{ vehicleID }}" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-light fa-pen" pTooltip="Edit"></button>
+                        <button id="btnVehicleList" routerLink="/fleet/vehicles/list/{{ sessionID }}" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-light fa-list" pTooltip="List"></button>
+                    </div>
+                </div>
+            </header>
 
-      <section class="m-2">
-        <div class="row mb-3">
-          <div class="col-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row justify-content-between pl-2 pr-2">
-                <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Basic Details</label
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row justify-content-between pl-2 pr-2">
+                                <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label
                   >
                 </div>
 
@@ -247,7 +217,7 @@
                       </div>
                     </div>
 
-                    <div class="row m-0" *ngIf="ownership == 'ownerOperator'">
+                    <div class="row m-0" *ngIf="ownership === 'ownerOperator'">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -399,7 +369,7 @@
 
                             <tbody>
                               <tr
-                                *ngIf="issues.length == 0"
+                                *ngIf="issues.length === 0"
                                 style="text-align: center"
                               >
                                 <td colspan="3">{{ noRecordMsg }}</td>
@@ -411,7 +381,7 @@
                                 <td>{{ data.issueName }}</td>
                                 <td>
                                   {{
-                                    data.description != ""
+                                    data.description !== ""
                                       ? data.description
                                       : "-"
                                   }}
@@ -453,7 +423,7 @@
 
                             <tbody>
                               <tr
-                                *ngIf="serviceReminders.length == 0"
+                                *ngIf="serviceReminders.length === 0"
                                 style="text-align: center"
                               >
                                 <td colspan="4">{{ noRecordMsg }}</td>
@@ -466,15 +436,14 @@
                                 </td>
                                 <td>
                                   <span
-                                    *ngIf="data.tasks.remindByUnit == 'time'"
+                                    *ngIf="data.tasks.remindByUnit === 'time'"
                                   >
                                     Every {{ data.tasks.time }}
                                     {{ data.tasks.timeUnit }}(s)
                                   </span>
                                   <span
                                     *ngIf="
-                                      data.tasks.remindByUnit == 'odometer'
-                                    "
+                                      data.tasks.remindByUnit === 'odometer'"
                                   >
                                     Every {{ data.tasks.odometer }} miles
                                   </span>
@@ -519,7 +488,7 @@
 
                             <tbody>
                               <tr
-                                *ngIf="renewalReminders.length == 0"
+                                *ngIf="renewalReminders.length === 0"
                                 style="text-align: center"
                               >
                                 <td colspan="4">{{ noRecordMsg }}</td>
@@ -563,7 +532,7 @@
                         </thead>
                         <tbody>
                           <tr
-                            *ngIf="servicePrograms.length == 0"
+                            *ngIf="servicePrograms.length === 0"
                             style="text-align: center"
                           >
                             <td colspan="2">{{ noRecordMsg }}</td>
@@ -591,7 +560,7 @@
                       <table class="table table-responsive-lg mb-0">
                         <tbody>
                           <tr
-                            *ngIf="docs.length == 0"
+                            *ngIf="docs.length === 0"
                             style="text-align: center"
                           >
                             <td colspan="2">{{ noRecordMsg }}</td>
@@ -934,8 +903,7 @@
                     <div
                       class="col-lg-8 p-2 border-box"
                       *ngIf="
-                        insurance.reminder != null && insurance.reminder != ''
-                      "
+                        insurance.reminder !== null && insurance.reminder !== ''"
                     >
                       Every {{ insurance.reminder }}
                       {{ insurance.remiderEvery }}
@@ -943,8 +911,7 @@
                     <div
                       class="col-lg-8 p-2 border-box"
                       *ngIf="
-                        insurance.reminder == null || insurance.reminder == ''
-                      "
+                        insurance.reminder === null || insurance.reminder === ''"
                     >
                       -
                     </div>
@@ -1200,13 +1167,13 @@
                     </div>
                     <div
                       class="col-lg-8 p-2 border-box"
-                      *ngIf="fluid.fuelTankTwoCapacity == 0"
+                      *ngIf="fluid.fuelTankTwoCapacity === 0"
                     >
                       -
                     </div>
                     <div
                       class="col-lg-8 p-2 border-box"
-                      *ngIf="fluid.fuelTankTwoCapacity != 0"
+                      *ngIf="fluid.fuelTankTwoCapacity !== 0"
                     >
                       {{
                         fluid.fuelTankTwoCapacity
@@ -1339,7 +1306,7 @@
                     <table class="table table-responsive-lg mb-0">
                       <tbody>
                         <tr
-                          *ngIf="pDocs.length == 0"
+                          *ngIf="pDocs.length === 0"
                           style="text-align: center"
                         >
                           <td colspan="2">{{ noRecordMsg }}</td>
@@ -1473,7 +1440,7 @@
                     </div>
                     <div class="col-lg-8 p-2 border-box">
                       {{
-                        loan.annualPercentageRate != ""
+                        loan.annualPercentageRate !== ""
                           ? loan.annualPercentageRate + "%"
                           : "-"
                       }}
@@ -1525,7 +1492,7 @@
                     <table class="table table-responsive-lg mb-0">
                       <tbody>
                         <tr
-                          *ngIf="lDocs.length == 0"
+                          *ngIf="lDocs.length === 0"
                           style="text-align: center"
                         >
                           <td colspan="2">{{ noRecordMsg }}</td>
@@ -1689,7 +1656,7 @@
                             </div>
                             <div
                               class="mt-3 mb-3 text-center"
-                              *ngIf="vehicleLogs.length == 0"
+                              *ngIf="vehicleLogs.length === 0"
                             >
                               {{ noRecordMsg }}
                             </div>
@@ -1795,12 +1762,11 @@
                 </div>
                 <div class="col-lg-9">
                   <span *ngIf="inspectionForms">
-                    <span *ngIf="inspectionForms.isDefaultInspectionType == '0'"
+                    <span *ngIf="inspectionForms.isDefaultInspectionType === '0'"
                       >NO</span
                     >
-                    <span *ngIf="inspectionForms.isDefaultInspectionType == '1'"
-                      >YES</span
-                    >
+                    <span *ngIf="inspectionForms.isDefaultInspectionType === '1'"
+                      >YES</span                   >
                   </span>
                 </div>
               </div>
@@ -1833,7 +1799,7 @@
                       {{ data.name }}
                     </td>
                     <td class="font-weight-bold text-capitalize">
-                      {{ data.remarks != "" ? data.remarks : "-" }}
+                      {{ data.remarks !== "" ? data.remarks : "-" }}
                     </td>
                   </tr>
                 </tbody>

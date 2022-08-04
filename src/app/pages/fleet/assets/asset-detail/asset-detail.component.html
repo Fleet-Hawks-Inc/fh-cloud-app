@@ -276,7 +276,7 @@
                               {{ contactsObjects[ownerOperatorName] }}
                             </td>
                           </tr>
-                          <tr *ngIf="inspectionFormName != ''">
+                          <tr *ngIf="inspectionFormName !== ''">
                             <td class="back-color-gray font-weight-bold">
                               Inspection Form Name
                             </td>
@@ -1161,7 +1161,7 @@
                     <td>{{ i + 1 }}</td>
                     <td class="font-weight-bold">{{ data.name }}</td>
                     <td class="font-weight-bold">
-                      {{ data.remarks != "" ? data.remarks : "-" }}
+                      {{ data.remarks !== "" ? data.remarks : "-" }}
                     </td>
                   </tr>
                 </tbody>

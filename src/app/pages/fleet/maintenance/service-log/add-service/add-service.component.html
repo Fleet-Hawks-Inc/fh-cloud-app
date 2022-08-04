@@ -293,7 +293,7 @@
                                 <td>
                                   <input [checked]="
                                       issue.currentStatus == 'RESOLVED'
-                                    " name="selected{{ i }}" (change)="
+                           ========================================         " name="selected{{ i }}" (change)="
                                       selectIssues($event, issue.issueID)
                                     " type="checkbox" />
                                 </td>
@@ -668,7 +668,7 @@
                               ">
                               <input class="w100" type="file" multiple name="uploadedPhotos" (change)="
                                   selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png" />
-                              <span *ngIf="uploadPhotoError != ''" class="text-danger">
+                              <span *ngIf="uploadPhotoError !== ''" class="text-danger">
                                 {{ uploadPhotoError }}
                               </span>
                             </span>
@@ -715,7 +715,7 @@
                               <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
                                   selectDocuments($event, 'uploadedDocs')
                                 " accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
-                              <span *ngIf="uploadDocsError != ''" class="text-danger">
+                              <span *ngIf="uploadDocsError !== ''" class="text-danger">
                                 {{ uploadDocsError }}
                               </span>
                             </span>
@@ -959,7 +959,7 @@
                     <div class="col-lg-3">
                       <div class="radio">
                         <label class="btn btn-outline btn-fleet csbtn"
-                          [ngClass]="partType == 'existing' ? 'active' : ''" (click)="changePartTab('existing')">
+                          [ngClass]="partType === 'existing' ? 'active' : ''" (click)="changePartTab('existing')">
                           <input type="radio" name="fuelUnitType" id="existingPart" checked hidden value="vehicle" />
                           Existing Part
                         </label>
@@ -967,7 +967,7 @@
                     </div>
                     <div class="col-lg-4 text-right">
                       <div class="radio">
-                        <label class="btn btn-outline btn-fleet csbtn" [ngClass]="partType == 'new' ? 'active' : ''"
+                        <label class="btn btn-outline btn-fleet csbtn" [ngClass]="partType === 'new' ? 'active' : ''"
                           (click)="changePartTab('new')">
                           <input type="radio" name="fuelUnitType" id="newPart" hidden value="reefer" />
                           New Part
@@ -977,7 +977,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row" id="newPartDiv" *ngIf="partType == 'new'">
+              <div class="row" id="newPartDiv" *ngIf="partType === 'new'">
                 <div class="col-lg-6">
                   <label class="
                       control-label
@@ -1049,7 +1049,7 @@
                            </ng-select>
                         </div> -->
               </div>
-              <div class="row" id="existingPartDiv" *ngIf="partType == 'existing'">
+              <div class="row" id="existingPartDiv" *ngIf="partType === 'existing'">
                 <div class="col-lg-6">
                   <label class="
                       control-label
@@ -1108,9 +1108,9 @@
               Cancel
             </button>
 
-            <a href="javascript:;" *ngIf="partType == 'existing'" (click)="addExistingPartNumber()"
+            <a href="javascript:;" *ngIf="partType === 'existing'" (click)="addExistingPartNumber()"
               class="btn btn-success">Save</a>
-            <a href="javascript:;" *ngIf="partType == 'new'" (click)="addInventory()" class="btn btn-success">Save</a>
+            <a href="javascript:;" *ngIf="partType === 'new'" (click)="addInventory()" class="btn btn-success">Save</a>
           </div>
         </div>
       </form>

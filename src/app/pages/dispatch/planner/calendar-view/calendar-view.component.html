@@ -141,7 +141,7 @@
                             </p>
                             <p
                               class="mb-1"
-                              *ngIf="trip.deliveryLocation != ''; else locBlock"
+                              *ngIf="trip.deliveryLocation !== ''; else locBlock"
                             >
                               <b>D/L:</b> {{ trip.deliveryLocation }}
                             </p>

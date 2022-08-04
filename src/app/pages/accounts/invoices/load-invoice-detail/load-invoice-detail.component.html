@@ -67,7 +67,7 @@
                               *ngIf="
                                 invoiceData.carrierData.termsInfo.tagLine &&
                                 invoiceData.carrierData.termsInfo.tagLine != ''
-                              "
+                             ======================================== "
                               class="m-0 font-weight-bold text-dark"
                             >
                               {{ invoiceData.carrierData.termsInfo.tagLine }}
@@ -113,7 +113,7 @@
                                 *ngIf="
                                   invoiceData.data[0].customerData
                                     .additionalContact != '' &&
-                                  invoiceData.data[0].customerData
+                            ========================================      invoiceData.data[0].customerData
                                     .additionalContact != null
                                 "
                               >
@@ -128,7 +128,7 @@
                                 *ngIf="
                                   invoiceData.data[0].customerData.phone !=
                                     '' &&
-                                  invoiceData.data[0].customerData.phone != null
+                            ========================================      invoiceData.data[0].customerData.phone != null
                                 "
                                 >Phone:
                                 <b>{{
@@ -627,7 +627,7 @@
                                   <tr
                                     *ngIf="
                                       invoiceData != '' ||
-                                      invoiceData != null ||
+                                ========================================      invoiceData != null ||
                                       invoiceData != undefined
                                     "
                                   >

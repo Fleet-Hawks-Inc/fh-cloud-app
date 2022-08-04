@@ -62,7 +62,7 @@
                         </div>
                       </div>
                       <div class="col-lg-2">
-                        <input type="number" min='0' name="daysNo" class="form-control" [disabled]="repeatType!='selectDaysNo'" [(ngModel)]="scheduler.type.daysNo">
+                        <input type="number" min='0' name="daysNo" class="form-control" [disabled]="repeatType!=='selectDaysNo'" [(ngModel)]="scheduler.type.daysNo">
                       </div>
                       <div class="col-lg-1">
                         day(s)
@@ -104,7 +104,7 @@
                       <div class="col-lg-2" *ngFor="let day of days">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [disabled]="repeatType!='days'" [value]="day.dName" [checked]="day.isSelected" (change)="onCheckboxChange($event.target.value, $event.target.checked)">
+                            <input type="checkbox" [disabled]="repeatType!=='days'" [value]="day.dName" [checked]="day.isSelected" (change)="onCheckboxChange($event.target.value, $event.target.checked)">
                             {{day.dName | titlecase}}
                           </label>
                         </div>
@@ -170,7 +170,7 @@
                       <div class="col-lg-2" *ngFor="let month of months">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [disabled]="rangeDisabled" [disabled]="range!='month'" [value]="month.mName" [checked]="month.isSelected" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
+                            <input type="checkbox" [disabled]="rangeDisabled" [disabled]="range!=='month'" [value]="month.mName" [checked]="month.isSelected" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
                             {{month.mName | titlecase}}
                           </label>
                         </div>

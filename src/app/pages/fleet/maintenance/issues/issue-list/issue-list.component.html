@@ -29,9 +29,9 @@
                 class="input-group input-group-md mb-3"
                 *ngIf="
                   category != 'vehicle' &&
-                  category != 'asset' &&
-                  category != 'task'
-                "
+     ========================================             category != 'asset' &&
+       =           category != 'task'
+           =     "
               >
                 <input
                   type="text"
@@ -46,7 +46,7 @@
                 [(ngModel)]="searchValue"
                 name="searchValue"
                 placeholder="Search By Vehicle"
-                *ngIf="category == 'vehicle'"
+                *ngIf="category === 'vehicle'"
               >
                 <ng-option
                   *ngFor="let data of vehicleList | keyvalue"
@@ -60,7 +60,7 @@
                 [(ngModel)]="searchValue"
                 name="searchValue"
                 placeholder="Search By Asset"
-                *ngIf="category == 'asset'"
+                *ngIf="category === 'asset'"
               >
                 <ng-option
                   *ngFor="let data of assetList | keyvalue"

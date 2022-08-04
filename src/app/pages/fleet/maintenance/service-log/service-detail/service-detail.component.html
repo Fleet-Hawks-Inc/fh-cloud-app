@@ -1,19 +1,16 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pt-0">
-      <header class="page-header pr19 pl11">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Service Log Details
-          </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button class="btn btn-sm btn-success mr-3" (click)="openModal()">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pr-0 pt-0">
+            <header class="page-header pr19 pl11">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Service Log Details
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <button class="btn btn-sm btn-success mr-3" (click)="openModal()">
               Service Log PDF
             </button>
-            <a
-              routerLink="/fleet/maintenance/service-log/edit/{{ logID }}"
-              class="btn btn-default btn-sm mr-2"
-              ><i class="fas fa-pencil-alt"></i> Edit Service Log</a
+                        <a routerLink="/fleet/maintenance/service-log/edit/{{ logID }}" class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Service Log</a
             >
             <a
               routerLink="/fleet/maintenance/service-log/list/{{ logID }}"
@@ -41,7 +38,7 @@
                 <div style="width: 13%">
                   <div
                     class="text-center p-4 cerbor serviceboxh"
-                    *ngIf="logsData.unitType != 'asset'"
+                    *ngIf="logsData.unitType !== 'asset'"
                   >
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle
@@ -52,7 +49,7 @@
                   </div>
                   <div
                     class="text-center p-4 cerbor"
-                    *ngIf="logsData.unitType == 'asset'"
+                    *ngIf="logsData.unitType === 'asset'"
                   >
                     <p class="mb-0 text-4 font-weight-bold text-dark">Asset</p>
                     <p class="mb-0 text-3">
@@ -63,7 +60,7 @@
                 <div style="width: 12%">
                   <div
                     class="text-center p-4 cerbor serviceboxh"
-                    *ngIf="logsData.unitType != 'asset'"
+                    *ngIf="logsData.unitType !== 'asset'"
                   >
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle plate no.
@@ -74,7 +71,7 @@
                   </div>
                   <div
                     class="text-center p-4 cerbor"
-                    *ngIf="logsData.unitType == 'asset'"
+                    *ngIf="logsData.unitType === 'asset'"
                   >
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Asset plate no.
@@ -88,7 +85,7 @@
                 <div style="width: 13%">
                   <div
                     class="text-center p-4 cerbor serviceboxh"
-                    *ngIf="logsData.unitType != 'asset'"
+                    *ngIf="logsData.unitType !== 'asset'"
                   >
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle VIN
@@ -99,7 +96,7 @@
                   </div>
                   <div
                     class="text-center p-4 cerbor"
-                    *ngIf="logsData.unitType == 'asset'"
+                    *ngIf="logsData.unitType === 'asset'"
                   >
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Asset VIN
@@ -109,7 +106,7 @@
                     </p>
                   </div>
                 </div>
-                <div style="width: 12%" *ngIf="logsData.unitType != 'asset'">
+                <div style="width: 12%" *ngIf="logsData.unitType !== 'asset'">
                   <div class="text-center p-4 cerbor serviceboxh">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Miles Odometer
@@ -180,7 +177,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngIf="issuesObject.length == 0">
+                          <tr *ngIf="issuesObject.length === 0">
                             <td colspan="2" style="text-align:center;">-</td>
                           </tr>
                           <tr *ngFor="let data of issuesObject">
@@ -219,7 +216,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngIf="allServiceTasks?.length == 0">
+                          <tr *ngIf="allServiceTasks?.length === 0">
                             <td colspan="2" style="text-align:center;">-</td>
                           </tr>
                           <tr *ngFor="let item of allServiceTasks">
@@ -262,7 +259,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngIf="allServiceParts?.length == 0">
+                          <tr *ngIf="allServiceParts?.length === 0">
                             <td colspan="5" style="text-align:center;">-</td>
                           </tr>
                           <tr *ngFor="let item of allServiceParts">
@@ -339,16 +336,14 @@
                                 (click)="delete('image', item.name, i)"
                               ></i>
                             </a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-                <div class="col-lg-6" *ngIf="logDocs?.length > 0">
-                  <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Document(s)</label
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-lg-6" *ngIf="logDocs?.length > 0">
+        <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Document(s)</label
                   >
                   <div class="row" *ngFor="let doc of logDocs; let d = index">
                     <div class="col-lg-9">
@@ -528,7 +523,7 @@
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span
-                  *ngIf="logsData.unitType != 'asset'"
+                  *ngIf="logsData.unitType !== 'asset'"
                   style="font-weight: 500; color: #000000"
                   >Vehicle:-
                 </span>
@@ -536,7 +531,7 @@
               </p>
               <p
                 class="text-dark mb-0"
-                *ngIf="logsData.unitType != 'asset'"
+                *ngIf="logsData.unitType !== 'asset'"
                 style="font-weight: 600"
               >
                 <span style="font-weight: 500; color: #000000"
@@ -546,7 +541,7 @@
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span
-                  *ngIf="logsData.unitType == 'asset'"
+                  *ngIf="logsData.unitType === 'asset'"
                   style="font-weight: 500; color: #000000"
                   >Asset:-
                 </span>
@@ -554,7 +549,7 @@
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span
-                  *ngIf="logsData.unitType != 'asset'"
+                  *ngIf="logsData.unitType !== 'asset'"
                   style="font-weight: 500; color: #000000"
                   >Vehicle Plate No.:-
                 </span>
@@ -563,7 +558,7 @@
 
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span
-                  *ngIf="logsData.unitType == 'asset'"
+                  *ngIf="logsData.unitType === 'asset'"
                   style="font-weight: 500; color: #000000"
                   >Asset Plate No.:-
                 </span>
@@ -571,7 +566,7 @@
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span
-                  *ngIf="logsData.unitType == 'asset'"
+                  *ngIf="logsData.unitType === 'asset'"
                   style="font-weight: 500; color: #000000"
                   >Asset Vin:-
                 </span>
@@ -598,7 +593,7 @@
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span
-                  *ngIf="logsData.unitType != 'asset'"
+                  *ngIf="logsData.unitType !== 'asset'"
                   style="font-weight: 500; color: #000000"
                   >Vehicle Vin:-
                 </span>

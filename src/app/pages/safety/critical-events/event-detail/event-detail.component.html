@@ -1,25 +1,22 @@
 <style>
-  #map_view {
-    display: inline-block;
-    height: 700px;
-    width: 100%;
-  }
+    #map_view {
+        display: inline-block;
+        height: 700px;
+        width: 100%;
+    }
 </style>
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header">
-        <div class="row pr-1 mr-1" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
-              Event Details
-            </h4>
-          </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              routerLink="/safety/critical-events"
-              class="btn btn-sm btn-default mr-2"
-              ><i class="fas fa-list"></i> Events List</a
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row pr-1 mr-1" style="padding-top: 10px">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
+                            Event Details
+                        </h4>
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a routerLink="/safety/critical-events" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Events List</a
             >
 
             <a
@@ -167,24 +164,24 @@
                               text-dark
                             "
                           >
-                            <span *ngIf="eventType == 'motionDetection'"
+                            <span *ngIf="eventType === 'motionDetection'"
                               >Motion Detection</span
                             >
-                            <span *ngIf="eventType == 'harshDriving'"
+                            <span *ngIf="eventType === 'harshDriving'"
                               >Harsh Driving</span
                             >
-                            <span *ngIf="eventType == 'harshAcceleration'"
+                            <span *ngIf="eventType === 'harshAcceleration'"
                               >Harsh Acceleration</span
                             >
-                            <span *ngIf="eventType == 'highSpeed'"
+                            <span *ngIf="eventType === 'highSpeed'"
                               >High Speed</span
                             >
 
-                            <span *ngIf="eventType == 'impactTilt'"
+                            <span *ngIf="eventType === 'impactTilt'"
                               >Impact/Tilt</span
                             >
 
-                            <span *ngIf="eventType == 'harshBrake'">
+                            <span *ngIf="eventType === 'harshBrake'">
                               Harsh Brake
                             </span>
                           </span>
@@ -328,7 +325,7 @@
                           <div class="row">
                             <div class="col-lg-12 text-center p-5">
                               <a
-                                *ngIf="eventSource == 'Automatic'"
+                                *ngIf="eventSource === 'Automatic'"
                                 href="javascript:;"
                                 (click)="fetchEvidence()"
                                 class="
@@ -341,7 +338,7 @@
                                 Video(s)</a
                               >
                               <a
-                                *ngIf="eventSource == 'manual'"
+                                *ngIf="eventSource === 'manual'"
                                 href="javascript:;"
                                 data-target="#viewImagesModal"
                                 data-toggle="modal"
@@ -355,7 +352,7 @@
                                 Photo</a
                               >
                               <a
-                                *ngIf="eventSource == 'manual'"
+                                *ngIf="eventSource === 'manual'"
                                 href="javascript:;"
                                 data-target="#viewVideosModal"
                                 data-toggle="modal"
@@ -372,82 +369,64 @@
                               <div
                                 *ngIf="
                                   eventVideos?.length > 0 &&
-                                  eventSource == 'Automatic'
-                                "
-                              >
-                                <a
-                                  *ngFor="
-                                    let item of eventVideos;
-                                    let i = index
-                                  "
+                                  eventSource == 'Automatic'">
+                    ==========            <a *ngFor="let item of eventVideos;
+                                    let i = index"
                                   [href]="item.path"
                                 >
                                   Download Video {{ i + 1 }}<br
                                 /></a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 
-        <div class="row mb-3">
-          <div class="col-4">
+    <div class="row mb-3">
+        <div class="col-4">
             <div class="bg-white p-3 text-dark">
-              <div class="form-group row justify-content-between pl-2 pr-2">
-                <p class="mb-2 text-4 font-weight-bold text-dark">
-                  Safety Manager Internal Notes
-                </p>
-                <div
-                  class="
+                <div class="form-group row justify-content-between pl-2 pr-2">
+                    <p class="mb-2 text-4 font-weight-bold text-dark">
+                        Safety Manager Internal Notes
+                    </p>
+                    <div class="
                     timeline
                     w100
                     dispatch-timeline
                     timeline-simple
                     changelog
                     pb-3
-                  "
-                  style="min-height: 370px; overflow-x: auto; max-height: 370px"
-                >
-                  <div class="tm-body text-dark py-0">
-                    <ol class="tm-items">
-                      <li *ngFor="let item of safetyNotes">
-                        <div class="tm-box">
-                          <span class="release-date">{{
+                  " style="min-height: 370px; overflow-x: auto; max-height: 370px">
+                        <div class="tm-body text-dark py-0">
+                            <ol class="tm-items">
+                                <li *ngFor="let item of safetyNotes">
+                                    <div class="tm-box">
+                                        <span class="release-date">{{
                             item.created | date: "yyyy/MM/dd hh:mm a"
                           }}</span>
-                          <ul class="list-unstyled">
-                            <li>
-                              {{ item.notes }}
-                            </li>
-                          </ul>
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                {{ item.notes }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ol>
                         </div>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
+                    </div>
 
-                <div class="w100 mt-3">
-                  <textarea
-                    [(ngModel)]="newNotes"
-                    name="newNotes"
-                    class="form-control heighta"
-                    placeholder="Enter notes for the Safety Manager"
-                    rows="2"
-                  ></textarea>
-                </div>
-                <div class="w100 mt-2 text-right">
-                  <a
-                    (click)="addNotes()"
-                    href="javascript:;"
-                    class="btn btn-success btn-sm"
-                    >Send</a
+                    <div class="w100 mt-3">
+                        <textarea [(ngModel)]="newNotes" name="newNotes" class="form-control heighta" placeholder="Enter notes for the Safety Manager" rows="2"></textarea>
+                    </div>
+                    <div class="w100 mt-2 text-right">
+                        <a (click)="addNotes()" href="javascript:;" class="btn btn-success btn-sm">Send</a
                   >
                 </div>
               </div>

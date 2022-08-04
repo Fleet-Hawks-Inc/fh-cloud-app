@@ -74,7 +74,7 @@
                         <label class="control-label font-weight-semibold text-3 text-dark {{ mapRouteActive }}">Select
                           Permanent Route
                         </label>
-                        <ng-select [disabled]="orderNo != '' ? false : true" [(ngModel)]="tripData.routeID"
+                        <ng-select [disabled]="orderNo !== '' ? false : true" [(ngModel)]="tripData.routeID"
                           name="routeID" [multiple]="true" (change)="getRoutes()" (remove)="removeRoutePlan($event)"
                           (add)="makeRoutePlan($event)" placeholder="eg. Calgary to
                           Edmonton" #pRoute="ngModel">
@@ -86,7 +86,7 @@
                   </div>
                   <div class="col-lg-6 mb-1">
                     <div class="row">
-                      <div class="col-lg-6" *ngIf="tripData.tripNo != ''">
+                      <div class="col-lg-6" *ngIf="tripData.tripNo !== ''">
                         <h4>
                           <b>Trip Number: {{ tripData.tripNo }}</b>
                         </h4>
@@ -750,10 +750,10 @@
                           </p>
                           <p class="mb-0 text-4 font-weight-semibold text-dark" *ngIf="
                               orderMiles.calculateBy != '' &&
-                              orderMiles.calculateBy != null &&
+                        ========================================      orderMiles.calculateBy != null &&
                               orderMiles.calculateBy != undefined &&
                               mapOrderActive == 'active'
-                            ">
+                     =       ">
                             Manual:
                             {{ orderMiles.totalMiles | number: "1.2-2" }}
                           </p>
@@ -816,7 +816,7 @@
                               }}
                               <br />
                               {{
-                              trip.type == "Pickup"
+                              trip.type === "Pickup"
                               ? trip.pickupTime
                               : trip.dropTime
                               }}
@@ -933,7 +933,7 @@
               <section class="card">
                 <div class="card-body" style="display: block">
                   <div class="tab-content p-0" id="myTabContent">
-                    <div *ngIf="activeTab == 'FTL'">
+                    <div *ngIf="activeTab === 'FTL'">
                       <ngx-datatable class="bootstrap" [rows]="ftlOrders" [rowHeight]="rowHeight" [scrollbarV]="true"
                         [columnMode]="ColumnMode.force" [loadingIndicator]="isLoading"
                         [messages]="{ emptyMessage: dataMessage }" (scroll)="onFTLScroll($event.offsetY)"
@@ -957,7 +957,7 @@
                         ]" [headerHeight]="headerHeight">
                       </ngx-datatable>
                     </div>
-                    <div *ngIf="activeTab == 'LTL'">
+                    <div *ngIf="activeTab === 'LTL'">
                       <ngx-datatable class="bootstrap" [rows]="ltlOrders" [rowHeight]="rowHeight" [scrollbarV]="true"
                         [columnMode]="ColumnMode.force" [loadingIndicator]="isLoading"
                         [messages]="{ emptyMessage: dataMessage }" (scroll)="onLTLScroll($event.offsetY)"
@@ -1221,7 +1221,7 @@
     </button>
     <a href="javascript:;" class="btn btn-success mr-2 mt-3" (click)="validateUnits('')">
       Assign</a>
-    <a href="javascript:;" *ngIf="tempTextFieldValues.type == 'edit'" class="btn btn-success mr-2 mt-3"
+    <a href="javascript:;" *ngIf="tempTextFieldValues.type === 'edit'" class="btn btn-success mr-2 mt-3"
       (click)="validateUnits('populate')">
       Assign for all</a>
   </ng-template>
@@ -1419,9 +1419,9 @@
   <ng-template pTemplate="footer">
     <a href="javascript:;" class="btn btn-success mr-2 mt-3" (click)="isExpDisplay= false;assignAssetModel = true;">
       Cancel</a>
-    <a href="javascript:;" *ngIf="isAllType == ''" class="btn btn-success mr-2 mt-3" (click)="assignUnits(isAllType)">
+    <a href="javascript:;" *ngIf="isAllType === ''" class="btn btn-success mr-2 mt-3" (click)="assignUnits(isAllType)">
       Continue to assign</a>
-    <a href="javascript:;" *ngIf="isAllType != ''" class="btn btn-success mr-2 mt-3" (click)="assignUnits(isAllType)">
+    <a href="javascript:;" *ngIf="isAllType !== ''" class="btn btn-success mr-2 mt-3" (click)="assignUnits(isAllType)">
       Continue to assign</a>
   </ng-template>
 </p-dialog>

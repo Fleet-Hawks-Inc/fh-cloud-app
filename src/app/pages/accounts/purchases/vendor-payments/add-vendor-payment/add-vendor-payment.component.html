@@ -484,7 +484,7 @@
                         Cancel
                       </button>
                       <button type="button" class="btn btn-success modal-with-form mr-2"
-                        *ngIf="paymentData.payMode == 'cheque'" [disabled]="!venPayForm.form.valid || submitDisabled"
+                        *ngIf="paymentData.payMode === 'cheque'" [disabled]="!venPayForm.form.valid || submitDisabled"
                         (click)="showCheque()">
                         Cheque preview
                       </button>

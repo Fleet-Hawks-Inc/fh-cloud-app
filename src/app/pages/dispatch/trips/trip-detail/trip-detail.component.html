@@ -1,52 +1,30 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pl-1 pr-0">
-      <header class="page-header pr19 pl11">
-        <div class="row" style="padding-top: 9px">
-          <div class="col-md-4 col-lg-4 text-dark">
-            <span class="font-weight-bold text-4"
-              >Trip {{ tripData.tripNo }}
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pl-1 pr-0">
+            <header class="page-header pr19 pl11">
+                <div class="row" style="padding-top: 9px">
+                    <div class="col-md-4 col-lg-4 text-dark">
+                        <span class="font-weight-bold text-4">Trip {{ tripData.tripNo }}
             </span>
-            <span
-              *ngIf="tripStatus"
-              class="badge p-1 badge-dark mt-2 mb-0 text-uppercase"
-              >{{ tripStatus }}
+                        <span *ngIf="tripStatus" class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">{{ tripStatus }}
             </span>
-          </div>
+                    </div>
 
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              *ngIf="recallStatus"
-              routerLink="/dispatch/trips/edit-trip/{{ tripID }}"
-              [queryParams]="{ state: 'recall' }"
-              title="Recall"
-              class="btn btn-sm mr-2 btn-success"
-            >
-              <i class="fas fa-redo"></i>
-            </a>
-            <button
-              (click)="addAlerts()"
-              *ngIf="tempNamesList.length > 0"
-              class="btn btn-sm btn-danger mr-2"
-            >
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a *ngIf="recallStatus" routerLink="/dispatch/trips/edit-trip/{{ tripID }}" [queryParams]="{ state: 'recall' }" title="Recall" class="btn btn-sm mr-2 btn-success">
+                            <i class="fas fa-redo"></i>
+                        </a>
+                        <button (click)="addAlerts()" *ngIf="tempNamesList.length > 0" class="btn btn-sm btn-danger mr-2">
               Alarms
             </button>
-            <button
-              (click)="openTripInfo()"
-              *ngIf="showTripInfo"
-              class="btn btn-sm btn-success mr-2"
-            >
+                        <button (click)="openTripInfo()" *ngIf="showTripInfo" class="btn btn-sm btn-success mr-2">
               Trip Info
             </button>
 
-            <a
-              routerLink="/dispatch/trips/edit-trip/{{ tripID }}"
-              *ngIf="showEdit"
-              class="btn btn-default btn-sm mr-2"
-              ><i class="fas fa-pencil-alt"></i> Edit Trip</a
+                        <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit" class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Trip</a
             >
             <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
-            <!-- <div class="btn-group flex-wrap mr-2">
+                        <!-- <div class="btn-group flex-wrap mr-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Send to Manifest<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -57,7 +35,7 @@
                                     eManifest</a>
                             </div>
                         </div> -->
-            <!-- <div class="btn-group flex-wrap mr-2">
+                        <!-- <div class="btn-group flex-wrap mr-2">
                         <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">Actions<span class="caret"></span></button>
@@ -66,29 +44,23 @@
                                <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
                             </div>
                          </div> -->
-            <a
-              href="javascript:;"
-              (click)="cancel()"
-              class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Trips
+                        <a href="javascript:;" (click)="cancel()" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Trips
             </a>
-          </div>
-        </div>
-      </header>
+                    </div>
+                </div>
+            </header>
 
-      <section class="m-2">
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row">
-                <div class="col-xl-8 col-12">
-                  <div class="row">
-                    <div class="col-xl-6 col-6">
-                      <div class="safetytile p-4 border">
-                        <div class="driverbar w100">
-                          <span
-                            class="pull-right pt-1 text-5 font-weight-bold text-dark"
-                            >{{ tripData.tripNo }}</span
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row">
+                                <div class="col-xl-8 col-12">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-6">
+                                            <div class="safetytile p-4 border">
+                                                <div class="driverbar w100">
+                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark">{{ tripData.tripNo }}</span
                           >
                           <h2
                             class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark"
@@ -133,7 +105,7 @@
                           <span
                             class="pull-right pt-1 text-5 font-weight-bold text-dark"
                             >{{
-                              tripData.bol != "" && tripData.bol != undefined
+                              tripData.bol !== "" && tripData.bol !== undefined
                                 ? tripData.bol
                                 : "-"
                             }}</span
@@ -167,87 +139,69 @@
                           <span
                             class="pull-right pt-1 text-5 font-weight-bold text-dark"
                             *ngIf="
-                              tripData.reeferTemperature != '' &&
-                              tripData.reeferTemperature != undefined
-                            "
+                              tripData.reeferTemperature !== '' &&   tripData.reeferTemperature !== undefined"
                             >{{ tripData.reeferTemperature }}<sup>o</sup>
                             {{ tripData.reeferTemperatureUnit }}</span
                           >
                           <span
                             class="pull-right pt-1 text-5 font-weight-bold text-dark"
                             *ngIf="
-                              tripData.reeferTemperature == '' ||
-                              tripData.reeferTemperature == undefined
+                              tripData.reeferTemperature === '' || tripData.reeferTemperature === undefined
                             "
                           >
                             -
                           </span>
-                          <h2
-                            class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Reefer Temperature
-                          </h2>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                                                    <h2 class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                                        Reefer Temperature
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="vehicle-common-box maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <div class="row align-items-center">
-                            <div class="col-6">
-                              <h2
-                                class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                              >
-                                <i class="fas fa-box"></i> Documents
-                              </h2>
-                            </div>
-                            <div class="col-6 text-right">
-                              <button
-                                [disabled]="uploadedDocSrc.length >= 10"
-                                class="btn btn-success btn-sm"
-                                (click)="openDocModal()"
-                              >
+                                <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
+                                    <div class="col-xl-12 col-12 mb-3">
+                                        <div class="vehicle-common-box maindisbox w100 pull-left">
+                                            <div class="widgetload">
+                                                <div class="widgettbload">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-6">
+                                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                <i class="fas fa-box"></i> Documents
+                                                            </h2>
+                                                        </div>
+                                                        <div class="col-6 text-right">
+                                                            <button [disabled]="uploadedDocSrc.length >= 10" class="btn btn-success btn-sm" (click)="openDocModal()">
                                 Add Document
                               </button>
-                            </div>
-                          </div>
-                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                        <div class="widgetlinfo pb-1">
-                          <div *ngIf="uploadedDocSrc.length == 0">
-                            <span>No document found</span>
-                          </div>
-                          <div
-                            class="row"
-                            *ngIf="uploadedDocSrc.length > 0"
-                            style="max-height: 150px; overflow-y: scroll"
-                          >
-                            <div class="col-12">
-                              <table class="table table-bordered mb-0">
-                                <thead>
-                                  <th>Sr.</th>
-                                  <th>Name</th>
-                                  <th>Type</th>
-                                  <th>Icon/Thumbnail</th>
-                                  <th>Action</th>
-                                </thead>
-                                <tbody>
-                                  <tr
-                                    *ngFor="
+                                                <div class="widgetlinfo pb-1">
+                                                    <div *ngIf="uploadedDocSrc.length === 0">
+                                                        <span>No document found</span>
+                                                    </div>
+                                                    <div class="row" *ngIf="uploadedDocSrc.length > 0" style="max-height: 150px; overflow-y: scroll">
+                                                        <div class="col-12">
+                                                            <table class="table table-bordered mb-0">
+                                                                <thead>
+                                                                    <th>Sr.</th>
+                                                                    <th>Name</th>
+                                                                    <th>Type</th>
+                                                                    <th>Icon/Thumbnail</th>
+                                                                    <th>Action</th>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="
                                       let doc of uploadedDocSrc;
                                       let d = index
-                                    "
-                                  >
-                                    <td>{{ d + 1 }}</td>
-                                    <td>{{ doc.displayName }}</td>
-                                    <td>
-                                      <span *ngIf="doc.type === 'bol'"
-                                        >Bill of lading</span
+                                    ">
+                                                                        <td>{{ d + 1 }}</td>
+                                                                        <td>{{ doc.displayName }}</td>
+                                                                        <td>
+                                                                            <span *ngIf="doc.type === 'bol'">Bill of lading</span
                                       >
                                       <span *ngIf="doc.type === 'pod'"
                                         >Proof of delivery</span
@@ -379,25 +333,20 @@
                                     <span *ngIf="d < trip.commodity.length - 1"
                                       >,
                                     </span>
-                                  </span>
-                                </span>
-                              </td>
-                              <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
-                              <!-- <td>{{ trip.time }}</td> -->
-                              <td>{{ trip.pickupTime }}</td>
-                              <td>{{ trip.dropTime }}</td>
-                              <!-- <td>{{ trip.actualPickupTime }}</td>
+                                                                            </span>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
+                                                                        <!-- <td>{{ trip.time }}</td> -->
+                                                                        <td>{{ trip.pickupTime }}</td>
+                                                                        <td>{{ trip.dropTime }}</td>
+                                                                        <!-- <td>{{ trip.actualPickupTime }}</td>
                                                     <td>{{ trip.actualDropTime }}</td> -->
-                              <!-- <td>6/6/2020 10:00 AM</td> -->
-                              <td>{{ trip.name }}</td>
-                              <td>{{ trip.locationName }}</td>
-                              <td>
-                                <span
-                                  class="badge badge-dark p-1 text-uppercase"
-                                  title=""
-                                  data-original-title="Empty Miles"
-                                  *ngIf="trip.mileType != ''"
-                                  >{{ trip.mileType }}</span
+                                                                        <!-- <td>6/6/2020 10:00 AM</td> -->
+                                                                        <td>{{ trip.name }}</td>
+                                                                        <td>{{ trip.locationName }}</td>
+                                                                        <td>
+                                                                            <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty Miles" *ngIf="trip.mileType !== ''">{{ trip.mileType }}</span
                                 >
                               </td>
                               <td>{{ trip.miles }}</td>
@@ -409,46 +358,38 @@
                                   {{ asst }}
                                   <br />
                                 </span>
-                              </td>
-                              <td>
-                                {{ trip.driverName ? trip.driverName : "" }}
-                                <span
-                                  *ngIf="
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ trip.driverName ? trip.driverName : "" }}
+                                                                            <span *ngIf="
                                     trip.driverStatus &&
-                                    trip.driverStatus == 'STARTED'
-                                  "
-                                  class="badge badge-success"
-                                  >{{ trip.driverStatus }}</span
+                                    trip.driverStatus === 'STARTED'" class="badge badge-success">{{ trip.driverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.driverStatus &&
-                                    trip.driverStatus == 'DELIVERED'
-                                  "
+                                    trip.driverStatus === 'DELIVERED'"
                                   class="badge badge-primary"
                                   >{{ trip.driverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.driverStatus &&
-                                    trip.driverStatus == 'REJECTED'
-                                  "
+                                    trip.driverStatus === 'REJECTED'"
                                   class="badge badge-danger"
                                   >{{ trip.driverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.driverStatus &&
-                                    trip.driverStatus == 'ACCEPTED'
-                                  "
+                                    trip.driverStatus === 'ACCEPTED'"
                                   class="badge badge-success"
                                   >{{ trip.driverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.driverStatus &&
-                                    trip.driverStatus == 'ASSIGNED'
-                                  "
+                                    trip.driverStatus === 'ASSIGNED'"
                                   class="badge bg-blue"
                                   >{{ trip.driverStatus }}</span
                                 >
@@ -458,40 +399,35 @@
                                 <span
                                   *ngIf="
                                     trip.coDriverStatus &&
-                                    trip.coDriverStatus == 'REJECTED'
-                                  "
+                                    trip.coDriverStatus === 'REJECTED'"
                                   class="badge badge-danger"
                                   >{{ trip.coDriverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.coDriverStatus &&
-                                    trip.coDriverStatus == 'STARTED'
-                                  "
+                                    trip.coDriverStatus === 'STARTED'"
                                   class="badge badge-success"
                                   >{{ trip.coDriverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.coDriverStatus &&
-                                    trip.coDriverStatus == 'DELIVERED'
-                                  "
+                                    trip.coDriverStatus === 'DELIVERED'"
                                   class="badge badge-primary"
                                   >{{ trip.coDriverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.coDriverStatus &&
-                                    trip.coDriverStatus == 'ACCEPTED'
-                                  "
+                                    trip.coDriverStatus === 'ACCEPTED'"
                                   class="badge badge-success"
                                   >{{ trip.coDriverStatus }}</span
                                 >
                                 <span
                                   *ngIf="
                                     trip.coDriverStatus &&
-                                    trip.coDriverStatus == 'ASSIGNED'
-                                  "
+                                    trip.coDriverStatus === 'ASSIGNED'"
                                   class="badge bg-blue"
                                   >{{ trip.coDriverStatus }}</span
                                 >
@@ -576,25 +512,20 @@
                                     <span *ngIf="d < trip.commodity.length - 1"
                                       >,
                                     </span>
-                                  </span>
-                                </span>
-                              </td>
-                              <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
-                              <!-- <td>{{ trip.time }}</td> -->
-                              <td>{{ trip.pickupTime }}</td>
-                              <td>{{ trip.dropTime }}</td>
-                              <!-- <td>{{ trip.actualPickupTime }}</td>
+                                                                            </span>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
+                                                                        <!-- <td>{{ trip.time }}</td> -->
+                                                                        <td>{{ trip.pickupTime }}</td>
+                                                                        <td>{{ trip.dropTime }}</td>
+                                                                        <!-- <td>{{ trip.actualPickupTime }}</td>
                                                             <td>{{ trip.actualDropTime }}</td> -->
-                              <!-- <td>6/6/2020 10:00 AM</td> -->
-                              <td>{{ trip.name }}</td>
-                              <td>{{ trip.locationName }}</td>
-                              <td>
-                                <span
-                                  class="badge badge-dark p-1 text-uppercase"
-                                  title=""
-                                  data-original-title="Empty Miles"
-                                  *ngIf="trip.mileType != ''"
-                                  >{{ trip.mileType }}</span
+                                                                        <!-- <td>6/6/2020 10:00 AM</td> -->
+                                                                        <td>{{ trip.name }}</td>
+                                                                        <td>{{ trip.locationName }}</td>
+                                                                        <td>
+                                                                            <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty Miles" *ngIf="trip.mileType !== ''">{{ trip.mileType }}</span
                                 >
                               </td>
                               <td>{{ trip.miles }}</td>
@@ -606,88 +537,65 @@
                                   {{ asst }}
                                   <br />
                                 </span>
-                              </td>
-                              <td>
-                                {{ trip.driverName ? trip.driverName : "" }}
-                              </td>
-                              <td>
-                                {{ trip.coDriverName ? trip.coDriverName : "" }}
-                              </td>
-                              <td>
-                                {{ trip.carrierName ? trip.carrierName : "" }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ trip.driverName ? trip.driverName : "" }}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ trip.coDriverName ? trip.coDriverName : "" }}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ trip.carrierName ? trip.carrierName : "" }}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <h3 class="font-weight-bold mt-0">Trip Information</h3>
-                  <div class="row mt-3 justify-content-center pl-5 pr-5">
-                    <div class="w100 pl-3">
-                      <div class="tripbarn"></div>
-                    </div>
-                  </div>
+                            <div class="row mb-3">
+                                <div class="col-lg-12">
+                                    <div class="bg-white p-3 text-dark">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <h3 class="font-weight-bold mt-0">Trip Information</h3>
+                                                <div class="row mt-3 justify-content-center pl-5 pr-5">
+                                                    <div class="w100 pl-3">
+                                                        <div class="tripbarn"></div>
+                                                    </div>
+                                                </div>
 
-                  <div
-                    class=""
-                    [ngClass]="trips.length > 15 ? 'tripinfoscroll' : ''"
-                  >
-                    <div
-                      class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3"
-                    >
-                      <div class="text-center" *ngFor="let trip of trips">
-                        <div
-                          class="tripcirclen"
-                          data-toggle="tooltip"
-                          title="{{ trip.locationName }}"
-                        ></div>
-                        <div
-                          class="tripcontentn"
-                          data-toggle="tooltip"
-                          title="{{ trip.locationName }}"
-                        >
-                          <p
-                            class="font-weight-bold text-dark text-2 line-height-xs"
-                          >
-                            {{ trip.type }} <br />{{
-                              trip.date | date: "yyyy/MM/dd"
-                            }}
-                            <br />
-                            {{
-                              trip.type == "Pickup"
-                                ? trip.pickupTime
-                                : trip.dropTime
-                            }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-12">
-            <mat-accordion>
-              <mat-expansion-panel hideToggle>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    <label class="control-label text-lg-right text-5"
-                      >Map View</label
+                                                <div class="" [ngClass]="trips.length > 15 ? 'tripinfoscroll' : ''">
+                                                    <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
+                                                        <div class="text-center" *ngFor="let trip of trips">
+                                                            <div class="tripcirclen" data-toggle="tooltip" title="{{ trip.locationName }}"></div>
+                                                            <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
+                                                                <p class="font-weight-bold text-dark text-2 line-height-xs">
+                                                                    {{ trip.type }} <br />{{ trip.date | date: "yyyy/MM/dd" }}
+                                                                    <br /> {{ trip.type === "Pickup" ? trip.pickupTime : trip.dropTime }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <mat-accordion>
+                                        <mat-expansion-panel hideToggle>
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    <label class="control-label text-lg-right text-5">Map View</label
                     >
                   </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -783,7 +691,7 @@
                       </div>
                       <div
                         class="mt-3 mb-3 text-center"
-                        *ngIf="tripLog.length == 0"
+                        *ngIf="tripLog.length === 0"
                       >
                         {{ noOrdersMsg }}
                       </div>
@@ -1096,17 +1004,10 @@
                 class="control-label font-weight-semibold labelmt text-3 text-dark"
                 >Stop Arrival Date
               </label>
-              <input
-                type="date"
-                data-plugin-datepicker=""
-                class="form-control"
-                placeholder="3/4/2020"
-              />
-            </div>
-            <div class="form-group col-lg-6 col-md-12">
-              <label
-                class="control-label font-weight-semibold labelmt text-3 text-dark"
-                >Stop Departure Date</label
+                                                    <input type="date" data-plugin-datepicker="" class="form-control" placeholder="3/4/2020" />
+                                </div>
+                                <div class="form-group col-lg-6 col-md-12">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop Departure Date</label
               >
               <input
                 type="date"
@@ -1161,7 +1062,7 @@
           />
           <p
             class="mb-0 text-dark text-4 font-weight-bold"
-            *ngIf="tagLine && tagLine != ''"
+            *ngIf="tagLine && tagLine !== ''"
           >
             {{ tagLine }}
           </p>
@@ -1394,7 +1295,7 @@
                     class="badge badge-dark p-1 text-uppercase"
                     title=""
                     data-original-title="Empty Miles"
-                    *ngIf="trip.mileType != ''"
+                    *ngIf="trip.mileType !== ''"
                     >{{ trip.mileType }}</span
                   >
                 </td>
@@ -1409,29 +1310,28 @@
                 <td>
                   {{ trip.driverName ? trip.driverName : "" }}
                   <span
-                    *ngIf="trip.driverStatus && trip.driverStatus == 'STARTED'"
+                    *ngIf="trip.driverStatus && trip.driverStatus === 'STARTED'"
                     class="badge badge-success"
                     >{{ trip.driverStatus }}</span
                   >
                   <span
                     *ngIf="
-                      trip.driverStatus && trip.driverStatus == 'DELIVERED'
-                    "
+                      trip.driverStatus && trip.driverStatus === 'DELIVERED'"
                     class="badge badge-primary"
                     >{{ trip.driverStatus }}</span
                   >
                   <span
-                    *ngIf="trip.driverStatus && trip.driverStatus == 'REJECTED'"
+                    *ngIf="trip.driverStatus && trip.driverStatus === 'REJECTED'"
                     class="badge badge-danger"
                     >{{ trip.driverStatus }}</span
                   >
                   <span
-                    *ngIf="trip.driverStatus && trip.driverStatus == 'ACCEPTED'"
+                    *ngIf="trip.driverStatus && trip.driverStatus === 'ACCEPTED'"
                     class="badge badge-success"
                     >{{ trip.driverStatus }}</span
                   >
                   <span
-                    *ngIf="trip.driverStatus && trip.driverStatus == 'ASSIGNED'"
+                    *ngIf="trip.driverStatus && trip.driverStatus === 'ASSIGNED'"
                     class="badge bg-blue"
                     >{{ trip.driverStatus }}</span
                   >
@@ -1440,36 +1340,31 @@
                   {{ trip.coDriverName ? trip.coDriverName : "" }}
                   <span
                     *ngIf="
-                      trip.coDriverStatus && trip.coDriverStatus == 'REJECTED'
-                    "
+                      trip.coDriverStatus && trip.coDriverStatus === 'REJECTED'"
                     class="badge badge-danger"
                     >{{ trip.coDriverStatus }}</span
                   >
                   <span
                     *ngIf="
-                      trip.coDriverStatus && trip.coDriverStatus == 'STARTED'
-                    "
+                      trip.coDriverStatus && trip.coDriverStatus === 'STARTED'"
                     class="badge badge-success"
                     >{{ trip.coDriverStatus }}</span
                   >
                   <span
                     *ngIf="
-                      trip.coDriverStatus && trip.coDriverStatus == 'DELIVERED'
-                    "
+                      trip.coDriverStatus && trip.coDriverStatus === 'DELIVERED'"
                     class="badge badge-primary"
                     >{{ trip.coDriverStatus }}</span
                   >
                   <span
                     *ngIf="
-                      trip.coDriverStatus && trip.coDriverStatus == 'ACCEPTED'
-                    "
+                      trip.coDriverStatus && trip.coDriverStatus === 'ACCEPTED'"
                     class="badge badge-success"
                     >{{ trip.coDriverStatus }}</span
                   >
                   <span
                     *ngIf="
-                      trip.coDriverStatus && trip.coDriverStatus == 'ASSIGNED'
-                    "
+                      trip.coDriverStatus && trip.coDriverStatus === 'ASSIGNED'"
                     class="badge bg-blue"
                     >{{ trip.coDriverStatus }}</span
                   >
@@ -1481,7 +1376,7 @@
         </td>
       </tr>
 
-      <tr *ngIf="driverTerms != ''">
+      <tr *ngIf="driverTerms !== ''">
         <td style="font-size: 12px" colspan="2" class="text-dark">
           <strong>Dispatch Notes For Driver: </strong> {{ driverTerms }}
         </td>
@@ -1489,7 +1384,7 @@
       <tr>
         <td colspan="2">&nbsp;</td>
       </tr>
-      <tr *ngIf="dispatchTerms != ''">
+      <tr *ngIf="dispatchTerms !== ''">
         <td style="font-size: 12px" colspan="2" class="text-dark">
           <strong>Terms and Conditions For Truck Dispatch: </strong
           >{{ dispatchTerms }}
@@ -1616,69 +1511,22 @@
         >{{ assetAlert }}<br />
       </span>
       <label class="mt-2">High Temp. threshold</label><br />
-      <p-inputNumber
-        id="highTemp"
-        tooltipPosition="top"
-        pTooltip="Enter High Temperature Threshold"
-        [(ngModel)]="highTemp"
-        mode="decimal"
-        class="mb-2"
-        [suffix]="metricSelected"
-        :min="-100"
-        :max="80"
-        placeholder="High Temperature Threshold"
-      ></p-inputNumber
-      ><br />
-      <label class="mb-2">Low Temp. threshold</label><br />
-      <p-inputNumber
-        id="lowtemp"
-        tooltipPosition="top"
-        pTooltip="Enter Low Temperature Threshold"
-        [(ngModel)]="lowTemp"
-        mode="decimal"
-        class="mb-2"
-        [suffix]="metricSelected"
-        :min="-100"
-        :max="80"
-        placeholder="Low Temperature Threshold"
-      ></p-inputNumber
-      ><br />
-      Metric:
-      <p-selectButton
-        [options]="metrics"
-        (onChange)="changeMetric($event)"
-        [(ngModel)]="metricSelected"
-        optionLabel="name"
-        class="mb-2"
-        optionValue="value"
-      ></p-selectButton>
-      <label class="mt-2">Emails:</label>
-      <br /><input
-        required
-        type="email"
-        id="emails"
-        pTooltip="Multiple emails with comma separated."
-        placeholder="Email Address(s)"
-        pInputText
-        [(ngModel)]="emails"
-        class="mb-2"
-      /><br />
-      <span class="small" style="color: red" *ngIf="!isEmailsValid">
+                                    <p-inputNumber id="highTemp" tooltipPosition="top" pTooltip="Enter High Temperature Threshold" [(ngModel)]="highTemp" mode="decimal" class="mb-2" [suffix]="metricSelected" :min="-100" :max="80" placeholder="High Temperature Threshold"></p-inputNumber><br />
+                                    <label class="mb-2">Low Temp. threshold</label><br />
+                                    <p-inputNumber id="lowtemp" tooltipPosition="top" pTooltip="Enter Low Temperature Threshold" [(ngModel)]="lowTemp" mode="decimal" class="mb-2" [suffix]="metricSelected" :min="-100" :max="80" placeholder="Low Temperature Threshold"></p-inputNumber><br /> Metric:
+                                    <p-selectButton [options]="metrics" (onChange)="changeMetric($event)" [(ngModel)]="metricSelected" optionLabel="name" class="mb-2" optionValue="value"></p-selectButton>
+                                    <label class="mt-2">Emails:</label>
+                                    <br /><input required type="email" id="emails" pTooltip="Multiple emails with comma separated." placeholder="Email Address(s)" pInputText [(ngModel)]="emails" class="mb-2" /><br />
+                                    <span class="small" style="color: red" *ngIf="!isEmailsValid">
         One or more emails are not valid. <br />
       </span>
-      <br />
+                                    <br />
 
-      <button
-        pButton
-        type="button"
-        (click)="addAlarmToAsset()"
-        label="Add Alert"
-        class="mb-2"
-      ></button>
-    </div>
-    <div class="col">
-      <h5>Existing Alerts</h5>
-      <span *ngIf="tripAlarms.length == 0">
+                                    <button pButton type="button" (click)="addAlarmToAsset()" label="Add Alert" class="mb-2"></button>
+                                </div>
+                                <div class="col">
+                                    <h5>Existing Alerts</h5>
+                                    <span *ngIf="tripAlarms.length === 0">
         There are no existing Alarms configured</span
       >
       <p-table
@@ -1704,59 +1552,28 @@
                   {{ get(tripAlarms, col.field) }}
                 </span>
 
-                <span *ngSwitchDefault> {{ rowData[col.field] }}</span>
-              </div>
-            </td>
-            <td>
-              <button
-                pButton
-                type="button"
-                icon="pi pi-times"
-                (click)="deleteAlarm(rowData)"
-                class="p-button-rounded p-button-danger p-button-outlined"
-              ></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
+                                    <span *ngSwitchDefault> {{ rowData[col.field] }}</span>
+                                </div>
+                                </td>
+                                <td>
+                                    <button pButton type="button" icon="pi pi-times" (click)="deleteAlarm(rowData)" class="p-button-rounded p-button-danger p-button-outlined"></button>
+                                </td>
+                                </tr>
+                                </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
 
-  <ng-template pTemplate="footer">
-    <span><b>NOTE: This feature is in BETA testing stage.</b></span>
-  </ng-template>
-</p-dialog>
+                        <ng-template pTemplate="footer">
+                            <span><b>NOTE: This feature is in BETA testing stage.</b></span>
+                        </ng-template>
+                        </p-dialog>
 
-<p-dialog
-  header="Select Sub-Trip"
-  [modal]="true"
-  [(visible)]="showSplitModel"
-  blockScroll="true"
-  [style]="{ width: '20vw' }"
->
-  <p-dropdown
-    [options]="totalSplits"
-    (onChange)="changeSplitTrips()"
-    appendTo="body"
-    optionLabel="splitName"
-    optionValue="splitID"
-    placeholder="Select Sub Trip"
-    [style]="{ width: '100%' }"
-    [(ngModel)]="selectPlanID"
-  >
-  </p-dropdown>
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      (click)="showSplitModel = false"
-      label="Cancel"
-      styleClass="p-button-text"
-    ></button>
-    <button
-      pButton
-      (click)="showSplitModel = false; showTripInfoModel()"
-      label="Next"
-      styleClass="p-button-text"
-    ></button>
-  </ng-template>
-</p-dialog>
+                        <p-dialog header="Select Sub-Trip" [modal]="true" [(visible)]="showSplitModel" blockScroll="true" [style]="{ width: '20vw' }">
+                            <p-dropdown [options]="totalSplits" (onChange)="changeSplitTrips()" appendTo="body" optionLabel="splitName" optionValue="splitID" placeholder="Select Sub Trip" [style]="{ width: '100%' }" [(ngModel)]="selectPlanID">
+                            </p-dropdown>
+                            <ng-template pTemplate="footer">
+                                <button pButton (click)="showSplitModel = false" label="Cancel" styleClass="p-button-text"></button>
+                                <button pButton (click)="showSplitModel = false; showTripInfoModel()" label="Next" styleClass="p-button-text"></button>
+                            </ng-template>
+                        </p-dialog>

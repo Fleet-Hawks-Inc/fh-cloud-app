@@ -1,75 +1,42 @@
 <ng-template #allUnitModal let-modal>
-  <div class="cus-modal-content modal-margin-top">
-    <div class="modal-header pr-0">
-      <div class="row w-100 align-items-center">
-        <div class="col-3">
-          <h5 class="modal-title">Address Book</h5>
-        </div>
+    <div class="cus-modal-content modal-margin-top">
+        <div class="modal-header pr-0">
+            <div class="row w-100 align-items-center">
+                <div class="col-3">
+                    <h5 class="modal-title">Address Book</h5>
+                </div>
 
-        <div class="col-9 text-right pr-0">
-          <div class="row w-100 m-0">
-            <div class="col-4 ml-auto">
-              <div class="input-group input-group-md mb-0">
-                <input
-                  type="text"
-                  [(ngModel)]="filterVal.cName"
-                  autocomplete="off"
-                  placeholder="Search By Company Name"
-                  class="form-control text-capitalize"
-                  (input)="getSuggestions($event.target.value)"
-                />
-              </div>
+                <div class="col-9 text-right pr-0">
+                    <div class="row w-100 m-0">
+                        <div class="col-4 ml-auto">
+                            <div class="input-group input-group-md mb-0">
+                                <input type="text" [(ngModel)]="filterVal.cName" autocomplete="off" placeholder="Search By Company Name" class="form-control text-capitalize" (input)="getSuggestions($event.target.value)" />
+                            </div>
 
-              <div
-                *ngIf="suggestions?.length > 0"
-                class="result-suggestions text-capitalize"
-              >
-                <ul class="m-0">
-                  <li
-                    *ngFor="let suggestedUser of suggestions"
-                    style="cursor: pointer"
-                    (click)="setSearchValues(suggestedUser.cName)"
-                  >
-                    {{ suggestedUser.cName }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+                            <div *ngIf="suggestions?.length > 0" class="result-suggestions text-capitalize">
+                                <ul class="m-0">
+                                    <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer" (click)="setSearchValues(suggestedUser.cName)">
+                                        {{ suggestedUser.cName }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
-            <div class="col-3 p-0">
-              <button
-                type="submit"
-                [disabled]="isSearched"
-                (click)="searchFilter()"
-                class="btn cus-btn-padd btn-success mr-3"
-              >
+                        <div class="col-3 p-0">
+                            <button type="submit" [disabled]="isSearched" (click)="searchFilter()" class="btn cus-btn-padd btn-success mr-3">
                 Search
               </button>
-              <button
-                type="button"
-                (click)="resetFilter()"
-                class="btn cus-btn-padd btn-success"
-              >
+                            <button type="button" (click)="resetFilter()" class="btn cus-btn-padd btn-success">
                 Reset
               </button>
-            </div>
+                        </div>
 
-            <div
-              class="btn-group flex-wrap pull-right mr-2"
-              *ngIf="!environment"
-            >
-              <button
-                type="button"
-                class="mb-1 btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-              >
+                        <div class="btn-group flex-wrap pull-right mr-2" *ngIf="!environment">
+                            <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
                 Actions<span class="caret"></span>
               </button>
-              <div class="dropdown-menu" role="menu">
-                <a
-                  class="modal-with-form dropdown-item text-1"
-                  href="#importExcelForm"
-                  >Import from Excel</a
+                            <div class="dropdown-menu" role="menu">
+                                <a class="modal-with-form dropdown-item text-1" href="#importExcelForm">Import from Excel</a
                 >
                 <a href="" class="dropdown-item text-1 pull-right" id="excelbtn"
                   >Export to Excel</a
@@ -168,17 +135,8 @@
                 >
               </li>
               <!-- <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li> -->
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="fc-tab"
-                  data-toggle="tab"
-                  href="#fc"
-                  role="tab"
-                  aria-controls="fc"
-                  aria-selected="false"
-                  (click)="setActiveDiv('fc')"
-                  >Factoring Company</a
+                                <li class="nav-item">
+                                    <a class="nav-link" id="fc-tab" data-toggle="tab" href="#fc" role="tab" aria-controls="fc" aria-selected="false" (click)="setActiveDiv('fc')">Factoring Company</a
                 >
               </li>
               <li class="nav-item">
@@ -242,7 +200,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="customers.length == 0" class="text-center">
+                    <tr *ngIf="customers.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -358,7 +316,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="units.length == 0" class="text-center">
+                      <tr *ngIf="units.length === 0" class="text-center">
                         <td colspan="6">{{ dataMessage }}</td>
                       </tr>
                       <tr
@@ -370,7 +328,7 @@
                           class="text-capitalize"
                         >
                           {{
-                            item.cName != "" ? item.cName : item.fn + item.ln
+                            item.cName !== "" ? item.cName : item.fn + item.ln
                           }}
                         </td>
                         <td class="text-lowercase">
@@ -378,7 +336,7 @@
                         </td>
                         <td>{{ item.workPhone ? item.workPhone : "-" }}</td>
                         <td
-                          *ngIf="item.address[0] != undefined"
+                          *ngIf="item.address[0] !== undefined"
                           class="text-capitalize"
                         >
                           <span *ngIf="item.address[0].manual">
@@ -413,7 +371,7 @@
                             {{ item.address[0].userLoc }}
                           </span>
                         </td>
-                        <td *ngIf="item.address[0] == undefined"></td>
+                        <td *ngIf="item.address[0] === undefined"></td>
                         <td>
                           <div class="dropdown dropright">
                             <button
@@ -471,7 +429,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="brokers.length == 0" class="text-center">
+                    <tr *ngIf="brokers.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -483,7 +441,7 @@
                         class="text-capitalize"
                       >
                         {{
-                          broker.cName != ""
+                          broker.cName !== ""
                             ? broker.cName
                             : broker.firstName + broker.lastName
                         }}
@@ -494,7 +452,7 @@
                       </td>
                       <td>{{ broker.workPhone ? broker.workPhone : "-" }}</td>
                       <td
-                        *ngIf="broker.address[0] != undefined"
+                        *ngIf="broker.address[0] !== undefined"
                         class="text-capitalize"
                       >
                         <span *ngIf="broker.address[0].manual">
@@ -529,7 +487,7 @@
                           {{ broker.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="broker.address[0] == undefined"></td>
+                      <td *ngIf="broker.address[0] === undefined"></td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -585,7 +543,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="vendors.length == 0" class="text-center">
+                    <tr *ngIf="vendors.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -604,7 +562,7 @@
                       </td>
                       <td>{{ vendor.workPhone ? vendor.workPhone : "-" }}</td>
                       <td
-                        *ngIf="vendor.address[0] != undefined"
+                        *ngIf="vendor.address[0] !== undefined"
                         class="text-capitalize"
                       >
                         <span *ngIf="vendor.address[0].manual">
@@ -639,7 +597,7 @@
                           {{ vendor.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="vendor.address[0] == undefined"></td>
+                      <td *ngIf="vendor.address[0] === undefined"></td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -695,7 +653,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="carriers.length == 0" class="text-center">
+                    <tr *ngIf="carriers.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -714,7 +672,7 @@
                       </td>
                       <td>{{ carrier.workPhone ? carrier.workPhone : "-" }}</td>
                       <td
-                        *ngIf="carrier.address[0] != undefined"
+                        *ngIf="carrier.address[0] !== undefined"
                         class="text-capitalize"
                       >
                         <span *ngIf="carrier.address[0].manual">
@@ -749,7 +707,7 @@
                           {{ carrier.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="carrier.address[0] == undefined"></td>
+                      <td *ngIf="carrier.address[0] === undefined"></td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -805,7 +763,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="owners.length == 0" class="text-center">
+                    <tr *ngIf="owners.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -826,7 +784,7 @@
                         {{ operator.workPhone ? operator.workPhone : "-" }}
                       </td>
                       <td
-                        *ngIf="operator.address[0] != undefined"
+                        *ngIf="operator.address[0] !== undefined"
                         class="text-capitalize"
                       >
                         <span *ngIf="operator.address[0].manual">
@@ -861,7 +819,7 @@
                           {{ operator.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="operator.address[0] == undefined"></td>
+                      <td *ngIf="operator.address[0] === undefined"></td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -917,7 +875,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="shippers.length == 0" class="text-center">
+                    <tr *ngIf="shippers.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -935,7 +893,7 @@
                         {{ shipper.workEmail ? shipper.workEmail : "-" }}
                       </td>
                       <td>{{ shipper.workPhone ? shipper.workPhone : "-" }}</td>
-                      <td *ngIf="shipper.address[0] != undefined">
+                      <td *ngIf="shipper.address[0] !== undefined">
                         <span *ngIf="shipper.address[0].manual">
                           {{
                             shipper.address[0].add1
@@ -968,7 +926,7 @@
                           {{ shipper.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="shipper.address[0] == undefined"></td>
+                      <td *ngIf="shipper.address[0] === undefined"></td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -1024,7 +982,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="receivers.length == 0" class="text-center">
+                    <tr *ngIf="receivers.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -1044,7 +1002,7 @@
                       <td>
                         {{ receiver.workPhone ? receiver.workPhone : "-" }}
                       </td>
-                      <td *ngIf="receiver.address[0] != undefined">
+                      <td *ngIf="receiver.address[0] !== undefined">
                         <span *ngIf="receiver.address[0].manual">
                           {{
                             receiver.address[0].add1
@@ -1077,7 +1035,7 @@
                           {{ receiver.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="receiver.address[0] == undefined"></td>
+                      <td *ngIf="receiver.address[0] === undefined"></td>
 
                       <td>
                         <div class="dropdown dropright">
@@ -1134,7 +1092,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="fcCompanies.length == 0" class="text-center">
+                    <tr *ngIf="fcCompanies.length === 0" class="text-center">
                       <td colspan="6">{{ dataMessage }}</td>
                     </tr>
                     <tr
@@ -1152,7 +1110,7 @@
                         {{ company.workEmail ? company.workEmail : "-" }}
                       </td>
                       <td>{{ company.workPhone ? company.workPhone : "-" }}</td>
-                      <td *ngIf="company.address[0] != undefined">
+                      <td *ngIf="company.address[0] !== undefined">
                         <span *ngIf="company.address[0].manual">
                           {{
                             company.address[0].add1
@@ -1185,7 +1143,7 @@
                           {{ company.address[0].userLoc }}
                         </span>
                       </td>
-                      <td *ngIf="company.address[0] == undefined"></td>
+                      <td *ngIf="company.address[0] === undefined"></td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -1948,7 +1906,7 @@
                 <div
                   class="row ng-star-inserted w-100 m-0"
                   id="payFlatRate"
-                  *ngIf="unit.carrierData.pType == 'pfr'"
+                  *ngIf="unit.carrierData.pType === 'pfr'"
                 >
                   <div class="col-3">
                     <label
@@ -1981,7 +1939,7 @@
                 <div
                   class="row ng-star-inserted w-100 m-0"
                   id="payPerDeliveryForm"
-                  *ngIf="unit.carrierData.pType == 'ppd'"
+                  *ngIf="unit.carrierData.pType === 'ppd'"
                 >
                   <div class="col-3">
                     <label
@@ -2015,7 +1973,7 @@
                   <div
                     class="row"
                     id="payPerHourForm"
-                    *ngIf="unit.carrierData.pType == 'pph'"
+                    *ngIf="unit.carrierData.pType === 'pph'"
                   >
                     <div class="col-3">
                       <label
@@ -2050,7 +2008,7 @@
                   <div
                     class="row align-items-center"
                     id="payPercentageForm"
-                    *ngIf="unit.carrierData.pType == 'pp'"
+                    *ngIf="unit.carrierData.pType === 'pp'"
                   >
                     <div class="col-lg-12">
                       <label
@@ -2096,7 +2054,7 @@
                   <div
                     class="row"
                     id="payPerMileForm"
-                    *ngIf="unit.carrierData.pType == 'ppm'"
+                    *ngIf="unit.carrierData.pType === 'ppm'"
                   >
                     <div class="col-3">
                       <label
@@ -2983,7 +2941,7 @@
                 <div
                   class="row m-0 w-100"
                   id="payPerHourForm"
-                  *ngIf="unit.opData.pType == 'pph'"
+                  *ngIf="unit.opData.pType === 'pph'"
                 >
                   <div class="col-3">
                     <label
@@ -3024,7 +2982,7 @@
                 <div
                   class="row m-0 w-100"
                   id="payPercentageForm"
-                  *ngIf="unit.opData.pType == 'pp'"
+                  *ngIf="unit.opData.pType === 'pp'"
                 >
                   <div class="col-12">
                     <label
@@ -3075,7 +3033,7 @@
                 <div
                   class="row m-0 w-100"
                   id="payPerMileForm"
-                  *ngIf="unit.opData.pType == 'ppm'"
+                  *ngIf="unit.opData.pType === 'ppm'"
                 >
                   <div class="col-3">
                     <label
@@ -3149,7 +3107,7 @@
                 <div
                   class="row m-0 w-100"
                   id="payPerDeliveryForm"
-                  *ngIf="unit.opData.pType == 'ppd'"
+                  *ngIf="unit.opData.pType === 'ppd'"
                 >
                   <div class="col-3">
                     <label
@@ -3182,7 +3140,7 @@
                 <div
                   class="row m-0 w-100"
                   id="payPerDeliveryForm"
-                  *ngIf="unit.opData.pType == 'pfr'"
+                  *ngIf="unit.opData.pType === 'pfr'"
                 >
                   <div class="col-3">
                     <label
@@ -3457,27 +3415,20 @@
                   >Clear</a
                 >
                 <a
-                  *ngIf="i == 0"
+                  *ngIf="i === 0"
                   (click)="addAddress(unitData)"
                   class="btn btn-success"
                   href="javascript:;"
                   ><i class="fa fa-plus fa-fw"></i
                 ></a>
-                <a
-                  *ngIf="i != 0"
-                  (click)="removeAddress(i)"
-                  class="btn btn-danger"
-                  href="javascript:;"
-                  ><i class="fa fa-minus fa-fw"></i
+                                    <a *ngIf="i !== 0" (click)="removeAddress(i)" class="btn btn-danger" href="javascript:;"><i class="fa fa-minus fa-fw"></i
                 ></a>
-              </div>
-              <div *ngIf="item.manual" class="row pl-3 w100">
-                <div class="col-6 pt-4">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2"
-                        >Select Country</label
+                            </div>
+                            <div *ngIf="item.manual" class="row pl-3 w100">
+                                <div class="col-6 pt-4">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label
                       >
                       <ng-select
                         (change)="
@@ -3619,57 +3570,23 @@
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >First Name
                   </label>
-                  <input
-                    [(ngModel)]="additionData.fName"
-                    name="fName_{{ ad }}"
-                    type="text"
-                    class="form-control"
-                    placeholder="eg. John"
-                  />
-                </div>
-                <div class="col-3">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Last Name
+                                            <input [(ngModel)]="additionData.fName" name="fName_{{ ad }}" type="text" class="form-control" placeholder="eg. John" />
+                                        </div>
+                                        <div class="col-3">
+                                            <label class="control-label font-weight-bold text-lg-right pt-2">Last Name
                   </label>
-                  <input
-                    [(ngModel)]="additionData.lName"
-                    name="lName_{{ ad }}"
-                    type="text"
-                    class="form-control"
-                    placeholder="eg. Smith"
-                  />
-                </div>
-                <div class="col-4">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Designation
+                                            <input [(ngModel)]="additionData.lName" name="lName_{{ ad }}" type="text" class="form-control" placeholder="eg. Smith" />
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="control-label font-weight-bold text-lg-right pt-2">Designation
                   </label>
-                  <input
-                    [(ngModel)]="additionData.des"
-                    name="des_{{ ad }}"
-                    type="text"
-                    class="form-control"
-                    placeholder="eg. Manager "
-                  />
-                </div>
-                <div class="col-2 text-right mt-2">
-                  <button
-                    type="button"
-                    [disabled]="additionalDisabled"
-                    *ngIf="ad == 0"
-                    id="add-document"
-                    class="btn btn-success mt-4"
-                    (click)="addAdditionalContact(unitData)"
-                  >
+                                            <input [(ngModel)]="additionData.des" name="des_{{ ad }}" type="text" class="form-control" placeholder="eg. Manager " />
+                                        </div>
+                                        <div class="col-2 text-right mt-2">
+                                            <button type="button" [disabled]="additionalDisabled" *ngIf="ad === 0" id="add-document" class="btn btn-success mt-4" (click)="addAdditionalContact(unitData)">
                     <i class="fa fa-plus"></i> Add More
                   </button>
-                  <a
-                    href="javascript:;"
-                    *ngIf="ad > 0"
-                    class="btn btn-danger mt-4"
-                    (click)="delAdditionalContact(ad)"
-                    ><i class="fa fa-minus"></i> Delete</a
+                                            <a href="javascript:;" *ngIf="ad > 0" class="btn btn-danger mt-4" (click)="delAdditionalContact(ad)"><i class="fa fa-minus"></i> Delete</a
                   >
                 </div>
 
@@ -3779,98 +3696,86 @@
           </div>
           <!-- <div class="col-lg-2 pt-1 text-right">
           <a (click)="showPhoto()" href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</a>
-        </div> -->
-          <div class="col-12 mb-3">
-            <table class="table table-bordered m-0">
-              <tbody>
-                <tr *ngIf="unitData.eTypes">
-                  <th style="width: 216px" class="back-color-gray">Type:</th>
-                  <td class="text-capitalize">
-                    <span *ngFor="let type of unitData.eTypes; last as isLast">
+                                        </div> -->
+                                        <div class="col-12 mb-3">
+                                            <table class="table table-bordered m-0">
+                                                <tbody>
+                                                    <tr *ngIf="unitData.eTypes">
+                                                        <th style="width: 216px" class="back-color-gray">Type:</th>
+                                                        <td class="text-capitalize">
+                                                            <span *ngFor="let type of unitData.eTypes; last as isLast">
                       <span *ngIf="type === 'fc'">Factoring Company</span>
-                      <span *ngIf="type === 'owner_operator'"
-                        >Owner Operator</span
+                                                            <span *ngIf="type === 'owner_operator'">Owner Operator</span
                       >
                       <span *ngIf="type === 'shipper'">Shipper</span>
-                      <span *ngIf="type === 'receiver'">Receiver</span>
-                      <span *ngIf="type === 'vendor'">Vendor</span>
-                      <span *ngIf="type === 'broker'">Broker</span>
-                      <span *ngIf="type === 'customer'">Customer</span>
-                      <span *ngIf="type === 'carrier'">Carrier</span>
-                      <span *ngIf="!isLast">, </span>
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <table class="table table-bordered m-0">
-              <tbody>
-                <tr *ngIf="unitData.cName">
-                  <th width="40%" class="back-color-gray">Company Name:</th>
-                  <td class="text-capitalize">{{ unitData.cName }}</td>
-                </tr>
+                                                            <span *ngIf="type === 'receiver'">Receiver</span>
+                                                            <span *ngIf="type === 'vendor'">Vendor</span>
+                                                            <span *ngIf="type === 'broker'">Broker</span>
+                                                            <span *ngIf="type === 'customer'">Customer</span>
+                                                            <span *ngIf="type === 'carrier'">Carrier</span>
+                                                            <span *ngIf="!isLast">, </span>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <table class="table table-bordered m-0">
+                                                <tbody>
+                                                    <tr *ngIf="unitData.cName">
+                                                        <th width="40%" class="back-color-gray">Company Name:</th>
+                                                        <td class="text-capitalize">{{ unitData.cName }}</td>
+                                                    </tr>
 
-                <tr *ngIf="unitData.workPhone">
-                  <th width="40%" class="back-color-gray">Phone 1:</th>
-                  <td>{{ unitData.workPhone ? unitData.workPhone : "-" }}</td>
-                </tr>
-                <tr *ngIf="unitData.workPhone">
-                  <th width="40%" class="back-color-gray">Phone 2:</th>
-                  <td>{{ unitData.workPhone1 ? unitData.workPhone1 : "-" }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-lg-6">
-            <table class="table table-bordered m-0">
-              <tbody>
-                <tr *ngIf="unitData.workEmail">
-                  <th width="40%" class="back-color-gray">Primary Email:</th>
-                  <td class="text-lowercase">{{ unitData.workEmail }}</td>
-                </tr>
-                <tr *ngIf="unitData.secondaryEmails">
-                  <th width="40%" class="back-color-gray">
-                    Secondary Email<span class="text-lowercase">(s)</span>:
-                  </th>
-                  <td
-                    class="text-lowercase"
-                    *ngIf="unitData.secondaryEmails.length > 0"
-                  >
-                    <span
-                      *ngFor="
+                                                    <tr *ngIf="unitData.workPhone">
+                                                        <th width="40%" class="back-color-gray">Phone 1:</th>
+                                                        <td>{{ unitData.workPhone ? unitData.workPhone : "-" }}</td>
+                                                    </tr>
+                                                    <tr *ngIf="unitData.workPhone">
+                                                        <th width="40%" class="back-color-gray">Phone 2:</th>
+                                                        <td>{{ unitData.workPhone1 ? unitData.workPhone1 : "-" }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <table class="table table-bordered m-0">
+                                                <tbody>
+                                                    <tr *ngIf="unitData.workEmail">
+                                                        <th width="40%" class="back-color-gray">Primary Email:</th>
+                                                        <td class="text-lowercase">{{ unitData.workEmail }}</td>
+                                                    </tr>
+                                                    <tr *ngIf="unitData.secondaryEmails">
+                                                        <th width="40%" class="back-color-gray">
+                                                            Secondary Email<span class="text-lowercase">(s)</span>:
+                                                        </th>
+                                                        <td class="text-lowercase" *ngIf="unitData.secondaryEmails.length > 0">
+                                                            <span *ngFor="
                         let email of unitData.secondaryEmails;
                         let isLast = last
-                      "
-                      >{{ email }}<span *ngIf="!isLast">, </span></span
-                    >
-                  </td>
-                  <td
-                    class="text-lowercase"
-                    *ngIf="unitData.secondaryEmails.length === 0"
-                  >
-                    -
-                  </td>
-                </tr>
+                      ">{{ email }}<span *ngIf="!isLast">, </span></span>
+                                                        </td>
+                                                        <td class="text-lowercase" *ngIf="unitData.secondaryEmails.length === 0">
+                                                            -
+                                                        </td>
+                                                    </tr>
 
-                <tr *ngIf="unitData.dba">
-                  <th width="40%" class="back-color-gray">DBA:</th>
-                  <td class="text-capitalize">{{ unitData.dba }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div *ngFor="let item of unitData.data">
-              <div *ngIf="item.brokerData">
-                <label
-                  class="control-label font-weight-bold text-lg-right text-5 pt-3"
-                  >Broker Details</label
+                                                    <tr *ngIf="unitData.dba">
+                                                        <th width="40%" class="back-color-gray">DBA:</th>
+                                                        <td class="text-capitalize">{{ unitData.dba }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div *ngFor="let item of unitData.data">
+                                                <div *ngIf="item.brokerData">
+                                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-3">Broker Details</label
                 >
                 <div class="row">
                   <div class="col-6">
@@ -4060,7 +3965,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'pfr'"
+                        *ngIf="option.pType === 'pfr'"
                       >
                         <div width="40%" class="back-color-gray">
                           Flat Rate:
@@ -4072,7 +3977,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'ppm'"
+                        *ngIf="option.pType === 'ppm'"
                       >
                         <div width="40%" class="back-color-gray">
                           Loaded Miles:
@@ -4084,7 +3989,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'ppm'"
+                        *ngIf="option.pType === 'ppm'"
                       >
                         <div width="40%" class="back-color-gray">
                           Empty Miles:
@@ -4108,7 +4013,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'pph'"
+                        *ngIf="option.pType === 'pph'"
                       >
                         <div width="40%" class="back-color-gray">Rate:</div>
                         <div>
@@ -4620,7 +4525,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'pfr'"
+                        *ngIf="option.pType === 'pfr'"
                       >
                         <div width="40%" class="back-color-gray">
                           Flat Rate:
@@ -4632,7 +4537,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'ppm'"
+                        *ngIf="option.pType === 'ppm'"
                       >
                         <div width="40%" class="back-color-gray">
                           Loaded Miles:
@@ -4644,7 +4549,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'ppm'"
+                        *ngIf="option.pType === 'ppm'"
                       >
                         <div width="40%" class="back-color-gray">
                           Empty Miles:
@@ -4656,7 +4561,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'pph'"
+                        *ngIf="option.pType === 'pph'"
                       >
                         <div width="40%" class="back-color-gray">Rate:</div>
                         <div>
@@ -4666,7 +4571,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'pp'"
+                        *ngIf="option.pType === 'pp'"
                       >
                         <div width="40%" class="back-color-gray">
                           Percentage:
@@ -4687,7 +4592,7 @@
                       </div>
                       <div
                         class="payment-mini-wrapper"
-                        *ngIf="option.pType == 'ppd'"
+                        *ngIf="option.pType === 'ppd'"
                       >
                         <div width="40%" class="back-color-gray">
                           Delivery Rate:

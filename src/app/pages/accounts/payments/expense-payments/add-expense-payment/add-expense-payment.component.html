@@ -1,16 +1,13 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header pr19 pl7">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
-          </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              routerLink="/accounts/payments/expense-payments/list"
-              class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Payments</a
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header pr19 pl7">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a routerLink="/accounts/payments/expense-payments/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Payments</a
             >
           </div>
         </div>
@@ -665,11 +662,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-lg-2" style="margin-top: 32px">
-                          <!-- <a href="javascript:;" (click)="refreshAccount()"
-                                                        data-toggle="tooltip" title="Refresh account
-                                                        data" class="btn btn-success
-                                                        btn-sm modal-with-form"><i class="fas fa-sync"></i></a> -->
+                        <div class="col-lg-2" style="margin-top: 32px">                          
                         </div>
                       </div>
                       <div
@@ -892,7 +885,7 @@
                           paymentData.finalAmount <= 0
                         "
                         class="btn btn-success modal-with-form mr-2"
-                        *ngIf="paymentData.payMode == 'cheque'"
+                        *ngIf="paymentData.payMode === 'cheque'"
                         (click)="showCheque()"
                       >
                         Cheque preview

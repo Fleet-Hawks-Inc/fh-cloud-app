@@ -33,7 +33,7 @@
                     style="max-width: 100px"
                   />
                   <p
-                    *ngIf="tagLine && tagLine != ''"
+                    *ngIf="tagLine && tagLine !== ''"
                     class="m-0 font-weight-bold text-dark"
                   >
                     {{ tagLine }}
@@ -631,7 +631,7 @@
                 </td>
               </tr>
 
-              <tr *ngIf="carrierTerms != ''">
+              <tr *ngIf="carrierTerms !== ''">
                 <td colspan="2">
                   <p
                     style="

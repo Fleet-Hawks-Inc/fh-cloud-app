@@ -631,7 +631,7 @@
                     <button
                       type="button"
                       class="btn btn-success modal-with-form mr-2"
-                      *ngIf="paymentData.payMode == 'cheque'"
+                      *ngIf="paymentData.payMode === 'cheque'"
                       [disabled]="!payForm.form.valid || submitDisabled"
                       (click)="showCheque()"
                     >

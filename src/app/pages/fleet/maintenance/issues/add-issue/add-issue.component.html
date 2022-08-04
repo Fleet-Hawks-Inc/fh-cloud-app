@@ -415,7 +415,7 @@
                             accept=".jpg, .jpeg, .png"
                           />
                                <span
-                              *ngIf="uploadPhotoError != ''"
+                              *ngIf="uploadPhotoError !== ''"
                               class="text-danger"
                             >
                               {{ uploadPhotoError }}
@@ -478,7 +478,7 @@
                             accept=".doc, .docx, .pdf, .jpg, .jpeg .png" 
                           />
                             <span
-                              *ngIf="uploadDocsError != ''"
+                              *ngIf="uploadDocsError !== ''"
                               class="text-danger"
                             >
                               {{ uploadDocsError }}

@@ -1,151 +1,67 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header pr19 pl7">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top: 10px">
-            <div class="col-10">
-              <div class="row">
-                <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select
-                    [(ngModel)]="filter.category"
-                    (change)="resetValue()"
-                    placeholder="Select category"
-                    name="category"
-                  >
-                    <ng-option value="invNo">Invoice Number</ng-option>
-                    <ng-option value="customer">Customer</ng-option>
-                    <ng-option value="cusConfirm"
-                      >Customer Confirmation</ng-option
-                    >
-                  </ng-select>
-                </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.category === 'invNo'"
-                >
-                  <div class="input-group input-group-md mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Search by invoice#"
-                      [(ngModel)]="filter.searchValue"
-                      name="invNo"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.category === 'cusConfirm'"
-                >
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search by customer confirmation"
-                    [(ngModel)]="filter.searchValue"
-                    name="invNo"
-                  />
-                </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.category === 'customer'"
-                >
-                  <ng-select
-                    [(ngModel)]="filter.searchValue"
-                    placeholder="Select customer"
-                    name="customer"
-                  >
-                    <ng-option
-                      value="{{ data.key }}"
-                      *ngFor="let data of customersObjects | keyvalue"
-                      >{{ data.value }}
-                    </ng-option>
-                  </ng-select>
-                </div>
-                <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select
-                    [(ngModel)]="filter.invType"
-                    placeholder="Select Invoice Type"
-                    name="invType"
-                  >
-                    <ng-option
-                      value="{{ data.key }}"
-                      *ngFor="let data of invoiceTypeObject | keyvalue"
-                      >{{ data.value }}
-                    </ng-option>
-                  </ng-select>
-                </div>
-                <div class="col-lg-3 col-md-3 pr-0">
-                  <div class="input-daterange input-group">
-                    <span class="input-group-prepend">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+            <header class="page-header pr19 pl7">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-md-2 col-lg-2 pr-0">
+                                    <ng-select [(ngModel)]="filter.category" (change)="resetValue()" placeholder="Select category" name="category">
+                                        <ng-option value="invNo">Invoice Number</ng-option>
+                                        <ng-option value="customer">Customer</ng-option>
+                                        <ng-option value="cusConfirm">Customer Confirmation</ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'invNo'">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" class="form-control" placeholder="Search by invoice#" [(ngModel)]="filter.searchValue" name="invNo" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'cusConfirm'">
+                                    <input type="text" class="form-control" placeholder="Search by customer confirmation" [(ngModel)]="filter.searchValue" name="invNo" />
+                                </div>
+                                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'customer'">
+                                    <ng-select [(ngModel)]="filter.searchValue" placeholder="Select customer" name="customer">
+                                        <ng-option value="{{ data.key }}" *ngFor="let data of customersObjects | keyvalue">{{ data.value }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-2 col-lg-2 pr-0">
+                                    <ng-select [(ngModel)]="filter.invType" placeholder="Select Invoice Type" name="invType">
+                                        <ng-option value="{{ data.key }}" *ngFor="let data of invoiceTypeObject | keyvalue">{{ data.value }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-lg-3 col-md-3 pr-0">
+                                    <div class="input-daterange input-group">
+                                        <span class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                       </span>
-                    </span>
-                    <input
-                      [(ngModel)]="filter.startDate"
-                      name="startDate"
-                      type="text"
-                      placeholder="yyyy/mm/dd"
-                      (click)="startDate.toggle()"
-                      ngbDatepicker
-                      #startDate="ngbDatepicker"
-                      class="form-control"
-                      autocomplete="off"
-                    />
-                    <span
-                      class="input-group-text border-left-0 border-right-0 rounded-0"
-                    >
+                                        </span>
+                                        <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control" autocomplete="off" />
+                                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
                       to
                     </span>
-                    <input
-                      [(ngModel)]="filter.endDate"
-                      name="endDate"
-                      type="text"
-                      placeholder="yyyy/mm/dd"
-                      (click)="endDate.toggle()"
-                      ngbDatepicker
-                      #endDate="ngbDatepicker"
-                      class="form-control"
-                      autocomplete="off"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-2 col-lg-2">
-                  <button
-                    type="submit"
-                    class="btn btn-sm btn-success"
-                    [disabled]="disableSearch || disableSearchOrder"
-                    (click)="searchFilter()"
-                  >
+                                        <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch || disableSearchOrder" (click)="searchFilter()">
                     Search
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-success ml-3"
-                    [disabled]="disableSearch || disableSearchOrder"
-                    (click)="resetFilter()"
-                  >
+                                    <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="disableSearch || disableSearchOrder" (click)="resetFilter()">
                     Reset
                   </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2 col-lg-2 text-right">
-              <button
-                [disabled]="disableSearch || disableSearchOrder"
-                (click)="refreshData()"
-                data-toggle="tooltip"
-                title="Refresh data"
-                class="btn btn-success btn-sm mr-3"
-              >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 text-right">
+                            <button [disabled]="disableSearch || disableSearchOrder" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm mr-3">
                 <i class="fas fa-sync"></i>
               </button>
-              <a
-                routerLink="/accounts/invoices/add"
-                class="btn btn-success btn-sm"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Invoice</a
+                            <a routerLink="/accounts/invoices/add" class="btn btn-success btn-sm" style="color: white"><i class="fas fa-plus"></i> Add Invoice</a
               >
               <button
                 *ngIf="exportLoading"
@@ -185,123 +101,114 @@
                 "
               >
                 <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
-                <a class="dropdown-item text-1" (click)="openPDFPreview()"
-                  >PDF</a
+                            <a class="dropdown-item text-1" (click)="openPDFPreview()">PDF</a
                 >
                 <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
-              </div>
+                        </div>
 
-              <!-- <a routerLink="/accounts/invoices/add-load-invoice" class="btn btn-success btn-sm ml-2"
+                        <!-- <a routerLink="/accounts/invoices/add-load-invoice" class="btn btn-success btn-sm ml-2"
                 style="color:white;"><i class="fas fa-plus"></i> Add Load Invoice</a> -->
-            </div>
-          </div>
-        </form>
-      </header>
+                    </div>
+    </div>
+    </form>
+    </header>
 
-      <section class="m-2">
+    <section class="m-2">
         <div class="row mb-2">
-          <div class="col-lg-12">
-            <div class="text-dark">
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col pr-0">
-                      <div class="maindriverbox bg-white">
-                        <div class="driverbar">
-                          <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
-                          <h3
-                            class="pull-left mt-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Total Invoices
-                          </h3>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ totalCAD | number: "1.2-2" }} CAD
-                            </p>
-                          </div>
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ totalUSD | number: "1.2-2" }} USD
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col pr-0 pl-2">
-                      <div class="maindriverbox bg-white">
-                        <div class="driverbar">
-                          <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
-                          <h3
-                            class="pull-left mt-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Open Invoices
-                          </h3>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ openTotalCAD | number: "1.2-2" }} CAD
-                            </p>
-                          </div>
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ openTotalUSD | number: "1.2-2" }} USD
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col pr-0 pl-2">
-                      <div class="maindriverbox bg-white">
-                        <div class="driverbar">
-                          <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
-                          <h3
-                            class="pull-left mt-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Paid Invoices
-                          </h3>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ paidTotalCAD | number: "1.2-2" }} CAD
-                            </p>
-                          </div>
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ paidTotalUSD | number: "1.2-2" }} USD
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col pr-0 pl-2">
-                      <div class="maindriverbox bg-white">
-                        <div class="driverbar">
-                          <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
-                          <h3
-                            class="pull-left mt-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Partially Paid Invoices
-                          </h3>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ partiallyPaidTotalCAD | number: "1.2-2" }} CAD
-                            </p>
-                          </div>
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ partiallyPaidTotalUSD | number: "1.2-2" }} USD
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- <div class="col-lg-2 col-md-2 mt-1">
+            <div class="col-lg-12">
+                <div class="text-dark">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col pr-0">
+                                    <div class="maindriverbox bg-white">
+                                        <div class="driverbar">
+                                            <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
+                                            <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">
+                                                Total Invoices
+                                            </h3>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ totalCAD | number: "1.2-2" }} CAD
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ totalUSD | number: "1.2-2" }} USD
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col pr-0 pl-2">
+                                    <div class="maindriverbox bg-white">
+                                        <div class="driverbar">
+                                            <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
+                                            <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">
+                                                Open Invoices
+                                            </h3>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ openTotalCAD | number: "1.2-2" }} CAD
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ openTotalUSD | number: "1.2-2" }} USD
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col pr-0 pl-2">
+                                    <div class="maindriverbox bg-white">
+                                        <div class="driverbar">
+                                            <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
+                                            <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">
+                                                Paid Invoices
+                                            </h3>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ paidTotalCAD | number: "1.2-2" }} CAD
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ paidTotalUSD | number: "1.2-2" }} USD
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col pr-0 pl-2">
+                                    <div class="maindriverbox bg-white">
+                                        <div class="driverbar">
+                                            <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
+                                            <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">
+                                                Partially Paid Invoices
+                                            </h3>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ partiallyPaidTotalCAD | number: "1.2-2" }} CAD
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ partiallyPaidTotalUSD | number: "1.2-2" }} USD
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-lg-2 col-md-2 mt-1">
                     <div class="maindriverbox" style="box-shadow: 3px 3px 5px;">
                       <div class="driverbar">
                         <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span>
@@ -312,57 +219,43 @@
                       </div>
                     </div>
                   </div> -->
-                    <div class="col pl-2">
-                      <div class="maindriverbox bg-white">
-                        <div class="driverbar">
-                          <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
-                          <h3
-                            class="pull-left mt-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Voided Invoices
-                          </h3>
+                                <div class="col pl-2">
+                                    <div class="maindriverbox bg-white">
+                                        <div class="driverbar">
+                                            <!-- <span class="pull-right text-6 mt-0 text-dark"><i class="fas fa-dollar-sign"></i></span> -->
+                                            <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">
+                                                Voided Invoices
+                                            </h3>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ voidedTotalCAD | number: "1.2-2" }} CAD
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <p class="tileCur mt-0 mb-0">
+                                                    {{ voidedTotalUSD | number: "1.2-2" }} USD
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ voidedTotalCAD | number: "1.2-2" }} CAD
-                            </p>
-                          </div>
-                          <div class="col-lg-12">
-                            <p class="tileCur mt-0 mb-0">
-                              {{ voidedTotalUSD | number: "1.2-2" }} USD
-                            </p>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
 
         <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row">
-                <div class="col-lg-12 pl-2 pb-3">
-                  <ul
-                    class="nav nav-tabs top-tabs borderbtm-ul ml-1"
-                    id="top-tabs"
-                    role="tablist"
-                  >
-                    <li class="nav-item">
-                      <a
-                        class="nav-link active"
-                        id="allInvoices-tab"
-                        data-toggle="tab"
-                        href="#allInvoices"
-                        role="tab"
-                        aria-controls="allInvoices"
-                        aria-selected="true"
-                        >All</a
+            <div class="col-lg-12">
+                <div class="bg-white p-3 text-dark">
+                    <div class="form-group row">
+                        <div class="col-lg-12 pl-2 pb-3">
+                            <ul class="nav nav-tabs top-tabs borderbtm-ul ml-1" id="top-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="allInvoices-tab" data-toggle="tab" href="#allInvoices" role="tab" aria-controls="allInvoices" aria-selected="true">All</a
                       >
                     </li>
                     <li class="nav-item">
@@ -404,17 +297,9 @@
                     <!-- <li class="nav-item">
                     <a class="nav-link" id="emailedInvoices-tab" data-toggle="tab" href="#emailedInvoices" role="tab"
                       aria-controls="emailedInvoices" aria-selected="false">E-mailed Invoices</a>
-                  </li> -->
-                    <li class="nav-item">
-                      <a
-                        class="nav-link nav-tabs"
-                        id="voidedInvoices-tab"
-                        data-toggle="tab"
-                        href="#voidedInvoices"
-                        role="tab"
-                        aria-controls="voidedInvoices"
-                        aria-selected="false"
-                        >Voided Invoices</a
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link nav-tabs" id="voidedInvoices-tab" data-toggle="tab" href="#voidedInvoices" role="tab" aria-controls="voidedInvoices" aria-selected="false">Voided Invoices</a
                       >
                     </li>
                     <li class="nav-item">
@@ -476,9 +361,8 @@
                             <tbody>
                               <tr
                                 *ngIf="
-                                  invoices.length == 0 &&
-                                  orderInvoices.length == 0
-                                "
+                                  invoices.length === 0 &&
+                                  orderInvoices.length === 0"
                                 class="text-center"
                               >
                                 <td colspan="14">{{ dataMessage }}</td>
@@ -1168,8 +1052,7 @@
                               <tr
                                 *ngIf="
                                   paidInvoices.length == 0 &&
-                                  paidOrderInvoices.length === 0
-                                "
+                                 paidOrderInvoices.length === 0"
                                 class="text-center"
                               >
                                 <td colspan="13">{{ dataMessage }}</td>
@@ -1331,137 +1214,76 @@
                                   <a class="dropdown-item text-1"
                                     *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                                     routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
-                                      <button
-                                        type="button"
-                                        *ngIf="
+                                    <button type="button" *ngIf="
                                           inv.invStatus !== 'paid' &&
                                           inv.invStatus !== 'voided'
-                                        "
-                                        class="dropdown-item text-1"
-                                        (click)="voidInvoice(inv.invID)"
-                                      >
+                                        " class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">
                                         Void
                                       </button>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr
-                                *ngFor="let inv of paidInvoices; let i = index"
-                              >
-                                <td
-                                  class="cursorpoint font-weight-bold"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.invNo }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.txnDate | date: "yyyy/MM/dd" }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
-                                </td>
-                                <td
-                                  class="loadid cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="loadid cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.taxAmount | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.finalAmount | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.amountReceived | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.balance | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.invDueDate | date: "yyyy/MM/dd" }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  <span class="badge badge-dark p-1">{{
+                        </div>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr *ngFor="let inv of paidInvoices; let i = index">
+                        <td class="cursorpoint font-weight-bold" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.invNo }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.txnDate | date: "yyyy/MM/dd" }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ customersObjects[inv.customerID] | titlecase }}
+                        </td>
+                        <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.taxAmount | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.finalAmount | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.amountReceived | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.balance | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.invDueDate | date: "yyyy/MM/dd" }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
                                   }}</span>
-                                </td>
-                                <td>
-                                  <div class="btn-group flex-wrap">
-                                    <button
-                                      type="button"
-                                      class="mb-1 mt-1 mr-1 btn"
-                                      data-toggle="dropdown"
-                                      [disabled]="
+                        </td>
+                        <td>
+                            <div class="btn-group flex-wrap">
+                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="
                                         inv.invStatus === 'paid' ||
                                         inv.invStatus === 'voided' ||
                                         inv.invStatus === 'partially paid'
-                                      "
-                                    >
+                                      ">
                                       <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <div class="dropdown-menu" role="menu">
-                                      <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
+                                <div class="dropdown-menu" role="menu">
+                                    <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                                     Status</button> -->
-                                      <a
-                                        class="dropdown-item text-1"
-                                        *ngIf="
+                                    <a class="dropdown-item text-1" *ngIf="
                                           inv.invStatus !== 'paid' &&
                                           inv.invStatus !== 'voided'
-                                        "
-                                        routerLink="/accounts/invoices/edit/{{
+                                        " routerLink="/accounts/invoices/edit/{{
                                           inv.invID
-                                        }}"
-                                        >Edit</a
+                                        }}">Edit</a
                                       >
                                       <button
                                         type="button"
@@ -1994,140 +1816,79 @@
                                   <a class="dropdown-item text-1"
                                     *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                                     routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
-                                      <button
-                                        type="button"
-                                        *ngIf="
+                                    <button type="button" *ngIf="
                                           inv.invStatus !== 'paid' &&
                                           inv.invStatus !== 'voided'
-                                        "
-                                        class="dropdown-item text-1"
-                                        (click)="voidInvoice(inv.invID)"
-                                      >
+                                        " class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">
                                         Void
                                       </button>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr
-                                *ngFor="
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="
                                   let inv of unPaidInvoices;
                                   let i = index
-                                "
-                              >
-                                <td
-                                  class="cursorpoint font-weight-bold"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.invNo }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.txnDate | date: "yyyy/MM/dd" }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
-                                </td>
-                                <td
-                                  class="loadid cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  -
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.taxAmount | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.finalAmount | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.amountReceived | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.balance | number: "1.2-2" }}
-                                  {{ inv.invCur }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  {{ inv.invDueDate | date: "yyyy/MM/dd" }}
-                                </td>
-                                <td
-                                  class="cursorpoint"
-                                  (click)="routeFn(inv.invID, inv.invType)"
-                                >
-                                  <span class="badge badge-dark p-1">{{
+                                ">
+                        <td class="cursorpoint font-weight-bold" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.invNo }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.txnDate | date: "yyyy/MM/dd" }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ customersObjects[inv.customerID] | titlecase }}
+                        </td>
+                        <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            -
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.taxAmount | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.finalAmount | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.amountReceived | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.balance | number: "1.2-2" }} {{ inv.invCur }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            {{ inv.invDueDate | date: "yyyy/MM/dd" }}
+                        </td>
+                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                            <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
                                   }}</span>
-                                </td>
-                                <td>
-                                  <div class="btn-group flex-wrap">
-                                    <button
-                                      type="button"
-                                      class="mb-1 mt-1 mr-1 btn"
-                                      data-toggle="dropdown"
-                                      [disabled]="
+                        </td>
+                        <td>
+                            <div class="btn-group flex-wrap">
+                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="
                                         inv.invStatus === 'paid' ||
                                         inv.invStatus === 'voided' ||
                                         inv.invStatus === 'partially paid'
-                                      "
-                                    >
+                                      ">
                                       <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <div class="dropdown-menu" role="menu">
-                                      <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
+                                <div class="dropdown-menu" role="menu">
+                                    <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                                     Status</button> -->
-                                      <a
-                                        class="dropdown-item text-1"
-                                        *ngIf="
+                                    <a class="dropdown-item text-1" *ngIf="
                                           inv.invStatus !== 'paid' &&
                                           inv.invStatus !== 'voided'
-                                        "
-                                        routerLink="/accounts/invoices/edit/{{
+                                        " routerLink="/accounts/invoices/edit/{{
                                           inv.invID
-                                        }}"
-                                        >Edit</a
+                                        }}">Edit</a
                                       >
                                       <button
                                         type="button"

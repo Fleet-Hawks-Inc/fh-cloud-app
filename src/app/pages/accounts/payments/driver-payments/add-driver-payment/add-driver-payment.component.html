@@ -670,7 +670,7 @@
                         Cancel
                       </button>
                       <button type="button" class="btn btn-success modal-with-form mr-2"
-                        *ngIf="paymentData.payMode == 'cheque'" [disabled]="submitDisabled" (click)="showCheque()">
+                        *ngIf="paymentData.payMode === 'cheque'" [disabled]="submitDisabled" (click)="showCheque()">
                         Cheque preview
                       </button>
                       <button type="button" class="btn btn-success modal-with-form"
@@ -732,11 +732,11 @@
                                                     Claim Code" disabled>
                           <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
                           <ng-container *ngFor="let data of claimCodes[0]">
-                            <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e'">{{ data.from |
+                            <ng-option value="{{ data.value }}" *ngIf="data.value !== 'claim_code_e'">{{ data.from |
                               number: "1.2-2" }} -
                               {{ data.to | number: "1.2-2" }} ({{ data.name }})
                             </ng-option>
-                            <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{
+                            <ng-option value="{{ data.value }}" *ngIf="data.value === 'claim_code_e'">No Tax ({{
                               data.name }})</ng-option>
                           </ng-container>
                         </ng-select>
@@ -750,16 +750,16 @@
                           <ng-container *ngFor="let data of provincalClaimCodes">
                             <ng-option value="{{ data.value }}" *ngIf="
                                 data.value != 'claim_code_e' &&
-                                data.value != 'claim_code_x'
-                              ">{{ data.from | number: "1.2-2" }} -
+              ========================================                  data.value != 'claim_code_x'
+                 =             ">{{ data.from | number: "1.2-2" }} -
                               {{ data.to | number: "1.2-2" }} ({{ data.name }})
                             </ng-option>
-                            <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_x'">Greater than
+                            <ng-option value="{{ data.value }}" *ngIf="data.value === 'claim_code_x'">Greater than
                               {{ data.from | number: "1.2-2" }} ({{
                               data.name
                               }})
                             </ng-option>
-                            <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{
+                            <ng-option value="{{ data.value }}" *ngIf="data.value === 'claim_code_e'">No Tax ({{
                               data.name }})</ng-option>
                           </ng-container>
                         </ng-select>

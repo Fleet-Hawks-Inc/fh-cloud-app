@@ -1,221 +1,97 @@
 <style>
-  .extra {
-    display: none;
-  }
+    .extra {
+        display: none;
+    }
 </style>
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0">
-      <header class="page-header pr19 pl11">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select
-                [(ngModel)]="category"
-                name="category"
-                placeholder="Search by Category"
-                (change)="categoryChange()"
-              >
-                <ng-option
-                  *ngFor="let data of categoryFilter"
-                  value="{{ data.value }}"
-                >
-                  {{ data.name }}
-                </ng-option>
-              </ng-select>
-            </div>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-md-2 col-lg-2 pr-0">
+                            <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category" (change)="categoryChange()">
+                                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
+                                    {{ data.name }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
 
-            <!-- Set spacing issue -->
-            <div class="col-md-2 col-lg-2 pr-0">
-              <div
-                class="input-group input-group-md mb-3"
-                *ngIf="
-                  category != 'vehicle' &&
-                  category != 'asset' &&
-                  category != 'task'
-                "
-              >
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search"
-                  name="searchValue"
-                  [(ngModel)]="searchValue"
-                />
-              </div>
+                        <!-- Set spacing issue -->
+                        <div class="col-md-2 col-lg-2 pr-0">
+                            <div class="input-group input-group-md mb-3" *ngIf="category !== 'vehicle' && category !== 'asset' && category !== 'task'">
+                                <input type="text" class="form-control" placeholder="Search" name="searchValue" [(ngModel)]="searchValue" />
+                            </div>
 
-              <ng-select
-                [(ngModel)]="searchValue"
-                name="searchValue"
-                placeholder="Search By Vehicle"
-                *ngIf="category == 'vehicle'"
-              >
-                <ng-option
-                  *ngFor="let data of vehiclesData"
-                  value="{{ data.vehicleID }}"
-                >
-                  {{ data.vehicleIdentification }}</ng-option
-                >
-              </ng-select>
+                            <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Vehicle" *ngIf="category === 'vehicle'">
+                                <ng-option *ngFor="let data of vehiclesData" value="{{ data.vehicleID }}">
+                                    {{ data.vehicleIdentification }}</ng-option>
+                            </ng-select>
 
-              <ng-select
-                [(ngModel)]="searchValue"
-                name="searchValue"
-                placeholder="Search By Asset"
-                *ngIf="category == 'asset'"
-              >
-                <ng-option
-                  *ngFor="let data of assetsData"
-                  value="{{ data.assetID }}"
-                >
-                  {{ data.assetIdentification }}</ng-option
-                >
-              </ng-select>
-            </div>
-            <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select
-                [(ngModel)]="taskID"
-                name="taskID"
-                placeholder="search by service task"
-              >
-                <ng-option *ngFor="let item of tasks" value="{{ item.taskID }}">
-                  <div title="{{ item.taskName }}">{{ item.taskName }}</div>
-                </ng-option>
-              </ng-select>
-            </div>
-            <div class="col-md-3 col-lg-3 pr-0">
-              <div
-                class="input-daterange input-group input-group-sm"
-                data-plugin-datepicker=""
-              >
-                <span class="input-group-prepend">
+                            <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Asset" *ngIf="category === 'asset'">
+                                <ng-option *ngFor="let data of assetsData" value="{{ data.assetID }}">
+                                    {{ data.assetIdentification }}</ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pr-0">
+                            <ng-select [(ngModel)]="taskID" name="taskID" placeholder="search by service task">
+                                <ng-option *ngFor="let item of tasks" value="{{ item.taskID }}">
+                                    <div title="{{ item.taskName }}">{{ item.taskName }}</div>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-3 col-lg-3 pr-0">
+                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                                <span class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-calendar-alt"></i>
                   </span>
-                </span>
-                <input
-                  [(ngModel)]="start"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0"
-                >
+                                </span>
+                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
                 </span>
-                <input
-                  [(ngModel)]="end"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-              </div>
-            </div>
+                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                            </div>
+                        </div>
 
-            <div class="col-md-2 col-lg-2">
-              <button
-                type="submit"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-3"
-              >
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <button
-                type="button"
-                (click)="resetFilter()"
-                class="btn btn-sm btn-success line-height-18"
-              >
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success line-height-18">
                 Reset
               </button>
-            </div>
-          </div>
-        </form>
-      </header>
-
-      <section class="m-2">
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row pt-2">
-                <div
-                  class="col-lg-12"
-                  style="height: calc(100vh - 149px); overflow-y: scroll"
-                >
-                  <p-table
-                    #dt
-                    [value]="allData"
-                    [resizableColumns]="true"
-                    columnResizeMode="expand"
-                    scrollDirection="both"
-                    [columns]="selectedColumns"
-                    [loading]="!loaded"
-                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [scrollable]="true"
-                    scrollHeight="100%"
-                  >
-                    <ng-template pTemplate="caption">
-                      <div
-                        class="p-d-flex d-flex justify-content-between align-items-center"
-                      >
-                        <div>
-                          <h3 class="m-0">Service Logs Report</h3>
                         </div>
-                        <div class="text-right">
-                          <span>Showing {{ allData.length }} entries</span>
-                          &nbsp;
-                          <button
-                            type="button"
-                            pButton
-                            (click)="refreshData()"
-                            pTooltip="Refresh"
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-sync"
-                          ></button>
-                          <button
-                            type="button"
-                            pButton
-                            pRipple
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel"
-                            (click)="csv()"
-                            pTooltip="Excel"
-                          ></button>
-                          <button
-                            pButton
-                            pRipple
-                            pTooltip="Clear Filter"
-                            class="p-button-outlined mr-2"
-                            (click)="clear(dt)"
-                            icon="pi pi-filter-slash"
-                          ></button>
-                        </div>
-                      </div>
-                    </ng-template>
+                    </div>
+                </form>
+            </header>
 
-                    <ng-template pTemplate="header" let-columns>
-                      <tr>
-                        <th
-                          *ngFor="let column of dataColumns"
-                          [pSortableColumn]="column.field"
-                          pResizableColumn
-                          style="width: 12.5%; cursor: pointer"
-                        >
-                          <span>
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row pt-2">
+                                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                                    <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" scrollHeight="100%">
+                                        <ng-template pTemplate="caption">
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0">Service Logs Report</h3>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span>Showing {{ allData.length }} entries</span> &nbsp;
+                                                    <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="csv()" pTooltip="Excel"></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn style="width: 12.5%; cursor: pointer">
+                                                    <span>
                             <div
                               class="flex justify-content-center align-items-center"
                               alignFrozen="right"
@@ -236,38 +112,30 @@
                               </p-columnFilter>
                             </div>
                           </span>
-                        </th>
-                      </tr>
-                    </ng-template>
-                    <ng-template
-                      pTemplate="body"
-                      let-log
-                      let-columns="columns"
-                      let-rowIndex="rowIndex"
-                    >
-                      <tr>
-                        <td
-                          *ngFor="let dataColumns of columns"
-                          style="width: 12.5%; height: 40px; cursor: pointer"
-                        >
-                          <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'unitType'">
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-log let-columns="columns" let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td *ngFor="let dataColumns of columns" style="width: 12.5%; height: 40px; cursor: pointer">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        <span *ngSwitchCase="'unitType'">
                               <span class="text-capitalize">
                                 {{ log.unitType }}
                               </span>
-                            </span>
-                            <span *ngSwitchCase="'unitName'">
+                                                        </span>
+                                                        <span *ngSwitchCase="'unitName'">
                               <span class="text-capitalize">
                                 {{ log.unitName }}
                               </span>
-                            </span>
-                            <span *ngSwitchCase="'odometer'">
+                                                        </span>
+                                                        <span *ngSwitchCase="'odometer'">
                               {{ log.odometer ? log.odometer : "-" }}
                             </span>
-                            <span *ngSwitchCase="'vendorID'">
+                                                        <span *ngSwitchCase="'vendorID'">
                               {{ vendorsObject[log.vendorID] }}
                             </span>
-                            <span *ngSwitchCase="'serviceTaskList'">
+                                                        <span *ngSwitchCase="'serviceTaskList'">
                               <span
                                 title="Service Task"
                                 *ngFor="
@@ -281,14 +149,12 @@
                                 }}<span *ngIf="!$last" class="list-format"
                                   >,
                                 </span>
+                                                        </span>
+                                                        <span *ngIf="log.allServiceTasks.serviceTaskList === 0">-
                               </span>
-                              <span
-                                *ngIf="log.allServiceTasks.serviceTaskList == 0"
-                                >-
-                              </span>
-                            </span>
+                                                        </span>
 
-                            <span *ngSwitchCase="'completionDate'">
+                                                        <span *ngSwitchCase="'completionDate'">
                               <span>
                                 {{ log.completionDate }}<br /><span
                                   *ngIf="log?.vehicleID"
@@ -296,13 +162,13 @@
                                   >{{ log.odometer }} miles</span
                                 >
                               </span>
-                            </span>
+                                                        </span>
 
-                            <span *ngSwitchCase="'currentStatus'">
+                                                        <span *ngSwitchCase="'currentStatus'">
                               <span
                                 class="text-success"
                                 [ngClass]="{
-                                  'text-danger': log.currentStatus == 'sold',
+                                  'text-danger': log.currentStatus === 'sold',
                                   'text-muted':
                                     log.currentStatus === 'outOfService'
                                 }"
@@ -311,57 +177,47 @@
                               >
                             </span>
 
-                            <span *ngSwitchCase="'allServiceTasks.subTotal'">
+                                                        <span *ngSwitchCase="'allServiceTasks.subTotal'">
                               {{ log.allServiceTasks.subTotal.toFixed(2) }}
                               {{ log.allServiceTasks.currency }}
                             </span>
-                          </div>
-                        </td>
-                      </tr>
-                    </ng-template>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
 
-                    <!-- Empty Template -->
-                    <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        <span> {{ dataMessage }} </span>
-                        <br /><br />
-                      </div>
-                    </ng-template>
-                    <!-- Summary Section with Load More button -->
+                                        <!-- Empty Template -->
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                <span> {{ dataMessage }} </span>
+                                                <br /><br />
+                                            </div>
+                                        </ng-template>
+                                        <!-- Summary Section with Load More button -->
 
-                    <ng-template pTemplate="summary" let-columns>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="
                           lastItemSK !== 'end' &&
                           datee !== 'end' &&
                           allData.length !== 0
-                        "
-                      >
-                        <button
-                          type="button "
-                          (click)="onScroll($event)"
-                          class="btn btn-success btn-sm text-light"
-                        >
+                        ">
+                                                <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
 
-                        <br /><br />
-                      </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastItemSK === 'end'"
-                      >
-                        Total Records: {{ allData.length }}
-                      </div>
-                    </ng-template>
-                  </p-table>
+                                                <br /><br />
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                                                Total Records: {{ allData.length }}
+                                            </div>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-  </div>
+            </section>
+        </section>
+    </div>
 </section>

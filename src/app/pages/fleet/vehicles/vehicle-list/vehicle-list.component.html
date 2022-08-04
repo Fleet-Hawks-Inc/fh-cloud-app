@@ -403,7 +403,7 @@
 
                             <span *ngSwitchCase="'dashCamSerNo'">
                               <span
-                                *ngIf="vehicle.dashCamSerNo != 'NA'; else noCam"
+                                *ngIf="vehicle.dashCamSerNo !== 'NA'; else noCam"
                               >
                                 <a
                                   class="badge badge-success"

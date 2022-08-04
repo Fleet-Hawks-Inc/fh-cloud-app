@@ -21,7 +21,7 @@
               type="button"
               class="btn btn-success btn-sm mr-2"
               (click)="sendConfirmationEmail()"
-              [disabled]="emailDisabled || status == 'invoiced'"
+              [disabled]="emailDisabled || status === 'invoiced'"
             >
               Send Email To Customer
             </button>

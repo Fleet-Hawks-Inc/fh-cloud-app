@@ -6,7 +6,7 @@
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
             {{ pageTitle }} Sales Order
             <span
-              *ngIf="sOrNo != ''"
+              *ngIf="sOrNo !== ''"
               class="badge badge-dark p-1 text-capitalize"
             >
               {{ sOrNo }}
@@ -668,7 +668,7 @@
                             class=""
                           />
                         </span>
-                        <span *ngIf="filesError != ''" class="text-danger">
+                        <span *ngIf="filesError !== ''" class="text-danger">
                           {{ filesError }}
                         </span>
                       </div>

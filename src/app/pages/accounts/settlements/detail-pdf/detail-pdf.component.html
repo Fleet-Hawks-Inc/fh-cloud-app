@@ -50,14 +50,14 @@
                     class="text-capitalize"
                     *ngIf="
                       settlementData.type == 'driver' ||
-                      settlementData.type == 'carrier'
-                    "
+          ========================================            settlementData.type == 'carrier'
+            =        "
                   >
                     {{ settlementData.type }}
                   </span>
                   <span
                     class="text-capitalize"
-                    *ngIf="settlementData.type == 'owner_operator'"
+                    *ngIf="settlementData.type === 'owner_operator'"
                   >
                     owner operator
                   </span>
@@ -480,7 +480,7 @@
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.type == 'driver'">
+                    <tr *ngIf="settlementData.type === 'driver'">
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -546,7 +546,7 @@
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.type == 'driver'">
+                    <tr *ngIf="settlementData.type === 'driver'">
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -613,7 +613,7 @@
                   </tbody>
                 </table>
               </td>
-              <td valign="top" *ngIf="settlementData.type == 'driver'">
+              <td valign="top" *ngIf="settlementData.type === 'driver'">
                 <table
                   width="99%"
                   align="right"

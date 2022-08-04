@@ -95,14 +95,14 @@
                                                     </th>
                                                     <td>
                                                         <b class="badge text-uppercase"
-                                                            [ngClass]="[(currentStatus == 'Cancelled Manifest') ? 'cancel-color' :
-                                             (currentStatus == 'Transmitted to CBP') ? 'transmitted-color' :
-                                             (currentStatus == 'Truck Released at Border') ? 'truck-release-color' :
-                                             (currentStatus == 'Complete Manifest and Entry Numbers On File with CBP') ? 'complete-file-color' :
-                                             (currentStatus == 'CBP Returned Error') ? 'returned-color' :
-                                             (currentStatus == 'Truck Arrived at Border') ? 'truck-arr-color ' :
-                                             (currentStatus == 'Preliminary Manifest On File with CBP') ? 'preliminary-color ' :
-                                             (currentStatus == 'Complete Manifest On File with CBP') ? 'complete-cbp-color' :  'draft-color']">
+                                                            [ngClass]="[(currentStatus === 'Cancelled Manifest') ? 'cancel-color' :
+                                             (currentStatus === 'Transmitted to CBP') ? 'transmitted-color' :
+                                             (currentStatus === 'Truck Released at Border') ? 'truck-release-color' :
+                                             (currentStatus === 'Complete Manifest and Entry Numbers On File with CBP') ? 'complete-file-color' :
+                                             (currentStatus === 'CBP Returned Error') ? 'returned-color' :
+                                             (currentStatus === 'Truck Arrived at Border') ? 'truck-arr-color ' :
+                                             (currentStatus === 'Preliminary Manifest On File with CBP') ? 'preliminary-color ' :
+                                             (currentStatus === 'Complete Manifest On File with CBP') ? 'complete-cbp-color' :  'draft-color']">
                                                             {{currentStatus}}</b>
                                                     </td>
                                                 </tr>
@@ -768,19 +768,19 @@
                             <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                             {{packagingUnitsObects[commodity.packagingUnit]}} <br>
                             <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
-                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
-                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
+                            <span *ngIf="commodity.weightUnit === 'LB'">Pounds</span>
+                            <span *ngIf="commodity.weightUnit === 'KG'">Kilograms</span>
                             <br>
                             <span class="font-weight-semibold">Country of Origin:&nbsp;</span>
                             {{countryCodeName[commodity.countryOfOrigin]}}
                         </td>
                         <td><span class="font-weight-semibold">Type:&nbsp;</span><span
-                                *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
-                            <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
+                                *ngIf="commodity.loadedOn.type === 'TRUCK'">Vehicle</span>
+                            <span *ngIf="commodity.loadedOn.type === 'TRAILER'">Asset</span><br>
                             <span class="font-weight-semibold">
-                                <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                <span *ngIf="commodity.loadedOn.type === 'TRUCK'">Vehicle</span>
                                 <span
-                                    *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span>#:</span>{{commodity.loadedOn.number}}
+                                    *ngIf="commodity.loadedOn.type === 'TRAILER'">Asset</span>#:</span>{{commodity.loadedOn.number}}
                         </td>
                         <td><span class="font-weight-semibold">Hazmat
                                 Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">
@@ -851,8 +851,8 @@
                     </tr>
                     <tr>
                         <th width="40%" class="back-color-gray">Gender:</th>
-                        <td><span *ngIf="driverData.gender == 'M'">Male</span>
-                            <span *ngIf="driverData.gender == 'F'">Female</span>
+                        <td><span *ngIf="driverData.gender === 'M'">Male</span>
+                            <span *ngIf="driverData.gender === 'F'">Female</span>
                         </td>
                     </tr>
 
@@ -957,8 +957,8 @@
                         </tr>
                         <tr>
                             <th width="40%" class="back-color-gray">Gender:</th>
-                            <td><span *ngIf="passengerData.gender == 'M'">Male</span>
-                                <span *ngIf="passengerData.gender == 'F'">Female</span>
+                            <td><span *ngIf="passengerData.gender === 'M'">Male</span>
+                                <span *ngIf="passengerData.gender === 'F'">Female</span>
                             </td>
                         </tr>
                         <tr>
@@ -1027,14 +1027,14 @@
 
 
                 <strong>
-                    <span *ngIf="err.schema.type == 'object'">
+                    <span *ngIf="err.schema.type === 'object'">
                         <span *ngFor="let item of err.instance | keyvalue">
                             <b>{{item.key}}: {{item.value}}</b>
                         </span>
                     </span>
-                    <span *ngIf="err.schema.type == 'string'">
+                    <span *ngIf="err.schema.type === 'string'">
                         <span *ngIf="err.instance">{{err.instance}}</span>
-                        <span *ngIf="err.instance == ''">""</span>
+                        <span *ngIf="err.instance === ''">""</span>
 
                     </span>
                 </strong> {{err.message}}

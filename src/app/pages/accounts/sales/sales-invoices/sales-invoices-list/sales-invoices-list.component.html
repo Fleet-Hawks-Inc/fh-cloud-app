@@ -136,8 +136,8 @@
                             </span>
 
                             <span *ngSwitchCase="'payStatus'">
-                              <span *ngIf="salesInvo.payStatus && salesInvo.payStatus != ''"
-                                [ngClass]="{'badge badge-dark p-1 text-uppercase': salesInvo.payStatus && salesInvo.payStatus != ''}">{{
+                              <span *ngIf="salesInvo.payStatus && salesInvo.payStatus !== ''"
+                                [ngClass]="{'badge badge-dark p-1 text-uppercase': salesInvo.payStatus && salesInvo.payStatus !== ''}">{{
                                 salesInvo.payStatus
                                 }}</span>
                             </span>
@@ -165,7 +165,7 @@
                         <td style="width: 6%; overflow: inherit !important" alignFrozen="right" pFrozenColumn
                           [frozen]="true">
                           <div class="dropdown dropright">
-                            <button [disabled]="salesInvo.status == 'voided' || salesInvo.status == 'closed'"
+                            <button [disabled]="salesInvo.status === 'voided' || salesInvo.status === 'closed'"
                               (click)="op.toggle($event)" pButton type="button" class="bg-transparent border-0"
                               data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" icon="fas fa-ellipsis-v"
                               style="color: #000;"></button>

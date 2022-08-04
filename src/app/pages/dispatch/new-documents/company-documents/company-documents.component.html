@@ -108,8 +108,8 @@
                           <td>{{ tripsObjects[document.tripID] }}</td>
                           <td>
                             {{
-                            document.docType == "BOL" ||
-                            document.docType == "POD"
+                            document.docType === "BOL" ||
+                            document.docType === "POD"
                             ? document.docType + "#"
                             : document.docType
                             }}
@@ -124,13 +124,13 @@
                             {{ document.timeModified | date: "yyyy/MM/dd" }}
                           </td>
                           <td>
-                            <span *ngIf="document.description != ''">
+                            <span *ngIf="document.description !== ''">
                               {{ document.description | slice: 0:100 }}
                               <a href="javascript:;" (click)="showDescModal(document.description)"
                                 *ngIf="document.description.length > 100"
                                 class="btn btn-dark btn-xs modal-with-form">Full Remarks</a>
                             </span>
-                            <span *ngIf="document.description == ''"> - </span>
+                            <span *ngIf="document.description === ''"> - </span>
                           </td>
                           <td>
                             <div class="dropdown dropright">

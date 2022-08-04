@@ -30,7 +30,7 @@
               type="button"
               class="btn btn-success btn-sm mr-2"
               (click)="sendConfirmationEmail()"
-              [disabled]="emailDisabled || status == 'invoiced'"
+              [disabled]="emailDisabled || status === 'invoiced'"
             >
               Send Email To Customer
             </button>
@@ -375,7 +375,7 @@
                 style="max-width: 100px"
               />
               <p
-                *ngIf="tagline && tagline != ''"
+                *ngIf="tagline && tagline !== ''"
                 class="mb-2 font-weight-bold text-dark"
               >
                 {{ tagline }}

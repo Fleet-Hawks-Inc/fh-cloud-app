@@ -14,31 +14,31 @@
                             </ng-select>
                         </div>
                         <div class="col-md-2 col-lg-2 pr-1">
-                            <div class="input-group input-group-md mb-3" *ngIf="tripsFiltr.category != 'driver' &&
-                                tripsFiltr.category != 'vehicle' &&
-                                tripsFiltr.category != 'asset' &&
-                                tripsFiltr.category != 'tripType' &&
-                                tripsFiltr.category != 'orderNo' &&
-                                tripsFiltr.category != 'tripStatus'">
+                            <div class="input-group input-group-md mb-3" *ngIf="tripsFiltr.category !== 'driver' &&
+                                tripsFiltr.category !== 'vehicle' &&
+                                tripsFiltr.category !== 'asset' &&
+                                tripsFiltr.category !== 'tripType' &&
+                                tripsFiltr.category !== 'orderNo' &&
+                                tripsFiltr.category !== 'tripStatus'">
                                 <input type="text" class="form-control" placeholder="Search" name="searchValue"
                                     [(ngModel)]="tripsFiltr.searchValue">
                             </div>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
-                                placeholder="Search By Trip Type" *ngIf="tripsFiltr.category == 'tripType'">
+                                placeholder="Search By Trip Type" *ngIf="tripsFiltr.category === 'tripType'">
                                 <ng-option value="FTL"> FTL</ng-option>
                                 <ng-option value="LTL"> LTL</ng-option>
                             </ng-select>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
-                                placeholder="Search By Trip Status" *ngIf="tripsFiltr.category == 'tripStatus'">
+                                placeholder="Search By Trip Status" *ngIf="tripsFiltr.category === 'tripStatus'">
                                 <ng-option value="{{ data.value }}" *ngFor="let
                                     data of statusData"> {{ data.name }}
                                 </ng-option>
                             </ng-select>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
-                                placeholder="Select Driver" *ngIf="tripsFiltr.category == 'driver'">
+                                placeholder="Select Driver" *ngIf="tripsFiltr.category === 'driver'">
                                 <ng-option value="{{ data.key }}" *ngFor="let
                                     data of driversObject | keyvalue"> {{
                                     data.value }}
@@ -46,7 +46,7 @@
                             </ng-select>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
-                                placeholder="Select Vehicle" *ngIf="tripsFiltr.category == 'vehicle'">
+                                placeholder="Select Vehicle" *ngIf="tripsFiltr.category === 'vehicle'">
                                 <ng-option value="{{ data.key }}" *ngFor="let
                                     data of vehiclesObject | keyvalue"> {{
                                     data.value }}
@@ -54,14 +54,14 @@
                             </ng-select>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
-                                placeholder="Select Asset" *ngIf="tripsFiltr.category == 'asset'">
+                                placeholder="Select Asset" *ngIf="tripsFiltr.category === 'asset'">
                                 <ng-option value="{{ data.key }}" *ngFor="let
                                     data of assetsObject | keyvalue"> {{
                                     data.value }}
                                 </ng-option>
                             </ng-select>
 
-                            <input *ngIf="tripsFiltr.category == 'orderNo'" type="text" autocomplete="off"
+                            <input *ngIf="tripsFiltr.category === 'orderNo'" type="text" autocomplete="off"
                                 placeholder="Search By Order" [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
                                 class="form-control" />
                         </div>
@@ -112,39 +112,39 @@
                                                 <li class="nav-item">
                                                     <span class="nav-link navtabs" id="confirmed-tab"
                                                         href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'confirmed' }">
+                                                        [ngClass]="{ active: activeTab === 'confirmed' }">
                                                         Confirmed : {{ confirmedTrips.length }}</span>
                                                 </li>
                                                 <li class="nav-item">
                                                     <span class="nav-link navtabs" id="dispatchedTrip-tab"
                                                         href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'dispatched' }">
+                                                        [ngClass]="{ active: activeTab === 'dispatched' }">
                                                         Dispatched : {{ dispatchedTrips.length }}</span>
                                                 </li>
                                                 <li class="nav-item">
                                                     <span class="nav-link navtabs" id="started-tab" href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'started' }">
+                                                        [ngClass]="{ active: activeTab === 'started' }">
                                                         Started : {{ startedTrips.length }}</span>
                                                 </li>
                                                 <li class="nav-item">
                                                     <span class="nav-link navtabs" id="enroute-tab" href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'enroute' }">
+                                                        [ngClass]="{ active: activeTab === 'enroute' }">
                                                         En-Route : {{ enrouteTrips.length }}</span>
                                                 </li>
                                                 <li class="nav-item navtabs">
                                                     <span class="nav-link" id="delivered-tab" href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'delivered' }">
+                                                        [ngClass]="{ active: activeTab === 'delivered' }">
                                                         Delivered : {{ deliveredTrips.length }}</span>
                                                 </li>
                                                 <li class="nav-item navtabs">
                                                     <span class="nav-link" id="tonu-tab" href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'tonu' }">
+                                                        [ngClass]="{ active: activeTab === 'tonu' }">
                                                         TONU : {{ tonuTrips.length }}</span>
                                                 </li>
                                                 <li class="nav-item">
                                                     <span class="nav-link navtabs" id="cancelled-tab"
                                                         href="javascript:;"
-                                                        [ngClass]="{ active: activeTab == 'cancelled' }">
+                                                        [ngClass]="{ active: activeTab === 'cancelled' }">
                                                         Cancelled : {{ cancelledTrips.length }}</span>
                                                 </li>
                                             </ul>

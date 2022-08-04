@@ -210,10 +210,10 @@
                               text-lg-right
                               pt-2
                             "
-                            ><span *ngIf="fuelData.data.useType != 'def'"
+                            ><span *ngIf="fuelData.data.useType !== 'def'"
                               >Fuel</span
                             >
-                            <span *ngIf="fuelData.data.useType == 'def'"
+                            <span *ngIf="fuelData.data.useType === 'def'"
                               >DEF</span
                             >
                             Quantity<span class="mandfield text-2 ml-1"
@@ -752,7 +752,7 @@
                     </div>
                     <div class="row">
                       <div
-                        *ngIf="fuelData.data.useType != 'def'"
+                        *ngIf="fuelData.data.useType !== 'def'"
                         class="col-lg-10"
                       >
                         <label

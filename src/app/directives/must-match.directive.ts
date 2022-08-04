@@ -7,7 +7,7 @@ import { Input } from '@angular/core';
   providers: [{ provide: NG_VALIDATORS, useExisting: MustMatchDirective, multi: true }]
 })
 export class MustMatchDirective {
-  @Input('mustMatch') mustMatch: string[] = [];
+  @Input() mustMatch: string[] = [];
 
   validate(formGroup: FormGroup): ValidationErrors {
       return this.MustMatch(this.mustMatch[0], this.mustMatch[1])(formGroup);

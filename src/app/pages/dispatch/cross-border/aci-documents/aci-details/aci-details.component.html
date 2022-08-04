@@ -51,11 +51,11 @@
                                                     <th width="40%" class="back-color-gray">Estimated Arrival Date/Time/ETA time zone :</th>
                                                     <td>{{estimatedArrivalDateTime}}
                                                       &nbsp;
-                                                      <span *ngIf="estimatedArrivalTimeZone == 'PST'">Pacific Standard Time</span>
-                                            <span *ngIf="estimatedArrivalTimeZone == 'AST'">Atlantic Standard Time</span>
-                                            <span *ngIf="estimatedArrivalTimeZone == 'CST'">Central Standard Time</span>
-                                            <span *ngIf="estimatedArrivalTimeZone == 'EST'">Eastern Standard Time</span>
-                                            <span *ngIf="estimatedArrivalTimeZone == 'MST'">Mountain Standard Time</span></td>
+                                                      <span *ngIf="estimatedArrivalTimeZone === 'PST'">Pacific Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone === 'AST'">Atlantic Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone === 'CST'">Central Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone === 'EST'">Eastern Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone === 'MST'">Mountain Standard Time</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Sub Location/Warehouse:</th>
@@ -110,12 +110,12 @@
                                             <tbody>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Created:</th>
-                                                    <td>{{timeCreated}} <span *ngIf="createdBy != ''">By
+                                                    <td>{{timeCreated}} <span *ngIf="createdBy !== ''">By
                                                             {{createdBy}}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Last Edited:</th>
-                                                    <td>{{timeModified}} <span *ngIf="modifiedBy != ''">By
+                                                    <td>{{timeModified}} <span *ngIf="modifiedBy !== ''">By
                                                             {{modifiedBy}}</span></td>
                                                 </tr>
                                                 <tr>
@@ -250,15 +250,15 @@
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">{{timeModified}} <span *ngIf="modifiedBy != ''">By
+                                                (click)="showShipmentDetails(shipment.shipmentID)">{{timeModified}} <span *ngIf="modifiedBy !== ''">By
                                                   {{modifiedBy}}</span>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
-                                                <span *ngIf="shipment.loadedOn.type == 'TRUCK'">Vehicle </span>
-                                                <span *ngIf="shipment.loadedOn.type == 'CONTAINER'">Container</span>
-                                                <span *ngIf="shipment.loadedOn.type == 'TRAILER'">Asset </span>[{{shipment.loadedOn.number}}]</td>
+                                                <span *ngIf="shipment.loadedOn.type === 'TRUCK'">Vehicle </span>
+                                                <span *ngIf="shipment.loadedOn.type === 'CONTAINER'">Container</span>
+                                                <span *ngIf="shipment.loadedOn.type === 'TRAILER'">Asset </span>[{{shipment.loadedOn.number}}]</td>
                                             <td class="actions">                                   <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
@@ -747,11 +747,11 @@
                                       <td>{{shipmentData.subLocation}} - {{subLocationObjects[shipmentData.subLocation]}}</td>
 
                                   </tr>
-                                  <tr  *ngIf="shipmentData.shipmentType == 'CSA'">
+                                  <tr  *ngIf="shipmentData.shipmentType === 'CSA'">
                                     <th width="40%" class="back-color-gray">Importer CSA Business#:</th>
                                     <td>{{shipmentData.importerCsaBusinessNumber}}</td>
                                 </tr>
-                                <tr *ngIf="shipmentData.shipmentType == 'CSA'">
+                                <tr *ngIf="shipmentData.shipmentType === 'CSA'">
                                   <th width="40%" class="back-color-gray"> Unique Consignment Reference#:</th>
                                   <td>{{shipmentData.uniqueConsignmentReferenceNumber}}</td>
                               </tr>
@@ -765,11 +765,11 @@
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date/Time/TimeZone:</th>
                                         <td>{{shipmentData.estimatedArrivalDate}}
-                                            &nbsp;<span *ngIf="shipmentData.estimatedArrivalTimeZone == 'PST'">Pacific Standard Time</span>
-                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'AST'">Atlantic Standard Time</span>
-                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'CST'">Central Standard Time</span>
-                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'EST'">Eastern Standard Time</span>
-                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'MST'">Mountain Standard Time</span>
+                                            &nbsp;<span *ngIf="shipmentData.estimatedArrivalTimeZone === 'PST'">Pacific Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone === 'AST'">Atlantic Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone === 'CST'">Central Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone === 'EST'">Eastern Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone === 'MST'">Mountain Standard Time</span>
                                           </td>
                                     </tr>
                                     <tr>
@@ -877,8 +877,8 @@
                                             <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                                             {{packagingUnitsObjects[commodity.packagingUnit]}} <br>
                                             <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
-                                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
-                                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
+                                            <span *ngIf="commodity.weightUnit === 'LB'">Pounds</span>
+                                            <span *ngIf="commodity.weightUnit === 'KG'">Kilograms</span>
                                         </td>
                                         <td><span class="font-weight-semibold">Hazmat
                                                 Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.unCode}}</span><br>
@@ -934,8 +934,8 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Gender:</th>
-                                        <td><span *ngIf="driverData.gender == 'M'">Male</span>
-                                            <span *ngIf="driverData.gender == 'F'">Female</span></td>
+                                        <td><span *ngIf="driverData.gender === 'M'">Male</span>
+                                            <span *ngIf="driverData.gender === 'F'">Female</span></td>
                                     </tr>
 
 
@@ -1020,8 +1020,8 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Gender:</th>
-                                        <td><span *ngIf="passengerData.gender == 'M'">Male</span>
-                                            <span *ngIf="passengerData.gender == 'F'">Female</span></td>
+                                        <td><span *ngIf="passengerData.gender === 'M'">Male</span>
+                                            <span *ngIf="passengerData.gender === 'F'">Female</span></td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date Of Birth:</th>

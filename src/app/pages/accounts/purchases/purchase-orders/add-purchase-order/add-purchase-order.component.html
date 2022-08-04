@@ -280,7 +280,7 @@
                           <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
                             name="files" class="" />
                         </span>
-                        <span *ngIf="filesError != ''" class="text-danger">
+                        <span *ngIf="filesError !== ''" class="text-danger">
                           {{ filesError }}
                         </span>
                       </div>

@@ -1300,7 +1300,7 @@
 
                                       </div>
                                     </div>
-                                    <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRUCK'">
+                                    <div class="col-lg-10" *ngIf="commodity.loadedOn.type === 'TRUCK'">
                                       <label
                                         class=" text-dark control-label font-weight-bold text-lg-right pt-2">Vehicle#</label>
                                       <ng-select [ngModelOptions]="{standalone: true}"
@@ -1324,7 +1324,7 @@
 
                                       </div>
                                     </div>
-                                    <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRAILER'">
+                                    <div class="col-lg-10" *ngIf="commodity.loadedOn.type === 'TRAILER'">
                                       <label
                                         class=" text-dark control-label font-weight-bold text-lg-right pt-2">Asset#</label>
                                       <ng-select [ngModelOptions]="{standalone: true}"
@@ -1347,7 +1347,7 @@
                                     </div>
                                   </div>
                                   <div class="row"
-                                    *ngIf="shipment.type == 'BRASS' || shipment.type == 'BRASS_MULTIPLE'">
+                                    *ngIf="shipment.type === 'BRASS' || shipment.type === 'BRASS_MULTIPLE'">
                                     <div class="col-lg-10">
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">C4
                                         Line

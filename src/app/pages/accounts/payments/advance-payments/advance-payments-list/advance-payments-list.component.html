@@ -308,7 +308,7 @@
                             <div class="dropdown dropright">
                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                [disabled]="data.status != 'not_deducted'">
+                                [disabled]="data.status !== 'not_deducted'">
                                 <i class="fas fa-ellipsis-v"></i>
                               </button>
                               <div *ngIf="data.status === 'not_deducted'" class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{

@@ -1,16 +1,13 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pt-0">
-      <header class="page-header pr27 pl18">
-        <div class="row">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            <h2 class="font-weight-bold pl-0">Assets Settings</h2>
-          </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
-            <a
-              routerLink="/manage/settings/assets/overview"
-              class="btn btn-success btn-sm"
-              ><i class="fas fa-arrow-left"></i> Go Back</a
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+                <div class="row">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        <h2 class="font-weight-bold pl-0">Assets Settings</h2>
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+                        <a routerLink="/manage/settings/assets/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a
             >
           </div>
         </div>
@@ -24,16 +21,12 @@
                 <ul class="nav nav-tabs top-tabs">
                   <!-- <li class="nav-item active">
                     <a class="nav-link active" href="#drlistset" data-toggle="tab">Assets Listing</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#dstatusset" data-toggle="tab">Assets Status</a>
-                  </li> -->
-                  <li class="nav-item active">
-                    <a
-                      class="nav-link active"
-                      href="#deletedAssets"
-                      data-toggle="tab"
-                      >Deleted Assets</a
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#dstatusset" data-toggle="tab">Assets Status</a>
+                        </li> -->
+                        <li class="nav-item active">
+                            <a class="nav-link active" href="#deletedAssets" data-toggle="tab">Deleted Assets</a
                     >
                   </li>
                 </ul>
@@ -317,7 +310,7 @@
                             </thead>
                             <tbody>
                               <tr
-                                *ngIf="allData.length == 0"
+                                *ngIf="allData.length === 0"
                                 class="text-center"
                               >
                                 <td colspan="15">{{ dataMessage }}</td>

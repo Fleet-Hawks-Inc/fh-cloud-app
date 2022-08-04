@@ -62,7 +62,7 @@
                       </div>
                       <div class="col-lg-10" id="employeeIDDiv">
                         <div class="row">
-                          <div class="col-lg-6" *ngIf="driverData.driverType == 'employee'">
+                          <div class="col-lg-6" *ngIf="driverData.driverType === 'employee'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Employee ID
                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
@@ -86,7 +86,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-6" *ngIf="driverData.driverType == 'contractor'">
+                          <div class="col-lg-6" *ngIf="driverData.driverType === 'contractor'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Contractor ID
                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
@@ -127,7 +127,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-12" *ngIf="driverData.driverType == 'contractor'">
+                          <div class="col-lg-12" *ngIf="driverData.driverType === 'contractor'">
                             <div class="row">
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Corporation
@@ -150,7 +150,7 @@
                               </div>
                               <div class="col-4 pr-3" *ngIf="
                                   driverData.corporationType == 'owner_operator'
-                                ">
+                 ========================================               ">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator
                                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
@@ -170,14 +170,14 @@
                               </div>
                               <div class="col-2 mar-top-37 text-left pl-1" *ngIf="
                                   driverData.corporationType == 'owner_operator'
-                                ">
+                 ========================================               ">
                                 <a href="javascript:;" (click)="openModal('form')"
                                   class="btn btn-sm btn-success mr-3"><i class="fas fa-plus"></i></a>
                                 <a href="javascript:;" (click)="refreshOpData()" data-toggle="tooltip"
                                   title="Refresh owner operator data" class="btn btn-success btn-sm modal-with-form"><i
                                     class="fas fa-sync"></i></a>
                               </div>
-                              <div class="col-4 pr-3" *ngIf="driverData.corporationType == 'company'">
+                              <div class="col-4 pr-3" *ngIf="driverData.corporationType === 'company'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
@@ -197,7 +197,7 @@
                               </div>
                               <div class="col-lg-6" *ngIf="
                                   driverData.corporationType == 'corporation'
-                                ">
+                    ========================================            ">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Corporation Name
                                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
@@ -215,7 +215,7 @@
                               </div>
 
                               <div class="col-2 mar-top-37 text-right pl-1"
-                                *ngIf="driverData.corporationType == 'company'">
+                                *ngIf="driverData.corporationType === 'company'">
                                 <a href="javascript:;" (click)="openModal('form')"
                                   class="btn btn-sm btn-success modal-with-form mr-3"><i class="fas fa-plus"></i></a>
                                 <a href="javascript:;" (click)="refreshVendorData()" data-toggle="tooltip"
@@ -490,7 +490,7 @@
                             <button type="button" data-toggle="modal" *ngIf="
                                 driverID &&
                                 driverProfileSrc != '' &&
-                                !showUploadedPicModal
+                          ========================================      !showUploadedPicModal
                               " data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1">
                               <i class="fas fa-eye text-light"></i>View Photo
                             </button>
@@ -515,7 +515,7 @@
                                   )
                                 " type="file" accept=".jpg, .jpeg, .png" />
                             </div>
-                            <span *ngIf="uploadPhotoError != ''" class="text-danger">
+                            <span *ngIf="uploadPhotoError !== ''" class="text-danger">
                               {{ uploadPhotoError }}
                             </span>
                           </div>
@@ -685,7 +685,7 @@
                                 type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
                             </div>
                           </div>
-                          <span *ngIf="absDocsError != ''" class="text-danger">
+                          <span *ngIf="absDocsError !== ''" class="text-danger">
                             {{ absDocsError }}
                           </span>
                           <div class="col-lg-12 text-right" *ngIf="
@@ -1029,7 +1029,7 @@
                         </label>
                         <input class="w100" type="file" multiple name="uploadLicence"
                           (change)="selectLicDoc($event, 'uploadLicence')" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
-                        <span *ngIf="uploadLicError != ''" class="text-danger">
+                        <span *ngIf="uploadLicError !== ''" class="text-danger">
                           {{ uploadLicError }}
                         </span>
                       </div>
@@ -1180,7 +1180,7 @@
                             'documentDetails[' + i + '].documentType'
                           " [ngModelOptions]="{ standalone: true }" placeholder="Select document type" #doc1="ngModel">
                           <ng-container *ngFor="let documentType of documentTypeList">
-                            <ng-option *ngIf="documentType.code != '5K'" [value]="documentType.code">
+                            <ng-option *ngIf="documentType.code !== '5K'" [value]="documentType.code">
                               {{ documentType.description }}</ng-option>
                           </ng-container>
                         </ng-select>
@@ -1268,7 +1268,7 @@
                           </div>
                         </div> -->
                       </div>
-                      <div class="col-5" *ngIf="document.documentType != 'BCN'">
+                      <div class="col-5" *ngIf="document.documentType !== 'BCN'">
                         <label class="control-label font-weight-bold text-lg-right pt-2">
                           Expiry Date
                         </label>
@@ -1291,7 +1291,7 @@
                         </label>
                         <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
                           (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
-                        <span *ngIf="uploadDocsError != ''" class="text-danger">
+                        <span *ngIf="uploadDocsError !== ''" class="text-danger">
                           {{ uploadDocsError }}
                         </span>
                       </div>
@@ -1377,7 +1377,7 @@
                     </div>
                   </div>
                   <div class="col-lg-6 mb-1">
-                    <div class="row" id="payPerHourForm" *ngIf="paymentType == 'pph'">
+                    <div class="row" id="payPerHourForm" *ngIf="paymentType === 'pph'">
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">
                           Rate
@@ -1430,7 +1430,7 @@
                           type="text" class="form-control" placeholder="eg. Min 3 hours" />
                       </div>
                     </div>
-                    <div class="row" id="payPerDelivery" *ngIf="paymentType == 'ppd'">
+                    <div class="row" id="payPerDelivery" *ngIf="paymentType === 'ppd'">
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Delivery Rate
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1464,7 +1464,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row" id="payFlatRate" *ngIf="paymentType == 'pfr'">
+                    <div class="row" id="payFlatRate" *ngIf="paymentType === 'pfr'">
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Flat Rate
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1497,7 +1497,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row" id="payPercentageForm" *ngIf="paymentType == 'pp'">
+                    <div class="row" id="payPercentageForm" *ngIf="paymentType === 'pp'">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1542,7 +1542,7 @@
                       </div>
                     </div>
                     <div>
-                      <div class="row" id="payPerMileForm" *ngIf="paymentType == 'ppm'" style="display: flex">
+                      <div class="row" id="payPerMileForm" *ngIf="paymentType === 'ppm'" style="display: flex">
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles
                             <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1749,11 +1749,11 @@
                           }">
                           <ng-option *ngIf="
                               driverData.hosDetails.hosStatus == 'non_Exempted'
-                            " value="ELD">ELD
+               ========================================             " value="ELD">ELD
                           </ng-option>
                           <ng-option *ngIf="
                               driverData.hosDetails.hosStatus == 'exempted'
-                            " value="Log Book">Log Book
+                   ========================================         " value="Log Book">Log Book
                           </ng-option>
                         </ng-select>
                         <div *ngIf="tSlt.invalid && driverF.submitted" class="text-danger">
@@ -1828,7 +1828,7 @@
                       </div>
                       <div class="col-lg-10" *ngIf="
                           driverData.hosDetails.hosStatus == 'non_Exempted'
-                        ">
+           ========================================             ">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cycle
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
@@ -1837,7 +1837,7 @@
                             error: driverF.submitted && cycle1.invalid
                           }" placeholder="Select the cycle for the driver" #cycle1="ngModel" [required]="
                             driverData.hosDetails.hosStatus == 'non_Exempted'
-                          ">
+             ========================================             ">
                           <ng-option value="USA 60 hour / 7 day">USA 60 hour / 7 day</ng-option>
                           <ng-option value="USA 70 hour / 8 day">USA 70 hour / 8 day</ng-option>
                           <ng-option value="Canada South 70 hour / 7 day">Canada South 70 hour / 7 day</ng-option>
@@ -1852,7 +1852,7 @@
 
                       <div class="col-lg-6" *ngIf="
                           driverData.hosDetails.hosStatus == 'non_Exempted'
-                        ">
+           ========================================             ">
                         <div class="checkbox-custom">
                           <input type="checkbox" value="" [(ngModel)]="driverData.hosDetails.pcAllowed"
                             name="hosDetails.pcAllowed" />
@@ -1861,7 +1861,7 @@
                       </div>
                       <div class="col-lg-4" *ngIf="
                           driverData.hosDetails.hosStatus == 'non_Exempted'
-                        ">
+           ========================================             ">
                         <div class="checkbox-custom">
                           <input type="checkbox" [(ngModel)]="driverData.hosDetails.ymAllowed"
                             name="hosDetails.ymAllowed" value="Allow Yard Move (YM)" />

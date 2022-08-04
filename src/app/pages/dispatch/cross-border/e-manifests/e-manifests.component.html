@@ -14,25 +14,25 @@
 
                   <div class="col-md-2 col-lg-2 pr-0 pl-2">
                      <div class="input-group input-group mb-3"
-                        *ngIf="filterCategory != 'driver' && filterCategory != 'vehicle' && filterCategory !='entryPort'">
+                        *ngIf="filterCategory !== 'driver' && filterCategory !== 'vehicle' && filterCategory !=='entryPort'">
                         <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control"
                            placeholder="Search" />
                      </div>
 
                      <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Driver"
-                        *ngIf="filterCategory == 'driver'">
+                        *ngIf="filterCategory === 'driver'">
                         <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}
                         </ng-option>
                      </ng-select>
 
                      <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Vehicle"
-                        *ngIf="filterCategory == 'vehicle'">
+                        *ngIf="filterCategory === 'vehicle'">
                         <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
                         </ng-option>
                      </ng-select>
 
                      <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Port Entry"
-                        *ngIf="filterCategory == 'entryPort'">
+                        *ngIf="filterCategory === 'entryPort'">
                         <ng-option *ngFor="let data of USPortsObjects | keyvalue" value="{{ data.key }}"> {{ data.value
                            }}</ng-option>
                      </ng-select>
@@ -88,22 +88,22 @@
                   </div>
                   <div class="col-md-2 col-lg-2 pr-0 pl-2">
                      <div class="input-group input-group mb-3"
-                        *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle' &&  aciFilterCategory != 'entryPort'">
+                        *ngIf="aciFilterCategory !== 'driver' && aciFilterCategory !== 'vehicle' &&  aciFilterCategory !== 'entryPort'">
                         <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control"
                            placeholder="Search" />
                      </div>
                      <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Driver"
-                        *ngIf="aciFilterCategory == 'driver'">
+                        *ngIf="aciFilterCategory === 'driver'">
                         <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}
                         </ng-option>
                      </ng-select>
                      <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Vehicle"
-                        *ngIf="aciFilterCategory == 'vehicle'">
+                        *ngIf="aciFilterCategory === 'vehicle'">
                         <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
                         </ng-option>
                      </ng-select>
                      <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Port Entry"
-                        *ngIf="aciFilterCategory == 'entryPort'">
+                        *ngIf="aciFilterCategory === 'entryPort'">
                         <ng-option *ngFor="let data of canadianPortsObjects | keyvalue" value="{{ data.key }}"> {{
                            data.value }}</ng-option>
                      </ng-select>
@@ -275,14 +275,14 @@
                                           </span>
                                           <span *ngSwitchCase="'status'">
                                              <b class="badge text-uppercase"
-                                                [ngClass]="[(rowData.status == 'Cancelled Manifest') ? 'cancel-color' :
-                                             (rowData.status == 'Transmitted to CBP') ? 'transmitted-color' :
-                                             (rowData.status == 'Truck Released at Border') ? 'truck-release-color' :
-                                             (rowData.status == 'Complete Manifest and Entry Numbers On File with CBP') ? 'complete-file-color' :
-                                             (rowData.status == 'CBP Returned Error') ? 'returned-color' :
-                                             (rowData.status == 'Truck Arrived at Border') ? 'truck-arr-color ' :
-                                             (rowData.status == 'Preliminary Manifest On File with CBP') ? 'preliminary-color ' :
-                                             (rowData.status == 'Complete Manifest On File with CBP') ? 'complete-cbp-color' :  'draft-color']">
+                                                [ngClass]="[(rowData.status === 'Cancelled Manifest') ? 'cancel-color' :
+                                             (rowData.status === 'Transmitted to CBP') ? 'transmitted-color' :
+                                             (rowData.status === 'Truck Released at Border') ? 'truck-release-color' :
+                                             (rowData.status === 'Complete Manifest and Entry Numbers On File with CBP') ? 'complete-file-color' :
+                                             (rowData.status === 'CBP Returned Error') ? 'returned-color' :
+                                             (rowData.status === 'Truck Arrived at Border') ? 'truck-arr-color ' :
+                                             (rowData.status === 'Preliminary Manifest On File with CBP') ? 'preliminary-color ' :
+                                             (rowData.status === 'Complete Manifest On File with CBP') ? 'complete-cbp-color' :  'draft-color']">
                                                 {{
                                                 get(rowData, col.field) | titlecase
                                                 }}</b>

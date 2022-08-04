@@ -126,7 +126,7 @@
                                                                     <span *ngIf="item1.invStatus === 'paid'">
                                                                         {{item1.invNo}}
                                                                     </span>
-                                                                    <span *ngIf="item1.invStatus != 'paid'">
+                                                                    <span *ngIf="item1.invStatus !== 'paid'">
                                                                         -
                                                                     </span>
                                                                 </span>
@@ -137,7 +137,7 @@
                                                                     <span *ngIf="item1.invStatus === 'paid'">
                                                                         {{item1.txnDate | date: "yyyy/MM/dd"}}
                                                                     </span>
-                                                                    <span *ngIf="item1.invStatus != 'paid'">
+                                                                    <span *ngIf="item1.invStatus !== 'paid'">
                                                                         -
                                                                     </span>
                                                                 </span>

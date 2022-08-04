@@ -1,4 +1,4 @@
-<ng-template [ngIf]="active_nav =='onboard'" [ngIfElse]="elseBlock"></ng-template>
+<ng-template [ngIf]="active_nav ==='onboard'" [ngIfElse]="elseBlock"></ng-template>
 <ng-template #elseBlock>
   <aside id="sidebar-left" class="sidebar-left">
     <div class="sidebar-header">
@@ -14,15 +14,15 @@
     <div class="nano">
       <div class="nano-content">
         <nav id="menu" class="nav-main" role="navigation">
-          <fleet-sidebar *ngIf="active_nav == 'fleet'"></fleet-sidebar>
-          <compliance-sidebar *ngIf="active_nav == 'compliance'"></compliance-sidebar>
-          <alert-sidebar *ngIf="active_nav == 'alert'"></alert-sidebar>
-          <setting-sidebar *ngIf="active_nav == 'setting'"></setting-sidebar>
-          <dispatch-sidebar *ngIf="active_nav == 'dispatch'"></dispatch-sidebar>
-          <accounts-sidebar *ngIf="active_nav == 'accounts'"></accounts-sidebar>
-          <safety-sidebar *ngIf="active_nav == 'safety'"></safety-sidebar>
-          <manage-sidebar *ngIf="active_nav == 'manage'"></manage-sidebar>
-          <report-sidebar *ngIf="active_nav == 'reports'"></report-sidebar>
+          <fleet-sidebar *ngIf="active_nav === 'fleet'"></fleet-sidebar>
+          <compliance-sidebar *ngIf="active_nav === 'compliance'"></compliance-sidebar>
+          <alert-sidebar *ngIf="active_nav === 'alert'"></alert-sidebar>
+          <setting-sidebar *ngIf="active_nav === 'setting'"></setting-sidebar>
+          <dispatch-sidebar *ngIf="active_nav === 'dispatch'"></dispatch-sidebar>
+          <accounts-sidebar *ngIf="active_nav === 'accounts'"></accounts-sidebar>
+          <safety-sidebar *ngIf="active_nav === 'safety'"></safety-sidebar>
+          <manage-sidebar *ngIf="active_nav === 'manage'"></manage-sidebar>
+          <report-sidebar *ngIf="active_nav === 'reports'"></report-sidebar>
         </nav>
       </div>
 

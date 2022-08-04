@@ -265,7 +265,7 @@
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
               <input
-                [readonly]="documentMode == 'Automatic'"
+                [readonly]="documentMode === 'Automatic'"
                 [(ngModel)]="documentData.documentNumber"
                 name="documentNumber"
                 type="text"

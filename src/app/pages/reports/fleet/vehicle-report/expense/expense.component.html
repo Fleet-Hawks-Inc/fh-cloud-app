@@ -1,68 +1,32 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-1">
-      <header class="page-header pr19 pl11">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top: 10px">
-            <div class="col-md-3 col-lg-3 pr-0">
-              <div
-                class="input-daterange input-group input-group-sm"
-                data-plugin-datepicker=""
-              >
-                <span class="input-group-prepend">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-md-3 col-lg-3 pr-0">
+                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                                <span class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-calendar-alt"></i>
                   </span>
-                </span>
-                <input
-                  [(ngModel)]="start"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0"
-                >
+                                </span>
+                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
                 </span>
-                <input
-                  [(ngModel)]="end"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-              </div>
-            </div>
+                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                            </div>
+                        </div>
 
-            <div class="col-md-2 col-lg-2 pl-2">
-              <button
-                type="button"
-                class="btn btn-sm btn-success mr-2"
-                (click)="searchFilter()"
-              >
+                        <div class="col-md-2 col-lg-2 pl-2">
+                            <button type="button" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">
                 Search
               </button>
-            </div>
+                        </div>
 
-            <div class="col-md-7 col-lg-7 text-right pr-1">
-              <a
-                routerLink="/reports/fleet/vehicles/expense-list"
-                class="btn btn-sm btn-success"
-                >Vehicles List</a
+                        <div class="col-md-7 col-lg-7 text-right pr-1">
+                            <a routerLink="/reports/fleet/vehicles/expense-list" class="btn btn-sm btn-success">Vehicles List</a
               >
 
               <div class="btn-group flex-wrap ml-2">
@@ -156,7 +120,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="allData.length == 0" class="text-center">
+                      <tr *ngIf="allData.length === 0" class="text-center">
                         <td colspan="15">{{ dataMessage }}</td>
                       </tr>
                       <tr *ngFor="let item of allData">
@@ -230,7 +194,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="fuel.length == 0" class="text-center">
+                      <tr *ngIf="fuel.length === 0" class="text-center">
                         <td colspan="15">{{ fuelMessage }}</td>
                       </tr>
                       <tr *ngFor="let item of fuel">
@@ -289,7 +253,7 @@
                     </thead>
                     <tbody>
                       <tr
-                        *ngIf="serviceLogData.length == 0"
+                        *ngIf="serviceLogData.length === 0"
                         class="text-center"
                       >
                         <td colspan="15">{{ logMessage }}</td>
@@ -317,7 +281,7 @@
                               </span>
                             </span>
                             <span
-                              *ngIf="item.allServiceTasks.serviceTaskList == 0"
+                              *ngIf="item.allServiceTasks.serviceTaskList === 0"
                               >-
                             </span>
                           </div>
@@ -326,36 +290,27 @@
                             <a class="text-info font-size-12">{{
                               item.issue
                             }}</a>
-                            <span *ngIf="item.selectedIssues.length == 0"
-                              >-
+                            <span *ngIf="item.selectedIssues.length === 0">-
                             </span>
-                          </div>
+                        </div>
                         </td>
 
                         <td>
-                          {{
-                            (
-                              item.allServiceParts.total +
-                              item.allServiceTasks.total
-                            ).toFixed(2)
-                          }}
-                          {{ item.allServiceParts.currency }}
+                            {{ ( item.allServiceParts.total + item.allServiceTasks.total ).toFixed(2) }} {{ item.allServiceParts.currency }}
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </section>
-              </div>
-            </div>
-          </div>
+                        </tr>
+                        </tbody>
+                        </table>
+        </section>
         </div>
-        <div class="row text-dark mb-3">
-          <div class="col pr-0">
+    </div>
+    </div>
+    </div>
+    <div class="row text-dark mb-3">
+        <div class="col pr-0">
             <div class="card">
-              <div class="card-body">
-                <label
-                  class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-1"
-                  >Driver-Payment Details</label
+                <div class="card-body">
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-1">Driver-Payment Details</label
                 >
                 <section class="reports_div">
                   <table
@@ -379,7 +334,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="payments.length == 0" class="text-center">
+                      <tr *ngIf="payments.length === 0" class="text-center">
                         <td colspan="15">{{ drvPayMessage }}</td>
                       </tr>
                       <tr *ngFor="let item of payments">
@@ -454,7 +409,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="expensePay.length == 0" class="text-center">
+                      <tr *ngIf="expensePay.length === 0" class="text-center">
                         <td colspan="15">{{ expenseMessage }}</td>
                       </tr>
                       <tr *ngFor="let item of expensePay">

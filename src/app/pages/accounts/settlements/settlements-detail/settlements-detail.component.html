@@ -56,14 +56,14 @@
                               class="text-uppercase"
                               *ngIf="
                                 settlementData.type == 'driver' ||
-                                settlementData.type == 'carrier'
-                              "
+                    ========================================            settlementData.type == 'carrier'
+                      =        "
                             >
                               {{ settlementData.type }}
                             </span>
                             <span
                               class="text-uppercase"
-                              *ngIf="settlementData.type == 'owner_operator'"
+                              *ngIf="settlementData.type === 'owner_operator'"
                             >
                               owner operator
                             </span>
@@ -173,7 +173,7 @@
                                 </span>
                               </td>
                             </tr>
-                            <tr *ngIf="settlementData.type == 'driver'">
+                            <tr *ngIf="settlementData.type === 'driver'">
                               <td class="back-color-gray font-weight-bold">
                                 Individual Miles
                               </td>
@@ -193,7 +193,7 @@
                                 }}
                               </td>
                             </tr>
-                            <tr *ngIf="settlementData.type == 'driver'">
+                            <tr *ngIf="settlementData.type === 'driver'">
                               <td class="back-color-gray font-weight-bold">
                                 Team Miles
                               </td>

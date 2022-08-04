@@ -259,7 +259,7 @@
                               /></span>
                               <span class="font-size-12">
                                 <span
-                                  *ngIf="reminder.tasks.remindByUnit == 'time'"
+                                  *ngIf="reminder.tasks.remindByUnit === 'time'"
                                   >Every
                                   {{ reminder.tasks.time }}
                                   {{ reminder.tasks.timeUnit }}(s)
@@ -267,7 +267,7 @@
                                 <span
                                   *ngIf="
                                     reminder.tasks.remindByUnit == 'odometer'
-                                  "
+                         ========================================         "
                                   >Every
                                   {{ reminder.tasks.odometer }} miles[0]</span
                                 >

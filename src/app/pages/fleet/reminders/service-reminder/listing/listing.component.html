@@ -272,14 +272,14 @@
                                 <br />
                                 <span class="font-size-12">
                                   <span
-                                    *ngIf="vehicle.tasks.remindByUnit == 'time'"
+                                    *ngIf="vehicle.tasks.remindByUnit === 'time'"
                                     >Every {{ vehicle.tasks.time }}
                                     {{ vehicle.tasks.timeUnit }}(s)
                                   </span>
                                   <span
                                     *ngIf="
                                       vehicle.tasks.remindByUnit == 'odometer'
-                                    "
+                           ========================================         "
                                     >Every
                                     {{ vehicle.tasks.odometer }} miles</span
                                   >
@@ -288,7 +288,7 @@
 
                               <span *ngSwitchCase="'nextDueDays'">
                                 <span
-                                  *ngIf="vehicle.tasks.remindByUnit == 'time'"
+                                  *ngIf="vehicle.tasks.remindByUnit === 'time'"
                                 >
                                   <span *ngIf="vehicle.nextDueDays > 0"
                                     >{{ vehicle.nextDueDays }} Day(s) from
@@ -309,7 +309,7 @@
                                 <span
                                   *ngIf="
                                     vehicle.tasks.remindByUnit == 'odometer'
-                                  "
+                         ========================================         "
                                 >
                                   {{ vehicle.nextDueMiles }} miles from now
                                 </span>

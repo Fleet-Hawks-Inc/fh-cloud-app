@@ -11,7 +11,7 @@
           <!-- For Existing Inventory -->
           <div
             class="row"
-            *ngIf="currentTab == 'inv'"
+            *ngIf="currentTab === 'inv'"
             style="padding-top: 10px"
           >
             <div class="col-md-2 col-lg-2 pr-0">
@@ -129,7 +129,7 @@
           <!-- For Required Inventory -->
           <div
             class="row"
-            *ngIf="currentTab == 'rinv'"
+            *ngIf="currentTab === 'rinv'"
             style="padding-top: 10px"
           >
             <div class="col-md-2 col-lg-2 pr-0">
@@ -276,7 +276,7 @@
                       <li class="nav-item" style="cursor: pointer">
                         <a
                           class="nav-link"
-                          [ngClass]="{ active: currentTab == 'inv' }"
+                          [ngClass]="{ active: currentTab === 'inv' }"
                           (click)="tabChange('inv')"
                           id="all-tab"
                           role="tab"
@@ -288,7 +288,7 @@
                       <li class="nav-item" style="cursor: pointer">
                         <a
                           class="nav-link"
-                          [ngClass]="{ 'active show': currentTab == 'rinv' }"
+                          [ngClass]="{ 'active show': currentTab === 'rinv' }"
                           (click)="tabChange('rinv')"
                           role="tab"
                           aria-controls="reefer"
@@ -305,7 +305,7 @@
                   >
                     <div
                       class="tab-pane"
-                      [ngClass]="{ 'active show': currentTab == 'inv' }"
+                      [ngClass]="{ 'active show': currentTab === 'inv' }"
                       id="einv"
                       role="tabpanel"
                       aria-labelledby="all-tab"
@@ -501,7 +501,7 @@
 
                     <div
                       class="tab-pane fade"
-                      [ngClass]="{ 'active show': currentTab == 'rinv' }"
+                      [ngClass]="{ 'active show': currentTab === 'rinv' }"
                       id="rinv"
                       role="tabpanel"
                       aria-labelledby="reefer-tab"
