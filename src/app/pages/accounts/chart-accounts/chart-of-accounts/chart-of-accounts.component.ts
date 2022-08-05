@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class ChartOfAccountsComponent implements OnInit {
   selectedCities: string[] = [];
+ 
 
   @ViewChild("actForm") actForm: NgForm;
   modalTitle = "Add Account";
@@ -78,7 +79,11 @@ export class ChartOfAccountsComponent implements OnInit {
   find = _.find;
   isChecked = false;
   headCheckbox = false;
-  checked: boolean = false;
+  usedAccounts: any = [];
+  unusedAccounts: any = [];
+  showUnused: boolean=false;
+  allAccounts:any=[];
+  
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -197,6 +202,8 @@ export class ChartOfAccountsComponent implements OnInit {
     this.fetchAccounts();
   }
   async fetchAccounts(refresh?: boolean) {
+    this.unusedAccounts=[];
+    this.accounts= this.allAccounts;
     if (refresh === true) {
       this.lastItemSK = "";
       this.accounts = [];
@@ -241,7 +248,13 @@ export class ChartOfAccountsComponent implements OnInit {
             }
             const newArray = _.sortBy(this.accounts, ["actNo"]); // sort by account number
             this.accounts = newArray;
+            this.allAccounts = newArray;
             this.loaded = true;
+            for(let i=0;i<this.accounts.length;i++) {
+            if(this.accounts[i].closingAmtCAD === this.accounts[i].opnBalCAD && this.accounts[i].closingAmtUSD === this.accounts[i].opnBalUSD){
+            this.unusedAccounts.push(this.accounts[i])
+            }
+            }
           }
         });
     }
@@ -249,6 +262,16 @@ export class ChartOfAccountsComponent implements OnInit {
       this.dataMessage = "Please add predefined accounts";
     }
   }
+  
+  onUnusedAccount(){
+   if(this.showUnused===true){
+     this.accounts=this.unusedAccounts;
+   }
+   else{
+     this.accounts= this.allAccounts;
+   }
+  }
+  
   onScroll() {
     if (this.loaded) {
       this.fetchAccounts();
