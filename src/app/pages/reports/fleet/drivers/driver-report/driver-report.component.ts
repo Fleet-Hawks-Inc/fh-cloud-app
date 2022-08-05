@@ -52,6 +52,8 @@ export class DriverReportComponent implements OnInit {
   dataColumns = [
     { width: "25%", field: 'drin', header: 'Name', type: "text" },
     { width: "25%", field: 'tripNo', header: 'Trip', type: "text" },
+    { width: "15%", field: 'locationCsv', header: 'Location', type: "text", display: "none" },
+    { width: "15%", field: 'dateCsv', header: 'Date', type: "text", display: "none" },
     { width: "25%", field: 'orderNumber', header: 'Order', type: "text" },
     { width: "22.2%", field: 'miles', header: 'Total Miles', type: "text" },
 
@@ -109,16 +111,31 @@ export class DriverReportComponent implements OnInit {
         this.loaded = true;
         for (let index = 0; index < result.Items.length; index++) {
           const res: any = result.Items[index];
+
           res.drin = ''
+          res.location = []
+          res.locationCsv = ''
+          res.date = [];
+          res.dateCsv = '';
 
           res.drin = this.driverN
+
+
+          for (let element of res.singledriv) {
+            // console.log("-===", element)
+
+            res.miles += Number(element.miles)
+
+            res.location.push(element.type + ": " + element.location)
+            res.date.push(element.type + ": " + element.date)
+          }
+
+          res.locationCsv = res.location.join('\r\n')
+          res.dateCsv = res.date.join('\r\n')
         }
       })
     }
   }
-
-
-
   onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchTrip();
@@ -159,74 +176,6 @@ export class DriverReportComponent implements OnInit {
 
   }
 
-  fetchFullExport() {
-    this.apiService.getData(`common/trips/fetch/driverActivity/list?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.exportData = result.Items;
-      for (let driv of this.exportData) {
-        let dataa = driv
-        driv.miles = 0
-        for (let element of dataa.tripPlanning) {
-          driv.miles += Number(element.miles);
-        }
-      }
-      this.generateCSV();
-    });
-  }
-  generateCSV() {
-    if (this.exportData.length > 0) {
-      let dataObject = []
-      let csvArray = []
-      this.exportData.forEach(element => {
-        let type = '';
-        let location = '';
-        let date = "";
-        for (let i = 0; i < element.tripPlanning.length; i++) {
-          const element2 = element.tripPlanning[i];
-          type += element2.type
-          element2.location = element2.location.replace(/,/g, ' ');
-          location += element2.type + ":" + element2.location
-          date += `"${element2.type} :-  ${element2.date}\n\"`
-          if (i < element.tripPlanning.length - 1) {
-            location += " & ";
-          }
-        }
-        let obj = {}
-        obj["Name"] = element.driverName.replace(/,/g, ' & ')
-        obj["Trip"] = element.tripNo
-        obj["Order"] = element.orderNumber.replace(/,/g, '&')
-        obj["Location"] = location
-        obj["Date"] = date
-        obj["Total Miles"] = element.miles
-        dataObject.push(obj)
-      });
-      let headers = Object.keys(dataObject[0]).join(',')
-      headers += ' \n'
-      csvArray.push(headers)
-      dataObject.forEach(element => {
-        let obj = Object.values(element).join(',')
-        obj += ' \n'
-        csvArray.push(obj)
-      });
-      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Driver-Activity-Report.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-      }
-    }
-    else {
-      this.toastr.error("No Records found")
-    }
-
-  }
   clear(table: Table) {
     table.clear();
   }

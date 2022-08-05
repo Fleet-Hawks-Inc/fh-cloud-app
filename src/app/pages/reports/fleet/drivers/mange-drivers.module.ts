@@ -27,7 +27,6 @@ import { TripComponent } from "./trip/trip.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { DriverDataComponent } from "./driver-data/driver-data.component";
 import { ButtonModule } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
 import { SplitButtonModule } from 'primeng/splitbutton';
@@ -87,10 +86,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -146,7 +145,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     GoogleMapsModule,
     TableModule,
     ButtonModule,
-    MultiSelectModule,
     TooltipModule,
     MenuModule,
     SplitButtonModule,
@@ -160,4 +158,4 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ManageDriverModule {}
+export class ManageDriverModule { }
