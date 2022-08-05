@@ -1734,6 +1734,14 @@ export class AddSettlementComponent implements OnInit {
       .getData(`settlement/detail/${this.settlementID}`)
       .subscribe((result: any) => {
         this.settlementData = result[0];
+        if(!this.settlementData.other) {
+          this.settlementData.other = {
+            addition: [],
+            deduction: [],
+            addTotal: 0,
+            dedTotal: 0
+          }
+        }
         if (this.settlementData.type === "driver") {
           this.driverId = this.settlementData.entityId;
           this.fetchDriverDetail(this.settlementData.entityId);
