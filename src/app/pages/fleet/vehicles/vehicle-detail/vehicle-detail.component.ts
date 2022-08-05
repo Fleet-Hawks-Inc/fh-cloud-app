@@ -11,7 +11,7 @@ import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../services';
 import Constants from '../../constants';
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
-
+import { ELDService } from "src/app/services/eld.service";
 declare var $: any;
 
 
@@ -249,7 +249,7 @@ export class VehicleDetailComponent implements OnInit {
     groupsObjects: any = {};
     groupName: any = '';
     groupId: any = '';
-
+    stateCode = ''
     deviceInfo = {
         deviceType: '',
         deviceId: '',
@@ -267,7 +267,8 @@ export class VehicleDetailComponent implements OnInit {
         private countryStateCity: CountryStateCityService,
         private modalService: NgbModal,
         private formBuilder: RxFormBuilder,
-        private routerMgmtService: RouteManagementServiceService
+        private routerMgmtService: RouteManagementServiceService,
+        private eldService: ELDService,
     ) {
         this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
     }
@@ -386,6 +387,7 @@ export class VehicleDetailComponent implements OnInit {
             .getData("vehicles/" + this.vehicleID)
             .subscribe(async (vehicleResult: any) => {
                 vehicleResult = vehicleResult.Items[0];
+                this.stateCode = vehicleResult.stateID;
 
                 // Check if DashCam is added to enable Share Live location button
                 if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
@@ -616,7 +618,7 @@ export class VehicleDetailComponent implements OnInit {
 
     deleteDocument(value: string, name: string, index: string) {
         this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-          if(value == 'image'){
+            if(value == 'image'){
                 this.slides = [];
                 this.uploadedDocs = result.Attributes.uploadedPhotos;
                 this.existingDocs = result.Attributes.uploadedPhotos;
@@ -627,8 +629,8 @@ export class VehicleDetailComponent implements OnInit {
                     }
                     this.slides.push(obj);
                 })
-          }
-          else if (value == 'doc') {
+            }
+            else if (value == 'doc') {
                 this.docs = [];
                 this.uploadedDocs = result.Attributes.uploadedDocs;
                 this.existingDocs = result.Attributes.uploadedDocs;
@@ -720,4 +722,25 @@ export class VehicleDetailComponent implements OnInit {
             });
         }
     }
+
+    async updateEldVehicle() {
+        let vehicleObj = {
+            FhIdentifier: this.vehicleID,
+            Number: this.vehicleIdentification,
+            HOSHomeBaseId: '18',
+            VIN: this.VIN,
+            Plate: this.plateNumber,
+            RegistrationState: this.stateCode,
+            Type: '0',
+            Active: '1'
+
+        }
+        const result: any = await this.eldService.postData("assets", {
+            Asset: vehicleObj
+        }).toPromise();
+        // console.log('result---', result)
+
+        return result;
+    }
+
 }

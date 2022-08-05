@@ -18,7 +18,9 @@
               icon="fas fa-light fa-location-crosshairs"
               pTooltip="See Live Location"
             ></button>
-
+            <button *ngIf="!hosVehicleId " class="btn btn-sm btn-success mr-3"  (click)="updateEldVehicle()">
+              Enable ELD Vehicle
+             </button>
             <button
               id="btnVehicleEdit"
               routerLink="/fleet/vehicles/edit/{{ vehicleID }}"

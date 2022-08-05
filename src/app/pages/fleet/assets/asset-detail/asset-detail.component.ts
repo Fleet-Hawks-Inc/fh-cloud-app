@@ -13,7 +13,7 @@ import { CountryStateCityService } from "src/app/services/country-state-city.ser
 import { environment } from "../../../../../environments/environment";
 import { ApiService } from "../../../../services";
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
-
+import { ELDService } from "src/app/services/eld.service";
 
 declare var $: any;
 
@@ -139,6 +139,8 @@ export class AssetDetailComponent implements OnInit {
         isDefaultInspectionType: "",
         inspectionType: "",
     };
+    licStateCode = ''
+    hosAssetID = ''
     // Charts
     public chartOptions = {
         scaleShowVerticalLines: false,
@@ -230,7 +232,8 @@ export class AssetDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
         private countryStateCity: CountryStateCityService,
-        private routerMgmtService: RouteManagementServiceService
+        private routerMgmtService: RouteManagementServiceService,
+        private eldService: ELDService,
     ) {
 
         this.sessionID = this.routerMgmtService.assetUpdateSessionID;
@@ -258,6 +261,7 @@ export class AssetDetailComponent implements OnInit {
             async (res: any) => {
                 if (res) {
                     let result = res.Items[0];
+                    this.hosAssetID = result.hosAssetId;
                     this.assetDataDetail = res.Items[0];
                     // if (!result.hasOwnProperty('devices')) {
                     //   result['devices'] = [];
@@ -295,6 +299,7 @@ export class AssetDetailComponent implements OnInit {
                                 result.assetDetails.licenceStateCode,
                                 result.assetDetails.licenceCountryCode
                             );
+                        this.licStateCode = result.assetDetails.licenceStateCode;
                     }
                     this.year = result.assetDetails.year;
                     this.manufacturer = result.assetDetails.manufacturer;
@@ -554,19 +559,19 @@ export class AssetDetailComponent implements OnInit {
         this.apiService
             .deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`)
             .subscribe((result: any) => {
-             if(type == 'image'){
-             this.assetsImages = [];
-             this.uploadedDocs = result.Attributes.uploadedPhotos;
-             this.existingDocs = result.Attributes.uploadedPhotos;
-             result.Attributes.uploadedPhotos.map((x) => {
-             let obj= {
-                 name: x,
-                 path: `${this.Asseturl}/${result.carrierID}/${x}`,
-                         };
-                         this.assetsImages.push(obj);
-                     });
-             }
-              else if (type == "doc") {
+                if(type == 'image'){
+                    this.assetsImages = [];
+                    this.uploadedDocs = result.Attributes.uploadedPhotos;
+                    this.existingDocs = result.Attributes.uploadedPhotos;
+                    result.Attributes.uploadedPhotos.map((x) => {
+                        let obj= {
+                            name: x,
+                            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+                        };
+                        this.assetsImages.push(obj);
+                    });
+                }
+                else if (type == "doc") {
                     this.assetsDocs = [];
                     this.uploadedDocs = result.Attributes.uploadedDocs;
                     this.existingDocs = result.Attributes.uploadedDocs;
@@ -643,5 +648,25 @@ export class AssetDetailComponent implements OnInit {
             lng: parseFloat(cords[0]),
             lat: parseFloat(cords[1]),
         });
+    }
+
+    async updateEldAssetD() {
+        let assetObj = {
+            FhIdentifier: this.assetID,
+            Number: this.assetIdentification,
+            HOSHomeBaseId: '18',
+            VIN: this.VIN,
+            Plate: this.licencePlateNumber,
+            RegistrationState: this.licStateCode,
+            Type: '1',
+            Active: '1'
+
+        }
+        const result: any = await this.eldService.postData("assets", {
+            Asset: assetObj
+        }).toPromise();
+        // console.log('result---', result)
+
+        return result;
     }
 }
