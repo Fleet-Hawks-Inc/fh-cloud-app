@@ -133,10 +133,8 @@
                                                 <td *ngFor="let dataColumns of columns" pResizableColumn
                                                     [ngStyle]="{ width: dataColumns.width }">
                                                     <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchCase="'DrivN'" class="text-capitalize">
-                                                            <span *ngFor="let item of DrivN">{{item.firstName}}
-                                                                {{item.middleName}}
-                                                                {{item.lastName}}</span>
+                                                        <span *ngSwitchCase="'drin'" class="text-capitalize">
+                                                            {{get(driver,dataColumns.field)}}
                                                         </span>
 
                                                         <span *ngSwitchCase="'miles'">
@@ -178,7 +176,7 @@
                                                             <ng-template pTemplate="header">
 
                                                 <td>
-                                                    <span *ngFor="let item of order.tripPlanning"
+                                                    <span *ngFor="let item of order.singledriv"
                                                         style="margin-left: 100px;">
 
                                                         <b>
@@ -189,7 +187,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <span *ngFor="let item of order.tripPlanning"
+                                                    <span *ngFor="let item of order.singledriv"
                                                         style="margin-left: 600px;">
                                                         <b>
                                                             {{item.type}}:

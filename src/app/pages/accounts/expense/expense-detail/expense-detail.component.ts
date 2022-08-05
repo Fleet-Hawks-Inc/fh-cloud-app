@@ -5,8 +5,9 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
-import Constants from "../../../fleet/constants";
 import * as html2pdf from "html2pdf.js";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 @Component({
   selector: "app-expense-detail",
   templateUrl: "./expense-detail.component.html",
@@ -76,15 +77,16 @@ export class ExpenseDetailComponent implements OnInit {
   tagLine: string;
   carrierName: string;
   expPayRef: any;
-
+  sessionID: string;
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    private routerMgmtService: RouteManagementServiceService
+  ) { this.sessionID = this.routerMgmtService.ExpenseTransactionsSessionID; }
 
   ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];

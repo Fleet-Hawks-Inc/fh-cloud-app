@@ -728,10 +728,6 @@
                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-
-
-
-
                               <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
                                 (click)="delete('abs', item.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>
 
@@ -963,6 +959,7 @@
                           </div>
                         </div>
                       </div>
+                 
                       <div class="col-lg-10 pt-2">
                         <div class="checkbox-custom">
                           <input type="checkbox" name="licenceDetails.licenceNotification" [(ngModel)]="
@@ -1019,6 +1016,45 @@
                           <ng-option value="Light Vehicle">Light Vehicle</ng-option>
                         </ng-select>
                       </div>
+                      
+                      
+                       <div class="col-lg-6 mb-1">
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document
+                        </label>
+                        <input class="w100" type="file" multiple name="uploadLicence"
+                          (change)="selectLicDoc($event, 'uploadLicence')" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadLicError != ''" class="text-danger">
+                          {{ uploadLicError }}
+                        </span>
+                      </div>
+                      <div class="col-lg-12 mt-2" *ngIf="uploadLicence.length > 0">
+                        <div class="vehicle-common-box p-3">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <label class="control-label font-weight-bold text-3">Document(s)</label>
+                            </div>
+                            <div class="col-lg-6 text-right"></div>
+                          </div>
+                          <hr class="solid mt-2" />
+                          <div class="row mb-1" *ngFor="let doc of uploadLicence; let d = index">
+                            <div class="col-lg-9">
+                              <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                            </div>
+                            <div class="col-lg-3 text-right">
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="delete('licDocs', doc.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                  class="fas fa-eye"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                     </div>
                   </div>
                 </div>
@@ -1249,22 +1285,11 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document
                         </label>
-
-                        <!-- <input
-                          class="form-control p-0"
-                          name="document.uploadedDocs{{ i }}"
-                          (change)="selectDocuments($event, i)"
-                          type="file"
-                          multiple
-                        /> -->
-
-
                         <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
                           (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
                         <span *ngIf="uploadDocsError != ''" class="text-danger">
                           {{ uploadDocsError }}
                         </span>
-
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
                         <div class="vehicle-common-box p-3">

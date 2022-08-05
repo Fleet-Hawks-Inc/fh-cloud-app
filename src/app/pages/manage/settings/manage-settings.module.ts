@@ -32,6 +32,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { DialogModule } from 'primeng/dialog';
 import { ImportedContactsComponent } from './imported-contacts/imported-contacts.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -156,7 +157,8 @@ const routes: Routes = [
     AutoCompleteModule,
     DropdownModule,
     DialogModule,
-    InputTextModule
+    InputTextModule,
+    OverlayPanelModule,
   ],
 })
 export class ManageSettingsModule { }
