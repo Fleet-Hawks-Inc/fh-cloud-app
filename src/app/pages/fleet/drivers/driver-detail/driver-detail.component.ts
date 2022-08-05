@@ -618,7 +618,21 @@ export class DriverDetailComponent implements OnInit {
         delete this.driverDataUpdate.hosDetails.cycleInfo;
         delete this.driverDataUpdate.carrierID;
         delete this.driverDataUpdate.timeModified;
-        if (type === 'doc') {
+        if(type === 'licDocs'){
+        this.uploadLicence.splice(index, 1);
+        this.driverDataUpdate.licDocs.splice(index, 1);
+            this.deleteUploadedFile(name);
+            try {
+                const formData = new FormData();
+                formData.append('data', JSON.stringify(this.driverDataUpdate));
+                this.apiService.putData('drivers', formData, true).subscribe({
+                    complete: () => { this.fetchDriver(); }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        else if (type === 'doc') {
             this.assetsDocs[index].splice(docIndex, 1);
             this.driverDataUpdate.documentDetails[index].uploadedDocs.splice(docIndex, 1);
             this.deleteUploadedFile(name);
@@ -646,6 +660,7 @@ export class DriverDetailComponent implements OnInit {
             }
         }
     }
+    
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
