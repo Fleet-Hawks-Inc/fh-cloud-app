@@ -46,7 +46,7 @@ export class ActivityComponent implements OnInit {
     public vehicleId;
     
      dataColumns = [
-        { width: '10%', field: 'vehicle', header: 'Vehicle', type: "text" },
+        { width: '10%', field: 'vehicleData', header: 'Vehicle', type: "text" },
         {  width: '10%', field: 'tripNo', header: 'Trip', type: "text" },
         { width: '10%', field: 'orderName', header: 'Order', type: "text" },
          { width: '10%', field: 'assetName', header: 'Assets', type: "text" },
@@ -78,7 +78,7 @@ export class ActivityComponent implements OnInit {
     fetchVehicleName() {
         this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
             this.vehicleData = result.Items;
-            console.log('datatotal',this.vehicleData)
+            console.log('datatotal',result.Items);
         });
     }
 

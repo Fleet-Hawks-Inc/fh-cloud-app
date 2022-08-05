@@ -118,31 +118,6 @@
                         <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
                           [ngStyle]="{ width: dataColumns.width }">
                           <div [ngSwitch]="dataColumns.field">
-                            <!-- Event Status Filter Customization -->
-                            <span *ngSwitchCase="'status'">
-                              <div class="flex justify-content-center align-items-center" alignFrozen="left"
-                                pFrozenColumn [frozen]="true">
-                                {{ dataColumns.header }}
-                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
-                                  [showOperator]="false" matchMode="contains" [showMatchModes]="false"
-                                  [showAddButton]="false" display="menu">
-                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                    <p-multiSelect [options]="status_values" placeholder="Any"
-                                      (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
-                                      <ng-template let-option pTemplate="item">
-                                        <div>
-                                          <span class="ml-1">{{
-                                            option.name
-                                            }}</span>
-                                        </div>
-                                      </ng-template>
-                                    </p-multiSelect>
-                                  </ng-template>
-                                </p-columnFilter>
-                              </div>
-                            </span>
-
                             <span *ngSwitchDefault>
                               <div class="flex justify-content-center align-items-center" alignFrozen="right"
                                 pFrozenColumn [frozen]="true">
@@ -213,11 +188,11 @@
                           <div class="dropdown dropright">
                             <button [disabled]="salesOrd.status != 'open'" (click)="op.toggle($event)" pButton
                               type="button" class="bg-transparent border-0" data-toggle="dropdown" aria-expanded="false"
-                              aria-haspopup="true" icon="fas fa-ellipsis-v" style="color: #000;"></button>
+                              aria-haspopup="true" icon="fas fa-ellipsis-v"  style="color: #000;"></button>
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
                               <ng-template pTemplate>
                                 <a *ngIf="salesOrd.status === 'open'"
-                                  (click)="sendConfirmationEmail(i, salesOrd.saleID)" class="dropdown-item"
+                                  (click)="sendConfirmationEmail(rowIndex, salesOrd.saleID)" class="dropdown-item"
                                   href="javascript:;">Send email to
                                   customer</a>
 
