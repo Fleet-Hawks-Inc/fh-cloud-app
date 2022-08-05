@@ -2,18 +2,91 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pr-0 pt-0">
       <header class="page-header pr27 pl18">
-        <div class="row">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            <h2 class="font-weight-bold pl-0">Vehicle Settings</h2>
+        <!--<div class="row">-->
+        <!--  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">-->
+        <!--    <h2 class="font-weight-bold pl-0">Vehicle Settings</h2>-->
+        <!--  </div>-->
+        <!--  <div class="col-md-8 col-lg-8 pr-1 text-right pt-2">-->
+        <!--    <a-->
+        <!--      routerLink="/manage/settings/vehicles/overview"-->
+        <!--      class="btn btn-success btn-sm"-->
+        <!--      ><i class="fas fa-arrow-left"></i> Go Back</a-->
+        <!--    >-->
+        <!--  </div>-->
+        <!--</div>-->
+         <form class="form-horizontal" method="get">
+           <div class="row" style="padding-top: 10px"> 
+            <div class="col-md-2 col-lg-2 pr-0">
+                            <div class="input-group input-group-md mb-3">
+                              <input
+                                type="text"
+                                autocomplete="off"
+                                name="vehicleIdentification"
+                                placeholder="Search vehicle by name"
+                                [(ngModel)]="vehicleIdentification"
+                                class="form-control"
+                                (input)="getSuggestions($event.target.value)"
+                              />
+                            </div>
+                            <div
+                              *ngIf="suggestedVehicles?.length > 0"
+                              class="result-suggestions"
+                            >
+                              <ul class="text-capitalize">
+                                <li
+                                  *ngFor="
+                                    let suggestedVehicle of suggestedVehicles
+                                  "
+                                  style="cursor: pointer"
+                                  (click)="
+                                    setVehicle(
+                                      suggestedVehicle.vehicleID,
+                                      suggestedVehicle.vehicleIdentification
+                                    )
+                                  "
+                                >
+                                  {{ suggestedVehicle.vehicleIdentification }}
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+             <div class="col-md-2 col-lg-2 pr-0">
+                            <ng-select
+                              class="form-control bgnone populate"
+                              name="currentStatus"
+                              [(ngModel)]="currentStatus"
+                              placeholder="Select status"
+                            >
+                              <ng-option value="active">Active</ng-option>
+                              <ng-option value="inActive">Inactive</ng-option>
+                              <ng-option value="outOfService"
+                                >Out of Service</ng-option
+                              >
+                              <ng-option value="sold">Sold</ng-option>
+                            </ng-select>
+                          </div>
+             <div class="col-md-2 col-lg-2 pr-0">
+                            <button
+                              type="submit"
+                              (click)="searchFilter()"
+                              class="btn btn-sm btn-success mr-3"
+                            >
+                              Search
+                            </button>
+                            <button
+                              type="button"
+                              (click)="resetFilter()"
+                              class="btn btn-sm btn-success"
+                            >
+                              Reset
+                            </button>
+                          </div>
+            <div class="col-md-2 col-lg-6 text-right">
+              <a routerLink="/manage/settings/vehicles/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+            </div>              
+           
           </div>
-          <div class="col-md-8 col-lg-8 pr-1 text-right pt-2">
-            <a
-              routerLink="/manage/settings/vehicles/overview"
-              class="btn btn-success btn-sm"
-              ><i class="fas fa-arrow-left"></i> Go Back</a
-            >
-          </div>
-        </div>
+       </form>  
       </header>
 
       <div class="routing-overview__wrapper m-2">
@@ -182,240 +255,326 @@
                   </div>
 
                   <!-- deleted vehicle list -->
-                  <div id="deletedVehicles" class="tab-pane active">
-                    <div class="row">
-                      <div class="col-12">
-                        <p class="text-4 font-weight-bold text-dark mb-0">
-                          Restore deleted vehicles:
-                        </p>
-                      </div>
-
-                      <div class="col-lg-12">
-                        <div class="row" style="padding-top: 10px">
-                          <div class="col-md-2 col-lg-2 pr-0">
-                            <div class="input-group input-group-md mb-3">
-                              <input
-                                type="text"
-                                autocomplete="off"
-                                name="vehicleIdentification"
-                                placeholder="Search vehicle by name"
-                                [(ngModel)]="vehicleIdentification"
-                                class="form-control"
-                                (input)="getSuggestions($event.target.value)"
-                              />
-                            </div>
-                            <div
-                              *ngIf="suggestedVehicles?.length > 0"
-                              class="result-suggestions"
-                            >
-                              <ul class="text-capitalize">
-                                <li
-                                  *ngFor="
-                                    let suggestedVehicle of suggestedVehicles
-                                  "
-                                  style="cursor: pointer"
-                                  (click)="
-                                    setVehicle(
-                                      suggestedVehicle.vehicleID,
-                                      suggestedVehicle.vehicleIdentification
-                                    )
-                                  "
-                                >
-                                  {{ suggestedVehicle.vehicleIdentification }}
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col-md-2 col-lg-2 pr-0">
-                            <ng-select
-                              class="form-control bgnone populate"
-                              name="currentStatus"
-                              [(ngModel)]="currentStatus"
-                              placeholder="Select status"
-                            >
-                              <ng-option value="active">Active</ng-option>
-                              <ng-option value="inActive">Inactive</ng-option>
-                              <ng-option value="outOfService"
-                                >Out of Service</ng-option
-                              >
-                              <ng-option value="sold">Sold</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="col-md-2 col-lg-2 pr-0">
-                            <button
-                              type="submit"
-                              (click)="searchFilter()"
-                              class="btn btn-sm btn-success mr-3"
-                            >
-                              Search
-                            </button>
-                            <button
-                              type="button"
-                              (click)="resetFilter()"
-                              class="btn btn-sm btn-success"
-                            >
-                              Reset
-                            </button>
-                          </div>
-                          <div
-                            class="col-md-8 col-lg-8 text-right page-buttons"
-                          ></div>
+                  <section class="m-2">
+                  <div class="row mb-3">
+                     <div class="col-lg-12">
+                    <div class="form-group row pt-3">
+                    <div class="col-lg-12" style="height: calc(90vh - 149px); overflow-y: scroll">
+                     <p-table #dt
+                    [value]="vehicles"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    scrollHeight="100%">
+                  
+                      <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center"> 
+                       <div>
+                       <h3 class="m-0"> Deleted Vehicles</h3>
                         </div>
-                      </div>
-
-                      <div class="col-lg-12">
-                        <div
-                          class="table-responsive"
-                          infiniteScroll
-                          [infiniteScrollDistance]="1"
-                          [infiniteScrollUpDistance]="1"
-                          [infiniteScrollThrottle]="5"
-                          (scrolled)="onScroll()"
-                        >
-                          <table
-                            class="row-border hover table table-bordered table-striped mb-0"
-                          >
-                            <thead>
-                              <tr>
-                                <th>Vehicle Name/Number</th>
-                                <th>VIN</th>
-                                <th>Start Date</th>
-                                <th>Make</th>
-                                <th>Model</th>
-                                <th>Year</th>
-                                <th>Ownership</th>
-                                <th>Driver Assigned</th>
-                                <th>Team Driver Assigned</th>
-                                <th>Trip</th>
-                                <th>Plate Number</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr
-                                *ngIf="vehicles.length == 0"
-                                class="text-center"
-                              >
-                                <td colspan="13">{{ dataMessage }}</td>
-                              </tr>
-                              <tr
-                                *ngFor="let vehicle of vehicles; let i = index"
-                                class="text-capitalize"
-                              >
-                                <td>
-                                  <span
-                                    class="font-weight-bold line-height-lg text-capitalize"
-                                    >{{ vehicle.vehicleIdentification }}</span
-                                  >
-                                </td>
-                                <td>{{ vehicle.VIN }}</td>
-                                <td>
-                                  {{
-                                    vehicle.lifeCycle.startDate
-                                      | date: "yyyy/MM/dd"
-                                  }}
-                                </td>
-                                <td class="text-capitalize">
-                                  {{
-                                    vehicle.manufacturerID
-                                      ? vehicle.manufacturerID
-                                      : "-"
-                                  }}
-                                </td>
-                                <td class="text-capitalize">
-                                  {{ vehicle.modelID ? vehicle.modelID : "-" }}
-                                </td>
-                                <td class="text-capitalize">
-                                  {{ vehicle.year ? vehicle.year : "-" }}
-                                </td>
-                                <td>
-                                  {{
-                                    vehicle.annualSafetyDate
-                                      | date: "yyyy/MM/dd"
-                                  }}
-                                </td>
-                                <td>
-                                  {{
-                                    vehicle.ownership ? vehicle.ownership : "-"
-                                  }}
-                                </td>
-                                <td>
-                                  {{
-                                    driversList[vehicle.driverID]
-                                      ? driversList[vehicle.driverID]
-                                      : "-"
-                                  }}
-                                </td>
-                                <td>
-                                  {{
-                                    driversList[vehicle.teamDriverID]
-                                      ? driversList[vehicle.teamDriverID]
-                                      : "-"
-                                  }}
-                                </td>
-                                <td>
-                                  {{
-                                    vehicle.plateNumber
-                                      ? vehicle.plateNumber
-                                      : "-"
-                                  }}
-                                </td>
-                                <td>
-                                  <span
-                                    class="badge badge-dark p-1 text-uppercase"
-                                    >{{ vehicle.currentStatus }}</span
-                                  >
-                                </td>
-                                <td>
-                                  <div class="dropdown dropright">
-                                    <button
-                                      class="bg-transparent border-0"
-                                      type="button"
-                                      id="dropdownMenuButton-{{ i }}"
-                                      data-toggle="dropdown"
-                                      aria-haspopup="true"
-                                      aria-expanded="false"
-                                      [routerLink]="[]"
-                                    >
-                                      <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      attr.aria-labelledby="dropdownMenuButton-{{
-                                        i
-                                      }}"
-                                    >
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:;"
-                                        (click)="restoreVehicle(vehicle)"
-                                        >Restore</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div
-                          class="col-lg-12 mt-3 text-center"
-                          *ngIf="
-                            lastEvaluatedKey !== 'end' && vehicles.length !== 0
-                          "
-                        >
+                         <div class="text-right">
+                                  <span>Showing {{ vehicles.length }} entries </span>
+                                  &nbsp;
+                            <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
                           <button
                             type="button"
-                            (click)="onScroll()"
-                            class="btn btn-success btn-sm text-light"
+                            [disabled]="isUpgrade"
+                            pButton
+                            pTooltip="Add"
+                            routerLink="/fleet/vehicles/add"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-plus"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
+                          <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="dt.exportCSV()"
+                            pTooltip="Excel"
+                          ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
                           >
-                            Load More..
-                          </button>
-                        </div>
+                          </p-multiSelect>
+                                </div>
+                           </div>
+                       </ng-template>
+                        <ng-template pTemplate="header" let-columns>
+                        <tr>
+                         <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }"
+                        > 
+                        <div [ngSwitch]="dataColumns.field">  
+                        <span *ngSwitchCase="'currentStatus'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'Active', value: 'active' },
+                                        { name: 'InActive', value: 'inActive' },
+                                        {
+                                          name: 'Out of Service',
+                                          value: 'outOfService'
+                                        },
+                                        { name: 'Sold', value: 'sold' }
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                           <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                          </th>
+                           <th
+                          style="width: 130px"
+                          alignFrozen="right"
+                          pFrozenColumn
+                          [frozen]="true"
+                        >
+                          Actions
+                        </th>
+                        </tr>
+                       </ng-template>
+                       <ng-template
+                      pTemplate="body"
+                      let-vehicle
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                       <tr>   
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          [ngStyle]="{ width: dataColumns.width }" 
+                          style="height: 40px; cursor: pointer"
+                        >
+                        <div [ngSwitch]="dataColumns.field">
+                         <span *ngSwitchCase="'vehicleIdentification'">
+                              <span>
+                                  {{vehicle.vehicleIdentification | titlecase}}
+                                </span>
+                            </span>
+                         <span *ngSwitchCase="'VIN'">
+                              <span>
+                                {{vehicle.VIN }}</span>
+                            </span>
+                            <span *ngSwitchCase="'year'">
+                              <span>
+                                {{vehicle.year}}</span>
+                            </span>
+                            <span *ngSwitchCase="'plateNumber'">
+                              <span>
+                                {{vehicle.plateNumber}}</span>
+                            </span>
+                            <span *ngSwitchCase="'manufacturerID'">
+                              <span>
+                                {{
+                                  (get(vehicle, dataColumns.field)
+                                    ? get(vehicle, dataColumns.field)
+                                    : "-"
+                                  ) | titlecase
+                                }}</span
+                              >
+                            </span>
+                            <span *ngSwitchCase="'modelID'">
+                              <span>
+                                {{
+                                  (get(vehicle, dataColumns.field)
+                                    ? get(vehicle, dataColumns.field)
+                                    : "-"
+                                  ) | titlecase
+                                }}</span
+                              >
+                            </span>
+                           <span *ngSwitchCase="'ownership'">
+                              <span>{{
+                                (vehicle.ownership ? vehicle.ownership : "-")
+                                  | titlecase
+                              }}</span>
+                            </span>
+                             <span *ngSwitchCase="'driverName'">
+                              <span>
+                                <span
+                                  >{{
+                                    (driversList[vehicle.driverID]
+                                      ? driversList[vehicle.driverID]
+                                      : "-"
+                                    ) | titlecase
+                                  }}</span
+                                >
+                              </span>
+                            </span>
+                             <span *ngSwitchCase="'annualSafetyDate'">
+                              <span
+                                >{{
+                                  get(vehicle, dataColumns.field)
+                                    ? get(vehicle, dataColumns.field)
+                                    : "-"
+                                }}</span
+                              >
+                            </span>
+                              <span *ngSwitchCase="'teamDriverName'">
+                              <span>
+                                <span
+                                  >{{
+                                    (driversList[vehicle.teamDriverID]
+                                      ? driversList[vehicle.teamDriverID]
+                                      : "-"
+                                    ) | titlecase
+                                  }}
+                                </span>
+                              </span>
+                            </span>
+                            <span *ngSwitchCase="'currentStatus'">
+                              <span class="badge badge-dark p-1">
+                                {{
+                                  get(vehicle, dataColumns.field) | titlecase
+                                }}</span
+                              >
+                            </span>
+                            <span *ngSwitchDefault>
+                              {{ get(vehicle, dataColumns.field) }}</span>
+                       </div>
+                       </td>
+                        <td style="width: 6%; overflow: inherit !important" pFrozenColumn alignFrozen="right" [frozen]="true">
+                                  <div class="dropdown dropright">
+                                    <button (click)="rm.toggle($event)" class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ rowIndex }}">
+                                      <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <p-overlayPanel #rm [showCloseIcon]="true">
+                                      <ng-template pTemplate>
+                                        <a (click)="rm.hide(); restoreDriver(vehicle)" style="text-align:left" class="dropdown-item text-4">Restore</a>
+                                      </ng-template>
+                                    </p-overlayPanel>
+                                  </div>
+                                </td>
+                       </tr>
+                       </ng-template>
+                       <ng-template pTemplate="emptymessage" let-columns>
+                              <div class="col-lg-12 mt-3 text-center">
+                                {{ dataMessage }}
+                                <br /><br />
+                              </div>
+                            </ng-template>
+                             <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && vehicles.length !== 0"
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
                       </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end'"
+                      >
+                        Total Records: {{ vehicles.length }}
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ vehicles.length }}
+                      </div>
+                    </ng-template>
+                     </p-table>
+                    
+                     </div>
+                     </div>
                     </div>
                   </div>
+                  </section>
+                
                 </div>
               </div>
             </div>

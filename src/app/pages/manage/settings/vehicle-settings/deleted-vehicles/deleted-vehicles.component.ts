@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import Constants from '../../../constants';
 import { ApiService } from '../../../../../services';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+import { Table } from 'primeng/table';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { OverlayPanel } from "primeng/overlaypanel";
 
 @Component({
   selector: 'app-deleted-vehicles',
@@ -11,7 +15,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./deleted-vehicles.component.css']
 })
 export class DeletedVehiclesComponent implements OnInit {
-
+  @ViewChild('dt') table: Table;
+  @ViewChild('rm') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   lastEvaluatedKey = '';
@@ -24,6 +30,27 @@ export class DeletedVehiclesComponent implements OnInit {
   driversList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
+  _selectedColumns: any[];
+   get = _.get;
+  vehStatus: any[];
+   
+   
+    dataColumns = [
+    { width: '9%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '6%', field: 'startDate', header: 'Start Date', type: "text" },
+    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '5%', field: 'year', header: 'Year', type: "text" },
+    { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '8%', field: 'driverName', header: 'Driver Assigned', type: 'text' },
+    { width: '10%', field: 'teamDriverName', header: 'Team Driver Assigned', type: 'text' },
+    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '5%', field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
+   
+   
   getSuggestions = _.debounce(function (value) {
 
     value = value.toLowerCase();
@@ -37,12 +64,39 @@ export class DeletedVehiclesComponent implements OnInit {
       this.suggestedVehicles = [];
     }
   }, 800);
-  constructor(private apiService: ApiService, private toastr: ToastrService,) { }
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private spinner: NgxSpinnerService,) { }
 
   ngOnInit() {
     this.initDataTable();
     this.fetchDriversList();
+    this.setVehiclesOptions();
+    this.setToggleOptions();
   }
+  
+   setVehiclesOptions() {
+    this.vehStatus = [
+      { 'name': 'Active', 'value': 'active' },
+      { 'name': 'Inactive', 'value': 'inActive' },
+      { 'name': 'Out of Service', 'value': 'outOfService' },
+      { 'name': 'Sold', 'value': 'sold' }
+    ];
+  }
+   
+    setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+    
+     @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+  
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
@@ -58,6 +112,7 @@ export class DeletedVehiclesComponent implements OnInit {
       const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&vehStatus=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey).toPromise();
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
+        this.loaded = true;
       }
       this.suggestedVehicles = [];
       if (result.Items.length > 0) {
@@ -72,7 +127,7 @@ export class DeletedVehiclesComponent implements OnInit {
       }
     }
   }
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -104,6 +159,11 @@ export class DeletedVehiclesComponent implements OnInit {
       });
     }
   }
+  
+  clear(table: Table) {
+        table.clear();
+    }
+  
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.vehicleID = '';

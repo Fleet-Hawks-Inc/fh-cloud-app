@@ -19,6 +19,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { InputTextModule } from 'primeng/inputtext';
 const routes: Routes = [
   {
     path: "deleted-vehicles",
@@ -56,6 +58,8 @@ const routes: Routes = [
     AutoCompleteModule,
     DialogModule,
     DropdownModule,
+    InputTextModule,
+    OverlayPanelModule,
   ],
 })
 export class VehiclesSettingsModule { }
