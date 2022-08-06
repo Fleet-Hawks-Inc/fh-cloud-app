@@ -104,7 +104,11 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-salesInvo let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" style="cursor: pointer" [routerLink]="salesInvo.url">
+                        <td *ngFor="let dataColumns of columns" style="
+                        width: 14.3%;
+                        height: 40px;
+                        cursor: pointer;
+                        text-transform: capitalize; " [routerLink]="salesInvo.url">
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'txnDate'">
                               {{ salesInvo.txnDate | date: "yyyy/MM/dd" }}
@@ -171,10 +175,9 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
+                      <td colspan="9" class="text-center">
                         {{ dataMessage }}
-                        <br /><br />
-                      </div>
+                      </td>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
                       <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payOrders.length !== 0">
