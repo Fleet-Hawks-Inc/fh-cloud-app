@@ -199,7 +199,7 @@
                                             <td (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipmentTypeObjects[shipment.type]}}</td>
                                             <td (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.shipper.name}}<br>
+                                                {{shipment.shipper.name ? shipment.shipper.name : '-'}}<br>
                                                 <div *ngIf="shipment.shipper.address">
                                                     {{shipment.shipper.address.addressLine ?
                                                     shipment.shipper.address.addressLine + ', ' : ''}}
@@ -217,7 +217,7 @@
                                                 </div>
                                             </td>
                                             <td (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.consignee.name}}<br>
+                                                {{shipment.consignee.name ? shipment.consignee.name : '-'}}<br>
                                                 <div *ngIf="shipment.consignee.address">
 
                                                     {{shipment.consignee.address.addressLine

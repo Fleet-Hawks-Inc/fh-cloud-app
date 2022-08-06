@@ -1624,7 +1624,13 @@ export class AddDriverComponent
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(dIndex, 1);
       this.deletedUploads.push(name);
-    } else if (type === "profile") {
+    }
+    else if(type === 'licDocs'){
+    this.uploadLicence.splice(index, 1);
+    this.driverData.uploadLicence.splice(index, 1);
+    this.deletedUploads.push(name);
+    }
+    else if (type === "profile") {
       this.driverProfileSrc = "";
       this.uploadedPhotos = [];
       this.driverData.driverImage = "";

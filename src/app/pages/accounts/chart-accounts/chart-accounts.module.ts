@@ -24,6 +24,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -111,7 +112,8 @@ const routes: Routes = [
     SplitButtonModule,
     TableModule,
     TooltipModule,
-    DialogModule
+    DialogModule,
+    CheckboxModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

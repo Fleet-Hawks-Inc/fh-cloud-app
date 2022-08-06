@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild, } from "@angular/core";
 import { AccountService, ApiService, ListService } from "../../../../services";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
@@ -27,7 +27,19 @@ export class TripDetailComponent implements OnInit {
   // tripInfoModal: TemplateRef<any>;
   // tripInfoRef: any;
   tripInfoModal = false;
+  items = [
 
+    {
+      label: 'ACE eManifest', icon: 'pi pi-send', command: () => {
+        this.sendToACE();
+      }
+    },
+    {
+      label: 'ACI eManifest', icon: 'pi pi-send', command: () => {
+        this.sendToACI();
+      }
+    }
+  ];
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   constructor(
@@ -36,6 +48,7 @@ export class TripDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private toastr: ToastrService,
+    private router: Router,
     private spinner: NgxSpinnerService,
     private hereMap: HereMapService,
     private location: Location,
@@ -902,6 +915,19 @@ export class TripDetailComponent implements OnInit {
     }
   }
 
+  sendToACE() {
+    this.router.navigate(
+      ['/dispatch/cross-border/ace-manifest'],
+      { queryParams: { tripNo: this.tripData.tripNo } }
+    );
+  }
+
+  sendToACI() {
+    this.router.navigate(
+      ['/dispatch/cross-border/aci-manifest'],
+      { queryParams: { tripNo: this.tripData.tripNo } }
+    );
+  }
 
 }
 

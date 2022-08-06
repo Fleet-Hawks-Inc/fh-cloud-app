@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { Table } from "primeng/table";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService } from "src/app/services";
 
@@ -24,7 +26,21 @@ export class BillListComponent implements OnInit {
   lastItemSK = "";
   loaded = false;
   purchaseOrders = {};
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'billNo', header: 'Bill#', type: "text" },
+    { field: 'refNo', header: 'Reference#', type: "text" },
+    { field: 'purchaseID', header: 'Purchase Order#', type: "text" },
+    { field: 'vendorID', header: 'Vendor', type: "text" },
+    { field: 'dueDate', header: 'Due Date', type: "text" },
+    { field: 'total.finalTotal', header: 'Account', type: "text" },
+    { field: 'balance', header: 'Balance', type: "text" },
+    { field: 'status', header: 'Status', type: "text" },
 
+  ];
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -32,9 +48,22 @@ export class BillListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.setToggleOptions();
     await this.fetchVendor();
     this.fetchPurchaseOrders();
     this.fetchBills();
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   async fetchBills() {
@@ -88,7 +117,7 @@ export class BillListComponent implements OnInit {
       this.accountService.deleteData(`bills/void/${data.billID}`).subscribe({
         complete: () => { },
         error: () => { },
-        next: (result: any) => {
+        next: () => {
           this.dataMessage = Constants.FETCHING_DATA;
           this.payOrders[i].status = 'voided';
           this.toastr.success("Bill voided successfully");
@@ -129,5 +158,8 @@ export class BillListComponent implements OnInit {
       this.fetchBills();
     }
     this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }
