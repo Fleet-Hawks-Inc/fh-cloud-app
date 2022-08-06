@@ -139,11 +139,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-creditN let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" style="
-                        width: 14.3%;
-                        height: 40px;
-                        cursor: pointer;
-                        text-transform: capitalize; " [routerLink]="creditN.url">
+                        <td *ngFor="let dataColumns of columns" style="cursor:pointer" [routerLink]="creditN.url">
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'txnDate'">
                               {{ creditN.txnDate | date: "yyyy/MM/dd" }}

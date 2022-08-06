@@ -60,7 +60,7 @@ export class VendorPaymentsListComponent implements OnInit {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
-  
+
   async fetchPayments() {
     if (this.lastItemSK !== "end") {
       this.disableSearch = false;
@@ -83,6 +83,7 @@ export class VendorPaymentsListComponent implements OnInit {
       } else {
         this.lastItemSK = "end";
       }
+      this.loaded = true;
 
       result.map((v) => {
         v.payMode = v.payMode.replace("_", " ");
