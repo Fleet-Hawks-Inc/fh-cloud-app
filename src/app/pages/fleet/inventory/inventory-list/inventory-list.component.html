@@ -434,8 +434,7 @@
                                 class="p-button-outlined mr-2"
                                 icon="fas fa-exchange-alt"
                                 (click)="openTransferModal()"
-                              >
-                              </button>
+                              ></button>
                               <button
                                 pButton
                                 pRipple
@@ -538,7 +537,7 @@
                                   }}</span>
                                 </span>
                                 <span *ngSwitchCase="'itemName'">
-                                  <span>{{
+                                  <span class="font-weight-bold">{{
                                     get(exItems, dataColumns.field) | titlecase
                                   }}</span>
                                 </span>
@@ -620,7 +619,7 @@
                           >
                             Total Records: {{ items.length }}
                           </div>
-                               <div
+                          <div
                             class="col-lg-12 mt-3 text-center"
                             *ngIf="lastItemSK === 'end'"
                           >
@@ -686,8 +685,7 @@
                                 class="p-button-outlined mr-2"
                                 icon="fas fa-exchange-alt"
                                 (click)="openTransferModal()"
-                              >
-                              </button>
+                              ></button>
                               <button
                                 pButton
                                 pRipple
@@ -776,7 +774,7 @@
                             >
                               <div [ngSwitch]="reqDataColumns.field">
                                 <span *ngSwitchCase="'reqItemName'">
-                                  <span>{{
+                                  <span class="font-weight-bold">{{
                                     allItems[reqItems.partNumber] | titlecase
                                   }}</span>
                                 </span>
@@ -857,7 +855,7 @@
                           >
                             Total Records: {{ requiredItems.length }}
                           </div>
-                               <div
+                          <div
                             class="col-lg-12 mt-3 text-center"
                             *ngIf="lastSK === 'end'"
                           >
