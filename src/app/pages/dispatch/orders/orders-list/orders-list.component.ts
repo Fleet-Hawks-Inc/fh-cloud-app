@@ -317,6 +317,9 @@ export class OrdersListComponent implements OnInit {
         header: "Confirmation",
         type: "text",
       },
+      { field: "pickupLocData", header: "Pickup Location", display: "none" },
+      { field: "dropLocData", header: " Drop Off Location", display: "none" },
+      { field: "commodityData", header: "Commodity", display: "none" },
       { width: "9%", field: "shipperName", header: "Shipper", type: "text" },
       { width: "9%", field: "receiverName", header: "Receiver", type: "text" },
       { width: "8%", field: "amount", header: "Amount", type: "text" },
@@ -383,15 +386,15 @@ export class OrdersListComponent implements OnInit {
       this.apiService
         .getData(
           "orders/fetch/records/all?searchValue=" +
-            this.orderFiltr.searchValue +
-            "&startDate=" +
-            this.orderFiltr.start +
-            "&endDate=" +
-            this.orderFiltr.end +
-            "&category=" +
-            this.orderFiltr.category +
-            "&lastKey=" +
-            this.lastEvaluatedKey
+          this.orderFiltr.searchValue +
+          "&startDate=" +
+          this.orderFiltr.start +
+          "&endDate=" +
+          this.orderFiltr.end +
+          "&category=" +
+          this.orderFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -444,10 +447,48 @@ export class OrdersListComponent implements OnInit {
               res.customerData = "";
               for (let shipArr of res.shippersReceiversInfo) {
                 for (let ship of shipArr.shippers) {
-                  res.shipperName = ship.shiperName;
+                  for (let shipPickUp of ship.pickupPoint) {
+                    let shipDate = shipPickUp
+                    for (let commoD of shipDate.commodity) {
+                      res.commodityData = " Name:-" + commoD.name + '\n'
+                        + " Qty:-" + commoD.quantity + commoD.quantityUnit
+
+                    }
+                    if (shipPickUp.address.manual) {
+                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
+                        + " Location:-" + shipPickUp.address.address + ' ' +
+                        + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
+                        shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
+                    }
+                    else if (!shipPickUp.address.manual) {
+                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
+                        + " Location:-" + shipPickUp.address.pickupLocation
+                    }
+                    else if (shipPickUp.length > 1) {
+                      res.pickupLocData = shipPickUp.length - 1
+                    }
+                    res.shipperName = ship.shiperName
+
+                  }
 
                   for (let receiver of shipArr.receivers) {
-                    res.receiverName = receiver.receiverName;
+                    for (let receiveDropOf of receiver.dropPoint) {
+                      if (receiveDropOf.address.manual) {
+                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
+                          + " Location:-" + receiveDropOf.address.address + ' ' +
+                          + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
+                          receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
+                      }
+                      else if (!receiveDropOf.address.manual) {
+                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
+                          + " Location:-" + receiveDropOf.address.dropOffLocation
+                      }
+                      else if (receiveDropOf.length > 1) {
+                        res.dropLocData = receiveDropOf.length - 1
+                      }
+                    }
+                    res.receiverName = receiver.receiverName
+
                   }
                 }
               }
