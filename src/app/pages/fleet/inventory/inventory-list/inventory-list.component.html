@@ -391,13 +391,15 @@
                         #dt
                         [value]="items"
                         [resizableColumns]="true"
-                        columnResizeMode="expand"
+                        columnResizeMode="fit"
                         scrollDirection="both"
                         [columns]="selectedColumns"
+                        autoLayout="true"
                         [loading]="!loaded"
                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
                         [scrollable]="true"
                         [loading]="!loaded"
+                        responsiveLayout="scroll"
                         scrollHeight="100%"
                       >
                         <!-- Caption template of data table -->
@@ -614,12 +616,7 @@
                             </button>
                             <br /><br />
                           </div>
-                          <div
-                            class="col-lg-12 mt-3 text-center"
-                            *ngIf="lastItemSK !== 'end'"
-                          >
-                            Total Records: {{ items.length }}
-                          </div>
+                  
                                <div
                             class="col-lg-12 mt-3 text-center"
                             *ngIf="lastItemSK === 'end'"
@@ -850,12 +847,6 @@
                               Load More..
                             </button>
                             <br /><br />
-                          </div>
-                          <div
-                            class="col-lg-12 mt-3 text-center"
-                            *ngIf="lastSK !== 'end'"
-                          >
-                            Total Records: {{ requiredItems.length }}
                           </div>
                                <div
                             class="col-lg-12 mt-3 text-center"
