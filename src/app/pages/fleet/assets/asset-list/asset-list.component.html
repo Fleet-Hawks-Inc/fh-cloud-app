@@ -67,10 +67,19 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                  <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand"
-                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
-                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                    [loading]="!loaded" scrollHeight="100%">
+                  <p-table
+                  #dt
+                  [value]="allData"
+                  [resizableColumns]="true"
+                  scrollDirection="both"
+                  [columns]="selectedColumns"
+                  [loading]="!loaded"
+                  autoLayout="true"
+                  columnResizeMode="fit" 
+                  styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                  [loading]="!loaded"
+                  scrollHeight="100%"
+                  >
                     <!-- Caption template of data table -->
                     <ng-template pTemplate="caption">
                       <div class="p-d-flex d-flex justify-content-between align-items-center">
@@ -141,7 +150,7 @@
                             </span>
                           </div>
                         </th>
-                        <th style="width: 130px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                        <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">
                           Actions
                         </th>
                       </tr>
@@ -211,7 +220,7 @@
                               {{ get(asset, dataColumns.field) }}</span>
                           </div>
                         </td>
-                        <td style="text-align: center; width: 130px" pFrozenColumn alignFrozen="right" [frozen]="true">
+                        <td style="text-align: center; width: 6%" pFrozenColumn alignFrozen="right" [frozen]="true">
                           <button id="btnEdit" pButton routerLink="/fleet/assets/edit/{{ asset.assetID }}" type="button"
                             icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
                           <button id="btnDelete" (click)="deleteAsset(asset)" pButton type="button"
