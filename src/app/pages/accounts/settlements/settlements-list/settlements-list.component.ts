@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { Table } from 'primeng/table';
 import { AccountService, DashboardUtilityService } from "src/app/services";
 import { ApiService } from "src/app/services/api.service";
 import Constants from "../../../fleet/constants";
@@ -29,7 +31,19 @@ export class SettlementsListComponent implements OnInit {
   driversObject: any = {};
   carriersObject: any = {};
   ownerOpObjects: any = {};
-
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { width: '8%', field: 'setNo', header: 'Settlement#', type: "text" },
+    { width: '10%', field: 'txnDate', header: 'Settlement Date', type: "text" },
+    { width: '10%', field: 'entityType', header: 'Settlement Type', type: "text" },
+    { width: '13%', field: 'tripNames', header: 'Trip#', type: "text" },
+    { width: '8%', field: 'finalTotal', header: 'Settled Amount', type: "text" },
+    { width: '15%', field: 'paidAmount', header: 'Paid Amount', type: "text" },
+    { width: '15%', field: 'pendingPayment', header: 'Balance', type: "text" },
+    { width: '15%', field: 'status', header: 'Status', type: "text" },
+  ];
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -38,11 +52,24 @@ export class SettlementsListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-
+    this.setToggleOptions()
     this.fetchSettlements();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   unitTypeChange() {
@@ -188,5 +215,8 @@ export class SettlementsListComponent implements OnInit {
     this.settlements = [];
     this.lastItemSK = "";
     this.fetchSettlements();
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }
