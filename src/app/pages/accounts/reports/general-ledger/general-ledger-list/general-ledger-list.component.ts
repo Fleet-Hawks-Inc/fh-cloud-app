@@ -1,7 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+
+import { Component, OnInit, Input } from "@angular/core";
 import * as _ from "lodash";
 import { AccountService } from "../../../../../services";
 import Constants from "../../../../fleet/constants";
+import { Table } from "primeng/table";
 @Component({
   selector: "app-general-ledger-list",
   templateUrl: "./general-ledger-list.component.html",
@@ -28,11 +30,44 @@ export class GeneralLedgerListComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService) { }
 
   ngOnInit() {
     this.fetchAccounts();
+    this.dataColumns = [
+      { field: 'first', header: 'Account Name', type: "text" },
+      { field: 'actNo', header: 'Account Number', type: "text" },
+      { field: 'actType', header: 'Account Type', type: "text" },
+      { field: 'opnBalCAD', header: 'Opening Balance CAD', type: "text" },
+      { field: 'opnBalUSD', header: 'Opening Balance USD', type: "text" },
+      { field: 'totalDebitCAD', header: 'Total Debit CAD', type: "text" },
+      { field: 'totalCreditCAD', header: 'Total Credit CAD', type: "text" },
+      { field: 'totalDebitUSD', header: 'Total Debit USD', type: "text" },
+      { field: 'totalCreditUSD', header: 'Total Credit USD', type: "text" },
+      { field: 'closingAmtCAD', header: 'Closing Balance CAD', type: "text" },
+      { field: 'closingAmtUSD', header: 'Closing Balance USD', type: "text" },
+
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   searchAccounts() {
@@ -94,6 +129,7 @@ export class GeneralLedgerListComponent implements OnInit {
           if (result.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
           if (result.length > 0) {
             this.disableSearch = false;
@@ -127,5 +163,8 @@ export class GeneralLedgerListComponent implements OnInit {
       this.fetchAccounts();
     }
     this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }
