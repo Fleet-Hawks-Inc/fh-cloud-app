@@ -80,15 +80,15 @@ export class ActivityListComponent implements OnInit {
   find = _.find;
   _selectedColumns: any[];
   dataColumns = [
-    { width: '13%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
-    { width: '13%', field: 'VIN', header: 'VIN', type: "text" },
-    { width: '10%', field: 'assetType', header: 'Asset Type', type: "text" },
-    { width: '8%', field: 'manufacturer', header: 'Make', type: 'text' },
-    { width: '12%', field: 'licencePlateNumber', header: 'License Plate Number', type: "text" },
-    { width: '10%', field: 'year', header: 'Year', type: "text" },
-    { width: '10%', field: 'ownerShip', header: 'Ownership', type: "text" },
-    { width: '11%', field: 'operatorCompany', header: 'Company Name', type: "text" },
-    { width: '13%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
+    { field: 'VIN', header: 'VIN', type: "text" },
+    { field: 'assetType', header: 'Asset Type', type: "text" },
+    {field: 'manufacturer', header: 'Make', type: 'text' },
+    { field: 'licencePlateNumber', header: 'License Plate Number', type: "text" },
+    { field: 'year', header: 'Year', type: "text" },
+    { field: 'ownerShip', header: 'Ownership', type: "text" },
+    { field: 'operatorCompany', header: 'Company Name', type: "text" },
+    { field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
   ]
 
 

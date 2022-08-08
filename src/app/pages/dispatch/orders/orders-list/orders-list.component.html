@@ -237,7 +237,7 @@
                           *ngFor="let column of dataColumns"
                           [pSortableColumn]="column.field"
                           pResizableColumn
-                          [ngStyle]="{ width: column.width }"
+                          [ngStyle]="{ width: column.width,'display': column.display }"
                         >
                           <span [ngSwitch]="column.field">
                             <span *ngSwitchDefault>
@@ -366,7 +366,7 @@
                       let-rowIndex="rowIndex"
                       let-expanded="expanded"
                     >
-                      <tr style="cursor: pointer">
+                      <tr style="cursor: pointer" >
                         <td
                           alignFrozen="left"
                           pFrozenColumn
