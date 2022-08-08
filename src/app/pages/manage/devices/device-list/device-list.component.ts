@@ -23,7 +23,7 @@ export class DeviceListComponent implements OnInit {
   _selectedColumns: any[];
       loaded = false;
       dataColumns = [
-        { field: 'deviceType', header: 'Type', type: "text" },
+        {  field: 'deviceType', header: 'Type', type: "text" },
         {  field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
         {  field: 'deviceName', header: 'Device Name', type: "text" },
         {  field: 'vehicle.vehicleIdentification', header: 'Vehicle/Asset', type: "text" },
