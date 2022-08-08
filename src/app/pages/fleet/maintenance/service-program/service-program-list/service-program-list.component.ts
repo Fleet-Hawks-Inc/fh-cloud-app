@@ -42,8 +42,8 @@ export class ServiceProgramListComponent implements OnInit {
   
      // columns of data table
   dataColumns = [
-    { width: '20%', field: 'programName', header: 'Service Program Name', type: 'text' },
-    { width: '75%', field: 'description', header: 'Description', type: 'text' },
+    {  field: 'programName', header: 'Service Program Name', type: 'text' },
+    {  field: 'description', header: 'Description', type: 'text' },
   ];
   
   constructor(
