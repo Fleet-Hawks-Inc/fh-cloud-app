@@ -8,7 +8,7 @@
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACI eManifests</a> </div>
         </div>
       </header>
-      <div class="row text-dark text-dark">
+      <div class="row text-dark text-capitalize">
         <div class="col">
           <section class="card">
             <div class="card-body">
@@ -222,7 +222,7 @@
                         <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select Driver"
                           (change)="onChangeHideErrors('mainDriver')" #A1driver="ngModel" required>
                           <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
-                            {{driver.firstName}}</ng-option>
+                            {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                         <div *ngIf="A1driver.invalid && (A1driver.dirty || A1driver.touched)" class="text-danger">
                           <div>
@@ -241,7 +241,7 @@
                           placeholder="Select Co-Driver">
                           <ng-container *ngFor="let driver of drivers">
                             <ng-option *ngIf="driver.driverID != mainDriver" [value]="driver.driverID">
-                              {{driver.firstName}}</ng-option>
+                              {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</ng-option>
                           </ng-container>
                         </ng-select>
                       </div>
@@ -1853,7 +1853,7 @@
                             </tr>
                           </tbody>
                         </table>
-                        <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success ml-auto"
+                        <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success d-block ml-auto"
                           (click)="addTrailer()"><i class="fas fa-plus"></i> Add Asset</button>
                       </div>
                     </div>
@@ -1888,7 +1888,7 @@
                 <div class="form-group row">
                   <div class="col-lg-11 offset-lg-1">
                     <div class="row">
-                      <div class="col-lg-10">
+                      <div class="col-lg-10 text-right">
                         <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
                         <button type="button" *ngIf="!manifestID" (click)="addACIManifest()"
                           [disabled]="!aAci1.form.valid" class="btn btn-success">Save</button>

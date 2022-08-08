@@ -319,8 +319,8 @@
                            </p-table>
                         </p-tabPanel>
                         <p-tabPanel header="ACI eManifest">
-                           <p-table #dt responsiveLayout="scroll" styleClass="p-datatable-md" [value]="ACEList"
-                              [columns]="ACE_Options" [resizableColumns]="true" columnResizeMode="expand"
+                           <p-table #dt responsiveLayout="scroll" styleClass="p-datatable-md" [value]="ACIList"
+                              [columns]="ACI_Options" [resizableColumns]="true" columnResizeMode="expand"
                               scrollDirection="both" [scrollable]="true" [loading]="!loaded"
                               styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped" [scrollable]="true"
                               scrollHeight="100%">
@@ -332,9 +332,9 @@
                                     </div>
 
                                     <div class="text-right">
-                                       <span>Showing {{ ACEList.length }} entries </span>
+                                       <span>Showing {{ ACIList.length }} entries </span>
                                        &nbsp;
-                                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                                       <button type="button" pButton (click)="refreshACI()" pTooltip="Refresh"
                                           class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                                        <button type="button" pButton pTooltip="Add"
                                           [routerLink]="['/dispatch','cross-border','aci-manifest']"
@@ -346,7 +346,7 @@
                                           icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
                                           pTooltip="Excel"></button>
 
-                                       <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACE_Options"
+                                       <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACI_Options"
                                           optionLabel="header" selectedItemsLabel="{0} columns selected"
                                           [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                                        </p-multiSelect>
@@ -399,7 +399,7 @@
                                                 get(rowData, col.field) | titlecase
                                                 }}</b>
                                           </span>
-                                          <span *ngSwitchCase="'usPortOfArrival'">
+                                          <span *ngSwitchCase="'portOfEntry'">
                                              <b>
                                                 {{
                                                 get(rowData, col.field) | titlecase
@@ -460,7 +460,7 @@
                                           </button>
                                           <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
                                              <ng-template pTemplate>
-                                                <a routerLink="/dispatch/cross-border/ace-manifest/{{rowData.mID }}"
+                                                <a routerLink="/dispatch/cross-border/aci-manifest/{{rowData.mID }}"
                                                    class="dropdown-item ">Edit </a>
                                                 <button type="button" class="dropdown-item "
                                                    (click)="deleteACEEntry($event, rowData.mID)">Delete</button>

@@ -114,7 +114,7 @@ export class NewAciManifestComponent implements OnInit {
   passengerDocStates: any = [];
   shipments = [
     {
-      shipmentType: null,
+      shipmentType: 'PARS',
       loadedOn: {
         type: null,
         number: '',
@@ -426,7 +426,7 @@ export class NewAciManifestComponent implements OnInit {
     });
   }
   fetchDrivers() {
-    this.apiService.getData('drivers').subscribe((result: any) => {
+    this.apiService.getData('drivers/get/all/active').subscribe((result: any) => {
       this.drivers = result.Items;
     });
   }
@@ -760,7 +760,7 @@ export class NewAciManifestComponent implements OnInit {
   }
   addShipment() {
     this.shipments.push({
-      shipmentType: null,
+      shipmentType: 'PARS',
       loadedOn: {
         type: null,
         number: '',
@@ -821,47 +821,50 @@ export class NewAciManifestComponent implements OnInit {
   addACIManifest() {
     const data = {
       CCC: this.CCC,
-      manifestType: this.manifestType,
+      type: this.manifestType,
       tripNumber: this.CCC + this.tripNumber,
-      portOfEntry: this.portOfEntry,
-      subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
-      estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
-      truck: this.truck,
-      trailers: this.trailers,
-      mainDriver: this.mainDriver,
-      coDrivers: this.coDrivers,
-      passengers: this.passengers,
-      containers: this.containers,
-      shipments: this.shipments,
-      currentStatus: 'Draft',
+      manifestInfo: {
+        portOfEntry: this.portOfEntry,
+        subLocation: this.subLocation,
+        estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
+
+        truck: this.truck,
+        trailers: this.trailers,
+        mainDriver: this.mainDriver,
+        coDrivers: this.coDrivers,
+        passengers: this.passengers,
+        containers: this.containers,
+        shipments: this.shipments,
+      },
+      currentStatus: 'DRAFT',
     };
-    for (let p = 0; p < data.passengers.length; p++) {
-      for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-        const element = data.passengers[p].travelDocuments[d];
+    for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+      for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+        const element = data.manifestInfo.passengers[p].travelDocuments[d];
         delete element.docStates;
       }
     }
-    for (let s = 0; s < data.shipments.length; s++) {
-      for (let p = 0; p < data.shipments[s].notifyParties.length; p++) {
-        const element = data.shipments[s].notifyParties[p].address;
+    for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+      for (let p = 0; p < data.manifestInfo.shipments[s].notifyParties.length; p++) {
+        const element = data.manifestInfo.shipments[s].notifyParties[p].address;
         delete element.notifyPartyStates;
         delete element.notifyPartyCities;
       }
     }
-    for (let s = 0; s < data.shipments.length; s++) {
-      for (let p = 0; p < data.shipments[s].deliveryDestinations.length; p++) {
-        const element = data.shipments[s].deliveryDestinations[p].address;
+    for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+      for (let p = 0; p < data.manifestInfo.shipments[s].deliveryDestinations.length; p++) {
+        const element = data.manifestInfo.shipments[s].deliveryDestinations[p].address;
         delete element.deliveryDestinationStates;
         delete element.deliveryDestinationCities;
       }
-      delete data.shipments[s].cityOfLoading.loadingCities;
-      delete data.shipments[s].cityOfLoading.loadingStates;
-      delete data.shipments[s].cityOfAcceptance.acceptanceCities;
-      delete data.shipments[s].cityOfAcceptance.acceptanceStates;
+      delete data.manifestInfo.shipments[s].cityOfLoading.loadingCities;
+      delete data.manifestInfo.shipments[s].cityOfLoading.loadingStates;
+      delete data.manifestInfo.shipments[s].cityOfAcceptance.acceptanceCities;
+      delete data.manifestInfo.shipments[s].cityOfAcceptance.acceptanceStates;
     }
-    this.apiService.postData('eManifests/addACIemanifest', data).subscribe({
+    this.apiService.postData('eManifests/add-aci', data).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
