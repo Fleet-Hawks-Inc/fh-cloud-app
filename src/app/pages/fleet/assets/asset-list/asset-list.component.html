@@ -228,13 +228,15 @@
                     </ng-template>
                     <!-- Empty Template -->
 
-                    <ng-template pTemplate="emptymessage" let-columns>
-                      <td colspan="12" class="text-center">
-                       
-                            {{ dataMessage }}
-                            
-                      </td>
-                    </ng-template>
+                     <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                          <td colspan="11" class="text-center">
+                            <br/>
+                            {{dataMessage}}
+                            <br/><br/>
+                          </td>
+                        </tr>
+                      </ng-template>
                     <!-- Summary Section with Load More button -->
 
                     <ng-template pTemplate="summary" let-columns>
