@@ -94,13 +94,13 @@ export class ServiceListComponent implements OnInit {
   ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-    { width: '9%', field: 'unitType', header: 'Unit Type', type: 'text' },
-    { width: '17%', field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
-    { width: '10%', field: 'odometer', header: 'Odometer', type: 'text' },
-    { width: '21.8%', field: 'taskName', header: 'Service Task', type: 'text' },
-    { width: '12%', field: 'completionDate', header: 'Completion Date', type: 'text' },
-    { width: '9%', field: 'totalLogs', header: 'Total', type: 'text' },
-    { width: '10%', field: 'currentStatus', header: 'Status', type: 'text' },
+    { field: 'unitType', header: 'Unit Type', type: 'text' },
+    { field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
+    { field: 'odometer', header: 'Odometer', type: 'text' },
+    { field: 'taskName', header: 'Service Task', type: 'text' },
+    { field: 'completionDate', header: 'Completion Date', type: 'text' },
+    { field: 'totalLogs', header: 'Total', type: 'text' },
+    { field: 'currentStatus', header: 'Status', type: 'text' },
   ];
   this._selectedColumns = this.dataColumns;
     this.fetchTasks();
