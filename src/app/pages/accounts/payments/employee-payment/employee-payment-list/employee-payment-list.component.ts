@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
 
 @Component({
   selector: "app-employee-payment-list",
@@ -24,16 +26,41 @@ export class EmployeePaymentListComponent implements OnInit {
   lastItemSK = "";
   loaded = false;
   disableSearch = false;
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { field: 'paymentNo', header: 'Payment#', type: "text" },
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'payMode', header: 'Payment Mode', type: "text" },
+    { field: 'payModeNo', header: 'Reference No.', type: "text" },
+    { field: 'entityId', header: 'Vendor', type: "text" },
+    { field: 'finalTotal', header: 'Amount', type: "text" },
+  ];
   constructor(
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.setToggleOptions();
     this.fetchEmployees();
     this.fetchPayments();
   }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+
 
   fetchEmployees() {
     this.apiService
@@ -142,5 +169,8 @@ export class EmployeePaymentListComponent implements OnInit {
     this.payments = [];
     this.lastItemSK = "";
     this.fetchPayments();
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

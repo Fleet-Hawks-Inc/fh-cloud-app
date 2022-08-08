@@ -1,8 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { Subscription } from "rxjs";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, DashboardUtilityService, ListService } from "src/app/services";
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
+import { OverlayPanel } from "primeng/overlaypanel";
+
 
 @Component({
   selector: "app-driver-payments-list",
@@ -10,6 +14,7 @@ import { AccountService, ApiService, DashboardUtilityService, ListService } from
   styleUrls: ["./driver-payments-list.component.css"],
 })
 export class DriverPaymentsListComponent implements OnInit {
+  @ViewChild("op") overlaypanel: OverlayPanel;
   dataMessage: string = Constants.FETCHING_DATA;
 
   payments = [];
@@ -31,7 +36,20 @@ export class DriverPaymentsListComponent implements OnInit {
   ownerOpObjects: any = {};
   voidedRecID = '';
   voidSubs: Subscription;
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { field: 'paymentNo', header: 'Payment#', type: "text" },
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'payMode', header: 'Payment Mode', type: "text" },
+    { field: 'payModeNo', header: 'Reference No.', type: "text" },
+    { field: 'settlData', header: 'Settlement#', type: "text" },
+    { field: 'paymentTo', header: 'Paid To', type: "text" },
+    { field: 'finalAmount', header: 'Amount', type: "text" },
+    { field: 'status', header: 'Status', type: "text" },
 
+  ];
   constructor(
     private toaster: ToastrService,
     private accountService: AccountService,
@@ -41,7 +59,7 @@ export class DriverPaymentsListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-
+    this.setToggleOptions()
     this.fetchDriverPayments();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
@@ -49,14 +67,28 @@ export class DriverPaymentsListComponent implements OnInit {
 
     this.voidSubs = this.listService.voidStatus.subscribe(
       async (res: any) => {
-        if(res === true) {
+        if (res === true) {
           for (const iterator of this.payments) {
-            if(iterator.paymentID === this.voidedRecID) {
+            if (iterator.paymentID === this.voidedRecID) {
               iterator.status = 'voided';
             }
           }
         }
       })
+
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   unitTypeChange() {
@@ -184,5 +216,8 @@ export class DriverPaymentsListComponent implements OnInit {
     };
     this.voidedRecID = payData.paymentID;
     this.listService.triggerVoidDriverPayment(payObj);
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }
