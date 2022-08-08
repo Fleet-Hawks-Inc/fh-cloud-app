@@ -1,159 +1,262 @@
 <section class="body">
-    <div class="inner-wrapper">
-      <section role="main" class="content-body pl-1 pt-0 pr-0">
-        <header class="page-header d-flex align-items-center justify-content-start">
-            <div class="row">
-              <div class="col-md-6 col-lg-6" style="font-size: 16px">
-                <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
-                  Scheduler
-                </h4>
-              </div>
-            </div>
-        </header>
-        <section class="m-2">
-            <div class="row mb-3">
-                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                    <div class="bg-white p-3 text-dark text-capitalize">
-                        <p-table #dt [value]="schedules" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
-                [columns]="selectedColumns" [loading]="!loaded"
-                styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                [loading]="!loaded" scrollHeight="100%" responsiveLayout="scroll">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-1 pt-0 pr-0">
+      <header
+        class="page-header d-flex align-items-center justify-content-start"
+      >
+        <div class="row">
+          <div class="col-md-6 col-lg-6" style="font-size: 16px">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
+              Scheduler
+            </h4>
+          </div>
+        </div>
+      </header>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div
+            class="col-lg-12"
+            style="height: calc(100vh - 149px); overflow-y: scroll"
+          >
+            <div class="bg-white p-3 text-dark text-capitalize">
+              <p-table
+                #dt
+                [value]="schedules"
+                [resizableColumns]="true"
+                columnResizeMode="expand"
+                scrollDirection="both"
+                [columns]="selectedColumns"
+                [loading]="!loaded"
+                styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                [scrollable]="true"
+                [loading]="!loaded"
+                scrollHeight="100%"
+                responsiveLayout="scroll"
+              >
                 <ng-template pTemplate="caption">
-                    <div class="p-d-flex d-flex justify-content-between align-items-center">
-                      <div>
-                        
-                      </div>
-                      <div class="text-right">
-                        <span>Showing {{schedules.length}} entries</span> &nbsp;
-                        <button type="button" pButton  pTooltip="Refresh"
-                          class="p-button-outlined mr-2" (click)="refreshData()" icon="fas fa-sync"></button>
-  
-                        <button type="button" pButton pTooltip="Add" routerLink="/dispatch/scheduler/add"
-                          class="p-button-outlined mr-2" icon="pi pi-plus"></button>
-  
-                        <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" 
-                          icon="pi pi-filter-slash"></button>
-  
-                        <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                          icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
-                      </div>
-                    </div>
-                  </ng-template>
-                  <ng-template pTemplate="header" let-columns>
-                    <tr>
-                      <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
-                        [ngStyle]="{'width': column.width}">
-                        <span>
-                          <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn
-                            [frozen]="true">
-                            {{column.header}}
-                            <p-sortIcon [field]="column.field">
-                            </p-sortIcon>
-                            <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
-                              [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
-                            </p-columnFilter>
-                          </div>
-                        </span>
-                      </th>
-                      <th style="width: 20%">Created By</th>
-                      <th style="width:20%">Status</th>
-                      <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
-                    </tr>
-                  </ng-template>
-
-                  <ng-template pTemplate="body" let-schedule let-columns="columns" let-rowIndex="rowIndex"
-                  let-expanded="expanded">
-                  <tr style="cursor: pointer;"style="height: 40px">
-                    <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                    style="width:20%">
-
-                    {{schedule.orderNumber}}
-                  </td>
-                  <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                    style="width:20%">
-
-                    {{schedule.customerName}}
-                  </td>
-                  <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                    style="width:20%">
-
-                    {{schedule.pickup}}
-                  </td>
-                  <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                    style="width:20%">
-
-                    {{schedule.dropOff}}
-                  </td>
-
-                  <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                  style="width:20%">
-
-                  {{schedule.sName |titlecase}}
-                </td>
-                <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
-                style="width:20%">
-                {{schedule.sTime}}
-              </td>
-              <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
-                style="width:20%">
-                {{schedule.firstName}} {{schedule.lastName}}
-              </td>
-
-              <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
-                style="width:20%">
-                <span class="badge badge-success" *ngIf="schedule.disabled===0">Enabled</span>
-                <span class="badge badge-danger" *ngIf="schedule.disabled===1">Disabled</span>
-              </td>
-
-              <td style="width:6%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
-                      [frozen]="true">
-                      <div class="dropdown dropright" style="z-index: 10001">
-                        <button (click)="op.toggle($event)" class="bg-transparent border-0" type="button"
-                        id="dropdownMenuButton-{{ rowIndex }}">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </button>
-                        <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
-                            <a class="dropdown-item" (click)="op.hide();" routerLink='/dispatch/scheduler/edit/{{schedule.id}}'>Edit</a>
-                            <a *ngIf="schedule.disabled==0" class="dropdown-item" (click)="op.hide(); delete(schedule.id,schedule.mongoID)">Deactivate</a>
-                            <a *ngIf="schedule.disabled==1" class="dropdown-item" (click)="op.hide(); activate(schedule.id,schedule)">Activate</a>
-                        </p-overlayPanel>
-                        </div>
-                </td>
-                </tr>
-
-                  </ng-template>
-                  <ng-template pTemplate="summary" let-columns>
-                    <div
-                      class="col-lg-12 mt-3 text-center"
-                      *ngIf="
-                        lastEvaluatedKey !== 'end' && schedules.length !== 0
-                      "
-                    >
+                  <div
+                    class="p-d-flex d-flex justify-content-between align-items-center"
+                  >
+                    <div></div>
+                    <div class="text-right">
+                      <span>Showing {{ schedules.length }} entries</span> &nbsp;
                       <button
-                        type="button "
-                        (click)="onScroll($event)"
-                        class="btn btn-success btn-sm text-light"
-                      >
-                        Load More..
-                      </button>
+                        type="button"
+                        pButton
+                        pTooltip="Refresh"
+                        class="p-button-outlined mr-2"
+                        (click)="refreshData()"
+                        icon="fas fa-sync"
+                      ></button>
 
-                      <br /><br />
+                      <button
+                        type="button"
+                        pButton
+                        pTooltip="Add"
+                        routerLink="/dispatch/scheduler/add"
+                        class="p-button-outlined mr-2"
+                        icon="pi pi-plus"
+                      ></button>
+
+                      <button
+                        pButton
+                        pRipple
+                        pTooltip="Clear Filter"
+                        class="p-button-outlined mr-2"
+                        icon="pi pi-filter-slash"
+                      ></button>
+
+                      <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                          icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
                     </div>
-                    <div
-                      class="col-lg-12 mt-3 text-center"
-                      *ngIf="lastEvaluatedKey === 'end'"
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th
+                      *ngFor="let column of dataColumns"
+                      [pSortableColumn]="column.field"
+                      pResizableColumn
+                      [ngStyle]="{ width: column.width }"
                     >
-                      Total Records: {{ schedules.length }}
-                    </div>
-                    </ng-template>
+                      <span>
+                        <div
+                          class="flex justify-content-center align-items-center"
+                          alignFrozen="right"
+                          pFrozenColumn
+                          [frozen]="true"
+                        >
+                          {{ column.header }}
+                          <p-sortIcon [field]="column.field"> </p-sortIcon>
+                          <p-columnFilter
+                            [type]="column.type"
+                            [field]="column.field"
+                            matchMode="contains"
+                            [showMatchModes]="false"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            display="menu"
+                          >
+                          </p-columnFilter>
+                        </div>
+                      </span>
+                    </th>
+                    <th style="width: 20%">Created By</th>
+                    <th style="width: 20%">Status</th>
+                    <th
+                      style="width: 6%"
+                      alignFrozen="right"
+                      pFrozenColumn
+                      [frozen]="true"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </ng-template>
 
-            </p-table>
-                    </div>
-                </div>
+                <ng-template
+                  pTemplate="body"
+                  let-schedule
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                  let-expanded="expanded"
+                >
+                  <tr style="cursor: pointer" style="height: 40px">
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                      class="font-weight-bold"
+                    >
+                      {{ schedule.orderNumber }}
+                    </td>
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      {{ schedule.customerName }}
+                    </td>
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      {{ schedule.pickup }}
+                    </td>
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      {{ schedule.dropOff }}
+                    </td>
+
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      {{ schedule.sName | titlecase }}
+                    </td>
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      {{ schedule.sTime }}
+                    </td>
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      {{ schedule.firstName }} {{ schedule.lastName }}
+                    </td>
+
+                    <td
+                      routerLink="/dispatch/scheduler/detail/{{ schedule.id }}"
+                      style="width: 20%"
+                    >
+                      <span
+                        class="badge badge-success"
+                        *ngIf="schedule.disabled === 0"
+                        >Enabled</span
+                      >
+                      <span
+                        class="badge badge-danger"
+                        *ngIf="schedule.disabled === 1"
+                        >Disabled</span
+                      >
+                    </td>
+
+                    <td
+                      style="width: 6%; overflow: inherit !important"
+                      pFrozenColumn
+                      alignFrozen="right"
+                      [frozen]="true"
+                    >
+                      <div class="dropdown dropright" style="z-index: 10001">
+                        <button
+                          (click)="op.toggle($event)"
+                          class="bg-transparent border-0"
+                          type="button"
+                          id="dropdownMenuButton-{{ rowIndex }}"
+                        >
+                          <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <p-overlayPanel
+                          #op
+                          [showCloseIcon]="true"
+                          [style]="{ width: '160px' }"
+                        >
+                          <a
+                            class="dropdown-item"
+                            (click)="op.hide()"
+                            routerLink="/dispatch/scheduler/edit/{{
+                              schedule.id
+                            }}"
+                            >Edit</a
+                          >
+                          <a
+                            *ngIf="schedule.disabled == 0"
+                            class="dropdown-item"
+                            (click)="
+                              op.hide(); delete(schedule.id, schedule.mongoID)
+                            "
+                            >Deactivate</a
+                          >
+                          <a
+                            *ngIf="schedule.disabled == 1"
+                            class="dropdown-item"
+                            (click)="op.hide(); activate(schedule.id, schedule)"
+                            >Activate</a
+                          >
+                        </p-overlayPanel>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary" let-columns>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastEvaluatedKey !== 'end' && schedules.length !== 0"
+                  >
+                    <button
+                      type="button "
+                      (click)="onScroll($event)"
+                      class="btn btn-success btn-sm text-light"
+                    >
+                      Load More..
+                    </button>
+
+                    <br /><br />
+                  </div>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastEvaluatedKey === 'end'"
+                  >
+                    Total Records: {{ schedules.length }}
+                  </div>
+                </ng-template>
+              </p-table>
             </div>
-                
-
-        </section>
-        </section>
-    </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>

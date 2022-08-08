@@ -184,7 +184,7 @@
                                           icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
                                           pTooltip="Excel"></button>
 
-                                       <p-multiSelect [options]="ACE_Options" [(ngModel)]="selectedColumns"
+                                       <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACE_Options"
                                           optionLabel="header" selectedItemsLabel="{0} columns selected"
                                           [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                                        </p-multiSelect>
@@ -194,10 +194,10 @@
                               <ng-template pTemplate="header" let-columns>
                                  <tr>
                                     <th *ngFor="let col of columns" [ngStyle]="{ width: col.width }"
-                                       style="cursor: pointer" [pSortableColumn]="columns.field" pResizableColumn>
+                                       style="cursor: pointer" [pSortableColumn]="col.field" pResizableColumn>
                                        {{col.header}}
-                                       <p-sortIcon [field]="columns.field"> </p-sortIcon>
-                                       <p-columnFilter type="text" [field]="columns.field" matchMode="contains"
+                                       <p-sortIcon [field]="col.field"> </p-sortIcon>
+                                       <p-columnFilter type="text" [field]="col.field" matchMode="contains"
                                           [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
                                           display="menu">
                                        </p-columnFilter>
@@ -319,7 +319,166 @@
                            </p-table>
                         </p-tabPanel>
                         <p-tabPanel header="ACI eManifest">
-                           Content 2
+                           <p-table #dt responsiveLayout="scroll" styleClass="p-datatable-md" [value]="ACEList"
+                              [columns]="ACE_Options" [resizableColumns]="true" columnResizeMode="expand"
+                              scrollDirection="both" [scrollable]="true" [loading]="!loaded"
+                              styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                              scrollHeight="100%">
+                              <!-- Caption template of data table -->
+                              <ng-template pTemplate="caption">
+                                 <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                    <div>
+                                       <h3 class="m-0">ACI Manifests</h3>
+                                    </div>
+
+                                    <div class="text-right">
+                                       <span>Showing {{ ACEList.length }} entries </span>
+                                       &nbsp;
+                                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                                          class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                                       <button type="button" pButton pTooltip="Add"
+                                          [routerLink]="['/dispatch','cross-border','aci-manifest']"
+                                          class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                                          icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+
+                                       <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                          icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                          pTooltip="Excel"></button>
+
+                                       <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACE_Options"
+                                          optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                          [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
+                                       </p-multiSelect>
+                                    </div>
+                                 </div>
+                              </ng-template>
+                              <ng-template pTemplate="header" let-columns>
+                                 <tr>
+                                    <th *ngFor="let col of columns" [ngStyle]="{ width: col.width }"
+                                       style="cursor: pointer" [pSortableColumn]="col.field" pResizableColumn>
+                                       {{col.header}}
+                                       <p-sortIcon [field]="col.field"> </p-sortIcon>
+                                       <p-columnFilter type="text" [field]="col.field" matchMode="contains"
+                                          [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                          display="menu">
+                                       </p-columnFilter>
+                                    </th>
+                                    <th alignFrozen="right" pFrozenColumn [frozen]="true">
+                                       Actions
+                                    </th>
+                                 </tr>
+
+                              </ng-template>
+                              <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                                 <tr>
+                                    <td *ngFor="let col of columns" style="cursor: pointer;"
+                                       [ngStyle]="{ width: col.width }" (click)="detailPage(rowData.mID)">
+                                       <div [ngSwitch]="col.field">
+                                          <span *ngSwitchCase="'tripNumber'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field)
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'shipments'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field)
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'shipTypes'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field)
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'arrDateTime'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'usPortOfArrival'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'drivers'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'truck'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'assets'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'shippers'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'receivers'">
+                                             <b>
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                          <span *ngSwitchCase="'status'">
+                                             <b class="badge text-uppercase"
+                                                [ngClass]="[(rowData.status == 'Cancelled Manifest') ? 'cancel-color' :
+                                             (rowData.status == 'Transmitted to CBP') ? 'transmitted-color' :
+                                             (rowData.status == 'Truck Released at Border') ? 'truck-release-color' :
+                                             (rowData.status == 'Complete Manifest and Entry Numbers On File with CBP') ? 'complete-file-color' :
+                                             (rowData.status == 'CBP Returned Error') ? 'returned-color' :
+                                             (rowData.status == 'Truck Arrived at Border') ? 'truck-arr-color ' :
+                                             (rowData.status == 'Preliminary Manifest On File with CBP') ? 'preliminary-color ' :
+                                             (rowData.status == 'Complete Manifest On File with CBP') ? 'complete-cbp-color' :  'draft-color']">
+                                                {{
+                                                get(rowData, col.field) | titlecase
+                                                }}</b>
+                                          </span>
+                                       </div>
+                                    </td>
+                                    <td style="overflow: inherit !important" pFrozenColumn alignFrozen="right"
+                                       [frozen]="true">
+                                       <div class="dropdown dropbottom">
+                                          <button (click)="op.toggle($event)" class="bg-transparent border-0"
+                                             type="button" id="dropdownMenuButton-{{ rowIndex }}">
+                                             <i class="fas fa-ellipsis-v"></i>
+                                          </button>
+                                          <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                                             <ng-template pTemplate>
+                                                <a routerLink="/dispatch/cross-border/ace-manifest/{{rowData.mID }}"
+                                                   class="dropdown-item ">Edit </a>
+                                                <button type="button" class="dropdown-item "
+                                                   (click)="deleteACEEntry($event, rowData.mID)">Delete</button>
+
+                                             </ng-template>
+                                          </p-overlayPanel>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </ng-template>
+                              <!-- Empty Template -->
+                              <ng-template pTemplate="emptymessage" let-columns>
+                                 <div class="col-lg-12 mt-3 text-center">
+                                    {{ dataMessage }}
+                                    <br /><br />
+                                 </div>
+                              </ng-template>
+                           </p-table>
                         </p-tabPanel>
                      </p-tabView>
                   </div>

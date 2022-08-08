@@ -15,14 +15,16 @@ import { HereMapService } from '../../../../../services';
 
 import * as _ from 'lodash';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: 'app-new-aci-manifest',
   templateUrl: './new-aci-manifest.component.html',
   styleUrls: ['./new-aci-manifest.component.css'],
-  providers: [],
+  providers: [MessageService],
 })
 export class NewAciManifestComponent implements OnInit {
+  activeState: boolean[] = [true, false, false];
   public manifestID;
   title = 'Add ACI e-Manifest';
   modalTitle = 'Add';
@@ -48,7 +50,7 @@ export class NewAciManifestComponent implements OnInit {
   acceptanceCities: any = [];
   assets: any = [];
   drivers: any = [];
-  mainDriver = '';
+  mainDriver = null;
   coDrivers = [];
   shippers: any = [];
   consignees: any = [];
@@ -82,7 +84,7 @@ export class NewAciManifestComponent implements OnInit {
   modifiedBy = '';
   createdBy = '';
   truck = {
-    truckID: '',
+    truckID: null,
     sealNumbers: [
       { sealNumber: '' },
       { sealNumber: '' },
@@ -94,8 +96,8 @@ export class NewAciManifestComponent implements OnInit {
   driverArray = [];
   trailers = [
     {
-      assetID: '',
-      assetTypeCode: '',
+      assetID: null,
+      assetTypeCode: null,
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -112,17 +114,17 @@ export class NewAciManifestComponent implements OnInit {
   passengerDocStates: any = [];
   shipments = [
     {
-      shipmentType: '',
+      shipmentType: null,
       loadedOn: {
-        type: '',
+        type: null,
         number: '',
       },
-      CCC: '',
+      CCC: null,
       cargoControlNumber: '',
       referenceOnlyShipment: false,
-      portOfEntry: '',
-      releaseOffice: '',
-      subLocation: '',
+      portOfEntry: null,
+      releaseOffice: null,
+      subLocation: null,
       importerCsaBusinessNumber: '',
       uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
@@ -230,7 +232,8 @@ export class NewAciManifestComponent implements OnInit {
     private location: Location,
     config: NgbTimepickerConfig,
     private dateAdapter: NgbDateAdapter<string>,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private messageService: MessageService,
   ) {
     config.seconds = true;
     config.spinners = true;
@@ -360,9 +363,18 @@ export class NewAciManifestComponent implements OnInit {
   }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
-      this.carriers = result.Items;
+      if (result && result.Items.length > 0) {
+        if (result.Items[0].CCC != 'NA' && result.Items[0].CCC != '' && result.Items[0].CCC != undefined && result.Items[0].CCC != null) {
+          this.CCC = result.Items[0].CCC;
+          this.shipments[0].CCC = this.CCC;
+        } else {
+          this.messageService.add({ sticky: true, closable: false, severity: 'error', summary: 'Carrier\'s CCC Error!', detail: 'Please update your profile to add manifest.' });
+        }
+      }
+
     });
   }
+
   savePassengers() {
     this.addedPassengers = this.passengers;
   }
@@ -446,8 +458,8 @@ export class NewAciManifestComponent implements OnInit {
   // trailer data
   addTrailer() {
     this.trailers.push({
-      assetID: '',
-      assetTypeCode: '',
+      assetID: null,
+      assetTypeCode: null,
       cargoExemptions: [],
       sealNumbers: [{ sealNumber: '' }],
     });
@@ -472,16 +484,16 @@ export class NewAciManifestComponent implements OnInit {
     this.passengers.push({
       firstName: '',
       lastName: '',
-      gender: '',
+      gender: null,
       dateOfBirth: '',
-      citizenshipCountry: '',
+      citizenshipCountry: null,
       fastCardNumber: '',
       travelDocuments: [
         {
-          type: '',
+          type: null,
           number: '',
-          country: '',
-          stateProvince: '',
+          country: null,
+          stateProvince: null,
           docStates: []
         },
       ],
@@ -493,10 +505,10 @@ export class NewAciManifestComponent implements OnInit {
   addDocument(i) {
     if (this.passengers[i].travelDocuments.length <= 2) {
       this.passengers[i].travelDocuments.push({
-        type: '',
+        type: null,
         number: '',
-        country: '',
-        stateProvince: '',
+        country: null,
+        stateProvince: null,
       });
     } else {
       this.toastr.warning(
@@ -748,22 +760,22 @@ export class NewAciManifestComponent implements OnInit {
   }
   addShipment() {
     this.shipments.push({
-      shipmentType: '',
+      shipmentType: null,
       loadedOn: {
-        type: '',
+        type: null,
         number: '',
       },
-      CCC: '',
+      CCC: null,
       cargoControlNumber: '',
       referenceOnlyShipment: false,
-      portOfEntry: '',
-      releaseOffice: '',
-      subLocation: '',
+      portOfEntry: null,
+      releaseOffice: null,
+      subLocation: null,
       importerCsaBusinessNumber: '',
       uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
-      estimatedArrivalTime: '',
-      estimatedArrivalTimeZone: '',
+      estimatedArrivalTime: null,
+      estimatedArrivalTimeZone: null,
       cityOfLoading: {
         cityName: '',
         stateProvince: '',

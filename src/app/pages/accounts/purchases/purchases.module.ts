@@ -27,7 +27,12 @@ import { BillDetailsComponent } from "./bills/bill-details/bill-details.componen
 import { BillListComponent } from "./bills/bill-list/bill-list.component";
 import { PaymentChequeComponent } from "../../..//shared/payment-cheque/payment-cheque.component";
 import { SharedModule } from "src/app/shared/shared.module";
-
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -195,7 +200,13 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     InfiniteScrollModule,
-    SharedModule
+    SharedModule,
+    AutoCompleteModule,
+    ButtonModule,
+    MultiSelectModule,
+    OverlayPanelModule,
+    SplitButtonModule,
+    TableModule
   ],
 })
 export class PurchasesModule { }

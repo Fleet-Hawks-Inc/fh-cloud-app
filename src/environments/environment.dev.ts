@@ -12,14 +12,15 @@ export const environment = {
   isAddressBook: false,
   isOrderPriceEnabled: false,
 
-  BaseUrl: "https://fleetservice.ap-south-1.fleethawks.com/api/v1/",
-  AssetURL: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com",
-  AccountServiceUrl: "https://accounts.ap-south-1.fleethawks.com/api/v1/",
-  SafetyServiceUrl: "https://safety.ap-south-1.fleethawks.com/api/v1/",
+  BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
+  AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
+  AccountServiceUrl: 'https://accounts.ap-south-1.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
   EldServiceUrl: "https://eld.us-east-2.fleethawks.com/api/v1/",
-  temp: "search",
-  LoginUrl: "users/login",
-  ApiKey: "",
+
+  temp: 'search',
+  LoginUrl: 'users/login',
+  ApiKey: '',
   mapBox: {
     accessToken:
       "pk.eyJ1Ijoia3VuYWxmbGVldGhhd2tzIiwiYSI6ImNrNzRuZW9qdjA1bHkzcW5ra3hjejNzenoifQ.CeUFzFnbOiG-XP6FRqiqtQ",
@@ -62,5 +63,7 @@ export const environment = {
     "23HFz4o1X79Xh3lcBEJumnolmnt",
     "1y62eyclUWKj6HSREEfZbHXjvRc",
     "29b6OwULJ0ukir4uFF7TTLm4Tof",
+    "21zpEs5A3MWtK9LeFEkOcsc5Szc",
+    "1y2cYywr5iGFdHH8uqTVIa96ayS"
   ],
 };

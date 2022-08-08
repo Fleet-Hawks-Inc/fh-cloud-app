@@ -566,10 +566,10 @@ export class AddAccountComponent implements OnInit {
               complete: () => {
 
                 this.throwErrors();
-                this.submitDisabled = true;
+                this.submitDisabled = false;
               },
-              error: () => { },
-              next: () => { this.submitDisabled = true; },
+              error: () => { this.submitDisabled = false; },
+              next: () => { this.submitDisabled = false; },
             });
         },
         next: (res) => {

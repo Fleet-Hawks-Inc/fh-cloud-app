@@ -30,7 +30,11 @@ import { AddVendorPaymentComponent } from "./vendor-payment/add-vendor-payment/a
 import { VendorPaymentDetailComponent } from "./vendor-payment/vendor-payment-detail/vendor-payment-detail.component";
 import { VendorPaymentListComponent } from "./vendor-payment/vendor-payment-list/vendor-payment-list.component";
 import { SharedModule } from "src/app/shared/shared.module";
-
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
 
 
 /**
@@ -222,7 +226,12 @@ const routes: Routes = [
     NgSelectModule,
     AddAccountModule,
     InfiniteScrollModule,
-    SharedModule
+    SharedModule,
+    MultiSelectModule,
+    ButtonModule,
+    OverlayPanelModule,
+    SplitButtonModule,
+    TableModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
