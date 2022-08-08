@@ -139,8 +139,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-creditN let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
-                          style="cursor: pointer" [routerLink]="creditN.url">
+                        <td *ngFor="let dataColumns of columns" style="cursor:pointer" [routerLink]="creditN.url">
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'txnDate'">
                               {{ creditN.txnDate | date: "yyyy/MM/dd" }}
@@ -206,10 +205,9 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        <span> {{ dataMessage }} </span>
-                        <br /><br />
-                      </div>
+                      <td colspan="6" class="text-center">
+                        {{ dataMessage }}
+                      </td>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
                       <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payOrders.length !== 0">
