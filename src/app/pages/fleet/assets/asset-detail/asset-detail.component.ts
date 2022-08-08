@@ -14,7 +14,7 @@ import { environment } from "../../../../../environments/environment";
 import { ApiService } from "../../../../services";
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ELDService } from "src/app/services/eld.service";
-
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -234,6 +234,7 @@ export class AssetDetailComponent implements OnInit {
         private countryStateCity: CountryStateCityService,
         private routerMgmtService: RouteManagementServiceService,
         private eldService: ELDService,
+        private messageService: MessageService,
     ) {
 
         this.sessionID = this.routerMgmtService.assetUpdateSessionID;
@@ -650,7 +651,7 @@ export class AssetDetailComponent implements OnInit {
         });
     }
 
-    async updateEldAssetD() {
+    updateEldAssetD() {
         let assetObj = {
             FhIdentifier: this.assetID,
             Number: this.assetIdentification,
@@ -662,11 +663,20 @@ export class AssetDetailComponent implements OnInit {
             Active: '1'
 
         }
-        const result: any = await this.eldService.postData("assets", {
+        this.eldService.postData("assets", {
             Asset: assetObj
-        }).toPromise();
-        // console.log('result---', result)
+        }).subscribe(result => {
+            return result
+        }, error => {
+            console.log('error', error)
+            this.showError(error)
+        })
 
-        return result;
+    }
+    showError(error: any) {
+        this.messageService.add({
+            severity: 'error', summary: 'Error',
+            detail: error.error.message
+        });
     }
 }

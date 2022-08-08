@@ -12,6 +12,7 @@ import { ApiService } from '../../../../services';
 import Constants from '../../constants';
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 
@@ -234,6 +235,7 @@ export class VehicleDetailComponent implements OnInit {
         autoplay: true,
         autoplaySpeed: 5000,
     };
+    hosVehicleId = ''
 
 
 
@@ -269,6 +271,7 @@ export class VehicleDetailComponent implements OnInit {
         private formBuilder: RxFormBuilder,
         private routerMgmtService: RouteManagementServiceService,
         private eldService: ELDService,
+        private messageService: MessageService,
     ) {
         this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
     }
@@ -387,6 +390,8 @@ export class VehicleDetailComponent implements OnInit {
             .getData("vehicles/" + this.vehicleID)
             .subscribe(async (vehicleResult: any) => {
                 vehicleResult = vehicleResult.Items[0];
+
+                this.hosVehicleId = vehicleResult.hosVehicleId
                 this.stateCode = vehicleResult.stateID;
 
                 // Check if DashCam is added to enable Share Live location button
@@ -618,7 +623,7 @@ export class VehicleDetailComponent implements OnInit {
 
     deleteDocument(value: string, name: string, index: string) {
         this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-            if(value == 'image'){
+            if(value == 'image') {
                 this.slides = [];
                 this.uploadedDocs = result.Attributes.uploadedPhotos;
                 this.existingDocs = result.Attributes.uploadedPhotos;
@@ -723,7 +728,7 @@ export class VehicleDetailComponent implements OnInit {
         }
     }
 
-    async updateEldVehicle() {
+    updateEldVehicle() {
         let vehicleObj = {
             FhIdentifier: this.vehicleID,
             Number: this.vehicleIdentification,
@@ -735,12 +740,24 @@ export class VehicleDetailComponent implements OnInit {
             Active: '1'
 
         }
-        const result: any = await this.eldService.postData("assets", {
+        this.eldService.postData("assets", {
             Asset: vehicleObj
-        }).toPromise();
-        // console.log('result---', result)
+        }).subscribe(
+            result => {
+                return result
+            },
+            error => {
+                console.log('error', error)
+                this.showError(error)
+            });
 
-        return result;
+    }
+
+    showError(error: any) {
+        this.messageService.add({
+            severity: 'error', summary: 'Error',
+            detail: error.error.message
+        });
     }
 
 }

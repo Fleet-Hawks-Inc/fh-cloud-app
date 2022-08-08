@@ -30,10 +30,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
-
-  const routes: Routes = [
+import { ToastModule } from 'primeng/toast';
+const routes: Routes = [
   { path: 'add', component: AddAssetsComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Asset' } },
-  { path: 'edit/:assetID', component: AddAssetsComponent,canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Asset' } },
+  { path: 'edit/:assetID', component: AddAssetsComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Asset' } },
   { path: 'list/:sessionID', component: AssetListComponent, data: { title: 'Asset List', reuseRoute: true } },
   { path: 'detail/:assetID', component: AssetDetailComponent, data: { title: 'Asset Detail' } }
 ];
@@ -57,10 +57,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
   toModel(date: NgbDateStruct): string { // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -116,7 +116,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    ToastModule
   ],
   providers: [
     unsavedChangesGuard,
