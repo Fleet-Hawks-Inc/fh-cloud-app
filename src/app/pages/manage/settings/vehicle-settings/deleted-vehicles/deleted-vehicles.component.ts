@@ -126,6 +126,7 @@ export class DeletedVehiclesComponent implements OnInit {
     if (this.lastEvaluatedKey !== 'end') {
       const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&vehStatus=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey).toPromise();
       if (result.Items.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       this.suggestedVehicles = [];

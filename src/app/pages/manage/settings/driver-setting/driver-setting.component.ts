@@ -31,15 +31,15 @@ export class DriverSettingComponent implements OnInit {
    get = _.get;
    
    dataColumns = [
-        { width: '10%', field: 'firstName', header: 'Name', type: "text" },
-        { width: '12%', field: 'email', header: 'Email', type: "text" },
-        { width: '10%', field: 'phone', header: 'Phone', type: "text" },
-        { width: '10%', field: 'driverType', header: 'Driver Type', type: "text" },
-        { width: '10%', field: 'startDate', header: 'Start Date', type: "text" },
-        { width: '11%', field: 'CDL_Number', header: 'CDL#', type: "text" },
-        { width: '11%', field: 'licenceExpiry', header: 'Licence Expiry', type: "text" },     
-        { width: '12%', field: 'licStateName', header: 'Licence Province', type: "text" }, 
-        { width: '8%', field: "driverStatus", header: 'Status', type: 'text' },
+        {  field: 'firstName', header: 'Name', type: "text" },
+        {  field: 'email', header: 'Email', type: "text" },
+        {  field: 'phone', header: 'Phone', type: "text" },
+        {  field: 'driverType', header: 'Driver Type', type: "text" },
+        {  field: 'startDate', header: 'Start Date', type: "text" },
+        {  field: 'CDL_Number', header: 'CDL#', type: "text" },
+        {  field: 'licenceExpiry', header: 'Licence Expiry', type: "text" },     
+        {  field: 'licStateName', header: 'Licence Province', type: "text" }, 
+        {  field: "driverStatus", header: 'Status', type: 'text' },
     ];
    
   constructor( private apiService: ApiService,
@@ -100,6 +100,7 @@ export class DriverSettingComponent implements OnInit {
         if (this.lastEvaluatedKey !== 'end') {
             const result = await this.apiService.getData(`drivers/deleted/fetch/records?driver=${this.driverID}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`).toPromise();
             if (result.Items.length === 0) {
+                this.loaded = true;
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             result.Items.map((v) => {
