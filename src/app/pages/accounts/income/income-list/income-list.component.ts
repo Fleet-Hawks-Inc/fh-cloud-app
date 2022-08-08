@@ -75,6 +75,7 @@ export class IncomeListComponent implements OnInit {
           if (result.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true
           }
           if (result.length > 0) {
             this.disableSearch = false;

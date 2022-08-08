@@ -65,6 +65,7 @@ export class TransfersListComponent implements OnInit {
         this.transactions = this.transactions.concat(result);
         if (this.transactions.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
+          this.loaded = true
         } else {
           this.loaded = true;
           this.transactions.map((v) => {

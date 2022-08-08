@@ -41,13 +41,13 @@ export class VendorCreditNotesListComponent implements OnInit {
     this.fetchPurchaseOrders();
     this.dataColumns = [
       { field: 'txnDate', header: 'Date', type: "text" },
-      {  field: 'vCrNo', header: 'Vendor Credit#', type: "text" },
-      {  field: 'crRef', header: 'Reference#', type: "text" },
-      {  field: 'purOrder', header: 'Purchase Order#', type: "text" },
+      { field: 'vCrNo', header: 'Vendor Credit#', type: "text" },
+      { field: 'crRef', header: 'Reference#', type: "text" },
+      { field: 'purOrder', header: 'Purchase Order#', type: "text" },
       { field: 'vendorID', header: 'Vendor', type: "text" },
-      {  field: 'totalAmt', header: 'Credit Amount', type: "text" },
-      {  field: 'balance', header: 'Balance Amount', type: "text" },
-      {  field: 'status', header: 'Status', type: "text" },
+      { field: 'totalAmt', header: 'Credit Amount', type: "text" },
+      { field: 'balance', header: 'Balance Amount', type: "text" },
+      { field: 'status', header: 'Status', type: "text" },
     ];
 
 
@@ -107,6 +107,7 @@ export class VendorCreditNotesListComponent implements OnInit {
           if (result.length === 0) {
             this.isSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true
           }
 
           if (result.length > 0) {
