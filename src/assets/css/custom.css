@@ -4453,6 +4453,19 @@ ul.simple-post-list.settings-list li:last-child a {
 .p-inputtext {
   padding: 0.26rem 0.5rem !important;
 }
-.p-button.p-button-icon-only{
+.p-button.p-button-icon-only {
   padding: 0.26rem 0 !important;
+}
+
+/* table showing entries vertical alignment */
+
+.showingtb {
+  padding-top: 5px;
+  float: left;
+}
+
+/*table list column select */
+.p-multiselect .p-multiselect-label {
+  padding-top: 0.3rem !important;
+  padding-bottom: 0.3rem !important;
 }
