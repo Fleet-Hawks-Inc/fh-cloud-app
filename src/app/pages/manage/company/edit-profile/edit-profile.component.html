@@ -469,13 +469,15 @@
                                                         data-placement="top"
                                                         title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
                                                     <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC"
-                                                    #ccc="ngModel" placeholder="eg. 1234" />
-                                                <!-- <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
-                            <div *ngIf="ccc.errors.pattern">
-                              CCC must be of length 4 and contains  capital letters or numbers.
-                            </div>
-                          </div> -->
+                                                <input type="text" minlength="4" maxlength="4" class="form-control"
+                                                    [(ngModel)]="CCC" name="CCC" #ccc="ngModel" pattern="^[0-9]{4,4}$"
+                                                    placeholder="eg. 1234" />
+                                                <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)"
+                                                    class="text-danger">
+                                                    <div *ngIf="ccc.errors.pattern">
+                                                        CCC must be of length 4 contains numbers.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label
@@ -484,14 +486,16 @@
                                                         data-placement="top"
                                                         title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                                                     <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC"
-                                                    name="SCAC" placeholder="eg. JK12" (onBlur)="hideErrors()"
-                                                    #scac="ngModel" />
-                                                <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
-                            <div *ngIf="scac.errors.pattern">
-                              SCAC must be of length 4 and contains  capital letters or numbers.
-                            </div>
-                          </div> -->
+                                                <input type="text" class="form-control" minlength="2" maxlength="4"
+                                                    (input)="this.SCAC = this.SCAC.toUpperCase()" pattern="^[A-Z]{2,4}$"
+                                                    [(ngModel)]="SCAC" name="SCAC" placeholder="eg. AYAF"
+                                                    (onBlur)="hideErrors()" #scac="ngModel" />
+                                                <div *ngIf="scac.invalid && (scac.dirty || scac.touched)"
+                                                    class="text-danger">
+                                                    <div *ngIf="scac.errors.pattern">
+                                                        SCAC must be of length 2-4 capital letters eg. AYAF
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row pt-2">

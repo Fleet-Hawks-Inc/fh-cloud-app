@@ -7,7 +7,6 @@
 }
 
 /* ACE button classes */
-
 .draft-color {
   background-color: #f0e68c;
   font-size: 0.75rem;
@@ -15,6 +14,7 @@
 .cancel-color {
   background-color: #ff0000;
   font-size: 0.75rem;
+  color: #ffffff;
 }
 .transmitted-color {
   background-color: #ffd700;
@@ -32,6 +32,7 @@
 .complete-file-color {
   background-color: #0000ff;
   font-size: 0.75rem;
+  color: #ffffff;
 }
 .complete-cbp-color {
   background-color: #90ee90;
@@ -40,37 +41,11 @@
 .truck-arr-color {
   background-color: #008000;
   font-size: 0.75rem;
+  color: #ffffff;
 }
 .truck-release-color {
   background-color: #7cfc00;
   font-size: 0.75rem;
-}
-.cancelBtn {
-  background-color: #d91714;
-}
-.draftBtn {
-  background-color: #000;
-}
-.transmittedBtn {
-  background-color: #dfd936;
-}
-.preliminaryBtn {
-  background-color: #b1e984;
-}
-.completeBtn {
-  background-color: #5cb85c;
-}
-.truckArrivedBtn {
-  background-color: #52aa0c;
-}
-.truckReleasedBtn {
-  background-color: #66c31d;
-}
-.CBPReturnedErrorBtn {
-  background-color: #f93121;
-}
-.completeManifestEntryBtn {
-  background-color: #43ea20;
 }
 
 /* ACI Button classes */

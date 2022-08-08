@@ -341,19 +341,13 @@ export class AceDetailsComponent implements OnInit {
   sendCBPFn() {
     this.apiService
       .getData('eManifests/ACE/CBPdetails/' + this.manifestID).toPromise().then(result => {
-
+        if (result) {
+          this.currentStatus = 'DRAFT';
+        }
       }).catch(err => {
         this.errorsDisplay = true;
         this.errors = err.error;
       })
-    // this.sendBorderConnectOption = result;
-    // if (this.sendBorderConnectOption === true) {
-    //   const val = 'Queued';
-    //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
-    //     this.toastr.success('Status Updated Successfully!');
-    //      this.currentStatus = val;
-    //   });
-    // }
 
   }
   async showShipmentDetails(shipmentID) {
@@ -397,7 +391,7 @@ export class AceDetailsComponent implements OnInit {
 
   async showMainDriverDetails() {
     const countryCode = 'US';
-    const stateCode = this.mainDriver.usAddress.state;
+
     this.driverData = {
       driverID: this.mainDriver.driverID,
       driverNumber: this.mainDriver.driverNumber,
@@ -409,12 +403,21 @@ export class AceDetailsComponent implements OnInit {
       fastCardNumber: this.mainDriver.fastCardNumber,
       travelDocuments: this.mainDriver.travelDocuments,
       usAddress: {
+        addressLine: '',
+        state: '',
+        city: '',
+        zipCode: '',
+      }
+    };
+    if (this.mainDriver.usAddress != undefined) {
+      const stateCode = this.mainDriver.usAddress.state;
+      this.driverData.usAddress = {
         addressLine: this.mainDriver.usAddress.addressLine,
         state: await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode),
         city: this.mainDriver.usAddress.city,
         zipCode: this.mainDriver.usAddress.zipCode
       }
-    };
+    }
     for (let d = 0; d < this.mainDriver.travelDocuments.length; d++) {
       this.mainDriver.travelDocuments.map(async (e: any) => {
         e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
@@ -438,12 +441,20 @@ export class AceDetailsComponent implements OnInit {
       fastCardNumber: driverDataFetched[0].fastCardNumber,
       travelDocuments: driverDataFetched[0].travelDocuments,
       usAddress: {
+        addressLine: '',
+        state: '',
+        city: '',
+        zipCode: '',
+      }
+    };
+    if (this.mainDriver.usAddress != undefined) {
+      this.driverData.usAddress = {
         addressLine: this.mainDriver.usAddress.addressLine,
         state: await this.countryStateCity.GetStateNameFromCode(driverDataFetched[0].usAddress.state, 'US'),
         city: this.mainDriver.usAddress.city,
         zipCode: this.mainDriver.usAddress.zipCode
       }
-    };
+    }
     for (let d = 0; d < driverDataFetched[0].travelDocuments.length; d++) {
       driverDataFetched[0].travelDocuments.map(async (e: any) => {
         e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
