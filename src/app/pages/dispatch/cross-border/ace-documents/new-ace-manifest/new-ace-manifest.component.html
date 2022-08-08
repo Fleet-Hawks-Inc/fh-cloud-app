@@ -8,7 +8,7 @@
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACE Manifests List</a> </div>
         </div>
       </header>
-      <div class="row text-dark">
+      <div class="row text-dark text-capitalize">
         <div class="col">
           <section class="card">
             <div class="card-body">
@@ -229,184 +229,222 @@
                   </div>
                   <div class="col-lg-5 text-right">
                     <div class="row">
-                      <!-- <div class="col-lg-10">
+                      <div class="col-lg-10">
                         <button type="button" (click)="addMorePassenger()" *ngIf="passengers.length >= 0"
                           class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add
                           Passenger</button>
-                        <button type="button" (click)="deletePassenger(i)" *ngIf="passengers.length > 0"
-                          class="btn btn-sm btn-danger"> Delete
-                          Passenger</button>
-                      </div> -->
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="row" *ngFor="let passenger of passengers;let i=index ">
-                  <div class="col">
-                    <div class="row pb-4">
-
-
-                      <div class="col-lg-5 offset-lg-1">
-                        <div class="form-group row">
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">First Name<span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].firstName'" placeholder="Enter passenger first name"
-                              [(ngModel)]="passenger.firstName" #fName1="ngModel" pattern="^[a-zA-Z]+$">
-                            <div *ngIf="fName1.invalid && (fName1.dirty || fName1.touched)" class="text-danger">
-
-                              <div *ngIf="fName1.errors.pattern">
-                                First name must not contain any special character.
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Gender<span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select data-plugin-selectTwo class="form-control populate"
-                              [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].gender'"
-                              aria-placeholder="Select pasenger gender" [(ngModel)]="passenger.gender">
-                              <optgroup label="">
-                                <ng-option value="M">Male</ng-option>
-                                <ng-option value="F">Female</ng-option>
-                              </optgroup>
-                            </ng-select>
-                          </div>
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Country of
-                              Citizenship<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].citizenshipCountry'"
-                              placeholder="Select citizenship country " [(ngModel)]="passenger.citizenshipCountry">
-                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
-                                {{country.countryName}}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <div class="form-group row">
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Last Name<span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].lastName'" placeholder="Enter passenger last name"
-                              [(ngModel)]="passenger.lastName" #lName="ngModel" pattern="^[a-zA-Z0-9]+$">
-                            <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
-
-                              <div *ngIf="lName.errors.pattern">
-                                Last name must not contain any special characters.
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Date of
-                              Birth<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input class="form-control" type="text" placeholder="yyyy/mm/dd" ngbDatepicker
-                              [minDate]="birthDateMinLimit" #d7="ngbDatepicker" [maxDate]="getcurrentDate"
-                              (click)="d7.toggle()" [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].dateOfBirth'" [(ngModel)]="passenger.dateOfBirth" />
-                          </div>
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">FAST
-                              Card#&nbsp;<i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
-                                title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i>
-                              &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                            <input type="text" maxlength="14" [class.error]="errorFastCard"
-                              placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
-                              class="form-control" [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].fastCardNumber'" [(ngModel)]="passenger.fastCardNumber"
-                              #fastCard="ngModel" pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$">
-                            <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
-                              <div *ngIf="fastCard.errors.pattern">
-                                Fast card must contain only 14 numbers beginning with 4270 or 4110 and ending with 00 or
-                                01.
-                              </div>
-
-                            </div>
-                            <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- document div start -->
-                    <div class="row pb-4" *ngFor="let document of passenger.travelDocuments;let j = index">
-                      <div class="col-lg-11 offset-lg-1 text-right">
-                        <div class="row">
-                          <div class="col-10">
-                            <button type="button" *ngIf="j != 0;" (click)="deleteDocument(j,i)"
-                              class="btn btn-sm btn-danger">
-                              Delete Document</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-5 offset-lg-1">
-                        <div class="form-group row">
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Document#<span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input type="text" class="form-control" placeholder="Enter travel document number"
-                              [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'"
-                              [(ngModel)]="document.number" #docNum="ngModel" pattern="^[A-Za-z0-9\s-\/\\]{1,50}$">
-                            <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
-
-                              <div *ngIf="docNum.errors.pattern">
-                                Document# must contain alphanumeric, dashes, spaces and no other characters.
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Issuing
-                              Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
-                              (change)="getPassengerDocStates($event,i,j)" [(ngModel)]="document.country">
-                              <ng-option value="CA">Canada</ng-option>
-                              <ng-option value="US">United States</ng-option>
-                              <ng-option value="MX">Mexico</ng-option>
-                            </ng-select>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <div class="form-group row">
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Document
-                              Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].type'" [(ngModel)]="document.type">
-                              <ng-option *ngFor="let document of documentTypeList" [value]="document.code">
-                                {{document.description}}</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="col-lg-10">
-                            <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Issuing
-                              Province/State</label>
-                            <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
-                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
-                              [(ngModel)]="document.stateProvince">
-                              <ng-option *ngFor="let state of document.docStates" [value]="state.stateCode">
-                                {{state.stateCode}} - {{state.stateName}}</ng-option>
-
-                            </ng-select>
-                          </div>
-                          <div class="col-lg-2 mar-top-37">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div class="row">
+                  <div class="col-lg-11 offset-lg-1">
                     <div class="row">
-                      <div class="col-lg-10 text-right pr-0">
-                        <button type="button" (click)="addDocument(i)" id="addDocBtn"
-                          class="btn btn-success btn-sm mb-2"><i class="fas fa-plus"></i>Add Another
-                          Document</button>
+                      <div class="col-lg-10">
+                        <p-accordion>
+                          <p-accordionTab header="Passenger {{i+1}}" [(selected)]="activeState[0]"
+                            *ngFor="let passenger of passengers;let i=index ">
+                            <ng-template pTemplate="header"><button type="button" (click)="deletePassenger(i)"
+                                class="btn btn-xs btn-danger pull-right mt-1-c1 ml-auto"> Delete Passenger</button>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+
+                              <div class="row pb-4">
+
+                                <div class="col-lg-5 offset-lg-1">
+                                  <div class="form-group row">
+                                    <div class="col-lg-10">
+                                      <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">First
+                                        Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].firstName'"
+                                        placeholder="Enter passenger first name" [(ngModel)]="passenger.firstName"
+                                        #fName1="ngModel" pattern="^[a-zA-Z]+$">
+                                      <div *ngIf="fName1.invalid && (fName1.dirty || fName1.touched)"
+                                        class="text-danger">
+
+                                        <div *ngIf="fName1.errors.pattern">
+                                          First name must not contain any special character.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label
+                                        class=" text-dark control-label font-weight-bold text-lg-right pt-2">Gender<span
+                                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <ng-select data-plugin-selectTwo class="form-control populate"
+                                        [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].gender'"
+                                        aria-placeholder="Select pasenger gender" [(ngModel)]="passenger.gender">
+                                        <optgroup label="">
+                                          <ng-option value="M">Male</ng-option>
+                                          <ng-option value="F">Female</ng-option>
+                                        </optgroup>
+                                      </ng-select>
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label
+                                        class=" text-dark control-label font-weight-bold text-lg-right pt-2">Country of
+                                        Citizenship<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <ng-select [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].citizenshipCountry'"
+                                        placeholder="Select citizenship country "
+                                        [(ngModel)]="passenger.citizenshipCountry">
+                                        <ng-option *ngFor="let country of countries" [value]="country.countryCode">
+                                          {{country.countryName}}</ng-option>
+                                      </ng-select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-5">
+                                  <div class="form-group row">
+                                    <div class="col-lg-10">
+                                      <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Last
+                                        Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].lastName'"
+                                        placeholder="Enter passenger last name" [(ngModel)]="passenger.lastName"
+                                        #lName="ngModel" pattern="^[a-zA-Z0-9]+$">
+                                      <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
+
+                                        <div *ngIf="lName.errors.pattern">
+                                          Last name must not contain any special characters.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Date
+                                        of
+                                        Birth<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <input class="form-control" type="text" placeholder="yyyy/mm/dd" ngbDatepicker
+                                        [minDate]="birthDateMinLimit" #d7="ngbDatepicker" [maxDate]="getcurrentDate"
+                                        (click)="d7.toggle()" [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].dateOfBirth'"
+                                        [(ngModel)]="passenger.dateOfBirth" />
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">FAST
+                                        Card#&nbsp;<i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                          data-placement="top"
+                                          title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i>
+                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                      <input type="text" maxlength="14" [class.error]="errorFastCard"
+                                        placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
+                                        class="form-control" [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].fastCardNumber'"
+                                        [(ngModel)]="passenger.fastCardNumber" #fastCard="ngModel"
+                                        pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$">
+                                      <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="fastCard.errors.pattern">
+                                          Fast card must contain only 14 numbers beginning with 4270 or 4110 and ending
+                                          with
+                                          00
+                                          or
+                                          01.
+                                        </div>
+
+                                      </div>
+                                      <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- document div start -->
+                              <div class="row pb-4" *ngFor="let document of passenger.travelDocuments;let j = index">
+                                <div class="col-lg-11 offset-lg-1 text-right">
+                                  <div class="row">
+                                    <div class="col-10">
+                                      <button type="button" *ngIf="j != 0;" (click)="deleteDocument(j,i)"
+                                        class="btn btn-sm btn-danger">
+                                        Delete Document</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-5 offset-lg-1">
+                                  <div class="form-group row">
+                                    <div class="col-lg-10">
+                                      <label
+                                        class=" text-dark control-label font-weight-bold text-lg-right pt-2">Document#<span
+                                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <input type="text" class="form-control" placeholder="Enter travel document number"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'"
+                                        [(ngModel)]="document.number" #docNum="ngModel"
+                                        pattern="^[A-Za-z0-9\s-\/\\]{1,50}$">
+                                      <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)"
+                                        class="text-danger">
+
+                                        <div *ngIf="docNum.errors.pattern">
+                                          Document# must contain alphanumeric, dashes, spaces and no other characters.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label
+                                        class=" text-dark control-label font-weight-bold text-lg-right pt-2">Issuing
+                                        Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <ng-select [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
+                                        (change)="getPassengerDocStates($event,i,j)" [(ngModel)]="document.country">
+                                        <ng-option value="CA">Canada</ng-option>
+                                        <ng-option value="US">United States</ng-option>
+                                        <ng-option value="MX">Mexico</ng-option>
+                                      </ng-select>
+
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-5">
+                                  <div class="form-group row">
+                                    <div class="col-lg-10">
+                                      <label
+                                        class=" text-dark control-label font-weight-bold text-lg-right pt-2">Document
+                                        Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <ng-select [ngModelOptions]="{standalone: true}"
+                                        [attr.name]="'passengers['+i+'].travelDocuments['+j+'].type'"
+                                        [(ngModel)]="document.type">
+                                        <ng-option *ngFor="let document of documentTypeList" [value]="document.code">
+                                          {{document.description}}</ng-option>
+                                      </ng-select>
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label
+                                        class=" text-dark control-label font-weight-bold text-lg-right pt-2">Issuing
+                                        Province/State</label>
+                                      <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
+                                        [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
+                                        [(ngModel)]="document.stateProvince">
+                                        <ng-option *ngFor="let state of document.docStates" [value]="state.stateCode">
+                                          {{state.stateCode}} - {{state.stateName}}</ng-option>
+
+                                      </ng-select>
+                                    </div>
+                                    <div class="col-lg-2 mar-top-37">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-10 text-right pr-0">
+                                  <button type="button" (click)="addDocument(i)" id="addDocBtn"
+                                    class="btn btn-success btn-sm mb-2"><i class="fas fa-plus"></i> Add Another
+                                    Document</button>
+                                </div>
+                              </div>
+                              <!-- document div end -->
+
+
+
+                            </ng-template>
+                          </p-accordionTab>
+
+                        </p-accordion>
                       </div>
                     </div>
-                    <!-- document div end -->
                   </div>
                 </div>
+
+
                 <!-- <div class="row">
                   <div class="col text-right">
                     <button type="button" *ngIf="passengers.length != 0" (click)="addMorePassenger()"
@@ -600,13 +638,11 @@
                                         Control#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <div class="row">
                                         <div class="col-lg-4">
-                                          <!-- <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
+                                          <input [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
                                             [attr.name]="'shipments['+s+'].SCAC'" [(ngModel)]="shipment.SCAC"
-                                            [ngModelOptions]="{standalone: true}">
-                                            <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
-                                              {{carrier.SCAC}}</ng-option>
-                                          </ng-select> -->
-                                          <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
+                                            [ngModelOptions]="{standalone: true}" class="form-control" #ShipC="ngModel"
+                                            [required]="shipments.length !== 0" disabled />
+                                          <!-- <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
                                             [attr.name]="'shipments['+s+'].SCAC'" [(ngModel)]="shipment.SCAC"
                                             [ngModelOptions]="{standalone: true}" #ShipC="ngModel"
                                             [required]="shipments.length !== 0">
@@ -623,7 +659,7 @@
                                               </div>
                                             </div>
 
-                                          </div>
+                                          </div> -->
                                         </div>
                                         <div class="col-lg-8">
                                           <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
@@ -865,8 +901,9 @@
                                         </div>
 
                                       </div>
+
                                       <div class="col-lg-12 mt-2 p-0" *ngIf="
-                                          shipperDetails.length > 0
+                                      addresses[s].shipAdrs.length > 0
                                           ">
                                         <div class="" style="border: 0.4px solid #e1e2e3">
                                           <div class="row">
@@ -882,9 +919,9 @@
                                                     max-height: 200px;
                                                     overflow-y: auto;
                                                     overflow-x: hidden
-                                                  " *ngFor="let address of shipperDetails">
+                                                  " *ngFor="let address of addresses[s].shipAdrs">
                                                 <div class="row border-top mb-1 pt-2 pb-2 position-relative"
-                                                  [ngClass]="{ 'pl-4': shipperDetails.length > 1 }">
+                                                  [ngClass]="{ 'pl-4': addresses[s].shipAdrs.length > 1 }">
                                                   <div class="col-12">
                                                     <label class="control-label" *ngIf="address.manual"><span
                                                         class="font-weight-bold">Address:</span>
@@ -916,7 +953,7 @@
                                                   </div>
 
 
-                                                  <input *ngIf="shipperDetails.length > 1" class="address-icon"
+                                                  <input *ngIf="addresses[s].shipAdrs.length > 1" class="address-icon"
                                                     type="radio" name="select" (change)="
                                                         getAddressID('shipper',
                                                           $event.target.checked,
@@ -937,6 +974,7 @@
                                                           class="fas fa-plus"></i></a> -->
                                     </div>
                                     <div class="col-lg-10">
+
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
                                         Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select [ngModelOptions]="{standalone: true}"
@@ -962,7 +1000,7 @@
 
                                       </div>
                                       <div class="col-lg-12 mt-2 p-0" *ngIf="
-                                      receiverDetails.length > 0
+                                      addresses[s].consAdrs.length > 0
                                       ">
                                         <div class="" style="border: 0.4px solid #e1e2e3">
                                           <div class="row">
@@ -978,9 +1016,9 @@
                                                 max-height: 200px;
                                                 overflow-y: auto;
                                                 overflow-x: hidden;
-                                              " *ngFor="let address of receiverDetails">
+                                              " *ngFor="let address of addresses[s].consAdrs">
                                                 <div class="row border-top mb-1 pt-2 pb-2 position-relative"
-                                                  [ngClass]="{ 'pl-4': receiverDetails.length > 1 }">
+                                                  [ngClass]="{ 'pl-4': addresses[s].consAdrs.length > 1 }">
                                                   <div class="col-12">
                                                     <label class="control-label" *ngIf="address.manual"><span
                                                         class="font-weight-bold">Address:</span>
@@ -1012,7 +1050,7 @@
                                                   </div>
 
 
-                                                  <input *ngIf="receiverDetails.length > 1" class="address-icon"
+                                                  <input *ngIf="addresses[s].consAdrs.length > 1" class="address-icon"
                                                     type="radio" name="select" (change)="
                                                     getAddressID('receiver',
                                                       $event.target.checked,
@@ -1070,6 +1108,15 @@
                                     class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Third
                                     Parties&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                 </div>
+                                <div class="col-lg-5">
+                                  <div class="row">
+                                    <div class="col-lg-10 text-right">
+                                      <button type="button" (click)="addThirdParty(s)"
+                                        class="btn btn-sm btn-success mr-1"><i class="fas fa-plus"></i> Add Third
+                                        Party</button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                               <div class="form-group row"
                                 *ngFor="let thirdParty of shipment.thirdParties;let p = index">
@@ -1105,12 +1152,12 @@
                                 </div>
                                 <div class="col-lg-5">
                                   <div class="row">
-                                    <div class="col-lg-10 text-right">
+                                    <!-- <div class="col-lg-10 text-right">
                                       <button type="button" (click)="deleteThirdParty(p,s)"
                                         class="btn btn-sm btn-danger">
                                         Delete
                                         Third Party</button>
-                                    </div>
+                                    </div> -->
                                     <div class="col-lg-10">
                                       <label
                                         class=" text-dark control-label font-weight-bold text-lg-right pt-2">Name</label>
@@ -1164,6 +1211,12 @@
                                       <div class="col-lg-2 mar-top-37">
                                         <a class="btn btn-dark mr-2" href="javascript:;"
                                           (click)="clearUserLocation(s,p,'thirdParty');">Clear</a>
+                                      </div>
+                                      <div class="col-lg-4 mar-top-37 text-right">
+                                        <button type="button" (click)="deleteThirdParty(p,s)"
+                                          class="btn btn-sm btn-danger">
+                                          Delete
+                                          Third Party</button>
                                       </div>
                                     </div>
                                     <div class="address-inner" *ngIf="thirdParty.address.manual">
@@ -1246,7 +1299,7 @@
                                 </div>
                                 <!-- new address div ends -->
                               </div>
-                              <div class="form-group row">
+                              <!-- <div class="form-group row">
                                 <div class="col-5 offset-lg-1"></div>
                                 <div class="col-lg-5 text-right">
                                   <div class="row">
@@ -1257,7 +1310,7 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
 
                               <!-- commodities div -->
                               <div class="row mb-2">

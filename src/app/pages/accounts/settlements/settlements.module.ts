@@ -1,3 +1,4 @@
+
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -20,6 +21,10 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -125,7 +130,11 @@ const routes: Routes = [
     DialogModule,
     DropdownModule,
     InputTextModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ButtonModule,
+    SplitButtonModule,
+    TableModule,
+    OverlayPanelModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
@@ -133,3 +142,4 @@ const routes: Routes = [
   ],
 })
 export class SettlementsModule { }
+

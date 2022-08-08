@@ -7,330 +7,223 @@
             <div class="col-lg-10 col-md-10">
               <div class="row">
                 <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select
-                    [(ngModel)]="filter.type"
-                    (change)="unitTypeChange()"
-                    name="SettlementType"
-                    placeholder="Select type"
-                  >
-                    <ng-option value="settlementNo"
-                      >Settlement Number</ng-option
-                    >
+                  <ng-select [(ngModel)]="filter.type" (change)="unitTypeChange()" name="SettlementType"
+                    placeholder="Select type">
+                    <ng-option value="settlementNo">Settlement Number</ng-option>
                     <ng-option value="driver">Driver</ng-option>
                     <ng-option value="carrier">Carrier</ng-option>
                     <ng-option value="owner_operator">Owner Operator</ng-option>
                   </ng-select>
                 </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.type === 'settlementNo'"
-                >
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'settlementNo'">
                   <div class="input-group input-group-md mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Search by settlement number"
-                      name="settlementNo"
-                      [(ngModel)]="filter.searchValue"
-                    />
+                    <input type="text" class="form-control" placeholder="Search by settlement number"
+                      name="settlementNo" [(ngModel)]="filter.searchValue" />
                   </div>
                 </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.type === 'driver'"
-                >
-                  <ng-select
-                    [(ngModel)]="filter.searchValue"
-                    name="searchValue"
-                    placeholder="Select Driver"
-                  >
-                    <ng-option
-                      value="{{ data.key }}"
-                      *ngFor="let data of driversObject | keyvalue"
-                    >
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'driver'">
+                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Driver">
+                    <ng-option value="{{ data.key }}" *ngFor="let data of driversObject | keyvalue">
                       {{ data.value }}
                     </ng-option>
                   </ng-select>
                 </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.type === 'carrier'"
-                >
-                  <ng-select
-                    [(ngModel)]="filter.searchValue"
-                    name="searchValue"
-                    placeholder="Select Carrier"
-                  >
-                    <ng-option
-                      value="{{ data.key }}"
-                      *ngFor="let data of carriersObject | keyvalue"
-                    >
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'carrier'">
+                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Carrier">
+                    <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
                       {{ data.value }}
                     </ng-option>
                   </ng-select>
                 </div>
-                <div
-                  class="col-md-2 col-lg-2 pr-0"
-                  *ngIf="filter.type === 'owner_operator'"
-                >
-                  <ng-select
-                    [(ngModel)]="filter.searchValue"
-                    name="searchValue"
-                    placeholder="Select Owner Operator"
-                  >
-                    <ng-option
-                      value="{{ data.key }}"
-                      *ngFor="let data of ownerOpObjects | keyvalue"
-                    >
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'owner_operator'">
+                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Owner Operator">
+                    <ng-option value="{{ data.key }}" *ngFor="let data of ownerOpObjects | keyvalue">
                       {{ data.value }}
                     </ng-option>
                   </ng-select>
                 </div>
                 <div class="col-lg-3 col-md-3 pr-0">
-                  <div
-                    class="input-daterange input-group"
-                    data-plugin-datepicker
-                  >
+                  <div class="input-daterange input-group" data-plugin-datepicker>
                     <span class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                       </span>
                     </span>
-                    <input
-                      [(ngModel)]="filter.startDate"
-                      name="startDate"
-                      type="text"
-                      placeholder="yyyy/mm/dd"
-                      (click)="startDate.toggle()"
-                      ngbDatepicker
-                      #startDate="ngbDatepicker"
-                      class="form-control"
-                      autocomplete="off"
-                      [minDate]="dateMinLimit"
-                      [maxDate]="futureDatesLimit"
-                    />
-                    <span
-                      class="input-group-text border-left-0 border-right-0 rounded-0"
-                    >
+                    <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
                       to
                     </span>
-                    <input
-                      [(ngModel)]="filter.endDate"
-                      name="endDate"
-                      type="text"
-                      placeholder="yyyy/mm/dd"
-                      (click)="endDate.toggle()"
-                      ngbDatepicker
-                      #endDate="ngbDatepicker"
-                      class="form-control"
-                      autocomplete="off"
-                      [minDate]="dateMinLimit"
-                      [maxDate]="futureDatesLimit"
-                    />
+                    <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                   </div>
                 </div>
 
                 <div class="col-md-2 col-lg-2">
-                  <button
-                    type="submit"
-                    class="btn btn-sm btn-success mr-3"
-                    [disabled]="disableSearch"
-                    (click)="searchFilter()"
-                  >
+                  <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch"
+                    (click)="searchFilter()">
                     Search
                   </button>
-                  <button
-                    type="submit"
-                    class="btn btn-sm btn-success"
-                    [disabled]="disableSearch"
-                    (click)="resetFilter()"
-                  >
+                  <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch"
+                    (click)="resetFilter()">
                     Reset
                   </button>
                 </div>
               </div>
             </div>
-
-            <div class="col-md-2 col-lg-2 text-right pr-1">
-              <button
-                (click)="refreshData()"
-                data-toggle="tooltip"
-                title="Refresh data"
-                [disabled]="disableSearch"
-                class="btn btn-success btn-sm mr-2"
-              >
-                <i class="fas fa-sync"></i>
-              </button>
-              <a
-                routerLink="/accounts/settlements/add"
-                class="btn btn-success btn-sm ml-2"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Settlement
-              </a>
-            </div>
           </div>
         </form>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div class="col-lg-12">
-                  <div class="main-panel">
-                    <div
-                      infiniteScroll
-                      [infiniteScrollDistance]="1"
-                      [infiniteScrollUpDistance]="1"
-                      [infiniteScrollThrottle]="5"
-                      (scrolled)="onScroll()"
-                    >
-                      <div class="">
-                        <div class="">
-                          <table
-                            class="table table-bordered table-striped mb-0 simple-table"
-                          >
-                            <thead>
-                              <tr class="">
-                                <th class="text-2">Settlement#</th>
-                                <th class="text-2">Settlement Date</th>
-                                <th class="text-2">Settlement Type</th>
-                                <th class="text-2">Trip#</th>
-                                <th class="text-2">Settled Amount</th>
-                                <th class="text-2">Paid Amount</th>
-                                <th class="text-2">Balance</th>
-                                <th class="text-2">Status</th>
-                                <th class="text-2">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr
-                                *ngIf="settlements.length === 0"
-                                class="text-center"
-                              >
-                                <td colspan="10">{{ dataMessage }}</td>
-                              </tr>
-                              <tr
-                                *ngFor="let data of settlements; let i = index"
-                              >
-                                <td
-                                  class="cursorpoint font-weight-bold"
-                                  [routerLink]="data.url"
-                                >
-                                  {{ data.setNo }}
-                                </td>
-                                <td class="cursorpoint" [routerLink]="data.url">
-                                  {{ data.txnDate | date: "yyyy/MM/dd" }}
-                                </td>
-                                <td
-                                  class="cursorpoint text-capitalize"
-                                  [routerLink]="data.url"
-                                >
-                                  <strong>{{ data.entityType }}</strong
-                                  >:
-                                  <span *ngIf="data.type === 'driver'">
-                                    {{ data.entityName }}
-                                  </span>
-                                  <span *ngIf="data.type === 'carrier'">
-                                    {{ data.entityName }}
-                                  </span>
-                                  <span *ngIf="data.type === 'owner_operator'">
-                                    {{ data.entityName }}</span
-                                  >
-                                </td>
-                                <td class="cursorpoint" [routerLink]="data.url">
-                                  <span
-                                    *ngFor="
-                                      let trp of data.tripNames;
-                                      let t = index
-                                    "
-                                  >
-                                    {{ trp
-                                    }}<span
-                                      *ngIf="t < data.tripNames.length - 1"
-                                      >,</span
-                                    >
-                                  </span>
-                                  <span *ngIf="data.tripNames.length == 0">-</span>
-                                </td>
-                                <td class="cursorpoint" [routerLink]="data.url">
-                                  {{ data.finalTotal | number: "1.2-2" }}
-                                  {{ data.currency }}
-                                </td>
-                                <td class="cursorpoint" [routerLink]="data.url">
-                                  <span *ngIf="data.paidAmount">
-                                    {{ data.paidAmount | number: "1.2-2" }}
-                                    {{ data.currency }}
-                                  </span>
-                                  <span *ngIf="!data.paidAmount">-</span>
-                                </td>
-                                <td class="cursorpoint" [routerLink]="data.url">
-                                  {{ data.pendingPayment | number: "1.2-2" }}
-                                  {{ data.currency }}
-                                </td>
-                                <td class="cursorpoint" [routerLink]="data.url">
-                                  <span
-                                    class="badge badge-dark p-1 text-uppercase"
-                                    >{{ data.status }}</span
-                                  >
-                                </td>
-                                <td>
-                                  <div class="dropdown dropright">
-                                    <button
-                                      class="bg-transparent border-0"
-                                      type="button"
-                                      id="dropdownMenuButton-{{ i }}"
-                                      data-toggle="dropdown"
-                                      aria-haspopup="true"
-                                      aria-expanded="false"
-                                      [disabled]="data.paymentLinked"
-                                    >
-                                      <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      attr.aria-labelledby="dropdownMenuButton-{{
-                                        i
-                                      }}"
-                                    >
-                                      <a
-                                        class="dropdown-item"
-                                        routerLink="/accounts/settlements/edit/{{
-                                          data.sttlID
-                                        }}"
-                                        >Edit</a
-                                      >
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:;"
-                                        (click)="deleteSettlement(data.sttlID)"
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="settlements" [resizableColumns]="true" columnResizeMode="fit"
+                    scrollDirection="both" [columns]="selectedColumns" autoLayout="true" [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Settlements</h3>
                         </div>
-                        <div
-                          class="col-lg-12 mt-3 text-center"
-                          *ngIf="
-                            lastItemSK !== 'end' && settlements.length !== 0
-                          "
-                        >
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm text-light"
-                            (click)="onScroll()"
-                          >
-                            Load More..
-                          </button>
+
+                        <div class="text-right">
+                          <span>Showing {{ settlements.length }} entries </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="resetFilter()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/accounts/settlements/add"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
+                          </p-multiSelect>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
+                      <tr>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th style="width: 108px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-stlmt let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" style="cursor:pointer" [routerLink]="stlmt.url">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'Settlement#'">
+                              {{ stlmt[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'txnDate'">
+                              {{ stlmt.txnDate | date: "yyyy/MM/dd" }}
+                            </span>
+
+                            <span *ngSwitchCase="'refNo'">
+                              {{ stlmt.refNo ? stlmt.refNo : "-" }}
+                            </span>
+
+                            <span *ngSwitchCase="'Trip#'">
+                              {{ stlmt[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'finalTotal'">
+                              {{ stlmt.finalTotal ? (stlmt.finalTotal | number: "1.2-2") : "0.00"}}
+                              {{ stlmt.currency }}
+                            </span>
+
+                            <span *ngSwitchCase="'paidAmount'">
+                              {{ stlmt.paidAmount ? (stlmt.paidAmount | number: "1.2-2") : "0.00"}}
+                              {{ stlmt.currency }}
+                            </span>
+
+                            <span *ngSwitchCase="'entityType'">
+                              <strong>{{ stlmt.entityType | titlecase }}</strong>:-
+                              <span *ngIf="stlmt.type === 'driver'">
+                                {{ stlmt.entityName | titlecase }}
+                              </span>
+                              <span *ngIf="stlmt.type === 'carrier'">
+                                {{ stlmt.entityName | titlecase }}
+                              </span>
+                              <span *ngIf="stlmt.type === 'owner_operator'">
+                                {{ stlmt.entityName | titlecase }}</span>
+                            </span>
+
+                            <span *ngSwitchCase="'pendingPayment'">
+                              {{ stlmt.pendingPayment ? (stlmt.pendingPayment | number: "1.2-2") : "0.00"}}
+                              {{ stlmt.currency }}
+                            </span>
+
+                            <span *ngSwitchCase="'status'" class="badge badge-dark p-1 text-uppercase">
+                              {{ stlmt.status | titlecase }}
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              {{ get(stlmt, dataColumns.field) }}</span>
+                          </div>
+                        </td>
+                        <td pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <div class="dropdown dropright">
+                            <button (click)="op.toggle($event)" [disabled]="stlmt.paymentLinked" pButton type="button"
+                              id="dropdownMenuButton-{{ rowIndex }}" icon="fas fa-ellipsis-v"
+                              style="color: #000; background-color: transparent; border: transparent;">
+                            </button>
+                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                              <ng-template pTemplate>
+                                <a class="dropdown-item" routerLink="/accounts/settlements/edit/{{
+                                      stlmt.sttlID
+                                    }}">Edit</a>
+                                <a class="dropdown-item" href="javascript:;"
+                                  (click)="deleteSettlement(stlmt.sttlID)">Delete</a>
+                              </ng-template>
+                            </p-overlayPanel>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <td colspan="8" class="text-center">
+                        {{ dataMessage }}
+                      </td>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && settlements.length !== 0">
+                        <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
+                          Load More..</button><br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ settlements.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>

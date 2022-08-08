@@ -1,7 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import * as _ from "lodash";
+import { ToastrService } from "ngx-toastr";
+import { Table } from 'primeng/table';
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService } from "src/app/services";
-import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-vendor-credit-notes-list",
   templateUrl: "./vendor-credit-notes-list.component.html",
@@ -22,9 +24,11 @@ export class VendorCreditNotesListComponent implements OnInit {
     lastItemSK: "",
   };
   purchaseOrders = [];
-
   loaded = false;
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
@@ -35,6 +39,32 @@ export class VendorCreditNotesListComponent implements OnInit {
     this.fetchVendors();
     this.fetchCredits();
     this.fetchPurchaseOrders();
+    this.dataColumns = [
+      { field: 'txnDate', header: 'Date', type: "text" },
+      {  field: 'vCrNo', header: 'Vendor Credit#', type: "text" },
+      {  field: 'crRef', header: 'Reference#', type: "text" },
+      {  field: 'purOrder', header: 'Purchase Order#', type: "text" },
+      { field: 'vendorID', header: 'Vendor', type: "text" },
+      {  field: 'totalAmt', header: 'Credit Amount', type: "text" },
+      {  field: 'balance', header: 'Balance Amount', type: "text" },
+      {  field: 'status', header: 'Status', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   getCredits() {
@@ -154,5 +184,8 @@ export class VendorCreditNotesListComponent implements OnInit {
       .getData(`purchase-orders/get/list`)
       .toPromise();
     this.purchaseOrders = result;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

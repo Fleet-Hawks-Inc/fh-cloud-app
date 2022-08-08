@@ -1,4 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import * as _ from 'lodash';
+import { Table } from 'primeng/table';
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
@@ -23,15 +25,40 @@ export class VendorPaymentsListComponent implements OnInit {
   loaded = false;
   payments = [];
   vendors = [];
-
+  get = _.get;
+  find = _.find;
+  _selectedColumns: any[];
+  dataColumns = [
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'paymentNo', header: 'Payment#', type: "text" },
+    { field: 'refNo', header: 'Reference#', type: "text" },
+    { field: 'vendorID', header: 'Vendor', type: "text" },
+    { field: 'payMode', header: 'Payment Mode', type: "text" },
+    { field: 'payModeNo', header: 'Payment Mode Reference No.', type: "text" },
+    { field: 'total.finalTotal', header: 'Amount', type: "text" },
+  ];
   constructor(
     private apiService: ApiService,
     private accountService: AccountService
-  ) {}
+  ) { }
 
   async ngOnInit() {
+    this.setToggleOptions();
     await this.fetchVendor();
     this.fetchPayments();
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   async fetchPayments() {
@@ -56,6 +83,7 @@ export class VendorPaymentsListComponent implements OnInit {
       } else {
         this.lastItemSK = "end";
       }
+      this.loaded = true;
 
       result.map((v) => {
         v.payMode = v.payMode.replace("_", " ");
@@ -104,5 +132,8 @@ export class VendorPaymentsListComponent implements OnInit {
       this.fetchPayments();
     }
     this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

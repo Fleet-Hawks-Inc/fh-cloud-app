@@ -21,6 +21,9 @@ import { TooltipModule } from "primeng/tooltip";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { CalendarModule } from "primeng/calendar";
 import { InputSwitchModule } from "primeng/inputswitch";
+import { DialogModule } from "primeng/dialog";
+
+import { PdfViewerModule } from "ng2-pdf-viewer";
 const routes: Routes = [
   { path: "logs", component: LogsComponent },
   { path: "edit/:userName/:eventDate", component: EditComponent },
@@ -47,6 +50,8 @@ const routes: Routes = [
     OverlayPanelModule,
     CalendarModule,
     InputSwitchModule,
+    DialogModule,
+    PdfViewerModule,
   ],
   declarations: [
     LogsComponent,
