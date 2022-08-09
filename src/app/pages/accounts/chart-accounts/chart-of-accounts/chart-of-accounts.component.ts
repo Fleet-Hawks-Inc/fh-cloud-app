@@ -185,6 +185,7 @@ export class ChartOfAccountsComponent implements OnInit {
     ) {
       this.disableSearch = true;
       this.accounts = [];
+      this.allAccounts = [];
       this.lastItemSK = "";
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAccounts();
@@ -199,6 +200,7 @@ export class ChartOfAccountsComponent implements OnInit {
     };
     this.lastItemSK = "";
     this.accounts = [];
+    this.allAccounts = [];
     this.fetchAccounts();
   }
   async fetchAccounts(refresh?: boolean) {
