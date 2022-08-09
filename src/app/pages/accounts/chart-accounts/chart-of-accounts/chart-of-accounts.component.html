@@ -62,8 +62,10 @@
                           <span>Showing {{ accounts.length }} entries </span>
                           &nbsp;
                           
-                          <p-checkbox name="group1" class="mr-3 mb-2" (onChange)="onUnusedAccount()" [(ngModel)]="showUnused" style="margin: 0 25px; transform: scale(1.6)"  
-                           pTooltip="Hide Unused Accounts" binary="true"></p-checkbox>
+                          <p-toggleButton name="group1" class="mr-2 mb-2"  
+                          (onChange)="onUnusedAccount()" [(ngModel)]="showUnused" onIcon="pi pi-check" 
+                          offIcon="pi pi-times" [style]="{'width': '3em','height':'2.3em'}"
+                          pTooltip="Hide Unused Accounts" binary="true"></p-toggleButton>
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button type="button" pButton class="p-button-outlined mr-2" (click)="showAcModal()"
