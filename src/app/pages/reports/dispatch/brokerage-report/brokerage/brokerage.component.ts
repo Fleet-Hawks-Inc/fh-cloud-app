@@ -18,6 +18,8 @@ declare var $: any;
 export class BrokerageComponent implements OnInit {
   @ViewChild('dt') table: Table;
   brokerage: any = [];
+  pickUpLocation = '';
+  delVrLocation = '';
   get = _.get;
   _selectedColumns: any[];
   lastItemSK = '';
@@ -34,8 +36,8 @@ export class BrokerageComponent implements OnInit {
     { field: 'cName', header: 'Carrier', type: "text" },
     { field: 'createdDate', header: 'Order Date', type: "text" },
     { field: 'date', header: 'Bkg. Date', type: "text" },
-    { field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
-    { field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
+    { field: 'pickupAddress', header: 'Pickup Location', type: "text" },
+    { field: 'dropoffAddress', header: 'Delivery Location', type: "text" },
     { field: 'amount', header: 'Order Amount', type: "text" },
     { field: 'bAmount', header: 'Bkg Amount', type: "text" },
   ];
@@ -92,29 +94,63 @@ export class BrokerageComponent implements OnInit {
     });
   }
 
-    async fetchBrokerageReport(refresh?: boolean) {
-    if(refresh === true){
-    this.lastItemSK = '',
-    this.brokerage = [];
+  
+async fetchBrokerageReport(refresh ?: boolean) {
+    if (refresh === true) {
+        this.lastItemSK = '',
+            this.brokerage = [];
     }
-    if(this.lastItemSK !== 'end'){
-    const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
-    this.dataMessage = Constant.FETCHING_DATA;
-    if(result.Items.length === 0){
-    this.dataMessage = Constant.NO_RECORDS_FOUND;
-    this.loaded = true;
+    if (this.lastItemSK !== 'end') {
+        const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
+        this.dataMessage = Constant.FETCHING_DATA;
+        if (result.Items.length === 0) {
+            this.dataMessage = Constant.NO_RECORDS_FOUND;
+            this.loaded = true;
+        }
+        if (result.Items.length > 0) {
+            if (result.LastEvaluatedKey !== undefined) {
+                this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].orderSK);
+            } else {
+                this.lastItemSK = 'end'
+            }
+            this.brokerage = this.brokerage.concat(result.Items);
+            this.loaded = true;
+            for (let res of result.Items) {
+                for (let shipInfo of res.shippersReceiversInfo) {
+                    for (let shipData of shipInfo.shippers) {
+                        for (let shipPickUp of shipData.pickupPoint) {
+                            if (shipPickUp.address.manual) {
+                                res.pickupAddress = shipPickUp.address.address + ' ' +
+                                    + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
+                                    shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
+                            } else if (!shipPickUp.address.manual) {
+                                res.pickupAddress = shipPickUp.address.pickupLocation
+                            }
+                            else if (shipPickUp.length > 1) {
+                                res.pickupAddress = shipPickUp.length - 1
+                            }
+                        }
+                    }
+                    for (let receiver of shipInfo.receivers) {
+                        for (let receiveDropOf of receiver.dropPoint) {
+                            if (receiveDropOf.address.manual) {
+                                res.dropoffAddress = receiveDropOf.address.address + ' ' +
+                                    + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
+                                    receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
+                            }
+                            else if (!receiveDropOf.address.manual) {
+                                res.dropoffAddress = receiveDropOf.address.dropOffLocation
+                            }
+                            else if (receiveDropOf.length > 1) {
+                                res.dropoffAddress = receiveDropOf.length - 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-    if(result.Items.length > 0){
-    if(result.LastEvaluatedKey !== undefined){
-    this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].orderSK);
-    }else{
-    this.lastItemSK = 'end'
-    }
-    this.brokerage = this.brokerage.concat(result.Items);
-    this.loaded = true;
-    }
-    }
-    }
+}
     
     
   onScroll = async (event: any) => {
