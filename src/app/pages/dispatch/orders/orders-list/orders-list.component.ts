@@ -454,6 +454,9 @@ export class OrdersListComponent implements OnInit {
                         + " Qty:-" + commoD.quantity + commoD.quantityUnit
 
                     }
+                    
+                    
+                    
                     if (shipPickUp.address.manual) {
                       res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
                         + " Location:-" + shipPickUp.address.address + ' ' +
@@ -468,9 +471,11 @@ export class OrdersListComponent implements OnInit {
                       res.pickupLocData = shipPickUp.length - 1
                     }
                     res.shipperName = ship.shiperName
-
                   }
 
+                  
+                  
+                  
                   for (let receiver of shipArr.receivers) {
                     for (let receiveDropOf of receiver.dropPoint) {
                       if (receiveDropOf.address.manual) {
@@ -488,8 +493,9 @@ export class OrdersListComponent implements OnInit {
                       }
                     }
                     res.receiverName = receiver.receiverName
-
                   }
+                  
+                  
                 }
               }
               res.amount =
@@ -510,7 +516,12 @@ export class OrdersListComponent implements OnInit {
                 "\n" +
                 "Confirmation:-" +
                 res.cusConfirmation;
+                console.log('sh',res.pickupLocData)
+                console.log('rs',res.dropLocData)
             }
+            
+            
+            
 
             // disable prev btn
             if (this.ordersDraw == 0) {
