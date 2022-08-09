@@ -161,259 +161,290 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-           <div class="bg-white p-3 text-dark">
+            <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-          <div
-            class="col-lg-12"
-            style="height: calc(100vh - 149px); overflow-y: scroll"
-          >
-           
-              <p-table
-                #dt
-                [value]="fuelList"
-                [resizableColumns]="true"
-                columnResizeMode="fit"
-                autoLayout="true"
-                scrollDirection="both"
-                [loading]="!loaded"
-                styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                scrollHeight="100%"
-              >
-                <!-- Caption template of data table -->
-                <ng-template pTemplate="caption">
-                  <div
-                    class="p-d-flex d-flex justify-content-between align-items-center"
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="fuelList"
+                    [resizableColumns]="true"
+                    columnResizeMode="fit"
+                    autoLayout="true"
+                    scrollDirection="both"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    scrollHeight="100%"
                   >
-                    <div>
-                      <h3 class="m-0">Fuel List</h3>
-                    </div>
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0">Fuel List</h3>
+                        </div>
 
-                    <div class="text-right">
-                      <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span> &nbsp;
-                      <button
-                        type="button"
-                        pButton
-                        (click)="refreshData()"
-                        pTooltip="Refresh"
-                        class="p-button-outlined mr-2"
-                        icon="fas fa-sync"
-                      ></button>
-                      <button
-                        type="button"
-                        pButton
-                        pTooltip="Add"
-                        routerLink="/fleet/fuel/add"
-                        class="p-button-outlined mr-2"
-                        icon="pi pi-plus"
-                      ></button>
-                      <button
-                        pButton
-                        pRipple
-                        pTooltip="Clear Filter"
-                        class="p-button-outlined mr-2"
-                        (click)="clear(dt)"
-                        icon="pi pi-filter-slash"
-                      ></button>
+                        <div class="text-right">
+                          <span
+                            >Showing
+                            {{
+                              dt.filteredValue
+                                ? dt.filteredValue.length
+                                : dt.totalRecords
+                            }}
+                            of {{ dt.totalRecords }} Entries.</span
+                          >
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            type="button"
+                            pButton
+                            pTooltip="Add"
+                            routerLink="/fleet/fuel/add"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-plus"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            (click)="clear(dt)"
+                            icon="pi pi-filter-slash"
+                          ></button>
 
-                      <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                          <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
                       icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
 
-                      <!-- <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"> -->
-                      <!-- </p-multiSelect> -->
-                    </div>
-                  </div>
-                </ng-template>
-                <!-- Header template of DataTable -->
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <th
-                      *ngFor="let column of dataColumns"
-                      [pSortableColumn]="column.field"
-                      pResizableColumn
-                    >
-                      <span>
-                        <div
-                          class="flex justify-content-center align-items-center"
+                          <!-- <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"> -->
+                          <!-- </p-multiSelect> -->
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let column of dataColumns"
+                          [pSortableColumn]="column.field"
+                          pResizableColumn
+                        >
+                          <span>
+                            <div
+                              class="flex justify-content-center align-items-center"
+                              alignFrozen="right"
+                              pFrozenColumn
+                              [frozen]="true"
+                            >
+                              {{ column.header }}
+                              <p-sortIcon [field]="column.field"></p-sortIcon>
+                              <p-columnFilter
+                                [type]="column.type"
+                                [field]="column.field"
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
+                              </p-columnFilter>
+                            </div>
+                          </span>
+                        </th>
+
+                        <!-- <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Date Time</th> -->
+                        <th
+                          style="width: 100px"
                           alignFrozen="right"
                           pFrozenColumn
                           [frozen]="true"
                         >
-                          {{ column.header }}
-                          <p-sortIcon [field]="column.field"></p-sortIcon>
-                          <p-columnFilter
-                            [type]="column.type"
-                            [field]="column.field"
-                            matchMode="contains"
-                            [showMatchModes]="false"
-                            [showOperator]="false"
-                            [showAddButton]="false"
-                            display="menu"
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <!-- Body Template of Data Table -->
+                    <ng-template
+                      pTemplate="body"
+                      let-fuel
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{ fuel.dateTime }}</span
                           >
-                          </p-columnFilter>
-                        </div>
-                      </span>
-                    </th>
+                        </td>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{
+                              fuel.data.cardNo ? fuel.data.cardNo : "-"
+                            }}</span
+                          >
+                        </td>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            class="font-weight-bold"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{
+                              (vehicleList[fuel.unitID]
+                                ? vehicleList[fuel.unitID]
+                                : ""
+                              ) | titlecase
+                            }}
+                            {{
+                              (assetList[fuel.unitID]
+                                ? assetList[fuel.unitID]
+                                : ""
+                              ) | titlecase
+                            }}</span
+                          >
+                        </td>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{
+                              (fuel.data.useType ? fuel.data.useType : "-")
+                                | titlecase
+                            }}</span
+                          >
+                        </td>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{ fuel.data.type }}</span
+                          >
+                        </td>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{ fuel.data.amt }}</span
+                          >
+                        </td>
+                        <td style="width: 10%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{ fuel.data.site ? fuel.data.site : "-" }}</span
+                          >
+                        </td>
+                        <td style="width: 12%">
+                          <span
+                            style="cursor: pointer"
+                            routerLink="/fleet/fuel/detail/{{
+                              fuel.data.fuelID
+                            }}"
+                            >{{ fuel.data.city }},{{ fuel.data.state }},{{
+                              fuel.data.country
+                            }}</span
+                          >
+                        </td>
+                        <td
+                          style="text-align: center; width: 100px"
+                          pFrozenColumn
+                          alignFrozen="right"
+                          [frozen]="true"
+                        >
+                          <button
+                            id="btnEdit"
+                            pButton
+                            routerLink="/fleet/fuel/edit/{{ fuel.data.fuelID }}"
+                            type="button"
+                            icon="fas fa-user-pen"
+                            class="p-button-rounded p-button-text"
+                            [disabled]="fuel.fuelProvider === 'WEX'"
+                          ></button>
+                          <button
+                            (click)="deleteFuelEntry(fuel.data.fuelID)"
+                            id="btnDelete"
+                            pButton
+                            type="button"
+                            icon="fas fa-user-slash"
+                            class="p-button-rounded p-button-danger p-button-text"
+                            [disabled]="fuel.fuelProvider === 'WEX'"
+                          ></button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <!-- Empty Template -->
 
-                    <!-- <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Date Time</th> -->
-                    <th
-                      style="width: 100px"
-                      alignFrozen="right"
-                      pFrozenColumn
-                      [frozen]="true"
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <tr>
+                        <td colspan="9" class="text-center">
+                          <br />
+                          {{ dataMessage }}
+                          <br /><br />
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
 
-                <!-- Body Template of Data Table -->
-                <ng-template
-                  pTemplate="body"
-                  let-fuel
-                  let-columns="columns"
-                  let-rowIndex="rowIndex"
-                >
-                  <tr>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{ fuel.dateTime }}</span
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastEvaluatedKey !== 'end' && fuelList.length !== 0
+                        "
                       >
-                    </td>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{ fuel.data.cardNo ? fuel.data.cardNo : "-" }}</span
-                      >
-                    </td>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{
-                          (vehicleList[fuel.unitID]
-                            ? vehicleList[fuel.unitID]
-                            : ""
-                          ) | titlecase
-                        }}
-                        {{
-                          (assetList[fuel.unitID] ? assetList[fuel.unitID] : "")
-                            | titlecase
-                        }}</span
-                      >
-                    </td>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{
-                          (fuel.data.useType ? fuel.data.useType : "-")
-                            | titlecase
-                        }}</span
-                      >
-                    </td>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{ fuel.data.type }}</span
-                      >
-                    </td>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{ fuel.data.amt }}</span
-                      >
-                    </td>
-                    <td style="width: 10%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{ fuel.data.site ? fuel.data.site : "-" }}</span
-                      >
-                    </td>
-                    <td style="width: 12%">
-                      <span
-                        style="cursor: pointer"
-                        routerLink="/fleet/fuel/detail/{{ fuel.data.fuelID }}"
-                        >{{ fuel.data.city }},{{ fuel.data.state }},{{
-                          fuel.data.country
-                        }}</span
-                      >
-                    </td>
-                    <td
-                      style="text-align: center; width: 100px"
-                      pFrozenColumn
-                      alignFrozen="right"
-                      [frozen]="true"
-                    >
-                      <button
-                        id="btnEdit"
-                        pButton
-                        routerLink="/fleet/fuel/edit/{{ fuel.data.fuelID }}"
-                        type="button"
-                        icon="fas fa-user-pen"
-                        class="p-button-rounded p-button-text"
-                        [disabled]="fuel.fuelProvider === 'WEX'"
-                      ></button>
-                      <button
-                        (click)="deleteFuelEntry(fuel.data.fuelID)"
-                        id="btnDelete"
-                        pButton
-                        type="button"
-                        icon="fas fa-user-slash"
-                        class="p-button-rounded p-button-danger p-button-text"
-                        [disabled]="fuel.fuelProvider === 'WEX'"
-                      ></button>
-                    </td>
-                  </tr>
-                </ng-template>
-                <!-- Empty Template -->
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
 
-               <ng-template pTemplate="emptymessage" let-columns>
-                        <tr>
-                          <td colspan="9" class="text-center">
-                            <br/>
-                            {{dataMessage}}
-                            <br/><br/>
-                          </td>
-                        </tr>
-                      </ng-template>
-                <!-- Summary Section with Load More button -->
-
-                <ng-template pTemplate="summary" let-columns>
-                  <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastEvaluatedKey !== 'end' && fuelList.length !== 0"
-                  >
-                    <button
-                      type="button "
-                      (click)="onScroll($event)"
-                      class="btn btn-success btn-sm text-light"
-                    >
-                      Load More..
-                    </button>
-
-                    <br /><br />
-                  </div>
-                  <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastEvaluatedKey !== 'end'"
-                  >
-                    Total Records: {{ fuelList.length }}
-                  </div>
-                     <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastEvaluatedKey === 'end'"
-                  >
-                    Total Records: {{ fuelList.length }}
-                  </div>
-                </ng-template>
-              </p-table>
-              <!-- <ngx-datatable
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastEvaluatedKey !== 'end'"
+                      >
+                        Total Records: {{ fuelList.length }}
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastEvaluatedKey === 'end'"
+                      >
+                        Total Records: {{ fuelList.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                  <!-- <ngx-datatable
                       #myTable
                       class="bootstrap expandable fixedTable"
                       [rows]="fuelList"
@@ -489,7 +520,7 @@
                       </ngx-datatable-column>
                     </ngx-datatable> -->
 
-              <!-- <div class="row mt-3 dtPaginate" *ngIf="fuelList.length> 0">
+                  <!-- <div class="row mt-3 dtPaginate" *ngIf="fuelList.length> 0">
                     <div class="col-6">
                       Showing {{ fuelStartPoint }} to {{ fuelEndPoint }} of {{
                       totalRecords }} enteries
@@ -503,9 +534,9 @@
                         [disabled]="fuelNext">Next</button>
                     </div>
                   </div> -->
+                </div>
+              </div>
             </div>
-            </div>
-          </div>
           </div>
         </div>
 
@@ -608,98 +639,94 @@
   </div>
 </div>
 <div
-    class="modal fade"
-    id="petroModal"
-    tabindex="-1"
-    role="dialog"
-    area-labelledby="petroModal"
-    aria-hidden="true"
-    data-keyboard="false"
-    data-backdrop="static"
+  class="modal fade"
+  id="petroModal"
+  tabindex="-1"
+  role="dialog"
+  area-labelledby="petroModal"
+  aria-hidden="true"
+  data-keyboard="false"
+  data-backdrop="static"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="width: 600px"
   >
-    <div
-      class="modal-dialog modal-dialog-centered"
-      role="document"
-      style="width: 600px"
-    >
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Petro Canada Report Upload</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Petro Canada Report Upload</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+          </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <div class="col-log-10" style="margin-left: 10px">
+          <span style="font-size: 20px"
+            >Please upload the Petro report in CSV fromat.</span
           >
-            <i
-              class="far fa-window-close modal-dismiss"
-              style="font-size: 25px"
-            >
-            </i>
-          </button>
         </div>
-        <div class="modal-body text-dark">
-          <div class="col-log-10" style="margin-left: 10px">
-            <span style="font-size: 20px"
-              >Please upload the Petro report in CSV fromat.</span
-            >
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="form-group col-lg-12 mb-3">
-                <label
-                  class="control-label font-weight-bold labelmt text-3 text-dark"
-                  >Choose File
-                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                </label>
-                <input
-                  (change)="selectDoc($event)"
-                  name=""
-                  id="petroDocs"
-                  type="file"
-                  class="form-control-file"
-                />
-                <span style="font-size: 12px">
-                  *Only .csv is accepted. The maximum file size can be
-                  15MB.</span
-                >
-                <!-- <div *ngIf="newDoc" class="border my-2 p-2">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group col-lg-12 mb-3">
+              <label
+                class="control-label font-weight-bold labelmt text-3 text-dark"
+                >Choose File
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input
+                (change)="selectDoc($event)"
+                name=""
+                id="petroDocs"
+                type="file"
+                class="form-control-file"
+              />
+              <span style="font-size: 12px">
+                *Only .csv is accepted. The maximum file size can be 15MB.</span
+              >
+              <!-- <div *ngIf="newDoc" class="border my-2 p-2">
                 <h4 class="mt-0">Uploaded Document</h4>
                 <a href="{{newDoc}}" target="_blank">Document</a>
               </div>
             </div> -->
 
-                <div *ngIf="error.hasError"></div>
-                <span class="text-danger">{{ error.message }}</span>
-              </div>
-              <div style="text-align: right">
-                <button
-                  *ngIf="!reviewing"
-                  class="btn btn-success"
-                  (click)="postPetroDoc()"
-                >
-                  Submit
-                </button>
-                <button
-                  *ngIf="reviewing"
-                  class="btn btn-dark"
-                  type="button"
-                  disabled
-                >
-                  <span
-                    class="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Reviewing...
-                </button>
-              </div>
+              <div *ngIf="error.hasError"></div>
+              <span class="text-danger">{{ error.message }}</span>
+            </div>
+            <div style="text-align: right">
+              <button
+                *ngIf="!reviewing"
+                class="btn btn-success"
+                (click)="postPetroDoc()"
+              >
+                Submit
+              </button>
+              <button
+                *ngIf="reviewing"
+                class="btn btn-dark"
+                type="button"
+                disabled
+              >
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Reviewing...
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 <div
   class="modal"
   id="fSurcharge"
@@ -945,7 +972,11 @@
                 </button>
               </div>
               <div
-                *ngIf="surchargeDisabled && date.invalid && (date.dirty || date.touched)"
+                *ngIf="
+                  surchargeDisabled &&
+                  date.invalid &&
+                  (date.dirty || date.touched)
+                "
                 class="text-danger"
               >
                 <div>
