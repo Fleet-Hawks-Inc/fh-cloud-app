@@ -35,14 +35,25 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                  <p-table #dt [value]="brokerage" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" scrollHeight="100%">
+                  <p-table 
+                  #dt
+                  [value]="brokerage"
+                  [resizableColumns]="true"
+                  columnResizeMode="fit"
+                  scrollDirection="both"
+                  [columns]="selectedColumns"
+                  [loading]="!loaded"
+                  styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                  autoLayout="true"
+                  scrollHeight="100%"
+                  >
                     <ng-template pTemplate="caption">
                       <div class="p-d-flex d-flex justify-content-between align-items-center">
                         <div>
                           <h3 class="m-0">Brokerage Report</h3>
                         </div>
                         <div class="text-right">
-                          <span>Showing {{ brokerage.length }} entries </span>
+                          <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
@@ -54,7 +65,7 @@
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn [ngStyle]="{ width: dataColumns.width }">
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
                               <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
@@ -70,7 +81,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-brk let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }" style="height: 40px">
+                        <td *ngFor="let dataColumns of columns"style="height: 40px">
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'orderNumber'" (click)="directToDetail(brk.orderID)" class="font-weight-bold" style="cursor: pointer">
                               {{ get(brk, dataColumns.field) }}
@@ -174,11 +185,14 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{ dataMessage }}
-                        <br /><br />
-                      </div>
-                    </ng-template>
+                        <tr>
+                          <td colspan="10" class="text-center">
+                            <br/>
+                            {{dataMessage}}
+                            <br/><br/>
+                          </td>
+                        </tr>
+                      </ng-template>
                     <ng-template pTemplate="summary" let-columns>
                       <div class="col-lg-12 mt-3 text-center" *ngIf="
                           lastItemSK !== 'end' && brokerage.length !== 0
@@ -189,9 +203,7 @@
 
                         <br /><br />
                       </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end'">
-                        Total Records: {{ brokerage.length }}
-                      </div>
+                    
                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
                         Total Records: {{ brokerage.length }}
                       </div>

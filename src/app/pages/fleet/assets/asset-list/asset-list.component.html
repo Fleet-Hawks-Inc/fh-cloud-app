@@ -67,10 +67,18 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                  <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand"
-                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
-                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                    [loading]="!loaded" scrollHeight="100%">
+                  <p-table
+                  #dt
+                  [value]="allData"
+                  [resizableColumns]="true"
+                  columnResizeMode="fit"
+                  autoLayout="true"
+                  scrollDirection="both"
+                  [columns]="selectedColumns"
+                  [loading]="!loaded"
+                  styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" 
+                  [loading]="!loaded"
+                  scrollHeight="100%">
                     <!-- Caption template of data table -->
                     <ng-template pTemplate="caption">
                       <div class="p-d-flex d-flex justify-content-between align-items-center">
@@ -78,7 +86,7 @@
                           <h3 class="m-0">Assets</h3>
                         </div>
                         <div class="text-right">
-                          <span>Showing {{ allData.length }} entries </span>
+                          <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
@@ -98,8 +106,7 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }">
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Asset Status Filter Customization -->
                             <span *ngSwitchCase="'currentStatus'">
@@ -150,7 +157,7 @@
                     <!-- Body Template of Data Table -->
                     <ng-template pTemplate="body" let-asset let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
+                        <td *ngFor="let dataColumns of columns"
                           style="cursor: pointer" routerLink="/fleet/assets/detail/{{ asset.assetID }}">
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'assetIdentification'">{{
@@ -221,12 +228,15 @@
                     </ng-template>
                     <!-- Empty Template -->
 
-                    <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{ dataMessage }}
-                        <br /><br />
-                      </div>
-                    </ng-template>
+                     <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                          <td colspan="11" class="text-center">
+                            <br/>
+                            {{dataMessage}}
+                            <br/><br/>
+                          </td>
+                        </tr>
+                      </ng-template>
                     <!-- Summary Section with Load More button -->
 
                     <ng-template pTemplate="summary" let-columns>
@@ -237,9 +247,6 @@
                           Load More..
                         </button>
                         <br /><br />
-                      </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end'">
-                        Total Records: {{ allData.length }}
                       </div>
                          <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
                         Total Records: {{ allData.length }}

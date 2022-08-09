@@ -43,13 +43,13 @@ export class SummaryComponent implements OnInit {
     this.fetchAssetCount();
     this.fetchAssetsList();
     this.dataColumns = [
-      { width: '17%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
-      { width: '15%', field: 'VIN', header: 'VIN', type: "text" },
-      { width: '15%', field: 'assetType', header: 'Asset Type', type: "text" },
-      { width: '13%', field: 'assetDetails.manufacturer', header: 'Make', type: 'text' },
-      { width: '12%', field: '-', header: 'Last Location', type: 'text' },
-      { width: '15%', field: 'assetDetails.licencePlateNumber', header: 'License Plate Number', type: "text" },
-      { width: '13%', field: 'currentStatus', header: 'Status', type: 'text' },
+      { field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
+      { field: 'VIN', header: 'VIN', type: "text" },
+      { field: 'assetType', header: 'Asset Type', type: "text" },
+      { field: 'assetDetails.manufacturer', header: 'Make', type: 'text' },
+      { field: '-', header: 'Last Location', type: 'text' },
+      { field: 'assetDetails.licencePlateNumber', header: 'License Plate Number', type: "text" },
+      { field: 'currentStatus', header: 'Status', type: 'text' },
     ]
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()

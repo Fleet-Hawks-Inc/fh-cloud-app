@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import * as _ from "lodash";
 import { AccountService, ApiService } from "./../../../../services";
 import { ToastrService } from "ngx-toastr";
@@ -41,7 +41,7 @@ export class ReceiptsListComponent implements OnInit {
     private toaster: ToastrService,
     private toastr: ToastrService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.lastItemSK = "";
@@ -73,7 +73,7 @@ export class ReceiptsListComponent implements OnInit {
   set selectedColumns(val: any[]) {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-  
+
   }
 
   fetchReceipts(refresh?: boolean) {
@@ -96,6 +96,7 @@ export class ReceiptsListComponent implements OnInit {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.disableSearch = false;
+            this.loaded = true
           }
           if (result.length > 0) {
             this.disableSearch = false;
