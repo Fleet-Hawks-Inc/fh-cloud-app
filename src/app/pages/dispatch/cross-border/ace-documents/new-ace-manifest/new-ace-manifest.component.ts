@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
@@ -13,17 +13,21 @@ import { ListService } from '../../../../../services';
 import { HereMapService } from '../../../../../services';
 import { updateFunctionDeclaration } from 'typescript';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { NgForm } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
   selector: 'app-new-ace-manifest',
   templateUrl: './new-ace-manifest.component.html',
   styleUrls: ['./new-ace-manifest.component.css'],
-  providers: [],
+  providers: [MessageService],
 })
 export class NewAceManifestComponent implements OnInit {
-  public manifestID;
-  public carrierID;
+  @ViewChild("aAce1") aAce1: NgForm;
+  activeState: boolean[] = [true, false, false];
+  public mID;
+  public pk;
   sendId;
   title = 'Add ACE e-Manifest';
   modalTitle = 'Add';
@@ -51,7 +55,7 @@ export class NewAceManifestComponent implements OnInit {
   getcurrentDate: any;
   manifestType = 'ACE';
   truck = {
-    truckID: '',
+    truckID: null,
     sealNumbers: [
       { sealNumber: '' },
       { sealNumber: '' },
@@ -63,8 +67,8 @@ export class NewAceManifestComponent implements OnInit {
   };
   trailers = [
     {
-      assetID: '',
-      assetTypeCode: '',
+      assetID: null,
+      assetTypeCode: null,
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -96,6 +100,7 @@ export class NewAceManifestComponent implements OnInit {
   brokersList: any = [];
   timeList: any = [];
   tripNumber = '';
+  orgTripNumber = '';
   SCAC: string;
   shipmentControlNumber: string;
   currentStatus: string;
@@ -108,6 +113,12 @@ export class NewAceManifestComponent implements OnInit {
   passengers = [];
   passengerDocStates: any = [];
   addedPassengers = [];
+  addresses = [
+    {
+      shipAdrs: [],
+      consAdrs: []
+    }
+  ];
   shipments = [
     {
       type: '',
@@ -221,6 +232,9 @@ export class NewAceManifestComponent implements OnInit {
   errorFastCard = false;
   address = false;
   amendManifest = false;
+  shipperDetails: any = [];
+  receiverDetails: any = [];
+  trips = [];
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,
@@ -232,6 +246,7 @@ export class NewAceManifestComponent implements OnInit {
     private listService: ListService,
     config: NgbTimepickerConfig,
     private dateAdapter: NgbDateAdapter<string>,
+    private messageService: MessageService,
     private countryStateCity: CountryStateCityService
   ) {
     config.seconds = true;
@@ -244,9 +259,16 @@ export class NewAceManifestComponent implements OnInit {
       day: date.getDate(),
     };
   }
+
+  fetchTrips() {
+    this.apiService.getData("common/get/manifests").subscribe((result: any) => {
+      this.trips = result;
+    });
+  }
+
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
-    if (this.manifestID) {
+    this.mID = this.route.snapshot.params[`mID`];
+    if (this.mID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
@@ -260,13 +282,14 @@ export class NewAceManifestComponent implements OnInit {
       this.title = 'Add ACE e-Manifest';
       this.modalTitle = 'Add';
     }
+    this.fetchTrips();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    await this.fetchCountries();
+    this.fetchCountries();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
-    this.fetchBrokers();
+    // this.fetchBrokers();
     this.getCAProvinces(); // fetch al provinces of Canada
     this.fetchCarrier();
     this.getCurrentuser();
@@ -275,6 +298,12 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchUSStates(); // it fetches the US states
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
+
+    this.getTripFromDetail();
+    this.getDataFromJsonFiles();
+  }
+
+  getDataFromJsonFiles() {
     this.httpClient.get('assets/USports.json').subscribe((data) => {
       this.USports = data;
     });
@@ -314,9 +343,14 @@ export class NewAceManifestComponent implements OnInit {
       .subscribe((data) => {
         this.thirdPartiesList = data;
       });
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
+  }
+
+  getTripFromDetail() {
+    this.route.queryParams.subscribe(elem => {
+      if (elem.tripNo) {
+        this.tripNumber = elem.tripNo;
+      }
+    })
   }
   shipmentLoadedFn(s, i) {
     this.shipments[s].commodities[i].loadedOn.number = '';
@@ -399,8 +433,12 @@ export class NewAceManifestComponent implements OnInit {
   }
 
   fetchDrivers() {
-    this.apiService.getData('drivers').subscribe((result: any) => {
-      this.fetchedDrivers = result.Items;
+    this.apiService.getData('drivers/get/all/active').subscribe((result: any) => {
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.fetchedDrivers.push(element);
+        }
+      });
     });
   }
   fetchVehicles() {
@@ -413,7 +451,15 @@ export class NewAceManifestComponent implements OnInit {
   }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
-      this.carriers = result.Items;
+      if (result && result.Items.length > 0) {
+        if (result.Items[0].SCAC != 'NA' && result.Items[0].SCAC != '' && result.Items[0].SCAC != undefined && result.Items[0].SCAC != null) {
+          this.SCAC = result.Items[0].SCAC;
+          this.shipments[0].SCAC = this.SCAC;
+        } else {
+          this.messageService.add({ sticky: true, closable: false, severity: 'error', summary: 'Carrier\'s SCAC Error!', detail: 'Please update your profile to add manifest.' });
+        }
+      }
+
     });
   }
   fetchBrokers() {
@@ -424,8 +470,8 @@ export class NewAceManifestComponent implements OnInit {
   // TRAILER DATA
   addTrailer() {
     this.trailers.push({
-      assetID: '',
-      assetTypeCode: '',
+      assetID: null,
+      assetTypeCode: null,
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -462,7 +508,7 @@ export class NewAceManifestComponent implements OnInit {
         estimatedDepartureDate: '',
         fda: false,
       },
-      SCAC: '',
+      SCAC: this.SCAC,
       shipperID: '',
       consigneeID: '',
       broker: {
@@ -500,6 +546,10 @@ export class NewAceManifestComponent implements OnInit {
         },
       ],
     });
+    this.addresses.push({
+      shipAdrs: [],
+      consAdrs: []
+    })
   }
   deleteShipment(i: number) {
     this.shipments.splice(i, 1);
@@ -631,6 +681,7 @@ export class NewAceManifestComponent implements OnInit {
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
+        $('div').removeClass('show-search__result');
         $(e.target).closest('div').addClass('show-search__result');
         return e.target.value;
       }),
@@ -690,45 +741,56 @@ export class NewAceManifestComponent implements OnInit {
       }
     }
   }
+  async getAddressDetail(id) {
+    let result = await this.apiService
+      .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
+  }
+
   async userAddress(s, p, item, callType) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
     if (callType === 'thirdParty') {
-      this.shipments[s].thirdParties[p].address.userLocation = result.address.label;
-      this.shipments[s].thirdParties[p].address.geoCords.lat = result.position.lat;
-      this.shipments[s].thirdParties[p].address.geoCords.lng = result.position.lng;
-      this.shipments[s].thirdParties[p].address.countryName = result.address.countryName;
-      this.shipments[s].thirdParties[p].address.countryCode = result.address.countryCode;
-      this.shipments[s].thirdParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      $('div').removeClass('show-search__result');
-      this.shipments[s].thirdParties[p].address.stateName = result.address.state;
-      this.shipments[s].thirdParties[p].address.stateCode = result.address.stateCode;
-      this.shipments[s].thirdParties[p].address.cityName = result.address.city;
-      this.shipments[s].thirdParties[p].address.postalCode = result.address.postalCode;
-      if (result.address.houseNumber === undefined) {
-        result.address.houseNumber = '';
-      }
-      if (result.address.street === undefined) {
-        result.address.street = '';
-      }
+      this.shipments[s].thirdParties[p].address.userLocation = item.address;
     } else {
-      this.usAddress.address.userLocation = result.address.label;
-      this.usAddress.address.geoCords.lat = result.position.lat;
-      this.usAddress.address.geoCords.lng = result.position.lng;
-      this.usAddress.address.countryName = result.address.countryName;
-      this.usAddress.address.countryCode = result.address.countryCode;
-      this.usAddress.address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      this.usAddress.address.stateName = result.address.state;
-      this.usAddress.address.stateCode = result.address.stateCode;
-      this.usAddress.address.cityName = result.address.city;
-      this.usAddress.address.postalCode = result.address.postalCode;
+      this.usAddress.address.userLocation = item.address;
+    }
+    let result = await this.getAddressDetail(item.place_id);
+    if (result != undefined) {
+      if (callType === 'thirdParty') {
+        this.shipments[s].thirdParties[p].address.geoCords.lat = result.position.lat;
+        this.shipments[s].thirdParties[p].address.geoCords.lng = result.position.lng;
+        this.shipments[s].thirdParties[p].address.countryName = result.address.CountryFullName;
+        this.shipments[s].thirdParties[p].address.countryCode = result.address.Country;
+        this.shipments[s].thirdParties[p].address.addressLine = result.address.StreetAddress;
+        this.shipments[s].thirdParties[p].address.stateName = result.address.StateName;
+        this.shipments[s].thirdParties[p].address.stateCode = result.address.State;
+        this.shipments[s].thirdParties[p].address.cityName = result.address.City;
+        this.shipments[s].thirdParties[p].address.postalCode = result.address.Zip;
+        if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+        }
+        if (result.address.street === undefined) {
+          result.address.street = '';
+        }
+      } else {
+
+        this.usAddress.address.geoCords.lat = result.position.lat;
+        this.usAddress.address.geoCords.lng = result.position.lng;
+        this.usAddress.address.countryName = result.address.CountryFullName;
+        this.usAddress.address.countryCode = result.address.Country;
+        this.usAddress.address.addressLine = result.address.StreetAddress;
+        this.usAddress.address.stateName = result.address.StateName;
+        this.usAddress.address.stateCode = result.address.State;
+        this.usAddress.address.cityName = result.address.City;
+        this.usAddress.address.postalCode = result.address.Zip;
+
+        if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+        }
+        if (result.address.street === undefined) {
+          result.address.street = '';
+        }
+      }
       $('div').removeClass('show-search__result');
-      if (result.address.houseNumber === undefined) {
-        result.address.houseNumber = '';
-      }
-      if (result.address.street === undefined) {
-        result.address.street = '';
-      }
     }
   }
 
@@ -790,30 +852,32 @@ export class NewAceManifestComponent implements OnInit {
       }
       if (this.address === true) {
         const data = {
-          SCAC: this.SCAC,
-          manifestType: this.manifestType,
-          tripNumber: this.SCAC + this.tripNumber,
-          usPortOfArrival: this.usPortOfArrival,
+          type: this.manifestType,
+          tripNumber: `${this.SCAC}${this.tripNumber}`,
+          currentStatus: 'DRAFT',
           estimatedArrivalDate: this.estimatedArrivalDate,
           estimatedArrivalTime: this.estimatedArrivalTime,
-          truck: this.truck,
-          trailers: this.trailers,
-          mainDriver: this.mainDriver,
-          coDrivers: this.coDrivers,
-          usAddress: this.usAddress,
-          passengers: this.passengers,
-          shipments: this.shipments,
-          currentStatus: 'Draft',
+          manifestInfo: {
+            SCAC: this.SCAC,
+            usPortOfArrival: this.usPortOfArrival,
+            truck: this.truck,
+            trailers: this.trailers,
+            mainDriver: this.mainDriver,
+            coDrivers: this.coDrivers,
+            usAddress: this.usAddress,
+            passengers: this.passengers,
+            shipments: this.shipments,
+          }
         };
-        for (let p = 0; p < data.passengers.length; p++) {
-          for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-            const element = data.passengers[p].travelDocuments[d];
+        for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+          for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+            const element = data.manifestInfo.passengers[p].travelDocuments[d];
             delete element.docStates;
           }
         }
-        for (let s = 0; s < data.shipments.length; s++) {
-          for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-            const element = data.shipments[s].thirdParties[p].address;
+        for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+          for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+            const element = data.manifestInfo.shipments[s].thirdParties[p].address;
             delete element.thirdPartyStates;
             delete element.thirdPartyCities;
           }
@@ -839,30 +903,33 @@ export class NewAceManifestComponent implements OnInit {
         }
       };
       const data = {
-        SCAC: this.SCAC,
-        manifestType: this.manifestType,
-        tripNumber: this.SCAC + this.tripNumber,
-        usPortOfArrival: this.usPortOfArrival,
+        type: this.manifestType,
+        tripNumber: `${this.SCAC}${this.tripNumber}`,
+        currentStatus: 'DRAFT',
         estimatedArrivalDate: this.estimatedArrivalDate,
         estimatedArrivalTime: this.estimatedArrivalTime,
-        truck: this.truck,
-        trailers: this.trailers,
-        mainDriver: this.mainDriver,
-        coDrivers: this.coDrivers,
-        usAddress: this.usAddress,
-        passengers: this.passengers,
-        shipments: this.shipments,
-        currentStatus: 'Draft',
+        manifestInfo: {
+          SCAC: this.SCAC,
+          usPortOfArrival: this.usPortOfArrival,
+          truck: this.truck,
+          trailers: this.trailers,
+          mainDriver: this.mainDriver,
+          coDrivers: this.coDrivers,
+          usAddress: this.usAddress,
+          passengers: this.passengers,
+          shipments: this.shipments,
+        }
+
       };
-      for (let p = 0; p < data.passengers.length; p++) {
-        for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-          const element = data.passengers[p].travelDocuments[d];
+      for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+        for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+          const element = data.manifestInfo.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.shipments.length; s++) {
-        for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-          const element = data.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+        for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+          const element = data.manifestInfo.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }
@@ -897,30 +964,41 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchACEEntry() {
     this.apiService
-      .getData('eManifests/ACE/' + this.manifestID).subscribe(async (result: any) => {
-        result = result.Items[0];
-        this.manifestID = this.manifestID;
-        this.manifestType = this.manifestType;
+      .getData('eManifests/ACE/' + this.mID).subscribe(async (result: any) => {
+        result = result[0];
+        this.pk = result.pk;
+        this.mID = result.mID;
+        this.manifestType = result.type;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
-        this.SCAC = result.SCAC;
+        this.SCAC = result.manifestInfo.SCAC;
         this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
-        this.usPortOfArrival = result.usPortOfArrival;
-        this.estimatedArrivalDate = result.estimatedArrivalDate;
-        this.estimatedArrivalTime = result.estimatedArrivalTime;
-        this.truck = result.truck;
-        this.mainDriver = result.mainDriver;
-        this.coDrivers = result.coDrivers;
-        this.trailers = result.trailers;
-        this.passengers = result.passengers;
+        this.usPortOfArrival = result.manifestInfo.usPortOfArrival;
+        this.estimatedArrivalDate = result.arvDate;
+        this.estimatedArrivalTime = result.arvTime;
+        this.truck = result.manifestInfo.truck;
+        this.mainDriver = result.manifestInfo.mainDriver;
+        this.coDrivers = result.manifestInfo.coDrivers;
+        this.trailers = result.manifestInfo.trailers;
+        this.passengers = result.manifestInfo.passengers;
         await this.fetchPassengerDocStates(this.passengers);
-        this.shipments = result.shipments;
+        this.shipments = result.manifestInfo.shipments;
         await this.fetchThirdPartyAddress(this.shipments);
-        this.currentStatus = result.currentStatus;
-        this.usAddress = result.usAddress;
-        this.borderResponses = result.borderResponses;
+        for (let i = 0; i < this.shipments.length; i++) {
+          const element = this.shipments[i];
+          if (element.shipperID) {
+            this.selectedCustomer('shipper', element.shipperID, i)
+          }
+          if (element.consigneeID) {
+            this.selectedCustomer('receiver', element.consigneeID, i)
+          }
+        }
+        this.currentStatus = result.status;
+        this.usAddress = result.manifestInfo.usAddress;
+        this.borderResponses = result.manifestInfo.borderResponses;
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
+        this.orgTripNumber = result.orgTripNumber;
       });
   }
 
@@ -976,35 +1054,38 @@ export class NewAceManifestComponent implements OnInit {
       }
       if (this.address === true) {
         const data = {
-          manifestID: this.manifestID,
-          manifestType: this.manifestType,
+          mID: this.mID,
+          type: this.manifestType,
+          tripNumber: `${this.SCAC}${this.tripNumber}`,
+          currentStatus: 'DRAFT',
           sendId: this.sendId,
-          SCAC: this.SCAC,
-          tripNumber: this.SCAC + this.tripNumber,
-          usPortOfArrival: this.usPortOfArrival,
           estimatedArrivalDate: this.estimatedArrivalDate,
           estimatedArrivalTime: this.estimatedArrivalTime,
-          truck: this.truck,
-          trailers: this.trailers,
-          mainDriver: this.mainDriver,
-          coDrivers: this.coDrivers,
-          usAddress: this.usAddress,
-          passengers: this.passengers,
-          shipments: this.shipments,
-          borderResponses: this.borderResponses,
+          manifestInfo: {
+            SCAC: this.SCAC,
+            usPortOfArrival: this.usPortOfArrival,
+            truck: this.truck,
+            trailers: this.trailers,
+            mainDriver: this.mainDriver,
+            coDrivers: this.coDrivers,
+            usAddress: this.usAddress,
+            passengers: this.passengers,
+            shipments: this.shipments,
+            borderResponses: this.borderResponses,
+          },
           createdDate: this.createdDate,
           createdTime: this.createdTime,
-          currentStatus: 'Draft',
         };
-        for (let p = 0; p < data.passengers.length; p++) {
-          for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-            const element = data.passengers[p].travelDocuments[d];
+
+        for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+          for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+            const element = data.manifestInfo.passengers[p].travelDocuments[d];
             delete element.docStates;
           }
         }
-        for (let s = 0; s < data.shipments.length; s++) {
-          for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-            const element = data.shipments[s].thirdParties[p].address;
+        for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+          for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+            const element = data.manifestInfo.shipments[s].thirdParties[p].address;
             delete element.thirdPartyStates;
             delete element.thirdPartyCities;
           }
@@ -1031,35 +1112,38 @@ export class NewAceManifestComponent implements OnInit {
       };
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
-        manifestID: this.manifestID,
-        manifestType: this.manifestType,
+        mID: this.mID,
+        type: this.manifestType,
+        tripNumber: `${this.SCAC}${this.tripNumber}`,
+        currentStatus: 'DRAFT',
         sendId: this.sendId,
-        SCAC: this.SCAC,
-        tripNumber: this.SCAC + this.tripNumber,
-        usPortOfArrival: this.usPortOfArrival,
         estimatedArrivalDate: this.estimatedArrivalDate,
         estimatedArrivalTime: this.estimatedArrivalTime,
-        truck: this.truck,
-        trailers: this.trailers,
-        mainDriver: this.mainDriver,
-        coDrivers: this.coDrivers,
-        usAddress: this.usAddress,
-        passengers: this.passengers,
-        shipments: this.shipments,
-        borderResponses: this.borderResponses,
+        manifestInfo: {
+          SCAC: this.SCAC,
+          usPortOfArrival: this.usPortOfArrival,
+          truck: this.truck,
+          trailers: this.trailers,
+          mainDriver: this.mainDriver,
+          coDrivers: this.coDrivers,
+          usAddress: this.usAddress,
+          passengers: this.passengers,
+          shipments: this.shipments,
+          borderResponses: this.borderResponses,
+        },
         createdDate: this.createdDate,
         createdTime: this.createdTime,
-        currentStatus: 'Draft',
       };
-      for (let p = 0; p < data.passengers.length; p++) {
-        for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-          const element = data.passengers[p].travelDocuments[d];
+
+      for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+        for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+          const element = data.manifestInfo.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.shipments.length; s++) {
-        for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-          const element = data.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+        for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+          const element = data.manifestInfo.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }
@@ -1069,8 +1153,10 @@ export class NewAceManifestComponent implements OnInit {
   }
   // update function
   updateFunction(data) {
+    data.pk = this.pk;
+    data.orgTripNumber = this.orgTripNumber;
     this.apiService
-      .putData(`eManifests/updateACEmanifest/${this.amendManifest}`, data)
+      .putData(`eManifests/update-ace/${this.amendManifest}`, data)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1099,7 +1185,8 @@ export class NewAceManifestComponent implements OnInit {
   }
   // add Function
   addFunction(data) {
-    this.apiService.postData('eManifests/addACEemanifest', data).subscribe({
+    data.orgTripNumber = this.tripNumber;
+    this.apiService.postData('eManifests/add-ace', data).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1146,6 +1233,71 @@ export class NewAceManifestComponent implements OnInit {
           this.errorFastCard = false;
         }
       }
+    }
+  }
+
+  changeBroker(s) {
+    if (s != null) {
+      let portIdentifier = this.shipments[s].broker.filerCode;
+
+      const result = this.brokersList.find((elem) => elem.portIdentifier == portIdentifier);
+      if (result) {
+        this.shipments[s].broker.filerCode = result.filerCode;
+        this.shipments[s].broker.portLocation = result.portIdentifier;
+      }
+
+    }
+  }
+
+  getAddressID(type: string, value: boolean, i: number, id: string) {
+    if (value === true && type == 'shipper') {
+      this.shipments[i].shipperID = id;
+    } else {
+      this.shipments[i].consigneeID = id;
+    }
+  }
+
+  selectedCustomer(type: string, customerID: any, index: any) {
+    if (type === 'shipper') {
+      this.shipperDetails = [];
+    }
+    if (type === 'receiver') {
+      this.receiverDetails = [];
+    }
+    if (customerID != '' && customerID != undefined && customerID != null) {
+      this.apiService
+        .getData(`contacts/detail/${customerID}`)
+        .subscribe((result: any) => {
+          if (result && result.Items.length > 0) {
+            if (result.Items[0].adrs && result.Items[0].adrs.length > 0) {
+              for (let i = 0; i < result.Items[0].adrs.length; i++) {
+                const element = result.Items[0].adrs[i];
+                if (element.cCode == 'US' || element.cCode == 'CA') {
+                  element["isChecked"] = false;
+                  if (type === 'shipper') {
+                    this.addresses[index]['shipAdrs'].push(element);
+                  }
+                  if (type === 'receiver') {
+                    this.addresses[index]['consAdrs'].push(element);
+                  }
+                }
+              }
+              if (type === 'shipper') {
+                this.addresses[index]['shipAdrs'][0].isChecked = true;
+              }
+              if (type === 'receiver') {
+                this.addresses[index]['consAdrs'][0].isChecked = true;
+              }
+            }
+            if (type === 'shipper' && this.addresses[index]['shipAdrs'].length > 0) {
+              this.shipments[index]['shipAdrsID'] = this.addresses[index]['shipAdrs'][0].addressID;
+            }
+            if (type === 'receiver' && this.addresses[index]['consAdrs'].length > 0) {
+              this.shipments[index]['conAdrsID'] = this.addresses[index]['consAdrs'][0].addressID;
+            }
+
+          }
+        });
     }
   }
 }

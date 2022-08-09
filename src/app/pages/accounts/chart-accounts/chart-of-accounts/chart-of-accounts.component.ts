@@ -6,6 +6,7 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import * as _ from "lodash";
 import { Table } from 'primeng/table';
+
 import { NgForm } from "@angular/forms";
 declare var $: any;
 @Component({
@@ -14,6 +15,9 @@ declare var $: any;
   styleUrls: ["./chart-of-accounts.component.css"],
 })
 export class ChartOfAccountsComponent implements OnInit {
+  selectedCities: string[] = [];
+
+
   @ViewChild("actForm") actForm: NgForm;
   modalTitle = "Add Account";
   dataMessage = Constants.FETCHING_DATA;
@@ -73,6 +77,13 @@ export class ChartOfAccountsComponent implements OnInit {
   dataColumns: any[];
   get = _.get;
   find = _.find;
+  isChecked = false;
+  headCheckbox = false;
+  usedAccounts: any = [];
+  unusedAccounts: any = [];
+  showUnused: boolean = false;
+  allAccounts: any = [];
+
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -174,6 +185,7 @@ export class ChartOfAccountsComponent implements OnInit {
     ) {
       this.disableSearch = true;
       this.accounts = [];
+      this.allAccounts = [];
       this.lastItemSK = "";
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAccounts();
@@ -188,9 +200,12 @@ export class ChartOfAccountsComponent implements OnInit {
     };
     this.lastItemSK = "";
     this.accounts = [];
+    this.allAccounts = [];
     this.fetchAccounts();
   }
   async fetchAccounts(refresh?: boolean) {
+    this.unusedAccounts = [];
+    this.accounts = this.allAccounts;
     if (refresh === true) {
       this.lastItemSK = "";
       this.accounts = [];
@@ -235,7 +250,13 @@ export class ChartOfAccountsComponent implements OnInit {
             }
             const newArray = _.sortBy(this.accounts, ["actNo"]); // sort by account number
             this.accounts = newArray;
+            this.allAccounts = newArray;
             this.loaded = true;
+            for (let i = 0; i < this.accounts.length; i++) {
+              if (this.accounts[i].closingAmtCAD === this.accounts[i].opnBalCAD && this.accounts[i].closingAmtUSD === this.accounts[i].opnBalUSD) {
+                this.unusedAccounts.push(this.accounts[i])
+              }
+            }
           }
         });
     }
@@ -243,6 +264,16 @@ export class ChartOfAccountsComponent implements OnInit {
       this.dataMessage = "Please add predefined accounts";
     }
   }
+
+  onUnusedAccount() {
+    if (this.showUnused === true) {
+      this.accounts = this.unusedAccounts;
+    }
+    else {
+      this.accounts = this.allAccounts;
+    }
+  }
+
   onScroll() {
     if (this.loaded) {
       this.fetchAccounts();

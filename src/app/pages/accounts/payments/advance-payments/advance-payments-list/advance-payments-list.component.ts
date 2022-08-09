@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { Table } from 'primeng/table';
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
 
@@ -33,7 +35,22 @@ export class AdvancePaymentsListComponent implements OnInit {
   ownerOpObjects: any = {};
   employees: any = {};
   vendors: any = {};
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { field: 'paymentNo', header: 'Advance Payment#', type: "text" },
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'advType', header: 'Type', type: "text" },
+    { field: 'payMode', header: 'Payment Mode', type: "text" },
+    { field: 'payModeNo', header: 'Reference No.', type: "text" },
+    { field: 'paymentTo', header: 'Paid To', type: "text" },
+    { field: 'amount', header: 'Advance Amount', type: "text" },
+    { field: 'paidAmount', header: 'Deducted Amount', type: "text" },
+    { field: 'pendingPayment', header: 'Balance', type: "text" },
+    { field: 'newStatus', header: 'Status', type: "text" },
 
+  ];
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -42,12 +59,25 @@ export class AdvancePaymentsListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.setToggleOptions()
     this.fetchPayments();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
     this.employees = await this.dashboardUtilityService.getEmployees();
     this.vendors = await this.dashboardUtilityService.getVendors();
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   fetchPayments(refresh?: boolean) {
@@ -188,5 +218,8 @@ export class AdvancePaymentsListComponent implements OnInit {
 
   unitTypeChange() {
     this.filter.searchValue = null;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

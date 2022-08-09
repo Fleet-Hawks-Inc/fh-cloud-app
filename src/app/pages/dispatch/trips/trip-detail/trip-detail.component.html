@@ -24,27 +24,9 @@
 
             <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit"
               class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Trip</a>
-            <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
-            <!-- <div class="btn-group flex-wrap mr-2">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">Send to Manifest<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a href="javascript:;" class="modal-with-form dropdown-item text-1">ACE
-                                    eManifest</a>
-                                <a href="javascript:;" class="modal-with-form dropdown-item text-1">ACI
-                                    eManifest</a>
-                            </div>
-                        </div> -->
-            <!-- <div class="btn-group flex-wrap mr-2">
-                        <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                               aria-expanded="false">Actions<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                               style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                               <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
-                            </div>
-                         </div> -->
+            <!-- <p-splitButton *ngIf="tripData.tripNo" label="Send eManifest" [model]="items"
+              styleClass="p-button-sm mr-2 text-left">
+            </p-splitButton> -->
             <a href="javascript:;" (click)="cancel()" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
               Trips
             </a>
@@ -160,9 +142,9 @@
                             <span>No document found</span>
                           </div>
                           <div class="row" *ngIf="uploadedDocSrc.length > 0"
-                            style="max-height: 170px; overflow: scroll">
+                            style="max-height: 150px; overflow-y: scroll">
                             <div class="col-12">
-                              <table class="table table-bordered">
+                              <table class="table table-bordered mb-0">
                                 <thead>
                                   <th>Sr.</th>
                                   <th>Name</th>
@@ -565,6 +547,23 @@
                                 </li>
                               </ul>
                             </div>
+
+                            <div class="tm-box">
+                              <span class="release-date">{{ data.createdDate }}
+                                -
+                                {{ data.createdTime }}</span>
+                              <ul class="list-unstyled">
+                                <li>
+                                  {{ data.userFirstName | titlecase }}
+                                  {{ data.userLastName | titlecase }}
+                                  {{ data.eventParams.message }}
+                                  reason
+                                  <b class="text-success">{{
+                                    data.eventParams.recallMsg
+                                    }}</b>
+                                </li>
+                              </ul>
+                            </div>
                           </li>
                         </ol>
                       </div>
@@ -945,26 +944,19 @@
                         </td>
                       </tr>
                       <tr>
-                        <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="
-                            border-right: 1px solid #adadad;
-                            padding: 10px;
-                          ">
+                        <td width="25%" class="text-dark" bgcolor="#f3f3f3"
+                          style="border-right: 1px solid #adadad; padding: 10px">
                           <p class="m-0 text-dark" style="font-weight: 600">
                             Phone
                           </p>
                         </td>
-                        <td width="25%" class="text-dark" style="
-                            border-right: 1px solid #adadad;
-                            padding: 10px;
-                          ">
+                        <td width="25%" class="text-dark" style="border-right: 1px solid #adadad; padding: 10px">
                           <p class="m-0 text-dark">
                             {{ item.workPhone ? item.workPhone : "NA" }}
                           </p>
                         </td>
-                        <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="
-                            padding: 10px;
-                            border-right: 1px solid #adadad;
-                          ">
+                        <td width="25%" class="text-dark" bgcolor="#f3f3f3"
+                          style="padding: 10px; border-right: 1px solid #adadad">
                           <p class="m-0 text-dark" style="font-weight: 600">
                             Email
                           </p>
@@ -1078,21 +1070,17 @@
                 </td>
                 <td>
                   {{ trip.driverName ? trip.driverName : "" }}
-                  <span *ngIf="
-                      trip.driverStatus && trip.driverStatus == 'STARTED'
-                    " class="badge badge-success">{{ trip.driverStatus }}</span>
+                  <span *ngIf="trip.driverStatus && trip.driverStatus == 'STARTED'" class="badge badge-success">{{
+                    trip.driverStatus }}</span>
                   <span *ngIf="
                       trip.driverStatus && trip.driverStatus == 'DELIVERED'
                     " class="badge badge-primary">{{ trip.driverStatus }}</span>
-                  <span *ngIf="
-                      trip.driverStatus && trip.driverStatus == 'REJECTED'
-                    " class="badge badge-danger">{{ trip.driverStatus }}</span>
-                  <span *ngIf="
-                      trip.driverStatus && trip.driverStatus == 'ACCEPTED'
-                    " class="badge badge-success">{{ trip.driverStatus }}</span>
-                  <span *ngIf="
-                      trip.driverStatus && trip.driverStatus == 'ASSIGNED'
-                    " class="badge bg-blue">{{ trip.driverStatus }}</span>
+                  <span *ngIf="trip.driverStatus && trip.driverStatus == 'REJECTED'" class="badge badge-danger">{{
+                    trip.driverStatus }}</span>
+                  <span *ngIf="trip.driverStatus && trip.driverStatus == 'ACCEPTED'" class="badge badge-success">{{
+                    trip.driverStatus }}</span>
+                  <span *ngIf="trip.driverStatus && trip.driverStatus == 'ASSIGNED'" class="badge bg-blue">{{
+                    trip.driverStatus }}</span>
                 </td>
                 <td>
                   {{ trip.coDriverName ? trip.coDriverName : "" }}
@@ -1103,8 +1091,7 @@
                       trip.coDriverStatus && trip.coDriverStatus == 'STARTED'
                     " class="badge badge-success">{{ trip.coDriverStatus }}</span>
                   <span *ngIf="
-                      trip.coDriverStatus &&
-                      trip.coDriverStatus == 'DELIVERED'
+                      trip.coDriverStatus && trip.coDriverStatus == 'DELIVERED'
                     " class="badge badge-primary">{{ trip.coDriverStatus }}</span>
                   <span *ngIf="
                       trip.coDriverStatus && trip.coDriverStatus == 'ACCEPTED'
@@ -1190,8 +1177,8 @@
   </table>
 
   <ng-template pTemplate="footer">
-    <button pButton (click)="tripInfoModal=false" label="Cancel" styleClass="p-button-text"></button>
-    <button pButton *ngIf="isSplit" (click)="tripInfoModal=false;showSplitModel=true;" label="Back"
+    <button pButton (click)="tripInfoModal = false" label="Cancel" styleClass="p-button-text"></button>
+    <button pButton *ngIf="isSplit" (click)="tripInfoModal = false; showSplitModel = true" label="Back"
       styleClass="p-button-text"></button>
     <button pButton [disabled]="isEmail" (click)="driverEmail()" label="Email to Driver"
       styleClass="p-button-text"></button>
@@ -1278,7 +1265,8 @@
     optionValue="splitID" placeholder="Select Sub Trip" [style]="{ width: '100%' }" [(ngModel)]="selectPlanID">
   </p-dropdown>
   <ng-template pTemplate="footer">
-    <button pButton (click)="showSplitModel=false" label="Cancel" styleClass="p-button-text"></button>
-    <button pButton (click)="showSplitModel=false;showTripInfoModel()" label="Next" styleClass="p-button-text"></button>
+    <button pButton (click)="showSplitModel = false" label="Cancel" styleClass="p-button-text"></button>
+    <button pButton (click)="showSplitModel = false; showTripInfoModel()" label="Next"
+      styleClass="p-button-text"></button>
   </ng-template>
 </p-dialog>

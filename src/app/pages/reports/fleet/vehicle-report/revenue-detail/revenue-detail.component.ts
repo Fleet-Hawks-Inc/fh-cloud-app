@@ -159,6 +159,20 @@ export class RevenueDetailComponent implements OnInit {
     });
   }
 
+  reset() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.end = moment().format("YYYY-MM-DD");
+    this.start = moment().subtract(15, 'days').format('YYYY-MM-DD');
+    this.totalMiles = 0;
+    this.totalInv = 0;
+    this.totalRec = 0;
+    this.lastItemSK = '';
+    this.allData = []
+    this.fetchRevenueData();
+    this.fetchVehicleName();
+
+  }
+
   generateCSV() {
     if (this.allData.length > 0) {
       let dataObject = []

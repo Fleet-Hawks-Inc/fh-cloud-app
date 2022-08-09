@@ -25,7 +25,7 @@ export class ZoneDetailsComponent implements OnInit {
       noPallets: null,
       weight: null,
       unit: null,
-      currency: null,
+      currency: "CAD",
       rate: null,
     },
   ];
@@ -33,7 +33,7 @@ export class ZoneDetailsComponent implements OnInit {
     {
       name: null,
       fee: null,
-      currency: null,
+      currency: "CAD",
     },
   ];
 
@@ -90,7 +90,7 @@ export class ZoneDetailsComponent implements OnInit {
           noPallets: null,
           weight: null,
           rate: null,
-          currency: null,
+          currency: this.pRates[0].currency,
           unit: null,
         });
       } else {
@@ -109,7 +109,7 @@ export class ZoneDetailsComponent implements OnInit {
         this.aspRates.push({
           name: null,
           fee: null,
-          currency: null,
+          currency: this.aspRates[0].currency,
         });
       } else {
         this.toastr.error(" Associrial Fees can not be empty.");

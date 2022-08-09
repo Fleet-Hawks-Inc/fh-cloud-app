@@ -9,24 +9,14 @@
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button
-              type="button"
-              [disabled]="downloadDisabled"
-              class="btn btn-success btn-sm mr-2"
-              (click)="openModal()"
-            >
+            <button type="button" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-2"
+              (click)="openModal()">
               Payment PDF
             </button>
-            <a
-              routerLink="/accounts/expense/edit/{{ expenseID }}"
-              class="btn btn-default btn-sm mr-3"
-              ><i class="fas fa-pencil-alt"></i> Edit Expense</a
-            >
-            <a
-              routerLink="/accounts/expense/list"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> Other Expenses List</a
-            >
+            <a routerLink="/accounts/expense/edit/{{ expenseID }}" class="btn btn-default btn-sm mr-3"><i
+                class="fas fa-pencil-alt"></i> Edit Expense</a>
+            <a routerLink="/accounts/expense/list/{{ sessionID }}" class="btn btn-sm btn-default"><i
+                class="fas fa-list"></i> Other Expenses List</a>
           </div>
         </div>
       </header>
@@ -91,9 +81,9 @@
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
                           {{
-                            expenseData.vendorID
-                              ? vendors[expenseData.vendorID]
-                              : "-"
+                          expenseData.vendorID
+                          ? vendors[expenseData.vendorID]
+                          : "-"
                           }}
                         </p>
                         <p class="mb-0">VENDOR</p>
@@ -116,21 +106,13 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Recurring
                             </td>
                             <td width="60%">
-                              <span
-                                *ngIf="expenseData.recurring.status"
-                                class="text-lowercase"
-                                >{{ expenseData.recurring.interval }}</span
-                              >
-                              <span *ngIf="!expenseData.recurring.status"
-                                >-</span
-                              >
+                              <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{
+                                expenseData.recurring.interval }}</span>
+                              <span *ngIf="!expenseData.recurring.status">-</span>
                             </td>
                           </tr>
                           <tr>
@@ -138,16 +120,10 @@
                               Start Date
                             </td>
                             <td>
-                              <span
-                                *ngIf="expenseData.recurring.status"
-                                class="text-lowercase"
-                                >{{
-                                  expenseData.txnDate | date: "yyyy/MM/dd"
-                                }}</span
-                              >
-                              <span *ngIf="!expenseData.recurring.status"
-                                >-</span
-                              >
+                              <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{
+                                expenseData.txnDate | date: "yyyy/MM/dd"
+                                }}</span>
+                              <span *ngIf="!expenseData.recurring.status">-</span>
                             </td>
                           </tr>
                           <tr>
@@ -155,17 +131,11 @@
                               End Date
                             </td>
                             <td>
-                              <span
-                                *ngIf="expenseData.recurring.status"
-                                class="text-lowercase"
-                                >{{
-                                  expenseData.recurring.endDate
-                                    | date: "yyyy/MM/dd"
-                                }}</span
-                              >
-                              <span *ngIf="!expenseData.recurring.status"
-                                >-</span
-                              >
+                              <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{
+                                expenseData.recurring.endDate
+                                | date: "yyyy/MM/dd"
+                                }}</span>
+                              <span *ngIf="!expenseData.recurring.status">-</span>
                             </td>
                           </tr>
                           <!-- <tr>
@@ -192,7 +162,7 @@
                             <td>
                               <span *ngIf="expenseData.tripID">{{
                                 trips[expenseData.tripID]
-                              }}</span>
+                                }}</span>
                               <span *ngIf="!expenseData.tripID">-</span>
                             </td>
                           </tr>
@@ -213,24 +183,21 @@
                             <td>
                               GST -
                               {{
-                                expenseData.taxes.gstAmount | number: "1.2-2"
+                              expenseData.taxes.gstAmount | number: "1.2-2"
                               }}
                               {{ expenseData.currency }}, PST -
                               {{
-                                expenseData.taxes.pstAmount | number: "1.2-2"
+                              expenseData.taxes.pstAmount | number: "1.2-2"
                               }}
                               {{ expenseData.currency }}, HST -
                               {{
-                                expenseData.taxes.hstAmount | number: "1.2-2"
+                              expenseData.taxes.hstAmount | number: "1.2-2"
                               }}
                               {{ expenseData.currency }}
                             </td>
                           </tr>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Country
                             </td>
                             <td width="60%">{{ expenseData.countryName }}</td>
@@ -266,38 +233,20 @@
                       <div class="vehicle-common-box p-3">
                         <div class="row mt-2">
                           <div class="col-lg-6">
-                            <label class="control-label font-weight-bold text-3"
-                              >Uploaded Document(s)</label
-                            >
+                            <label class="control-label font-weight-bold text-3">Uploaded Document(s)</label>
                           </div>
                         </div>
                         <hr class="solid mt-3" />
-                        <div
-                          class="row"
-                          *ngFor="let item of documentSlides; let d = index"
-                        >
+                        <div class="row" *ngFor="let item of documentSlides; let d = index">
                           <div class="col-lg-9">
-                            <a
-                              href="javascript:;"
-                              data-toggle="modal"
-                              data-target="#viewDocModal"
-                              (click)="setPDFSrc(item.path)"
-                              >Document {{ d + 1 }}</a
-                            >
+                            <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                              (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                           </div>
                           <div class="col-lg-3 text-right">
-                            <i
-                              class="far fa-file text-dak mr-1"
-                              (click)="setPDFSrc(item.path)"
-                              data-toggle="modal"
-                              data-target="#viewDocModal"
-                            ></i>
-                            <a
-                              href="javascript:;"
-                              (click)="deleteDocument(item.name, d)"
-                              class="modal-with-form"
-                              ><i class="fas fa-times text-danger"></i
-                            ></a>
+                            <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                              data-target="#viewDocModal"></i>
+                            <a href="javascript:;" (click)="deleteDocument(item.name, d)" class="modal-with-form"><i
+                                class="fas fa-times text-danger"></i></a>
                           </div>
                         </div>
                       </div>
@@ -324,23 +273,19 @@
                             <td *ngIf="!expenseData.isFeatEnabled">
                               <span *ngIf="dt.actIDType === 'actID'">{{
                                 accountsObjects[dt.accountID] | titlecase
-                              }}</span>
+                                }}</span>
                               <span *ngIf="dt.actIDType === 'actIntID'">{{
                                 accountsIntObjects[dt.accountID] | titlecase
-                              }}</span>
+                                }}</span>
                             </td>
                             <td>{{ dt.type | titlecase }}</td>
                             <td>
-                              <span *ngIf="dt.trxType === 'debit'"
-                                >{{ dt.amount | number: "1.2-2" }}&nbsp;
-                                {{ dt.currency }}</span
-                              >
+                              <span *ngIf="dt.trxType === 'debit'">{{ dt.amount | number: "1.2-2" }}&nbsp;
+                                {{ dt.currency }}</span>
                             </td>
                             <td>
-                              <span *ngIf="dt.trxType === 'credit'"
-                                >{{ dt.amount | number: "1.2-2" }}&nbsp;
-                                {{ dt.currency }}</span
-                              >
+                              <span *ngIf="dt.trxType === 'credit'">{{ dt.amount | number: "1.2-2" }}&nbsp;
+                                {{ dt.currency }}</span>
                             </td>
                           </tr>
                           <tr>
@@ -371,24 +316,13 @@
 </section>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div
-  class="modal fade"
-  id="viewDocModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="viewDocModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -421,14 +355,7 @@
     </div>
 
     <div class="modal-body text-dark">
-      <table
-        width="98%"
-        border="0"
-        id="print-exp-trans"
-        align="center"
-        cellpadding="0"
-        cellspacing="0"
-      >
+      <table width="98%" border="0" id="print-exp-trans" align="center" cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
             <td colspan="2">&nbsp;</td>
@@ -440,17 +367,9 @@
               </h1>
             </td>
             <td align="right">
-              <img
-                crossorigin="anonymous"
-                *ngIf="companyLogo"
-                [src]="companyLogo"
-                alt="logo"
-                style="max-width: 100px"
-              />
-              <p
-                *ngIf="tagLine"
-                class="mb-0 text-dark text-4 font-weight-bold mb-0"
-              >
+              <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo" alt="logo"
+                style="max-width: 100px" />
+              <p *ngIf="tagLine" class="mb-0 text-dark text-4 font-weight-bold mb-0">
                 {{ tagLine }}
               </p>
             </td>
@@ -464,20 +383,12 @@
               <h2 class="mt-0 mb-0 text-dark text-5 font-weight-semibold">
                 Company
               </h2>
-              <p
-                class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
-              >
+              <p class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0">
                 {{ carrierName ? carrierName : "NA" }}
               </p>
             </td>
             <td valign="top">
-              <table
-                width="80%"
-                border="0"
-                align="right"
-                cellpadding="0"
-                cellspacing="0"
-              >
+              <table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
                 <tbody>
                   <tr>
                     <td align="right">
@@ -485,14 +396,12 @@
                         Expense Type:
                         <span class="font-weight-bold">{{
                           categories[expenseData.categoryID]
-                        }}</span>
+                          }}</span>
                       </p>
                       <p class="mt-2 mb-2 text-dark text-3">
                         Payment Amount:
-                        <span class="font-weight-bold"
-                          >{{ expenseData.finalTotal | number: "1.2-2" }}
-                          {{ expenseData.currency }}</span
-                        >
+                        <span class="font-weight-bold">{{ expenseData.finalTotal | number: "1.2-2" }}
+                          {{ expenseData.currency }}</span>
                       </p>
                     </td>
                   </tr>
@@ -503,8 +412,21 @@
           <tr>
             <td colspan="2" height="1" bgcolor="#595959"></td>
           </tr>
+
           <tr>
-            <td colspan="2">&nbsp;</td>
+            <td width="50%" colspan="2">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td>
+                      <h2 class="text-dark text-4 mt-0 mb-0 font-weight-bold">
+                        Trip Info
+                      </h2>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
           </tr>
           <tr>
             <td colspan="2">
@@ -526,7 +448,7 @@
                     <td class="pl-3 pt-1 pb-1">
                       <span *ngIf="expenseData.tripID">{{
                         trips[expenseData.tripID]
-                      }}</span>
+                        }}</span>
                       <span *ngIf="!expenseData.tripID">-</span>
                     </td>
                     <td class="pl-3 pt-1">
@@ -534,9 +456,9 @@
                     </td>
                     <td class="pl-3 pt-1">
                       {{
-                        expenseData.vendorID
-                          ? vendors[expenseData.vendorID]
-                          : "-"
+                      expenseData.vendorID
+                      ? vendors[expenseData.vendorID]
+                      : "-"
                       }}
                     </td>
                     <td class="pl-3 pt-1">
@@ -571,9 +493,9 @@
                         <tbody>
                           <tr>
                             <td>
-                              <p class="text-dark text-4 mt-3 mb-2">
-                                <strong>Taxes</strong>
-                              </p>
+                              <h2 class="text-dark text-4 mt-0 mb-0 font-weight-bold">
+                                Taxes
+                              </h2>
                             </td>
                           </tr>
                         </tbody>
@@ -609,19 +531,19 @@
                             </td>
                             <td class="pl-3 pt-1">
                               {{
-                                expenseData.taxes.gstAmount | number: "1.2-2"
+                              expenseData.taxes.gstAmount | number: "1.2-2"
                               }}
                               {{ expenseData.currency }}
                             </td>
                             <td class="pl-3 pt-1">
                               {{
-                                expenseData.taxes.pstAmount | number: "1.2-2"
+                              expenseData.taxes.pstAmount | number: "1.2-2"
                               }}
                               {{ expenseData.currency }}
                             </td>
                             <td class="pl-3 pt-1">
                               {{
-                                expenseData.taxes.hstAmount | number: "1.2-2"
+                              expenseData.taxes.hstAmount | number: "1.2-2"
                               }}
                               {{ expenseData.currency }}
                             </td>
@@ -647,12 +569,7 @@
                       <h2 class="mb-0 text-dark text-4 font-weight-normal">
                         Powered By
                       </h2>
-                      <img
-                        alt="Fleet Hawks Inc."
-                        src="assets/img/logo.png"
-                        width="207"
-                        height="28"
-                      />
+                      <img alt="Fleet Hawks Inc." src="assets/img/logo.png" width="207" height="28" />
                     </td>
                   </tr>
                 </tbody>
@@ -669,11 +586,7 @@
       <button type="button" class="btn btn-default" (click)="modal.dismiss()">
         Close
       </button>
-      <button
-        type="button"
-        class="btn btn-success"
-        (click)="generatePaymentPDF()"
-      >
+      <button type="button" class="btn btn-success" (click)="generatePaymentPDF()">
         Download PDF
       </button>
     </div>

@@ -1,24 +1,24 @@
 <ul class="nav nav-main mr-0 bg-white">
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list', genrateChartAccountSessionID()]">
       <i class="fas fa-chart-pie"></i>
       <span>Chart of Accounts</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'income', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'income', 'list', generateIncomeTransactionsSessionID()]">
       <i class="fas fa-file-invoice-dollar"></i>
       <span>Income Transactions</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'expense', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'expense', 'list' , generateExpenseTransactionsSessionID()]">
       <i class="fas fa-dollar-sign"></i>
       <span>Expense Transactions</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'manual-journal', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'manual-journal', 'list', generateManualJournalSessionID()]">
       <i class="fas fa-pencil-alt"></i>
       <span>Manual Journal</span>
     </a>
@@ -37,7 +37,7 @@
   </li>
   <li routerLinkActive="nav-active">
     <a class="nav-link" [routerLink]="['/accounts', 'fuel-transactions', 'list']">
-      <i class="fab fa-wpforms"></i>
+      <i class="fas fa-gas-pump fa-fw"></i>
       <span>Fuel Transactions</span>
     </a>
   </li>
@@ -214,7 +214,7 @@
           Employee Pay
         </a>
       </li>
-    <!--  <li>
+      <!--  <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'cash-flow-statement']">
           Cash Flow Statement
         </a>
@@ -224,7 +224,7 @@
         Income Statement
         </a>
      </li> -->
-    <!--  <li>
+      <!--  <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'tax-report']">
 
           Tax Report

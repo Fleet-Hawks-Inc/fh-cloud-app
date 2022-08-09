@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
+import { Table } from 'primeng/table';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services';
-
 @Component({
   selector: 'app-sales-receipts-list',
   templateUrl: './sales-receipts-list.component.html',
@@ -25,15 +26,43 @@ export class SalesReceiptsListComponent implements OnInit {
 
   customersObjects: any = {};
   invoicesList = []
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
+  loaded = false;
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchReceipts();
     this.fetchCustomersByIDs();
     this.fetchInvoicesByID();
+    this.dataColumns = [
+      { width: '256px', field: 'txnDate', header: 'Date', type: "text" },
+      { width: '256px', field: 'sRPTNo', header: 'Payment#', type: "text" },
+      { width: '256px', field: 'customerID', header: 'Customer', type: "text" },
+      { width: '256px', field: 'payRef', header: 'Reference#', type: "text" },
+      { width: '256px', field: 'invoiceIds', header: 'Invoice#', type: "text" },
+      { width: '256px', field: 'payMode', header: 'Payment Mode', type: "text" },
+      { width: '256px', field: 'totalAmt', header: 'Amount', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
   }
 
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
   /*
 * Get all customers's IDs of names from api
 */
@@ -73,7 +102,7 @@ export class SalesReceiptsListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
-            // this.loaded = true;
+            this.loaded = true;
 
           }
         });
@@ -121,6 +150,15 @@ export class SalesReceiptsListComponent implements OnInit {
     this.lastItemSK = '';
     this.allReceipts = [];
     this.fetchReceipts();
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.fetchReceipts();
+    }
+    this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 
 }

@@ -170,8 +170,9 @@
                       [scrollable]="true"
                       [loading]="!loaded"
                       scrollHeight="100%"
+                      dataKey="logSK"
+                      responsiveLayout="scroll"
                     >
-                      Caption template of data table
                       <ng-template pTemplate="caption">
                         <div
                           class="p-d-flex d-flex justify-content-between align-items-center"
@@ -222,9 +223,14 @@
                           </div>
                         </div>
                       </ng-template>
-
                       <ng-template pTemplate="header" let-columns>
                         <tr>
+                          <th
+                          style="width: 3%"
+                          alignFrozen="left"
+                          pFrozenColumn
+                          [frozen]="true"
+                        ></th>
                           <th
                             *ngFor="let dataColumns of columns"
                             [pSortableColumn]="dataColumns.field"
@@ -267,14 +273,32 @@
                           </th>
                         </tr>
                       </ng-template>
-
                       <ng-template
                         pTemplate="body"
                         let-vehicle
                         let-columns="columns"
                         let-rowIndex="rowIndex"
+                        let-expanded="expanded"
                       >
-                        <tr>
+                        <tr style="cursor: pointer">
+                          <td
+                          alignFrozen="left"
+                          pFrozenColumn
+                          [frozen]="true"
+                          style="width: 3%"
+                          >
+                            <button 
+                            type="button"
+                            pButton
+                            [pRowToggler]="vehicle"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="
+                            expanded
+                            ? 'pi pi-chevron-down'
+                            : 'pi pi-chevron-right'
+                            "
+                            ></button>
+                          </td>
                           <td
                             *ngFor="let dataColumns of columns"
                             [ngStyle]="{ width: dataColumns.width }"
@@ -289,79 +313,30 @@
                                   get(vehicle, dataColumns.field) | titlecase
                                 }}
                               </span>
-
-                              <span *ngSwitchCase="'dateOdometer'">
-                                {{ vehicle.completionDate | date: "yyyy/MM/dd"
-                                }}<br />
-                                <span
-                                  *ngIf="vehicle?.vehicleID"
-                                  class="font-size-12"
-                                >
-                                  {{ vehicle.odometer }} miles
-                                </span>
+                              <span *ngSwitchCase="'completionDate'">
+                                 {{ get(vehicle, dataColumns.field) | date: "yyyy/MM/dd" }}
                               </span>
-                              <span *ngSwitchCase="'detailsLogs'">
-                                <div>
-                                  <span class="font-weight-bold"
-                                    >Service Task(s):
-                                  </span>
-                                  <span
-                                    title="Service Task"
-                                    *ngFor="
-                                      let task of vehicle.allServiceTasks
-                                        .serviceTaskList;
-                                      let j = index;
-                                      let $last = last
-                                    "
-                                  >
-                                    {{ task.taskName ? task.taskName : "-"
-                                    }}<span *ngIf="!$last" class="list-format"
-                                      >,</span
-                                    ></span
-                                  >
-                                  <span
-                                    *ngIf="
-                                      vehicle.allServiceTasks.serviceTaskList ==
-                                      0
-                                    "
-                                    >-</span
-                                  >
-                                </div>
-                                <div>
-                                  <span class="font-weight-bold"
-                                    >Issue(s):</span
-                                  >
-                                  <a
-                                    title="Issue"
-                                    class="text-info font-size-12"
-                                    *ngFor="
-                                      let issue of vehicle.selectedIssues;
-                                      let $last = last
-                                    "
-                                  >
-                                    <span (click)="gotoIssue(issue)">{{
-                                      issuesObject[issue]
-                                    }}</span>
-                                    <span *ngIf="!$last" class="list-format"
-                                      >,</span
-                                    ></a
-                                  >
-                                  <span
-                                    *ngIf="vehicle.selectedIssues.length == 0"
-                                    >-
-                                  </span>
-                                </div>
-                                <div>
-                                  <span class="font-weight-bold">Bill To:</span>
-                                  <a
-                                    (click)="openComponent(vehicle.vendorID)"
-                                    class="text-info font-size-12"
-                                    href="javascript:;"
-                                    title="Vendor"
-                                  >
-                                    {{ vendorsObject[vehicle.vendorID] }}
-                                  </a>
-                                </div>
+                              <span *ngSwitchCase="'odometer'">
+                                {{ get(vehicle, dataColumns.field) }}
+                              </span>
+                               <span class="badge badge-dark p-1" *ngSwitchCase="'currentStatus'">
+                                {{ get(vehicle, dataColumns.field) | titlecase }}
+                              </span>
+                              <span *ngSwitchCase="'taskName'">
+                                                          <span
+                            title="Service Task"
+                            *ngFor="
+                              let task of vehicle.allServiceTasks.serviceTaskList;
+                              let j = index;
+                              let $last = last
+                            "
+                          >
+                            {{ task.taskName ? task.taskName : "-"
+                            }}<span *ngIf="!$last" class="list-format">, </span>
+                          </span>
+                          <span *ngIf="vehicle.allServiceTasks.serviceTaskList == 0"
+                            >-
+                          </span>
                               </span>
                               <span *ngSwitchCase="'totalLogs'">
                                 <span>
@@ -406,21 +381,118 @@
                           </td>
                         </tr>
                       </ng-template>
-                      Empty Template
                       <ng-template pTemplate="emptymessage" let-columns>
                         <div class="col-lg-12 mt-3 text-center">
                           {{ dataMessage }}
                           <br /><br />
                         </div>
                       </ng-template>
-
                       <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastEvaluatedKey !== 'end' && logs.length !== 0
+                        "
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+
+                        <br /><br />
+                      </div>
+                      
                         <div
                           class="col-lg-12 mt-3 text-center"
                           *ngIf="lastEvaluatedKey === 'end'"
                         >
                           Total Records: {{ logs.length }}
                         </div>
+                      </ng-template>
+                      <ng-template pTemplate="rowexpansion" let-sklog>
+                        <tr>
+                          <td width="40%" class="p-0 custom-bg-light border-0">
+                            <div class="p-3">
+                              <p-table
+                                [value]="sklog.allServiceTasks.serviceTaskList"
+                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
+                              >
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th class="border-0 p-0">
+                                     Service Task(s):
+                                  </th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-task>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    {{ task.taskName ? task.taskName : "-"}}
+                                  </td>
+                                </tr>
+                              </tbody>
+                              </ng-template>
+                               </p-table>
+                            </div>
+                          </td>
+                          <td width="40%" class="p-0 custom-bg-light border-0">
+                            <div class="p-3">
+                              <p-table
+                                [value]="sklog.selectedIssues"
+                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
+                              >
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th class="border-0 p-0">
+                                     Service Issue(s):
+                                  </th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-issue>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <span   style="cursor: pointer; color:DodgerBlue"  (click)="gotoIssue(issue)">{{issuesObject[issue] | titlecase}}</span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              </ng-template>
+                               </p-table>
+                            </div>
+                          </td>
+                          <td width="40%" class="p-0 custom-bg-light border-0">
+                            <div class="p-3">
+                              <p-table
+                                [value]="sklog"
+                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
+                              >
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th class="border-0 p-0">
+                                     Service Bill To:
+                                  </th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-bill>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <span   style="cursor: pointer; color:DodgerBlue"
+                                    (click)="openComponent(bill.vendorID)"> 
+                                    {{ vendorsObject[bill.vendorID]}}
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              </ng-template>
+                               </p-table>
+                            </div>
+                          </td>
+                        </tr>
                       </ng-template>
                     </p-table>
                   </div>

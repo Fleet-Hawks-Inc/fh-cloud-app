@@ -1,6 +1,6 @@
-.mat-expansion-panel-header-description, .mat-expansion-panel-header-title
-{
-    display: block !important;
+.mat-expansion-panel-header-description,
+.mat-expansion-panel-header-title {
+  display: block !important;
 }
 .map-search__results {
   display: none;
@@ -8,4 +8,10 @@
 }
 .show-search__result .map-search__results {
   display: block !important;
+}
+.address-icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  margin-top: -10px;
 }
