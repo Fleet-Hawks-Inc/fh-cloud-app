@@ -5,13 +5,22 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
             <div class="input-group input-group-md mb-3">
-              <input type="text" class="form-control" placeholder="Search by account name" [(ngModel)]="filter.actName"
-                name="actName" />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by account name"
+                [(ngModel)]="filter.actName"
+                name="actName"
+              />
             </div>
           </div>
           <div class="col-lg-2 col-md-2 pr-0">
-            <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"
-              [(ngModel)]="filter.actType" name="actType">
+            <ng-select
+              class="form-control pull-left form-control-sm mb-0"
+              placeholder="Search by account type"
+              [(ngModel)]="filter.actType"
+              name="actType"
+            >
               <ng-option value="H">Group Heading - H</ng-option>
               <ng-option value="A">Subgroup Account - A</ng-option>
               <ng-option value="S">Subgroup Total - S</ng-option>
@@ -27,25 +36,54 @@
                 </span>
               </span>
 
-              <input [(ngModel)]="filter.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
-                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-              <span class="input-group-text border-left-0
-                    border-right-0 rounded-0">
+              <input
+                [(ngModel)]="filter.startDate"
+                name="fromDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="from.toggle()"
+                ngbDatepicker
+                #from="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
                 to
               </span>
-              <input [(ngModel)]="filter.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
-                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-
+              <input
+                [(ngModel)]="filter.endDate"
+                name="toDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="to.toggle()"
+                ngbDatepicker
+                #to="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
             </div>
           </div>
           <div class="col-md-2 col-lg-2">
-            <button type="button" class="btn btn-sm btn-success" [disabled]="disableSearch" (click)="searchAccounts()">
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              [disabled]="disableSearch"
+              (click)="searchAccounts()"
+            >
               Search
             </button>
-            <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="disableSearch"
-              (click)="resetFilter()">
+            <button
+              type="button"
+              class="btn btn-sm btn-success ml-3"
+              [disabled]="disableSearch"
+              (click)="resetFilter()"
+            >
               Reset
             </button>
           </div>
@@ -57,14 +95,28 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                  <p-table #dt [value]="accounts" [resizableColumns]="true" columnResizeMode="fit"
-                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" autoLayout="true"
-                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
-                    scrollHeight="100%">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="accounts"
+                    [resizableColumns]="true"
+                    columnResizeMode="fit"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    autoLayout="true"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    responsiveLayout="scroll"
+                    scrollHeight="100%"
+                  >
                     <!-- Caption template of data table -->
                     <ng-template pTemplate="caption">
-                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
                         <div>
                           <h3 class="m-0">General Ledger</h3>
                         </div>
@@ -72,37 +124,81 @@
                         <div class="text-right">
                           <span>Showing {{ accounts.length }} entries </span>
                           &nbsp;
-                          <button type="button" pButton (click)="resetFilter()" pTooltip="Refresh"
-                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button
+                            type="button"
+                            pButton
+                            (click)="resetFilter()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
                           <!-- <button type="button" pButton pTooltip="Add" 
                             class="p-button-outlined mr-2" icon="pi pi-plus"></button> -->
-                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
-                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
 
-                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                          <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="dt.exportCSV()"
+                            pTooltip="Excel"
+                          ></button>
 
-                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
-                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
-                            placeholder="Choose Columns">
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
                           </p-multiSelect>
                         </div>
                       </div>
                     </ng-template>
                     <!-- Header template of DataTable -->
-                    <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
+                    <ng-template
+                      pTemplate="header"
+                      let-columns
+                      let-rowIndex="rowIndex"
+                    >
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }">
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }"
+                        >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
-                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
-                                pFrozenColumn [frozen]="true">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
                                 {{ dataColumns.header }}
-                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
-                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
-                                  [showAddButton]="false" display="menu">
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
                                 </p-columnFilter>
                               </div>
                             </span>
@@ -110,18 +206,39 @@
                         </th>
                       </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-generLed let-columns="columns" let-rowIndex="rowIndex">
+                    <ng-template
+                      pTemplate="body"
+                      let-generLed
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
                       <tr>
-                        <td *ngFor="let dataColumns of columns" style="cursor:pointer" routerLink="/accounts/reports/general-ledger/detail/{{
-                          generLed.actID
-                        }}">
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          style="cursor: pointer"
+                          routerLink="/accounts/reports/general-ledger/detail/{{
+                            generLed.actID
+                          }}"
+                        >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'first'">
-                              <span *ngIf="generLed.first === 'cpp' || generLed.first === 'ei'">{{ generLed.first |
-                                uppercase }}</span>
-                              <span *ngIf="generLed.first !== 'cpp' && generLed.first !== 'ei'">{{ generLed.first |
-                                titlecase
-                                }}</span>&nbsp;{{ generLed.last | titlecase }}
+                            <span
+                              *ngSwitchCase="'first'"
+                              class="font-weight-bold"
+                            >
+                              <span
+                                *ngIf="
+                                  generLed.first === 'cpp' ||
+                                  generLed.first === 'ei'
+                                "
+                                >{{ generLed.first | uppercase }}</span
+                              >
+                              <span
+                                *ngIf="
+                                  generLed.first !== 'cpp' &&
+                                  generLed.first !== 'ei'
+                                "
+                                >{{ generLed.first | titlecase }}</span
+                              >&nbsp;{{ generLed.last | titlecase }}
                             </span>
 
                             <span *ngSwitchCase="'Account Number'">
@@ -129,23 +246,41 @@
                             </span>
 
                             <span *ngSwitchCase="'actType'">
-                              <span *ngIf="generLed.actType === 'H'">Group Heading - H</span>
-                              <span *ngIf="generLed.actType === 'A'">Subgroup Account - A</span>
-                              <span *ngIf="generLed.actType === 'S'">Subgroup Total - S</span>
-                              <span *ngIf="generLed.actType === 'G'">Group Account - G</span>
-                              <span *ngIf="generLed.actType === 'T'">Group Total - T</span>
+                              <span *ngIf="generLed.actType === 'H'"
+                                >Group Heading - H</span
+                              >
+                              <span *ngIf="generLed.actType === 'A'"
+                                >Subgroup Account - A</span
+                              >
+                              <span *ngIf="generLed.actType === 'S'"
+                                >Subgroup Total - S</span
+                              >
+                              <span *ngIf="generLed.actType === 'G'"
+                                >Group Account - G</span
+                              >
+                              <span *ngIf="generLed.actType === 'T'"
+                                >Group Total - T</span
+                              >
                             </span>
 
                             <span *ngSwitchCase="'opnBalCAD'">
                               {{ generLed.opnBalCAD | number: "1.2-2" }}&nbsp;
-                              <span *ngIf="generLed.opnBalTypeCAD === 'credit'">Cr</span>
-                              <span *ngIf="generLed.opnBalTypeCAD === 'debit'">Dr</span>
+                              <span *ngIf="generLed.opnBalTypeCAD === 'credit'"
+                                >Cr</span
+                              >
+                              <span *ngIf="generLed.opnBalTypeCAD === 'debit'"
+                                >Dr</span
+                              >
                             </span>
 
                             <span *ngSwitchCase="'opnBalUSD'">
                               {{ generLed.opnBalUSD | number: "1.2-2" }}&nbsp;
-                              <span *ngIf="generLed.opnBalTypeUSD === 'credit'">Cr</span>
-                              <span *ngIf="generLed.opnBalTypeUSD === 'debit'">Dr</span>
+                              <span *ngIf="generLed.opnBalTypeUSD === 'credit'"
+                                >Cr</span
+                              >
+                              <span *ngIf="generLed.opnBalTypeUSD === 'debit'"
+                                >Dr</span
+                              >
                             </span>
 
                             <span *ngSwitchCase="'totalDebitCAD'">
@@ -165,19 +300,20 @@
                             </span>
 
                             <span *ngSwitchCase="'closingAmtCAD'">
-                              {{ generLed.closingAmtCAD | number: "1.2-2" }}&nbsp;{{
-                              generLed.closingAmtTypeCAD
-                              }}
+                              {{
+                                generLed.closingAmtCAD | number: "1.2-2"
+                              }}&nbsp;{{ generLed.closingAmtTypeCAD }}
                             </span>
 
                             <span *ngSwitchCase="'closingAmtUSD'">
-                              {{ generLed.closingAmtUSD | number: "1.2-2" }}&nbsp;{{
-                              generLed.closingAmtTypeUSD
-                              }}
+                              {{
+                                generLed.closingAmtUSD | number: "1.2-2"
+                              }}&nbsp;{{ generLed.closingAmtTypeUSD }}
                             </span>
 
                             <span *ngSwitchDefault>
-                              {{ get(generLed, dataColumns.field) }}</span>
+                              {{ get(generLed, dataColumns.field) }}</span
+                            >
                           </div>
                         </td>
                       </tr>
@@ -189,13 +325,23 @@
                     </ng-template>
                     <!-- Summary Section with Load More button -->
                     <ng-template pTemplate="summary" let-columns>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && accounts.length !== 0">
-                        <button type="button " (click)="onScroll()" class="btn btn-success btn-sm text-light">
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && accounts.length !== 0"
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll()"
+                          class="btn btn-success btn-sm text-light"
+                        >
                           Load More..
                         </button>
                         <br /><br />
                       </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
                         Total Records: {{ accounts.length }}
                       </div>
                     </ng-template>
