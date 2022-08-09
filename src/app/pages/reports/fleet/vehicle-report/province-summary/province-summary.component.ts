@@ -41,12 +41,12 @@ export class ProvinceSummaryComponent implements OnInit {
   get = _.get;
   _selectedColumns: any[];
   find = _.find;
+  caData = [];
   
   dataColumns = [
-    { width: '7%', field: 'vehicle', header: 'Vehicle', type: "text" },
-    { width: '7%', field: 'caProvinces', header: 'Province(Canada)', type: "text" },
-    { width: '7%', field: 'usProvinces', header: 'Province(US)', type: "text" },
-    { width: '7%', field: 'newStatus', header: 'Trip Status', type: "text" }
+    {  field: 'vehicle', header: 'Vehicle', type: "text" },
+    {  field: 'newStatus', header: 'Trip Status', type: "text" },
+   
   ];
   
   constructor(private apiService: ApiService, 
@@ -112,7 +112,6 @@ export class ProvinceSummaryComponent implements OnInit {
         }
         this.loaded = true;
 
-
         for (let element of result.summaryResult) {
           element.newStatus = element.status;
 
@@ -126,6 +125,7 @@ export class ProvinceSummaryComponent implements OnInit {
             }
           }
         }
+        
       });
     }
   }
