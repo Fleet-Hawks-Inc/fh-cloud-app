@@ -385,7 +385,7 @@
                 >
                   <strong> {{ customerName }} </strong>
                   <!-- <strong>ABC Logistics</strong><br> -->
-                  <!-- 28 Cliveden Ave Delta, BC V3M 5R5 Canada<br> -->
+                  <!-- 28 Cliveden Ave Delta, BC V3M 5R5 Canada<br> --> 
                 </p>
               </td>
               <!-- <td valign="top" align="right"> <h2 style="font-size:20px;">&nbsp;</h2>
@@ -500,6 +500,21 @@
                     </tr>
                   </tbody>
                 </table>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" align="right" colspan="3">
+                <p
+                  style="
+                    font-size: 20px;
+                    margin-bottom: 5px;
+                    color: #000000;
+                    margin-top: 15px;
+                  "
+                >
+                  <strong>Grand Total:</strong>
+                   {{ receiptData.recAmount | number: "1.2-2" }} {{ receiptData.recAmountCur }}
+                </p>
               </td>
             </tr>
             <tr
