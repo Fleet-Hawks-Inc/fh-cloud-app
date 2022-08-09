@@ -87,7 +87,7 @@
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel" (click)="requiredCSV()" pTooltip="Excel"></button>
+                            icon="fas fa-regular fa-file-excel" (click)="generateAssetsCSV()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns">
@@ -238,7 +238,7 @@
                         </button>
                         <br /><br />
                       </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
+                         <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
                         Total Records: {{ allData.length }}
                       </div>
                     </ng-template>

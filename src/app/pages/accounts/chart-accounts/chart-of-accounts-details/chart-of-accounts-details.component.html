@@ -30,7 +30,8 @@
             </button>
           </div>
           <div class="col-md-7 col-lg-7 text-right pr-1">
-            <a routerLink="/accounts/chart-accounts/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i>
+            <a routerLink="/accounts/chart-accounts/list/{{ sessionID }}" class="btn btn-default btn-sm"><i
+                class="fas fa-list"></i>
               Chart Of Accounts</a>
           </div>
         </div>
@@ -153,14 +154,19 @@
                   <div class="tab-content">
                     <div class="tab-pane" [ngClass]="{ 'show active': currTab === 'CAD' }" id="CAD" role="tabpanel"
                       aria-labelledby="CAD-tab" *ngIf="currTab === 'CAD'">
-                      <p-table [value]="transactionLogCAD" responsiveLayout="scroll">
+                      <p-table #dt [value]="transactionLogCAD" responsiveLayout="scroll">
                         <ng-template pTemplate="caption">
                           Opening Balance
                           <span *ngIf="account.opnBalTypeCAD === 'debit'">{{
                             account.opnBalCAD | number: "1.2-2"
                             }}&nbsp; CAD</span>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            (click)="clear(dt)" icon="pi pi-filter-slash" style="margin-left: 82%"></button>
 
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="generateCAD()" pTooltip="Excel"></button>
                         </ng-template>
+
                         <ng-template pTemplate="header" let-rowIndex="rowIndex"
                           class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
                           <tr>
@@ -327,12 +333,16 @@
                     </div>
                     <div class="tab-pane" [ngClass]="{ 'show active': currTab === 'USD' }" id="USD" role="tabpanel"
                       aria-labelledby="USD-tab" *ngIf="currTab === 'USD'">
-                      <p-table [value]="transactionLogUSD" responsiveLayout="scroll">
+                      <p-table #dt [value]="transactionLogUSD" responsiveLayout="scroll">
                         <ng-template pTemplate="caption">
                           Opening Balance
                           <span *ngIf="account.opnBalTypeUSD === 'debit'">{{
                             account.opnBalUSD | number: "1.2-2"
                             }}&nbsp; USD</span>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            (click)="clear(dt)" icon="pi pi-filter-slash" style="margin-left: 82%"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="generateUSD()" pTooltip="Excel"></button>
                         </ng-template>
                         <ng-template pTemplate="header"
                           class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
@@ -488,7 +498,6 @@
                         </button>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>

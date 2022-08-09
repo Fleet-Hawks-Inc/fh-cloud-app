@@ -73,107 +73,152 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 col-lg-2 text-right pr-2">
-              <a routerLink="/accounts/purchases/orders/add" class="btn btn-success btn-sm ml-2" style="color: white"><i
-                  class="fas fa-plus"></i> Add Purchase Order
-              </a>
-            </div>
           </div>
         </form>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <table class="
-                        table table-bordered table-striped
-                        mb-0
-                        simple-table
-                      ">
-                      <thead>
-                        <tr class="">
-                          <th class="text-2">Date</th>
-                          <th class="text-2">Purchase Order#</th>
-                          <th class="text-2">Reference#</th>
-                          <th class="text-2">Vendor</th>
-                          <th class="text-2">Amount</th>
-                          <th class="text-2">Status</th>
-                          <!-- <th class="text-2">Bill Status</th> -->
-                          <th class="text-2">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr class="text-center" *ngIf="payOrders.length === 0">
-                          <td colspan="8">
-                            {{ dataMessage }}
-                          </td>
-                        </tr>
-                        <tr *ngFor="let data of payOrders; let i = index">
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.txnDate | date: "yyyy/MM/dd" }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.orderNo }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.refNo ? data.refNo : "-" }}
-                          </td>
+              <div class="form-group row">
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="payOrders" [resizableColumns]="true" columnResizeMode="fit"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" autoLayout="true"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+                    scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Purchase Order</h3>
+                        </div>
 
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ vendors[data.vendorID] }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.total.finalTotal | number: "1.2-2" }}
-                            {{ data.currency }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            <span class="badge badge-dark p-1 text-uppercase">{{
-                              data.status
-                              }}</span>
-                            <span class="badge badge-success p-1 text-uppercase ml-1"
-                              *ngIf="data.status === 'sent'">Emailed</span>
-                          </td>
-                          <!-- <td class="cursorpoint" [routerLink]="data.url">
-                            <span *ngIf="data.billStatus" class="badge badge-dark p-1 text-uppercase">{{ data.billStatus
-                              }}</span>
-                            <span *ngIf="!data.billStatus">-</span>
-                          </td> -->
-                          <td>
-                            <div class="btn-group flex-wrap">
-                              <button type="button" class="p-0 mb-0 mt-0 mr-1 btn" data-toggle="dropdown">
-                                <i class="fas fa-ellipsis-v"></i>
-                              </button>
-                              <div class="dropdown-menu" role="menu">
-                                <a class="dropdown-item" *ngIf="data.status === 'open'" href="javascript:;"
-                                  (click)="sendConfirmationEmail(i, data.purchaseID)">Send email to vendor</a>
-                                <a class="dropdown-item text-1" [routerLink]="data.editUrl">Edit</a>
-                                <a class="dropdown-item" *ngIf="data.status === 'open' || data.status === 'sent'"
-                                  href="javascript:;" (click)="deleteOrder(data)">Delete</a>
-                                <a class="dropdown-item text-1" [routerLink]="[
-                                '/accounts',
-                                'purchases',
-                                'orders',
-                                'add'
-                              ]" [queryParams]="{
-                                  cloneID: data.purchaseID
-                                }">Clone</a>
+                        <div class="text-right">
+                          <span>Showing {{ payOrders.length }} entries </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="resetFilter()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/accounts/purchases/orders/add"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
+                      <tr>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
                               </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payOrders.length !== 0">
-                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                      Load More..
-                    </button>
-                  </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th style="width: 108px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-creditN let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" style="cursor:pointer" [routerLink]="creditN.url">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'txnDate'">
+                              {{ creditN.txnDate | date: "yyyy/MM/dd" }}
+                            </span>
+
+                            <span *ngSwitchCase="'Purchase Order#'">
+                              {{ creditN[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'refNo'">
+                              {{ creditN.refNo ? creditN.refNo : "-" }}
+                            </span>
+
+                            <span *ngSwitchCase="'vendorID'">
+                              {{ vendors[creditN.vendorID] ?
+                              vendors[creditN.vendorID] : "-" }}
+                            </span>
+
+                            <span *ngSwitchCase="'total.finalTotal'">
+                              {{ creditN.total.finalTotal ? (creditN.total.finalTotal | number: "1.2-2") : "0.00"}}
+                              {{ creditN.currency ? creditN.currency : "-" }}
+                            </span>
+
+                            <span *ngSwitchCase="'status'">
+                              <span class="badge badge-dark p-1 text-uppercase">{{
+                                creditN.status
+                                }}</span>
+                              <span class="badge badge-success p-1 text-uppercase ml-1"
+                                *ngIf="creditN.status === 'sent'">Emailed</span>
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              {{ get(creditN, dataColumns.field) }}</span>
+                          </div>
+                        </td>
+                        <td columnResizeMode="fit" pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <div class="dropdown dropright">
+                            <button (click)="op.toggle($event)" pButton type="button"
+                              id="dropdownMenuButton-{{ rowIndex }}" icon="fas fa-ellipsis-v"
+                              style="color: #000; background-color: transparent; border: transparent;">
+                            </button>
+                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
+                              <ng-template pTemplate>
+                                <a class="dropdown-item" *ngIf="creditN.status === 'open'" href="javascript:;"
+                                  (click)="sendConfirmationEmail(rowIndex, creditN.purchaseID)">Send email to vendor</a>
+
+                                <a class="dropdown-item" [routerLink]="creditN.editUrl">Edit</a>
+                                <a class="dropdown-item" *ngIf="creditN.status === 'open' || creditN.status === 'sent'"
+                                  href="javascript:;" (click)="deleteOrder(creditN)">Delete</a>
+
+                                <a class="dropdown-item" [routerLink]="[
+                            '/accounts',
+                            'purchases',
+                            'orders',
+                            'add'
+                          ]" [queryParams]="{
+                              cloneID: creditN.purchaseID
+                            }">Clone</a>
+                              </ng-template>
+                            </p-overlayPanel>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <td colspan="6" class="text-center">
+                        {{ dataMessage }}
+                      </td>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payOrders.length !== 0">
+                        <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
+                          Load More..</button><br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ payOrders.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>

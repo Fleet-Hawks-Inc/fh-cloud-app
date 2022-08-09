@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services';
-
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-credit-notes-list',
   templateUrl: './credit-notes-list.component.html',
@@ -22,7 +23,11 @@ export class CreditNotesListComponent implements OnInit {
     endDate: "",
     lastItemSK: "",
   };
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
+  loaded = false;
   constructor(private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService) { }
@@ -30,6 +35,30 @@ export class CreditNotesListComponent implements OnInit {
   ngOnInit() {
     this.fetchCredits();
     this.fetchCustomers();
+    this.dataColumns = [
+      { width: '10%', field: 'txnDate', header: 'Date', type: "text" },
+      { width: '15%', field: 'cCrNo', header: 'Customer Credit#', type: "text" },
+      { width: '10%', field: 'crRef', header: 'Reference#', type: "text" },
+      { width: '15%', field: 'customerID', header: 'Customer', type: "text" },
+      { width: '15%', field: 'totalAmt', header: 'Credit Amount', type: "text" },
+      { width: '15%', field: 'balance', header: 'Balance Amount', type: "text" },
+      { width: '14%', field: 'status', header: 'Status', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   fetchCustomers() {
@@ -71,7 +100,7 @@ export class CreditNotesListComponent implements OnInit {
               this.lastItemSK = "end";
             }
 
-            // this.loaded = true;
+            this.loaded = true;
           }
         });
     }
@@ -135,5 +164,13 @@ export class CreditNotesListComponent implements OnInit {
         });
     }
   }
-
+  onScroll() {
+    if (this.loaded) {
+      this.fetchCredits();
+    }
+    this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
+  }
 }

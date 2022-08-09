@@ -55,7 +55,7 @@ export class DeletedVehiclesComponent implements OnInit {
   }
   async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
-      const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+      const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&vehStatus=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey).toPromise();
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
@@ -79,7 +79,7 @@ export class DeletedVehiclesComponent implements OnInit {
     this.loaded = false;
   }
   searchFilter() {
-    if (this.vehicleIdentification !== '') {
+    if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if (this.vehicleID === '') {
         this.vehicleID = this.vehicleIdentification;
@@ -105,7 +105,7 @@ export class DeletedVehiclesComponent implements OnInit {
     }
   }
   resetFilter() {
-    if (this.vehicleIdentification !== '') {
+    if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.vehicleID = '';
       this.suggestedVehicles = [];
       this.vehicleIdentification = '';

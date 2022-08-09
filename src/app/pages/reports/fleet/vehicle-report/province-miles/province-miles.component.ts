@@ -51,18 +51,13 @@ export class ProvinceMilesComponent implements OnInit {
   visible = true;
   
   dataColumns = [
-        { field: 'vehicle', header: 'Vehicle', type: "text" },
-        { field: 'tripNo', header: 'Trip', type: "text" },
-        { field: 'orderName', header: 'Order', type: "text" },
-        { field: 'dateType', header: 'Date', type: "text" },
-        { field: 'usState', header: 'Province(US)', type: "text" },
-        { field: 'uMiles', header: 'US Province Miles', type: "text" },
-        { field: 'canState', header: 'Province(Canada)', type: "text" },
-        { field: 'caMiles', header: 'Canada Province Miles', type: "text" },
-        { field: 'cMiles', header: 'Canada Total Miles', type: "text" },
-        { field: 'usiles', header: 'US Total Miles', type: "text" },
-        { field: 'miles', header: 'Trip Miles', type: "text" },
-        { field: 'newStatus', header: 'Trip Status', type: "text" },
+        { width: '12%',field: 'vehicle', header: 'Vehicle', type: "text" },
+        { width: '12%',field: 'tripNo', header: 'Trip', type: "text" },
+        { width: '12%',field: 'orderName', header: 'Order', type: "text" },
+        { width: '16%',field: 'uMiles', header: 'US Province Miles', type: "text" },
+        { width: '17%',field: 'caMiles', header: 'Canada Province Miles', type: "text" },
+        { width: '16%',field: 'miles', header: 'Trip Miles', type: "text" },
+        { width: '12%',field: 'newStatus', header: 'Trip Status', type: "text" },
     ];
   
   constructor(private apiService: ApiService, 

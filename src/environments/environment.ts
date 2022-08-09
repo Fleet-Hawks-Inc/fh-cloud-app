@@ -6,14 +6,13 @@ export const environment = {
   production: false,
   isFeatureEnabled: true,
 
-
-  BaseUrl: 'http://localhost:3000/api/v1/',
-  AccountServiceUrl: 'http://localhost:4002/api/v1/',
-  SafetyServiceUrl: 'http://localhost:4000/api/v1/',
+  BaseUrl: "http://localhost:3000/api/v1/",
+  AccountServiceUrl: "http://localhost:4002/api/v1/",
+  SafetyServiceUrl: "http://localhost:4000/api/v1/",
+  EldServiceUrl: "http://localhost:5001/api/v1/",
   // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
-
 
   // AccountServiceUrl: "http://localhost:4002/api/v1/",
 
@@ -67,13 +66,25 @@ export const environment = {
   googleConfig: {
     apiKey: "AIzaSyDRt9SGmd-mzAsC30SofiwDRtHw592Og5E",
   },
-  VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss',
+  VSSServerWSS: "wss://safety-cam.fleethawks.com:36301/wss",
 
-  whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '21zpEs5A3MWtK9LeFEkOcsc5Szc', '1y6913gTrXSlzcTlSEGpwBMe5Ay', '23HFz4o1X79Xh3lcBEJumnolmnt'],
+  whiteListCarriers: [
+    "1y4CwKYhlU7I5FluMq2NOCCMZvj",
+    "21zpEs5A3MWtK9LeFEkOcsc5Szc",
+    "1y6913gTrXSlzcTlSEGpwBMe5Ay",
+    "23HFz4o1X79Xh3lcBEJumnolmnt",
+  ],
 
   oneSignalAppId: "1cdb2b50-0786-415f-b454-a3ffe1eab5b4",
-  testCarrier: ['21zpEs5A3MWtK9LeFEkOcsc5Szc']
-
+  testCarrier: ["21zpEs5A3MWtK9LeFEkOcsc5Szc"],
+  BConnectAccess: [
+    "1y4CwKYhlU7I5FluMq2NOCCMZvj",
+    "23HFz4o1X79Xh3lcBEJumnolmnt",
+    "1y62eyclUWKj6HSREEfZbHXjvRc",
+    "29b6OwULJ0ukir4uFF7TTLm4Tof",
+    "21zpEs5A3MWtK9LeFEkOcsc5Szc",
+    "1y2cYywr5iGFdHH8uqTVIa96ayS"
+  ],
 };
 
 /*

@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
-
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
 @Component({
   selector: "app-expense-payment-list",
   templateUrl: "./expense-payment-list.component.html",
@@ -27,13 +28,37 @@ export class ExpensePaymentListComponent implements OnInit {
   driversObject: any = {};
   carriersObject: any = {};
   ownerOpObjects: any = {};
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { field: 'paymentNo', header: 'Payment#', type: "text" },
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'payMode', header: 'Payment Mode', type: "text" },
+    { field: 'payModeNo', header: 'Reference No.', type: "text" },
+    { field: 'paymentTo', header: 'Paid To', type: "text" },
+    { field: 'finalAmount', header: 'Amount', type: "text" },
+  ];
   constructor(private accountService: AccountService, private toaster: ToastrService, private dashboardUtilityService: DashboardUtilityService) { }
 
   async ngOnInit() {
+    this.setToggleOptions();
     this.getList();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   async getList() {
@@ -113,5 +138,8 @@ export class ExpensePaymentListComponent implements OnInit {
       this.getList();
     }
     this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

@@ -1,5 +1,46 @@
-.scroll-table-class{
-    height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
+.scroll-table-class {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.draft-color {
+  background-color: #f0e68c;
+  font-size: 0.75rem;
+}
+.cancel-color {
+  background-color: #ff0000;
+  font-size: 0.75rem;
+  color: #ffffff;
+}
+.transmitted-color {
+  background-color: #ffd700;
+  font-size: 0.75rem;
+}
+.preliminary-color {
+  background-color: #add8e6;
+  font-size: 0.75rem;
+}
+.returned-color {
+  background-color: #8b0000;
+  color: #ffffff;
+  font-size: 0.75rem;
+}
+.complete-file-color {
+  background-color: #0000ff;
+  font-size: 0.75rem;
+  color: #ffffff;
+}
+.complete-cbp-color {
+  background-color: #90ee90;
+  font-size: 0.75rem;
+}
+.truck-arr-color {
+  background-color: #008000;
+  font-size: 0.75rem;
+  color: #ffffff;
+}
+.truck-release-color {
+  background-color: #7cfc00;
+  font-size: 0.75rem;
 }

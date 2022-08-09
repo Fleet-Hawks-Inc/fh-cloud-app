@@ -102,16 +102,6 @@
               </div>
             </div>
           </div>
-
-          <div class="col-md-2 col-lg-2 text-right pr-1">
-            <button (click)="refreshData()" data-toggle="tooltip" title="Refresh data" [disabled]="disableSearch"
-              class="btn btn-success btn-sm mr-2">
-              <i class="fas fa-sync"></i>
-            </button>
-            <a routerLink="/accounts/payments/advance-payments/add" class="btn btn-success btn-sm ml-2"
-              style="color: white"><i class="fas fa-plus"></i> Add Advance Payment
-            </a>
-          </div>
         </div>
         <!-- <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
@@ -220,117 +210,154 @@
           </div>
         </div> -->
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <table class="
-                        table table-bordered table-striped
-                        mb-0
-                        simple-table
-                      ">
-                      <thead>
-                        <tr class="">
-                          <th class="text-2">Advance Payment#</th>
-                          <th class="text-2">Date</th>
-                          <th class="text-2">Type</th>
-                          <th class="text-2">Payment Mode</th>
-                          <th class="text-2">Reference No.</th>
-                          <th class="text-2">Paid To</th>
-                          <th class="text-2">Advance Amount</th>
-                          <th class="text-2">Deducted Amount</th>
-                          <th class="text-2">Balance</th>
-                          <th class="text-2">Status</th>
-                          <th class="text-2">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngIf="payments.length === 0" class="text-center">
-                          <td colspan="11">{{ dataMessage }}</td>
-                        </tr>
-                        <tr *ngFor="let data of payments; let i = index">
-                          <td class="font-weight-bold cursorpoint" [routerLink]="data.url">
-                            {{ data.paymentNo }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.txnDate | date: "yyyy/MM/dd" }}
-                          </td>
-                          <td class="cursorpoint text-capitalize" [routerLink]="data.url">
-                            {{ data.advType ? data.advType : "-" }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url" class="text-capitalize">
-                            {{ data.payMode }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url" class="text-capitalize">
-                            {{ data.payModeNo }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            <strong class="text-capitalize">{{
-                              data.paymentTo
-                              }}</strong>:
-                            {{data.entityName | titlecase}}
-                            <!-- <span *ngIf="data.paymentTo === 'driver'">
-                              {{ drivers[data.entityId] | titlecase }}
-                            </span>
-                            <span *ngIf="data.paymentTo === 'employee'">
-                              {{ employees[data.entityId] | titlecase }}
-                            </span>
-                            <span *ngIf="
-                                data.paymentTo !== 'driver' &&
-                                data.paymentTo !== 'employee'
-                              ">
-                              {{ contacts[data.entityId] | titlecase }}
-                            </span> -->
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.amount | number: "1.2-2" }}
-                            {{ data.currency }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.paidAmount | number: "1.2-2" }}
-                            {{ data.currency }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.pendingPayment | number: "1.2-2" }}
-                            {{ data.currency }}
-                          </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
-                            <span class="badge badge-dark p-1 text-uppercase">{{
-                              data.newStatus
-                              }}</span>
-                          </td>
-                          <td>
-                            <div class="dropdown dropright">
-                              <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                [disabled]="data.status != 'not_deducted'">
-                                <i class="fas fa-ellipsis-v"></i>
-                              </button>
-                              <div *ngIf="data.status === 'not_deducted'" class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                }}">
-                                <a class="dropdown-item" routerLink="/accounts/payments/advance-payments/edit/{{
-                                    data.paymentID
-                                  }}">Edit</a>
-                                <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked"
-                                  (click)="deletePayment(data.paymentID)">Void</a>
+              <div class="form-group row">
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="payments" [resizableColumns]="true" columnResizeMode="fit"
+                    scrollDirection="both" [columns]="selectedColumns" autoLayout="true" [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Advance Payments</h3>
+                        </div>
+
+                        <div class="text-right">
+                          <span>Showing {{ payments.length }} entries </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="resetFilter()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add"
+                            routerLink="/accounts/payments/advance-payments/add" class="p-button-outlined mr-2"
+                            icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
+                      <tr>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
                               </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
-                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                      Load More..
-                    </button>
-                  </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th style="width: 108px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-advaPay let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" style="cursor:pointer" [routerLink]="advaPay.url">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'Advance Payment#'">
+                              {{ advaPay[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'txnDate'">
+                              {{ advaPay.txnDate | date: "yyyy/MM/dd" }}
+                            </span>
+
+                            <span *ngSwitchCase="'advType'">
+                              {{ advaPay[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'payMode'">
+                              {{ advaPay[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'payModeNo'">
+                              {{ advaPay[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'paymentTo'">
+                              <strong>{{ advaPay.paymentTo | titlecase }}</strong>:-
+                              <span>
+                                {{advaPay.entityName | titlecase}}
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'amount'">
+                              {{ advaPay.amount ? (advaPay.amount | number: "1.2-2") : "0.00"}}
+                              {{ advaPay.currency }}
+                            </span>
+
+                            <span *ngSwitchCase="'paidAmount'">
+                              {{ advaPay.paidAmount ? (advaPay.paidAmount | number: "1.2-2") : "0.00"}}
+                              {{ advaPay.currency }}
+                            </span>
+
+                            <span *ngSwitchCase="'pendingPayment'">
+                              {{ advaPay.pendingPayment ? (advaPay.pendingPayment | number: "1.2-2") : "0.00"}}
+                              {{ advaPay.currency }}
+                            </span>
+
+                            <span *ngSwitchCase="'newStatus'" class="badge badge-dark p-1 text-uppercase">
+                              {{ advaPay.newStatus | titlecase }}
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              {{ get(advaPay, dataColumns.field) }}</span>
+                          </div>
+                        </td>
+                        <td pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <div class="dropdown dropright">
+                            <button (click)="op.toggle($event)" pButton [disabled]="advaPay.status != 'not_deducted'"
+                              type="button" id="dropdownMenuButton-{{ rowIndex }}" icon="fas fa-ellipsis-v"
+                              style="color: #000; background-color: transparent; border: transparent;">
+                            </button>
+                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                              <ng-template pTemplate>
+                                <a class="dropdown-item" routerLink="/accounts/payments/advance-payments/edit/{{
+                                  advaPay.paymentID
+                                }}">Edit</a>
+                                <a class="dropdown-item" href="javascript:;" *ngIf="!advaPay.paymentLinked"
+                                  (click)="deletePayment(advaPay.paymentID)">Void</a>
+                              </ng-template>
+                            </p-overlayPanel>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <td colspan="10" class="text-center">
+                        {{ dataMessage }}
+                      </td>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
+                        <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
+                          Load More..</button><br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ payments.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>

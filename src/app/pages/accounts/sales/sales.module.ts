@@ -1,28 +1,33 @@
-import { RouterModule, Routes } from "@angular/router";
+import { CommonModule } from "@angular/common";
 import { Injectable, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { CommonModule } from "@angular/common";
-import { AddSalesOrderComponent } from "./sales-orders/add-sales-order/add-sales-order.component";
-import { SalesOrderListComponent } from "./sales-orders/sales-order-list/sales-order-list.component";
-import { SalesOrderDetailComponent } from "./sales-orders/sales-order-detail/sales-order-detail.component";
-import { SalesInvoicesListComponent } from "./sales-invoices/sales-invoices-list/sales-invoices-list.component";
-import { SalesInvoiceDetailComponent } from "./sales-invoices/sales-invoice-detail/sales-invoice-detail.component";
-import { AddSalesInvoiceComponent } from "./sales-invoices/add-sales-invoice/add-sales-invoice.component";
-import { AddSalesReceiptsComponent } from "./receipts/add-sales-receipts/add-sales-receipts.component";
-import { SalesReceiptsListComponent } from "./receipts/sales-receipts-list/sales-receipts-list.component";
-import { SalesReceiptsDetailComponent } from "./receipts/sales-receipts-detail/sales-receipts-detail.component";
-import { AddCreditNoteComponent } from "./credit-notes/add-credit-note/add-credit-note.component";
-import { CreditNotesListComponent } from "./credit-notes/credit-notes-list/credit-notes-list.component";
+import { RouterModule, Routes } from "@angular/router";
 import {
-  NgbDate,
   NgbDateAdapter,
   NgbDateParserFormatter,
   NgbDateStruct,
-  NgbModule,
+  NgbModule
 } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { CreditNoteDetailComponent } from "./credit-notes/credit-note-detail/credit-note-detail.component";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
 import { AddAccountModule } from "../add-account/add-account.module";
+import { AddCreditNoteComponent } from "./credit-notes/add-credit-note/add-credit-note.component";
+import { CreditNoteDetailComponent } from "./credit-notes/credit-note-detail/credit-note-detail.component";
+import { CreditNotesListComponent } from "./credit-notes/credit-notes-list/credit-notes-list.component";
+import { AddSalesReceiptsComponent } from "./receipts/add-sales-receipts/add-sales-receipts.component";
+import { SalesReceiptsDetailComponent } from "./receipts/sales-receipts-detail/sales-receipts-detail.component";
+import { SalesReceiptsListComponent } from "./receipts/sales-receipts-list/sales-receipts-list.component";
+import { AddSalesInvoiceComponent } from "./sales-invoices/add-sales-invoice/add-sales-invoice.component";
+import { SalesInvoiceDetailComponent } from "./sales-invoices/sales-invoice-detail/sales-invoice-detail.component";
+import { SalesInvoicesListComponent } from "./sales-invoices/sales-invoices-list/sales-invoices-list.component";
+import { AddSalesOrderComponent } from "./sales-orders/add-sales-order/add-sales-order.component";
+import { SalesOrderDetailComponent } from "./sales-orders/sales-order-detail/sales-order-detail.component";
+import { SalesOrderListComponent } from "./sales-orders/sales-order-list/sales-order-list.component";
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -187,8 +192,13 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgSelectModule,
     RouterModule.forChild(routes),
-
+    TableModule,
     AddAccountModule,
+    AutoCompleteModule,
+    ButtonModule,
+    MultiSelectModule,
+    SplitButtonModule,
+    OverlayPanelModule
   ],
 })
-export class SalesModule {}
+export class SalesModule { }

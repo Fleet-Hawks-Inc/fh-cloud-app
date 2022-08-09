@@ -1,5 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Table } from 'primeng/table';
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
 
@@ -9,6 +12,7 @@ import { AccountService, ApiService, DashboardUtilityService } from "src/app/ser
   styleUrls: ["./purchase-orders-list.component.css"],
 })
 export class PurchaseOrdersListComponent implements OnInit {
+  @ViewChild("op") overlaypanel: OverlayPanel;
   dataMessage: string = Constants.FETCHING_DATA;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -40,6 +44,20 @@ export class PurchaseOrdersListComponent implements OnInit {
       value: 'billed'
     }
   ];
+  _selectedColumns: any[];
+  get = _.get;
+  find = _.find;
+  dataColumns = [
+    { field: 'txnDate', header: 'Date', type: "text" },
+    { field: 'orderNo', header: 'Purchase Order#', type: "text" },
+    { field: 'refNo', header: 'Reference#', type: "text" },
+    { field: 'vendorID', header: 'Vendor', type: "text" },
+    { field: 'total.finalTotal', header: 'Amount', type: "text" },
+    { field: 'status', header: 'Status', type: "text" },
+  ];
+
+
+
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -48,9 +66,21 @@ export class PurchaseOrdersListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.setToggleOptions();
     await this.fetchVendor();
     await this.fetchPurchases();
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
 
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
   async fetchVendor() {
     let result: any = await this.apiService
@@ -183,5 +213,8 @@ export class PurchaseOrdersListComponent implements OnInit {
     } else {
       this.toastr.error("Something went wrong.");
     }
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

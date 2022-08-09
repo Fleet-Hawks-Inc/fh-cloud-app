@@ -1562,6 +1562,144 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="row pt-2">
+                      <div class="col-lg-12">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Other
+                          Information</label>
+                      </div>
+                    </div>
+                    <!-- other addition -->
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <h4 class="font-weight-bold">Addition</h4>
+                      </div>
+                      <div class="col-lg-12">
+                        <table class="table table-bordered" id="otherChargesTable">
+                          <thead>
+                            <tr>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                                let data of settlementData.other.addition;
+                                let i = index
+                              ">
+                              <td>{{ data.chargeName }}</td>
+                              <td>{{ data.desc }}</td>
+                              <td>{{ data.amount }} {{ data.currency }}</td>
+                              <td>
+                                <span class="badge badge-dark p-2" (click)="delTripAddData(i, 'additional')"><i
+                                    class="fas fa-trash-alt text-light"></i></span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" id="cell2" class="form-control"
+                                  [(ngModel)]="otherAddData.chargeName" name="addChargeName"
+                                  placeholder="Enter charge name" />
+                              </td>
+                              <td>
+                                <input type="text" id="cell3" class="form-control" [(ngModel)]="otherAddData.desc"
+                                  name="otherDescription" placeholder="Enter description" />
+                              </td>
+                              <td>
+                                <input type="text" id="cell4" class="form-control" [(ngModel)]="otherAddData.amount"
+                                  name="othrAmount" placeholder="Enter amount" />
+                              </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm" (click)="otherAdd()">
+                                  <i class="fas fa-plus"></i> Add
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="row">
+                              <div class="col-lg-8 offset-lg-2 text-right">
+                                <label class="control-label font-weight-bold">Total Addition</label>
+                              </div>
+                              <div class="col-lg-2">
+                                <input type="text" class="form-control" disabled name="addTotal"
+                                  [(ngModel)]="settlementData.other.addTotal" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- other deduction -->
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <h4 class="font-weight-bold">Deduction</h4>
+                      </div>
+                      <div class="col-lg-12">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                                let data of settlementData.other.deduction;
+                                let i = index
+                              ">
+                              <td>{{ data.chargeName }}</td>
+                              <td>{{ data.desc }}</td>
+                              <td>{{ data.amount }} {{ data.currency }}</td>
+                              <td>
+                                <span class="badge badge-dark p-2" (click)="delTripAddData(i, 'deduction')"><i
+                                    class="fas fa-trash-alt text-light"></i></span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" class="form-control" [(ngModel)]="otherDedData.chargeName"
+                                  name="othrChargeName" placeholder="Enter charge name" />
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" [(ngModel)]="otherDedData.desc"
+                                  name="othrDescription" placeholder="Enter description" />
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" [(ngModel)]="otherDedData.amount"
+                                  name="othrAmount" placeholder="Enter amount" />
+                              </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm" (click)="otherDed()">
+                                  <i class="fas fa-plus"></i> Add
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="row">
+                              <div class="col-lg-8 offset-lg-2 text-right">
+                                <label class="control-label font-weight-bold">Total Deduction</label>
+                              </div>
+                              <div class="col-lg-2">
+                                <input type="text" class="form-control" disabled
+                                  [(ngModel)]="settlementData.deductionTotal" name="deductionTotal" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <!-- total payment -->
                     <div class="row pt-4">
                       <div class="col-lg-7 offset-lg-1" *ngIf="
@@ -1588,53 +1726,6 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'owner_operator'">
-                                        <div class="row pt-2" *ngFor="let data of settlementData.miles.drivers; let d=index;">
-                                            <div class="col-lg-3 text-right">
-                                                <label class="control-label font-weight-bold">{{ drivers[data.driverID] }} 's Payment</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="text" class="form-control" name="ownerdrvTotal{{d}}" [(ngModel)]="data.payment" disabled>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="font-weight-bold">
-                                                    <input type="checkbox" name="ownerDeduction{{d}}" (change)="deductFromOwnerOperator()" [(ngModel)]="data.ownerDeduction"> Deduct from Owner Operator</label>
-                                            </div>
-                                        </div>
-                                        <div class="row pt-2">
-                                            <div class="col-lg-3 text-right">
-                                                <label class="control-label font-weight-bold">GST (%)</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="number" class="form-control" name="gstPrcnt" [(ngModel)]="settlementData.taxObj.gstPrcnt" (input)="calculateTaxes()">
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="text" class="form-control" placeholder="Value" disabled name="gstAmount" [(ngModel)]="settlementData.taxObj.gstAmount">
-                                            </div>
-                                        </div>
-                                        <div class="row pt-2">
-                                            <div class="col-lg-3 text-right">
-                                                <label class="control-label font-weight-bold">PST (%)</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="number" class="form-control" name="pstPrcnt" [(ngModel)]="settlementData.taxObj.pstPrcnt" (input)="calculateTaxes()">
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="text" class="form-control" placeholder="Value" disabled name="pstAmount" [(ngModel)]="settlementData.taxObj.pstAmount">
-                                            </div>
-                                        </div>
-                                        <div class="row pt-2">
-                                            <div class="col-lg-3 text-right">
-                                                <label class="control-label font-weight-bold">HST (%)</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="number" class="form-control" name="hstPrcnt" [(ngModel)]="settlementData.taxObj.hstPrcnt" (input)="calculateTaxes()">
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="text" class="form-control" placeholder="HST Amount" disabled name="hstAmount" [(ngModel)]="settlementData.taxObj.hstAmount">
-                                            </div>
-                                        </div>
-                                    </div> -->
                       <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'owner_operator'"></div>
                       <div class="col-lg-4">
                         <div class="row">
@@ -1659,12 +1750,7 @@
 
                         <div class="row pt-1">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold">Other Charges</label>
-                          </div>
-                        </div>
-                        <div class="row pt-1">
-                          <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold">Add</label>
+                            <label class="control-label font-weight-bold">Trip Addition</label>
                           </div>
                           <div class="col-lg-6">
                             <input type="text" class="form-control" disabled [(ngModel)]="settlementData.additionTotal"
@@ -1673,13 +1759,33 @@
                         </div>
                         <div class="row pt-1">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold">Deduct</label>
+                            <label class="control-label font-weight-bold">Trip Deduction</label>
                           </div>
                           <div class="col-lg-6">
                             <input type="text" class="form-control" disabled [(ngModel)]="settlementData.deductionTotal"
                               name="deductionTotal" />
                           </div>
                         </div>
+
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Other Addition</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" disabled [(ngModel)]="settlementData.other.addTotal"
+                              name="otherradditionTotal" />
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Other Deduction</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" disabled [(ngModel)]="settlementData.other.dedTotal"
+                              name="otherrdeductionTotal" />
+                          </div>
+                        </div>
+
                         <div class="row pt-1" *ngIf="
                             settlementData.type == 'driver' ||
                             settlementData.type == 'owner_operator'
@@ -1705,33 +1811,6 @@
                               name="fuelDed" />
                           </div>
                         </div>
-
-                        <!-- <div class="row pt-1">
-                                                    <div class="col-lg-6
-                                                        text-right">
-                                                        <label class="control-label
-                                                            font-weight-bold">Expense
-                                                            Addition</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" disabled
-                                                            [(ngModel)]="settlementData.expAdd" name="expAdd">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row pt-1">
-                                                    <div class="col-lg-6
-                                                        text-right">
-                                                        <label class="control-label
-                                                            font-weight-bold">Expense
-                                                            Deduction</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" disabled
-                                                            [(ngModel)]="settlementData.expDed" name="expDed">
-                                                    </div>
-                                                </div> -->
-
                         <div class="row pt-1" *ngIf="
                             settlementData.type == 'carrier' ||
                             settlementData.type == 'owner_operator'

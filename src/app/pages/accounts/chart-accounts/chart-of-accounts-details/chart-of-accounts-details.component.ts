@@ -3,7 +3,9 @@ import { ActivatedRoute } from "@angular/router";
 import { AccountService, ApiService } from "../../../../services";
 import Constants from "../../../fleet/constants";
 import { ToastrService } from "ngx-toastr";
+import { Table } from "primeng/table";
 import * as moment from 'moment';
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-chart-of-accounts-details",
   templateUrl: "./chart-of-accounts-details.component.html",
@@ -45,7 +47,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   date = new Date();
   accountsClassObjects = {};
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-   filter = {
+  filter = {
     startDate: null,
     endDate: null,
   };
@@ -62,32 +64,29 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   isLoadText = "Load More";
   closingAmountCad = 0;
   closingAmountUsd = 0;
-  startDate : string;
-  public endDate : string;
-  
-
+  sessionID: string;
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
+    private toastr: ToastrService,
     private route: ActivatedRoute,
-    private apiService: ApiService
-  ) {}
+    private apiService: ApiService,
+    private routerMgmtService: RouteManagementServiceService
+  ) { this.sessionID = this.routerMgmtService.chartAccountSessionID; }
 
   async ngOnInit() {
-     this.route.queryParams.subscribe(params => {
-        if(params.startDate)
-        {
-          this.filter.startDate = params.startDate
-          this.filter.endDate = params.endDate 
-        }     
+    this.route.queryParams.subscribe(params => {
+      if (params.startDate) {
+        this.filter.startDate = params.startDate
+        this.filter.endDate = params.endDate
       }
+    }
     );
-     this.actID = this.route.snapshot.params[`actID`];
+    this.actID = this.route.snapshot.params[`actID`];
     if (this.actID) {
       await this.fetchAccount();
       await this.logsCADPaging();
-    } 
-  
+    }
   }
   fetchAccountClassByIDs() {
     this.accountService
@@ -134,11 +133,13 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       .getData(`chartAc/account/${this.actID}`)
       .toPromise();
     this.account = res;
+
     if (!this.account.isFeatEnabled) {
       this.fetchAccountClassByIDs();
       this.getEntityList();
 
       this.transactionLogCAD = res.transactionLogCAD;
+
       this.transactionLogUSD = res.transactionLogUSD;
       for (const element of this.account.transactionLogCAD) {
         element.type = element.type.replace(/_/g, " ");
@@ -162,12 +163,12 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
 
     this.periodVarianceCAD = Math.abs(
       Math.abs(Number(this.account.opnBalCAD)) -
-        Math.abs(Number(this.account.closingAmtCAD))
+      Math.abs(Number(this.account.closingAmtCAD))
     );
 
     this.periodVarianceUSD = Math.abs(
       Math.abs(Number(this.account.opnBalUSD)) -
-        Math.abs(Number(this.account.closingAmtUSD))
+      Math.abs(Number(this.account.closingAmtUSD))
     );
   }
 
@@ -463,6 +464,9 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     this.loaded = false;
   }
 
+  clear(table: Table) {
+    table.clear();
+  }
   changeTab(type) {
     this.currTab = type;
     if (this.currTab === "CAD") {
@@ -521,5 +525,88 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     this.periodVarianceUSD = Math.abs(
       Number(this.account.opnBalUSD) - Number(this.account.closingAmtUSD)
     );
+  }
+
+
+
+  generateCAD() {
+    if (this.transactionLogCAD.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.transactionLogCAD.forEach(element => {
+        let obj = {}
+        obj["Date"] = element.logDate
+        obj["Name"] = element.uName
+        obj["Type"] = element.entityType
+        obj["Description"] = element.desc.replace(/<br>/g, "")
+        obj["Source"] = element.source.replace(/<br>/g, "")
+        obj["Debit#"] = element.trxType === "debit" ? element.amount : ""
+        obj["Credit#"] = element.trxType === "credit" ? element.amount : ""
+        obj["Running Total"] = element.trxRunTotal
+        dataObject.push(obj)
+        console.log("ddddd", dataObject)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += '\n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += '\n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Chart-of-account-CAD`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
+
+
+  generateUSD() {
+    if (this.transactionLogUSD.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.transactionLogUSD.forEach(element => {
+        let obj = {}
+        obj["Date"] = element.logDate
+        obj["Name"] = element.uName
+        obj["Type"] = element.entityType
+        obj["Description"] = element.desc.replace(/<br>/g, "")
+        obj["Debit#"] = element.trxType === "debit" ? element.amount : ""
+        obj["Credit#"] = element.trxType === "credit" ? element.amount : ""
+        obj["Running Total"] = element.trxRunTotal
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += '\n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += '\n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Chart-of-account-USD`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
   }
 }
