@@ -16,7 +16,7 @@ import { CountryStateCityService } from "src/app/services/country-state-city.ser
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { ApiService, DashboardUtilityService, ListService } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
-
+import { ELDService } from "src/app/services/eld.service";
 declare var $: any;
 @Component({
   selector: "app-add-vehicle",
@@ -296,6 +296,8 @@ export class AddVehicleComponent implements OnInit {
   editDisabled = false;
   currentYear = '';
   groupsData: any = [];
+  hosVehicleId = '';
+  vehicleObj = {}
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -309,7 +311,8 @@ export class AddVehicleComponent implements OnInit {
     private dashboardUtilityService: DashboardUtilityService,
     private routerMgmtService: RouteManagementServiceService,
     private modalService: NgbModal,
-    private modalServiceOwn: ModalService
+    private modalServiceOwn: ModalService,
+    private eldService: ELDService,
   ) {
 
 
@@ -1170,6 +1173,7 @@ export class AddVehicleComponent implements OnInit {
     }
     this.timeCreated = result.timeCreated;
     this.isImport = result.isImport;
+    this.hosVehicleId = result.hosVehicleId
 
     $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
     $("#hardAccelrationParametersValue").html(
@@ -1358,7 +1362,11 @@ export class AddVehicleComponent implements OnInit {
       loanDocs: this.existLDocs,
       activeTab: this.activeTab,
       deviceInfo: this.deviceInfo,
-      isImport: this.isImport
+      isImport: this.isImport,
+
+
+      hosVehicleId:this.hosVehicleId
+      
     };
     // create form data instance
     const formData = new FormData();
@@ -1385,6 +1393,48 @@ export class AddVehicleComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(data));
+
+
+    if(this.hosVehicleId != undefined){
+       this.vehicleObj = {
+          FhIdentifier: this.vehicleID,
+          AssetId : this.hosVehicleId,
+          Number: this.vehicleIdentification,
+          HOSHomeBaseId: '18',
+          VIN: this.VIN,
+          Plate: this.plateNumber,
+          RegistrationState: this.stateCode,
+          Type: '0',
+          Active: '1'
+
+      }
+      console.log('this.vehicleObj-if',this.vehicleObj)
+  }
+  else{
+      this.vehicleObj = {
+          FhIdentifier: this.vehicleID,
+          AssetId : 0,
+          Number: this.vehicleIdentification,
+          HOSHomeBaseId: '18',
+          VIN: this.VIN,
+          Plate: this.plateNumber,
+          RegistrationState: this.stateCode,
+          Type: '0',
+          Active: '1'
+
+      }
+  }
+
+  this.eldService.postData("assets", {
+      Asset: this.vehicleObj
+  }).subscribe(
+      result => {
+          return result
+      },
+      error => {
+          console.log('error', error)
+          // this.showError(error)
+      });
 
     try {
       return await new Promise((resolve, reject) => {

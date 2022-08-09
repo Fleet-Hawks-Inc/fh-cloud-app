@@ -141,6 +141,7 @@ export class AssetDetailComponent implements OnInit {
     };
     licStateCode = ''
     hosAssetID = ''
+    assetObj = {}
     // Charts
     public chartOptions = {
         scaleShowVerticalLines: false,
@@ -652,20 +653,39 @@ export class AssetDetailComponent implements OnInit {
     }
 
     updateEldAssetD() {
-        let assetObj = {
-            FhIdentifier: this.assetID,
-            Number: this.assetIdentification,
-            HOSHomeBaseId: '18',
-            VIN: this.VIN,
-            Plate: this.licencePlateNumber,
-            RegistrationState: this.licStateCode,
-            Type: '1',
-            Active: '1'
-
+        if(this.hosAssetID != undefined){
+             this.assetObj = {
+                FhIdentifier: this.assetID,
+                AssetId : this.hosAssetID,
+             
+                Number: this.assetIdentification,
+                HOSHomeBaseId: '18',
+                VIN: this.VIN,
+                Plate: this.licencePlateNumber,
+                RegistrationState: this.licStateCode,
+                Type: '1',
+                Active: '1'
+    
+            }
+        }
+        else{
+            this.assetObj = {
+                FhIdentifier: this.assetID,
+                AssetId : 0,
+                Number: this.assetIdentification,
+                HOSHomeBaseId: '18',
+                VIN: this.VIN,
+                Plate: this.licencePlateNumber,
+                RegistrationState: this.licStateCode,
+                Type: '1',
+                Active: '1'
+    
+            }
         }
         this.eldService.postData("assets", {
-            Asset: assetObj
+            Asset: this.assetObj
         }).subscribe(result => {
+            this.showSuccess()
             return result
         }, error => {
             console.log('error', error)
@@ -678,5 +698,10 @@ export class AssetDetailComponent implements OnInit {
             severity: 'error', summary: 'Error',
             detail: error.error.message
         });
+    }
+
+    showSuccess() {
+        this.messageService.add({severity:'success',
+         summary: 'Success', detail: 'Asset added Successfully'});
     }
 }

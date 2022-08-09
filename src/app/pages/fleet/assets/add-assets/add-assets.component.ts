@@ -143,6 +143,7 @@ export class AddAssetsComponent implements OnInit {
     },
     uploadedPhotos: [],
     uploadedDocs: [],
+    hosAssetID: ''
   };
 
   allAssets = [];
@@ -785,6 +786,8 @@ export class AddAssetsComponent implements OnInit {
         this.existPDocs = result.purchaseDocs;
         this.existLDocs = result.loanDocs;
 
+        this.assetsData.hosAssetID = result.hosAssetId
+
         if (
           result.uploadedPhotos !== undefined &&
           result.uploadedPhotos.length > 0
@@ -912,6 +915,8 @@ export class AddAssetsComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       isImport: this.isImport,
+      hosAssetID: this.assetsData.hosAssetID
+      
     };
     data.assetDetails.year =
       data.assetDetails.ownerShip === "interchange"

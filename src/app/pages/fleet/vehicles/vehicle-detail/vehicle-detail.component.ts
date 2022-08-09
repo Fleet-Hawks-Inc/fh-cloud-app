@@ -236,7 +236,7 @@ export class VehicleDetailComponent implements OnInit {
         autoplaySpeed: 5000,
     };
     hosVehicleId = ''
-
+    vehicleObj = {}
 
 
     contactsObjects: any = {};
@@ -729,19 +729,39 @@ export class VehicleDetailComponent implements OnInit {
     }
 
     updateEldVehicle() {
-        let vehicleObj = {
-            FhIdentifier: this.vehicleID,
-            Number: this.vehicleIdentification,
-            HOSHomeBaseId: '18',
-            VIN: this.VIN,
-            Plate: this.plateNumber,
-            RegistrationState: this.stateCode,
-            Type: '0',
-            Active: '1'
-
+        console.log('this.hosVehicleId-starting',this.hosVehicleId)
+        if(this.hosVehicleId != undefined){
+            console.log('this.hosVehicleId-if',this.hosVehicleId)
+             this.vehicleObj = {
+                FhIdentifier: this.vehicleID,
+                AssetId : this.hosVehicleId,
+                Number: this.vehicleIdentification,
+                HOSHomeBaseId: '18',
+                VIN: this.VIN,
+                Plate: this.plateNumber,
+                RegistrationState: this.stateCode,
+                Type: '0',
+                Active: '1'
+    
+            }
         }
+        else{
+            this.vehicleObj = {
+                FhIdentifier: this.vehicleID,
+                AssetId : 0,
+                Number: this.vehicleIdentification,
+                HOSHomeBaseId: '18',
+                VIN: this.VIN,
+                Plate: this.plateNumber,
+                RegistrationState: this.stateCode,
+                Type: '0',
+                Active: '1'
+    
+            }
+        }
+      
         this.eldService.postData("assets", {
-            Asset: vehicleObj
+            Asset: this.vehicleObj
         }).subscribe(
             result => {
                 return result
