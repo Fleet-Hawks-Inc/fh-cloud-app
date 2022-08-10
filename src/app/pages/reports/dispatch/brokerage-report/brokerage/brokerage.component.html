@@ -57,7 +57,7 @@
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="exportBrokerage()" pTooltip="Excel"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                           </p-multiSelect>
                         </div>
@@ -87,10 +87,10 @@
                               {{ get(brk, dataColumns.field) }}
                             </span>
                             <span *ngSwitchCase="'customerName'">
-                              {{ (customers[brk.customerID] ? customers[brk.customerID] : '-') | titlecase}}
+                             {{(get(brk, dataColumns.field) ? get(brk, dataColumns.field): "-") | titlecase}}
                             </span>
-                            <span *ngSwitchCase="'cName'">
-                              {{(carriersObject[brk.brkCarrID] ? carriersObject[brk.brkCarrID]: '-') | titlecase}}
+                            <span *ngSwitchCase="'brkCarrierName'">
+                              {{(get(brk, dataColumns.field) ? get(brk, dataColumns.field): "-") | titlecase}}
                             </span>
                             <span *ngSwitchCase="'pickupAddress'">
                               {{get(brk, dataColumns.field) | titlecase}}
