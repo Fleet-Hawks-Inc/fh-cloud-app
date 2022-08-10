@@ -68,11 +68,11 @@
             <div class="row mb-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                     <div class="bg-white p-3 text-dark text-capitalize">
-                        <p-table #dt [value]="allData" dataKey="tripSK" [resizableColumns]="true" columnResizeMode="expand"
-                             resposiveLayout='scroll' scrollDirection="both"
+                        <p-table #dt [value]="allData" dataKey="tripSK" [resizableColumns]="true" columnResizeMode="fit"
+                            resposiveLayout='scroll' scrollDirection="both" autolayout="true"
                             [columns]="selectedColumns" [loading]="!loaded"
-                            styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                            [loading]="!loaded" scrollHeight="100%">
+                            styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [loading]="!loaded"
+                            scrollHeight="100%">
                             <ng-template pTemplate="caption">
                                 <div class="p-d-flex d-flex justify-content-between align-items-center">
                                     <div>
@@ -98,8 +98,7 @@
                                 <tr>
                                     <th style="width: 3rem"></th>
                                     <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field"
-                                        pResizableColumn
-                                        [ngStyle]="{'width': dataColumns.width ,'display': dataColumns.display}">
+                                        pResizableColumn [ngStyle]="{'display': dataColumns.display}">
                                         <div [ngSwitch]="dataColumns.field">
                                             <span>
                                                 <div class="flex justify-content-center align-items-center"
@@ -130,7 +129,7 @@
                                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                                     </td>
                                     <td *ngFor="let dataColumns of columns"
-                                        [ngStyle]="{'width': dataColumns.width ,'display': dataColumns.display}">
+                                        [ngStyle]="{'display': dataColumns.display}">
 
                                         <div [ngSwitch]="dataColumns.field">
                                             <span *ngSwitchCase="'assetNm'">
@@ -220,69 +219,80 @@
                             </ng-template>
 
                             <ng-template pTemplate="rowexpansion" let-allData>
-                              
-                            
+
+
 
                                 <tr>
-                                    <td class="p-0 custom-bg-light border-0">
+                                    <td colspan="9" class="p-0 custom-bg-light border-0">
                                         <div class="p-3">
-                                            <p-table [value]="allData" styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                                            <p-table [value]="allData"
+                                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
                                                 <ng-template pTemplate="header">
-                                
-                                                    <tr>
-                                                        <th  style=" margin-left: 10px;width: 120px;" class="border-0 p-0">Pickup Location</th>
-                                                        <th style=" margin-left: 490px; " class="border-0 p-0">Date</th>
-                                                        <th style="  margin-left: 300px;" class="border-0 p-0">Province (US)</th>
-                                                        <th style="  margin-left: 180px;" class="border-0 p-0">US Miles</th>
-                                                        <th style="  margin-left: 200px;" class="border-0 p-0">Province (Canada)</th>
-                                                        <th style="  margin-left: 60px;" class="border-0 p-0">Canada Miles</th>
-                                                    </tr>
-                                              
-                                                   
-                                                    <tr>
-                                                
-                                                        <td style=" margin-left: 10px; width: 390px;">
-                                                            <span *ngFor='let loc of allData.location'>
-                                                                {{loc}}<br></span>
-                                                
-                                                        </td>
-                                                        <td style=" margin-left: 220px;">
-                                                            <span *ngFor='let date of allData.date'>
-                                                            {{date
-                                                            }}<br></span>
-                                                    
-                                                        </td>
 
-                                                        <td style=" margin-left: 200px; width:200%;"> 
-                                                            <span *ngFor='let usState of allData.usState'>
-                                                                {{usState }}<br></span>
-                                                        </td>
+                                <tr>
+                                    <th class="border-0 p-0"> <span style=" margin-left: 10px;width: 120px;">Pickup
+                                            Location</span>
+                                    </th>
+                                    <th class="border-0 p-0"> <span style=" margin-left: 222px;">Date</span> </th>
+                                    <th class="border-0 p-0"> <span style=" margin-left: 160px;">Province (US)</span>
+                                    </th>
+                                    <th class="border-0 p-0"> <span style=" margin-left: 194px;">US Miles</span> </th>
+                                    <th class="border-0 p-0"> <span style=" margin-left: 130px;">Province
+                                            (Canada)</span> </th>
+                                    <th class="border-0 p-0"> <span style=" margin-left: 100px;">Canada Miles</span>
+                                    </th>
+                                </tr>
 
-                                                        <td style=" margin-left: 200px; width:200%;"> 
-                                                            <span *ngFor='let usMiles of allData.usStateMiles'>
-                                                                {{usMiles }}<br></span>
-                                                        </td>
 
-                                                        <td style=" margin-left: 200px; width:200%;"> 
-                                                            <span *ngFor='let canState of allData.canState'>
-                                                                {{canState }}<br></span>
-                                                        </td>
+                                <tr>
 
-                                                        <td style=" margin-left: 140px; width:200%;"> 
-                                                            <span *ngFor='let canMiles of allData.canStateMiles'>
-                                                                {{canMiles
-                                                                }}<br></span>
-                                                            
-                                                        </td>
-                                                    </tr>
-                                     
-                                                </ng-template>
-                                            </p-table>
-                                        </div>
+                                    <td>
+                                        <span *ngFor='let loc of allData.location'
+                                            style=" margin-left: 10px; width: 390px;">
+                                            {{loc}}<br></span>
+
                                     </td>
-                              
-                                
-                                    <!-- <td width="30%" class="p-0 custom-bg-light border-0">
+                                    <td>
+                                        <span *ngFor='let date of allData.date' style=" margin-left: 220px;">
+                                            {{date
+                                            }}<br></span>
+
+                                    </td>
+
+                                    <td>
+                                        <span *ngFor='let usState of allData.usState'
+                                            style=" margin-left: 200px; width:200%;">
+                                            {{usState }}<br></span>
+                                    </td>
+
+                                    <td>
+                                        <span *ngFor='let usMiles of allData.usStateMiles'
+                                            style=" margin-left: 200px; width:200%;">
+                                            {{usMiles }}<br></span>
+                                    </td>
+
+                                    <td>
+                                        <span *ngFor='let canState of allData.canState'
+                                            style=" margin-left: 200px; width:200%;">
+                                            {{canState }}<br></span>
+                                    </td>
+
+                                    <td>
+                                        <span *ngFor='let canMiles of allData.canStateMiles'
+                                            style=" margin-left: 140px; width:200%;">
+                                            {{canMiles
+                                            }}<br></span>
+
+                                    </td>
+                                </tr>
+
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    </td>
+
+
+                    <!-- <td width="30%" class="p-0 custom-bg-light border-0">
                                         <div class="p-3">
                                             <p-table [value]="allData" styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
                                                 <ng-template pTemplate="header">
@@ -321,36 +331,36 @@
                                             </p-table>
                                         </div>
                                     </td> -->
-                                
-                                
-                                </tr>
-                            </ng-template>
-                            <!-- Empty Template -->
-                            <ng-template pTemplate="emptymessage" let-columns>
-                                <div class="col-lg-12 mt-3 text-center">
-                                    {{dataMessage}}
-                                    <br /><br>
-                                </div>
-                            </ng-template>
-                            <!-- Summary Section with Load More button -->
 
-                            <ng-template pTemplate="summary" let-columns>
-                                <div class="col-lg-12 mt-3 text-center "
-                                    *ngIf="lastItemSK !=='end' && allData.length !==0 ">
-                                    <button type="button " (click)="onScroll($event) "
-                                        class="btn btn-success btn-sm text-light ">Load
-                                        More..</button>
 
-                                    <br /><br>
-                                </div>
-                                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
-                                    Total Records: {{allData.length}}</div>
-                            </ng-template>
+                    </tr>
+                    </ng-template>
+                    <!-- Empty Template -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <td colspan="10" class="text-center">
+                            <br />
+                            {{dataMessage}}
+                            <br /><br />
+                        </td>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
 
-                        </p-table>
-                    </div>
+                    <ng-template pTemplate="summary" let-columns>
+                        <div class="col-lg-12 mt-3 text-center " *ngIf="lastItemSK !=='end' && allData.length !==0 ">
+                            <button type="button " (click)="onScroll($event) "
+                                class="btn btn-success btn-sm text-light ">Load
+                                More..</button>
+
+                            <br /><br>
+                        </div>
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
+                            Total Records: {{allData.length}}</div>
+                    </ng-template>
+
+                    </p-table>
                 </div>
             </div>
-        </section>
     </div>
+</section>
+</div>
 </section>

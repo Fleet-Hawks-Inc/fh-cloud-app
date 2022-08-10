@@ -57,7 +57,7 @@
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="exportBrokerage()" pTooltip="Excel"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                           </p-multiSelect>
                         </div>
@@ -87,96 +87,16 @@
                               {{ get(brk, dataColumns.field) }}
                             </span>
                             <span *ngSwitchCase="'customerName'">
-                              {{ (customers[brk.customerID] ? customers[brk.customerID] : '-') | titlecase}}
+                             {{(get(brk, dataColumns.field) ? get(brk, dataColumns.field): "-") | titlecase}}
                             </span>
-                            <span *ngSwitchCase="'cName'">
-                              {{(carriersObject[brk.brkCarrID] ? carriersObject[brk.brkCarrID]: '-') | titlecase}}
+                            <span *ngSwitchCase="'brkCarrierName'">
+                              {{(get(brk, dataColumns.field) ? get(brk, dataColumns.field): "-") | titlecase}}
                             </span>
-                            <span *ngSwitchCase="'pickUpLoc'">
-                              <span *ngFor="let item of brk.shippersReceiversInfo">
-                                <span *ngIf="
-                                          item.shippers[0].pickupPoint[0].address
-                                            .manual
-                                        ">
-                                  {{
-                              item.shippers[0].pickupPoint[0].address
-                              .address
-                              }},
-                                  {{
-                              item.shippers[0].pickupPoint[0].address
-                              .cityName
-                              }},
-                                  {{
-                              item.shippers[0].pickupPoint[0].address
-                              .stateName
-                              }},
-                                  {{
-                              item.shippers[0].pickupPoint[0].address
-                              .countryName
-                              }}
-                                  {{
-                              item.shippers[0].pickupPoint[0].address
-                              .zipCode
-                              }}
-                                </span>
-                                <span *ngIf="
-                                          !item.shippers[0].pickupPoint[0]
-                                            .address.manual
-                                        ">
-                                  {{
-                              item.shippers[0].pickupPoint[0].address
-                              .pickupLocation
-                              }}
-                                </span>
-                                <span class="badge badge-dark" *ngIf="
-                                          item.shippers[0].pickupPoint.length > 1
-                                        ">
-                                  +{{
-                              item.shippers[0].pickupPoint.length - 1
-                              }}
-                                </span>
-                              </span>
+                            <span *ngSwitchCase="'pickupAddress'">
+                              {{get(brk, dataColumns.field) | titlecase}}
                             </span>
-                            <span *ngSwitchCase="'dropOffLoc'">
-                              <span *ngFor="let item2 of brk.shippersReceiversInfo">
-                                <span *ngIf="
-                                          item2.receivers[0].dropPoint[0].address
-                                            .manual
-                                        ">
-                                  {{
-                                item2.receivers[0].dropPoint[0].address
-                                .address
-                                }},
-                                  {{
-                                item2.receivers[0].dropPoint[0].address
-                                .cityName
-                                }},
-                                  {{
-                                item2.receivers[0].dropPoint[0].address
-                                .stateName
-                                }},
-                                  {{
-                                item2.receivers[0].dropPoint[0].address
-                                .countryName
-                                }}
-                                  {{
-                                item2.receivers[0].dropPoint[0].address
-                                .zipCode
-                                }}
-                                </span>
-                                <span *ngIf="
-                                          !item2.receivers[0].dropPoint[0].address
-                                            .manual
-                                        ">
-                                  {{
-                                item2.receivers[0].dropPoint[0].address
-                                .dropOffLocation
-                                }}
-                                </span>
-                                <span class="badge badge-dark" *ngIf="item2.receivers[0].dropPoint > 1">
-                                  +{{ item2.receivers[0].dropPoint - 1 }}
-                                </span>
-                              </span>
+                            <span *ngSwitchCase="'dropoffAddress'">
+                               {{get(brk, dataColumns.field) | titlecase}}
                             </span>
                             <span *ngSwitchDefault>
                               {{ get(brk, dataColumns.field) }}</span>

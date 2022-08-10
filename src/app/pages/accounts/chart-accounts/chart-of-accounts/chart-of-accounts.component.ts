@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class ChartOfAccountsComponent implements OnInit {
   selectedCities: string[] = [];
- 
+
 
   @ViewChild("actForm") actForm: NgForm;
   modalTitle = "Add Account";
@@ -81,9 +81,9 @@ export class ChartOfAccountsComponent implements OnInit {
   headCheckbox = false;
   usedAccounts: any = [];
   unusedAccounts: any = [];
-  showUnused: boolean=false;
-  allAccounts:any=[];
-  
+  showUnused: boolean = false;
+  allAccounts: any = [];
+
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -96,11 +96,11 @@ export class ChartOfAccountsComponent implements OnInit {
     this.getAcClasses();
     this.fetchAccountClassByIDs();
     this.dataColumns = [
-      { width: '25%', field: 'actName', header: 'Account Name', type: "text" },
-      { width: '15%', field: 'actNo', header: 'Account Number', type: "text" },
-      { width: '15%', field: 'actType', header: 'Account Type', type: "text" },
-      { width: '15%', field: 'actClassID', header: 'Account Class', type: "text" },
-      { width: '24%', field: 'actDesc', header: 'Description', type: "text" },
+      { field: 'actName', header: 'Account Name', type: "text" },
+      { field: 'actNo', header: 'Account Number', type: "text" },
+      { field: 'actType', header: 'Account Type', type: "text" },
+      { field: 'actClassID', header: 'Account Class', type: "text" },
+      { field: 'actDesc', header: 'Description', type: "text" },
     ];
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
@@ -185,6 +185,7 @@ export class ChartOfAccountsComponent implements OnInit {
     ) {
       this.disableSearch = true;
       this.accounts = [];
+      this.allAccounts = [];
       this.lastItemSK = "";
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAccounts();
@@ -199,11 +200,12 @@ export class ChartOfAccountsComponent implements OnInit {
     };
     this.lastItemSK = "";
     this.accounts = [];
+    this.allAccounts = [];
     this.fetchAccounts();
   }
   async fetchAccounts(refresh?: boolean) {
-    this.unusedAccounts=[];
-    this.accounts= this.allAccounts;
+    this.unusedAccounts = [];
+    this.accounts = this.allAccounts;
     if (refresh === true) {
       this.lastItemSK = "";
       this.accounts = [];
@@ -250,10 +252,10 @@ export class ChartOfAccountsComponent implements OnInit {
             this.accounts = newArray;
             this.allAccounts = newArray;
             this.loaded = true;
-            for(let i=0;i<this.accounts.length;i++) {
-            if(this.accounts[i].closingAmtCAD === this.accounts[i].opnBalCAD && this.accounts[i].closingAmtUSD === this.accounts[i].opnBalUSD){
-            this.unusedAccounts.push(this.accounts[i])
-            }
+            for (let i = 0; i < this.accounts.length; i++) {
+              if (this.accounts[i].closingAmtCAD === this.accounts[i].opnBalCAD && this.accounts[i].closingAmtUSD === this.accounts[i].opnBalUSD) {
+                this.unusedAccounts.push(this.accounts[i])
+              }
             }
           }
         });
@@ -262,16 +264,16 @@ export class ChartOfAccountsComponent implements OnInit {
       this.dataMessage = "Please add predefined accounts";
     }
   }
-  
-  onUnusedAccount(){
-   if(this.showUnused===true){
-     this.accounts=this.unusedAccounts;
-   }
-   else{
-     this.accounts= this.allAccounts;
-   }
+
+  onUnusedAccount() {
+    if (this.showUnused === true) {
+      this.accounts = this.unusedAccounts;
+    }
+    else {
+      this.accounts = this.allAccounts;
+    }
   }
-  
+
   onScroll() {
     if (this.loaded) {
       this.fetchAccounts();
