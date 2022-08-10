@@ -50,12 +50,12 @@ export class DriverReportComponent implements OnInit {
   employeeOptions: any[];
   driverN = ''
   dataColumns = [
-    { width: "25%", field: 'drin', header: 'Name', type: "text" },
-    { width: "25%", field: 'tripNo', header: 'Trip', type: "text" },
-    { width: "15%", field: 'locationCsv', header: 'Location', type: "text", display: "none" },
-    { width: "15%", field: 'dateCsv', header: 'Date', type: "text", display: "none" },
-    { width: "25%", field: 'orderNumber', header: 'Order', type: "text" },
-    { width: "22.2%", field: 'miles', header: 'Total Miles', type: "text" },
+    { field: 'drin', header: 'Name', type: "text" },
+    { field: 'tripNo', header: 'Trip', type: "text" },
+    { field: 'locationCsv', header: 'Location', type: "text", display: "none" },
+    { field: 'dateCsv', header: 'Date', type: "text", display: "none" },
+    { field: 'orderNumber', header: 'Order', type: "text" },
+    { field: 'miles', header: 'Total Miles', type: "text" },
 
   ];
 
