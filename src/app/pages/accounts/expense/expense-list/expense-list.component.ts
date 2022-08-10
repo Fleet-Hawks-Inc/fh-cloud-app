@@ -52,13 +52,13 @@ export class ExpenseListComponent implements OnInit {
     this.fetchVendors();
     this.fetchExpenseCategories();
     this.dataColumns = [
-      { width: '10%', field: 'txnDate', header: 'Date', type: "text" },
-      { width: '15%', field: 'categoryID', header: 'Expense Type', type: "text" },
-      { width: '10%', field: 'vendorID', header: 'Vendor', type: "text" },
-      { width: '20%', field: 'tripID', header: 'Trip & Unit#', type: "text" },
-      { width: '10%', field: 'recurring.interval', header: 'Recurring', type: "text" },
-      { width: '10%', field: 'finalTotal', header: 'Amount', type: "text" },
-      { width: '19%', field: 'newStatus', header: 'Status', type: "text" },
+      { field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'categoryID', header: 'Expense Type', type: "text" },
+      { field: 'vendorID', header: 'Vendor', type: "text" },
+      { field: 'tripID', header: 'Trip & Unit#', type: "text" },
+      { field: 'recurring.interval', header: 'Recurring', type: "text" },
+      { field: 'finalTotal', header: 'Amount', type: "text" },
+      { field: 'newStatus', header: 'Status', type: "text" },
     ];
 
 

@@ -79,8 +79,7 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }">
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Event Status Filter Customization -->
                             <span *ngSwitchDefault>
@@ -103,13 +102,12 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-inctra let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
-                          style="cursor: pointer" routerLink="/accounts/income/detail/{{
+                        <td *ngFor="let dataColumns of columns" style="cursor: pointer" routerLink="/accounts/income/detail/{{
                             inctra.incomeID
                           }}">
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'Income Date'">
-                              {{ get(inctra, dataColumns.field) | titlecase }}
+                            <span *ngSwitchCase="'paymentModeDate'">
+                              {{ inctra.paymentModeDate | date: "yyyy/MM/dd" }}
                             </span>
 
                             <span *ngSwitchCase="'categoryID'">
@@ -143,9 +141,11 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{ dataMessage }} <br /><br />
-                      </div>
+                      <td colspan="4" class="text-center">
+                        <br />
+                        {{dataMessage}}
+                        <br /><br />
+                      </td>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
                       <div class="col-lg-12 mt-3 text-center" *ngIf="

@@ -10,6 +10,8 @@ import { ListService } from 'src/app/services/list.service';
 import * as moment from 'moment';
 import { Location } from '@angular/common';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 declare var $: any;
 
 @Component({
@@ -115,12 +117,16 @@ export class AddExpenseComponent implements OnInit {
   };
   catDisabled = false;
   trips: any = [];
+  sessionID: string;
   constructor(private listService: ListService,
     private location: Location, private apiService: ApiService, private accountService: AccountService, private router: Router,
     private toaster: ToastrService,
     private domSanitizer: DomSanitizer,
     private route: ActivatedRoute,
-    private countryStateCity: CountryStateCityService) { }
+    private countryStateCity: CountryStateCityService,
+    private routerMgmtService: RouteManagementServiceService) {
+    this.sessionID = this.routerMgmtService.ExpenseTransactionsSessionID;
+  }
 
   async ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
@@ -256,10 +262,10 @@ export class AddExpenseComponent implements OnInit {
     this.apiService.getData('common/trips').subscribe((result: any) => {
       // this.trips = result.Items;
       result.Items.forEach((element) => {
-        if(element.isDeleted === 0) {
+        if (element.isDeleted === 0) {
           this.trips.push(element);
         }
-        if(element.isDeleted === 1 && element.tripID === this.expenseData.tripID) {
+        if (element.isDeleted === 1 && element.tripID === this.expenseData.tripID) {
           this.expenseData.tripID = null;
         }
       });
@@ -337,7 +343,7 @@ export class AddExpenseComponent implements OnInit {
   }
 
   async fetchExpenseByID() {
-    let result:any = await this.accountService.getData(`expense/detail/${this.expenseID}`).toPromise();
+    let result: any = await this.accountService.getData(`expense/detail/${this.expenseID}`).toPromise();
     if (result[0] != undefined) {
       this.expenseData = result[0];
 
