@@ -71,6 +71,7 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns>
                       <tr>
+
                         <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Event Status Filter Customization -->
@@ -94,11 +95,13 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-journal let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
+
                         <td *ngFor="let dataColumns of columns" style="cursor: pointer" routerLink="/accounts/manual-journal/detail/{{
                             journal.journalID
                           }}">
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'jrNo'" class="font-weight-bold">
+
                               {{ journal[dataColumns.field] }}
                             </span>
 
