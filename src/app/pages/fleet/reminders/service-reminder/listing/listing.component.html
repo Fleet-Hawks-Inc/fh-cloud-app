@@ -132,14 +132,14 @@
                       #dt
                       [value]="remindersData"
                       [resizableColumns]="true"
-                      columnResizeMode="expand"
+                      columnResizeMode="fit"
                       scrollDirection="both"
                       [columns]="selectedColumns"
                       [loading]="!loaded"
                       styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                      [scrollable]="true"
                       [loading]="!loaded"
                       scrollHeight="100%"
+                      autoLayout="true"
                     >
                       <ng-template pTemplate="caption">
                         <div
@@ -149,9 +149,7 @@
                             <h3 class="m-0">Service Reminder</h3>
                           </div>
                           <div class="text-right">
-                            <span
-                              >Showing {{ remindersData.length }} entries
-                            </span>
+                         <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                             &nbsp;
 
                             <button
@@ -198,7 +196,7 @@
                             *ngFor="let dataColumns of columns"
                             [pSortableColumn]="dataColumns.field"
                             pResizableColumn
-                            [ngStyle]="{ width: dataColumns.width }"
+                            
                           >
                             <div [ngSwitch]="dataColumns.field">
                               <span *ngSwitchDefault>
@@ -245,7 +243,7 @@
                         <tr>
                           <td
                             *ngFor="let dataColumns of columns"
-                            [ngStyle]="{ width: dataColumns.width }"
+                            
                             style="cursor: pointer"
                           >
                             <div [ngSwitch]="dataColumns.field">
@@ -304,7 +302,6 @@
                                     Days ago</span
                                   >
                                 </span>
-
                                 <br />
                                 <span
                                   *ngIf="
@@ -386,10 +383,13 @@
                         </tr>
                       </ng-template>
                       <ng-template pTemplate="emptymessage" let-columns>
-                        <div class="col-lg-12 mt-3 text-center">
-                          {{ dataMessage }}
-                          <br /><br />
-                        </div>
+                        <tr>
+                          <td colspan="6" class="text-center">
+                            <br/>
+                            {{dataMessage}}
+                            <br/><br/>
+                          </td>
+                        </tr>
                       </ng-template>
                       <ng-template pTemplate="summary" let-columns>
                         <div

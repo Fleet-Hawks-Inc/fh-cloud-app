@@ -73,13 +73,13 @@ export class IssueListComponent implements OnInit {
   ]
   // columns of data table
   dataColumns = [
-    { width: '14%', field: 'unitType', header: 'Unit Type', type: "text" },
-    { width: '14%', field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
-    { width: '14%', field: 'issueName', header: 'Issue Name', type: "text" },
-    { width: '14%', field: 'reportedDate', header: 'Reported On', type: "text" },
-    { width: '14%', field: 'reportedBy', header: 'Reported By', type: "text" },
-    { width: '14%', field: 'assignedTo', header: 'Assigned To', type: "text" },
-    { width: '10%', field: 'currentStatus', header: 'Status', type: "text" },
+    { field: 'unitType', header: 'Unit Type', type: "text" },
+    { field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
+    { field: 'issueName', header: 'Issue Name', type: "text" },
+    { field: 'reportedDate', header: 'Reported On', type: "text" },
+    { field: 'reportedBy', header: 'Reported By', type: "text" },
+    { field: 'assignedTo', header: 'Assigned To', type: "text" },
+    { field: 'currentStatus', header: 'Status', type: "text" },
   ];
   constructor(private apiService: ApiService, private modalService: NgbModal, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 

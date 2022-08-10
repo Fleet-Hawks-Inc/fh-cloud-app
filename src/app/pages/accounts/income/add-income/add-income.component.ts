@@ -8,6 +8,8 @@ import { ListService } from 'src/app/services/list.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { Location } from '@angular/common';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 declare var $: any;
 
 @Component({
@@ -80,8 +82,8 @@ export class AddIncomeComponent implements OnInit {
   submitDisabled = false;
   incomeID;
   categoryData = {
-    categoryName:'',
-    categoryDescription:''
+    categoryName: '',
+    categoryDescription: ''
   };
   uploadedDocs = [];
   existingDocs = [];
@@ -90,37 +92,41 @@ export class AddIncomeComponent implements OnInit {
   carrierID = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   catDisabled = false;
+  sessionID: string;
 
   constructor(private accountService: AccountService,
-    private location: Location, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer) { }
+    private location: Location, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer, private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.IncomeTransactionsSessionID;
+  }
 
   ngOnInit() {
     this.incomeID = this.route.snapshot.params[`incomeID`];
-    if(this.incomeID !== undefined) {
+    if (this.incomeID !== undefined) {
       this.pageTitle = 'Edit Income';
       this.fetchIncomeByID();
     }
     this.listService.fetchChartAccounts();
-   //  this.listService.fetchCustomers();
+    //  this.listService.fetchCustomers();
     this.incomeAccounts = this.listService.accountsList;
     this.depositAccounts = this.listService.accountsList;
-   // this.customers = this.listService.customersList;
+    // this.customers = this.listService.customersList;
     this.fetchIncomeCategories();
-   // this.fetchInvoices();
+    // this.fetchInvoices();
   }
 
   showPaymentFields(type) {
-    if(type === 'creditCard') {
+    if (type === 'creditCard') {
       this.paymentLabel = 'Credit Card';
-    } else if(type === 'debitCard') {
+    } else if (type === 'debitCard') {
       this.paymentLabel = 'Debit Card';
-    } else if(type === 'demandDraft') {
+    } else if (type === 'demandDraft') {
       this.paymentLabel = 'Demand Draft';
-    } else if(type === 'eft') {
+    } else if (type === 'eft') {
       this.paymentLabel = 'EFT';
-    } else if(type === 'cash') {
+    } else if (type === 'cash') {
       this.paymentLabel = 'Cash';
-    } else if(type === 'cheque') {
+    } else if (type === 'cheque') {
       this.paymentLabel = 'Cheque';
     }
     this.incomeData.paymentModeNo = '';
@@ -187,6 +193,7 @@ export class AddIncomeComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Income transaction added successfully.');
+        this.router.navigateByUrl("/accounts/income/list/{{sessionID}}");
         this.cancel();
       },
     });
@@ -317,8 +324,8 @@ export class AddIncomeComponent implements OnInit {
         this.response = res;
         $('#addIncomeCategoryModal').modal('hide');
         this.categoryData = {
-          categoryName:'',
-          categoryDescription:''
+          categoryName: '',
+          categoryDescription: ''
         }
         this.toaster.success('Income category added successfully.');
       },
@@ -345,7 +352,7 @@ export class AddIncomeComponent implements OnInit {
   }
 
   changeDepAcc(val) {
-    if(val === this.incomeData.depositAccID) {
+    if (val === this.incomeData.depositAccID) {
       this.incomeData.depositAccID = null;
     }
   }

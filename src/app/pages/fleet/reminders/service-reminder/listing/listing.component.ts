@@ -71,11 +71,11 @@ export class ListingComponent implements OnInit {
   
   // columns of data table
    dataColumns = [
-    { width: '15%', field: 'vehicleList', header: 'Vehicle', type: 'text' },
-    { width: '20%', field: 'status', header: '	Service Task', type: 'text' },
-    { width: '19%', field: 'nextDueDays', header: '	Next Due', type: 'text' },
-    { width: '19%', field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
-    { width: '21%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+    { field: 'vehicleList', header: 'Vehicle', type: 'text' },
+    { field: 'status', header: '	Service Task', type: 'text' },
+    { field: 'nextDueDays', header: '	Next Due', type: 'text' },
+    { field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
+    { field: 'subscribers', header: 'Subscribers', type: 'text' },
   ];
   
   constructor(private apiService: ApiService, 
