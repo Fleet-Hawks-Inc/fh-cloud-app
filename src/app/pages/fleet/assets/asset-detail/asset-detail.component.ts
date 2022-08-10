@@ -140,8 +140,9 @@ export class AssetDetailComponent implements OnInit {
         inspectionType: "",
     };
     licStateCode = ''
-    hosAssetID = ''
+    hosAssetID = 0
     assetObj = {}
+    disable = false;
     // Charts
     public chartOptions = {
         scaleShowVerticalLines: false,
@@ -653,22 +654,9 @@ export class AssetDetailComponent implements OnInit {
     }
 
     updateEldAssetD() {
-        if(this.hosAssetID != undefined){
-             this.assetObj = {
-                FhIdentifier: this.assetID,
-                AssetId : this.hosAssetID,
-             
-                Number: this.assetIdentification,
-                HOSHomeBaseId: '18',
-                VIN: this.VIN,
-                Plate: this.licencePlateNumber,
-                RegistrationState: this.licStateCode,
-                Type: '1',
-                Active: '1'
-    
-            }
-        }
-        else{
+        console.log('this.hosAssetID--',this.hosAssetID)
+        if(!this.hosAssetID){
+            console.log('this.hosAssetID-if-',this.hosAssetID)
             this.assetObj = {
                 FhIdentifier: this.assetID,
                 AssetId : 0,
@@ -682,10 +670,12 @@ export class AssetDetailComponent implements OnInit {
     
             }
         }
+       
         this.eldService.postData("assets", {
             Asset: this.assetObj
         }).subscribe(result => {
             this.showSuccess()
+            this.disable = true;
             return result
         }, error => {
             console.log('error', error)
@@ -702,6 +692,6 @@ export class AssetDetailComponent implements OnInit {
 
     showSuccess() {
         this.messageService.add({severity:'success',
-         summary: 'Success', detail: 'Asset added Successfully'});
+         summary: 'Success', detail: 'Asset added successfully in ELD'});
     }
 }

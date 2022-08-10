@@ -235,7 +235,7 @@ export class VehicleDetailComponent implements OnInit {
         autoplay: true,
         autoplaySpeed: 5000,
     };
-    hosVehicleId = ''
+    hosVehicleId = 0
     vehicleObj = {}
 
 
@@ -730,22 +730,8 @@ export class VehicleDetailComponent implements OnInit {
 
     updateEldVehicle() {
         console.log('this.hosVehicleId-starting',this.hosVehicleId)
-        if(this.hosVehicleId != undefined){
+        if(this.hosVehicleId != 0){
             console.log('this.hosVehicleId-if',this.hosVehicleId)
-             this.vehicleObj = {
-                FhIdentifier: this.vehicleID,
-                AssetId : this.hosVehicleId,
-                Number: this.vehicleIdentification,
-                HOSHomeBaseId: '18',
-                VIN: this.VIN,
-                Plate: this.plateNumber,
-                RegistrationState: this.stateCode,
-                Type: '0',
-                Active: '1'
-    
-            }
-        }
-        else{
             this.vehicleObj = {
                 FhIdentifier: this.vehicleID,
                 AssetId : 0,
@@ -764,20 +750,27 @@ export class VehicleDetailComponent implements OnInit {
             Asset: this.vehicleObj
         }).subscribe(
             result => {
-                return result
+                this.showSuccess();
             },
             error => {
                 console.log('error', error)
-                this.showError(error)
+                this.showError(error);
             });
+           
+        }
+       
 
-    }
 
     showError(error: any) {
         this.messageService.add({
             severity: 'error', summary: 'Error',
             detail: error.error.message
         });
+    }
+
+    showSuccess() {
+        this.messageService.add({severity:'success',
+         summary: 'Success', detail: 'Vehicle added successfully in ELD'});
     }
 
 }

@@ -17,6 +17,7 @@ import { RouteManagementServiceService } from "src/app/services/route-management
 import { ApiService, DashboardUtilityService, ListService } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: "app-add-vehicle",
@@ -296,7 +297,7 @@ export class AddVehicleComponent implements OnInit {
   editDisabled = false;
   currentYear = '';
   groupsData: any = [];
-  hosVehicleId = '';
+  hosVehicleId = 0
   vehicleObj = {}
   constructor(
     private apiService: ApiService,
@@ -313,6 +314,7 @@ export class AddVehicleComponent implements OnInit {
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
     private eldService: ELDService,
+    private messageService: MessageService,
   ) {
 
 
@@ -1173,7 +1175,10 @@ export class AddVehicleComponent implements OnInit {
     }
     this.timeCreated = result.timeCreated;
     this.isImport = result.isImport;
-    this.hosVehicleId = result.hosVehicleId
+    // if(this.hosVehicleId >0){
+      this.hosVehicleId = result.hosVehicleId
+    // }
+
 
     $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
     $("#hardAccelrationParametersValue").html(
@@ -1363,8 +1368,6 @@ export class AddVehicleComponent implements OnInit {
       activeTab: this.activeTab,
       deviceInfo: this.deviceInfo,
       isImport: this.isImport,
-
-
       hosVehicleId:this.hosVehicleId
       
     };
@@ -1393,9 +1396,7 @@ export class AddVehicleComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(data));
-
-
-    if(this.hosVehicleId != undefined){
+    if(this.hosVehicleId >0){
        this.vehicleObj = {
           FhIdentifier: this.vehicleID,
           AssetId : this.hosVehicleId,
@@ -1408,33 +1409,18 @@ export class AddVehicleComponent implements OnInit {
           Active: '1'
 
       }
-      console.log('this.vehicleObj-if',this.vehicleObj)
-  }
-  else{
-      this.vehicleObj = {
-          FhIdentifier: this.vehicleID,
-          AssetId : 0,
-          Number: this.vehicleIdentification,
-          HOSHomeBaseId: '18',
-          VIN: this.VIN,
-          Plate: this.plateNumber,
-          RegistrationState: this.stateCode,
-          Type: '0',
-          Active: '1'
 
-      }
-  }
-
-  this.eldService.postData("assets", {
-      Asset: this.vehicleObj
-  }).subscribe(
-      result => {
-          return result
-      },
-      error => {
-          console.log('error', error)
-          // this.showError(error)
-      });
+      this.eldService.postData("assets", {
+        Asset: this.vehicleObj
+      }).subscribe(
+        result => {
+          this.showSuccess()
+        },
+        error => {
+            console.log('error', error)
+            this.showError(error)
+        });
+    }
 
     try {
       return await new Promise((resolve, reject) => {
@@ -1684,4 +1670,17 @@ export class AddVehicleComponent implements OnInit {
 
     });
   }
+
+  showError(error: any) {
+    this.messageService.add({
+        severity: 'error', summary: 'Error',
+        detail: error.error.message
+    });
+}
+
+showSuccess() {
+    this.messageService.add({severity:'success',
+     summary: 'Success', detail: 'Vehicle updated successfully in ELD'});
+}
+
 }

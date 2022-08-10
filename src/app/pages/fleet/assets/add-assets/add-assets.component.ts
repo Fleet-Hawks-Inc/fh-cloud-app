@@ -27,8 +27,8 @@ import * as moment from "moment";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-
-
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 @Component({
   selector: "app-add-assets",
   templateUrl: "./add-assets.component.html",
@@ -143,7 +143,7 @@ export class AddAssetsComponent implements OnInit {
     },
     uploadedPhotos: [],
     uploadedDocs: [],
-    hosAssetID: ''
+    hosAssetID: 0
   };
 
   allAssets = [];
@@ -227,6 +227,7 @@ export class AddAssetsComponent implements OnInit {
       name: 'Semi-Monthly'
     },
   ];
+  assetObj = {}
 
   constructor(
     private apiService: ApiService,
@@ -244,7 +245,9 @@ export class AddAssetsComponent implements OnInit {
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routerMgmtService: RouteManagementServiceService
+    private routerMgmtService: RouteManagementServiceService,
+    private eldService: ELDService,
+    private messageService: MessageService,
   ) {
 
     this.selectedFileNames = new Map<any, any>();
@@ -915,7 +918,7 @@ export class AddAssetsComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       isImport: this.isImport,
-      hosAssetID: this.assetsData.hosAssetID
+      hosAssetId: this.assetsData.hosAssetID
       
     };
     data.assetDetails.year =
@@ -960,6 +963,31 @@ export class AddAssetsComponent implements OnInit {
     }
     //append other fields
     formData.append("data", JSON.stringify(data));
+    if(this.assetsData.hosAssetID > 0){
+      this.assetObj = {
+         FhIdentifier: this.assetID,
+         AssetId : this.assetsData.hosAssetID,
+      
+         Number: this.assetsData.assetIdentification,
+         HOSHomeBaseId: '18',
+         VIN: this.assetsData.VIN,
+         Plate: this.assetsData.assetDetails.licencePlateNumber,
+         RegistrationState: this.assetsData.assetDetails.licenceStateCode,
+         Type: '1',
+         Active: '1'
+        }
+
+        this.eldService.postData("assets", {
+          Asset: this.assetObj
+        }).subscribe(result => {
+          this.showSuccess()
+          return result
+        }, error => {
+            console.log('error', error)
+            this.showError(error)
+        })
+    }
+ 
 
     this.apiService.putData("assets/", formData, true).subscribe({
       complete: () => { },
@@ -1232,4 +1260,17 @@ export class AddAssetsComponent implements OnInit {
       this.groupsData = result;
     });
   }
+
+  showError(error: any) {
+    this.messageService.add({
+        severity: 'error', summary: 'Error',
+        detail: error.error.message
+    });
+}
+
+showSuccess() {
+    this.messageService.add({severity:'success',
+     summary: 'Success', detail: 'Asset updated successfully in ELD'});
+}
+
 }
