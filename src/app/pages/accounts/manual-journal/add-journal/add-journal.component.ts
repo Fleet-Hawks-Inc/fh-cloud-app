@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { DomSanitizer } from "@angular/platform-browser";
 import * as moment from "moment";
 import { Location } from "@angular/common";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 
 @Component({
@@ -68,7 +69,7 @@ export class AddJournalComponent implements OnInit {
   existingDocs = [];
   documentSlides = [];
   uploadedDocs = [];
-
+  sessionID: string
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -77,8 +78,11 @@ export class AddJournalComponent implements OnInit {
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService,
-    private domSanitizer: DomSanitizer
-  ) {}
+    private domSanitizer: DomSanitizer,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.ManualJournalSessionID;
+  }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params["journalID"];
@@ -166,7 +170,7 @@ export class AddJournalComponent implements OnInit {
     formData.append("data", JSON.stringify(this.journal));
 
     this.accountService.postData("journal", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -183,14 +187,14 @@ export class AddJournalComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Manual journal added successfully.");
-        this.router.navigateByUrl("/accounts/manual-journal/list");
+        this.router.navigateByUrl("/accounts/manual-journal/list/{{sessionID}}");
       },
     });
   }
@@ -250,7 +254,7 @@ export class AddJournalComponent implements OnInit {
     this.accountService
       .putData(`journal/${this.journalID}`, formData, true)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -267,7 +271,7 @@ export class AddJournalComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
