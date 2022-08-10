@@ -89,6 +89,7 @@ export class SalesReceiptsListComponent implements OnInit {
           if (result.length === 0) {
             this.isSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true
           }
 
           if (result.length > 0) {

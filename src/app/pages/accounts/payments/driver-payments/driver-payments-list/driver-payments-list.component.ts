@@ -115,6 +115,7 @@ export class DriverPaymentsListComponent implements OnInit {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.disableSearch = false;
+            this.loaded = true
           }
           if (result.length > 0) {
             this.disableSearch = false;

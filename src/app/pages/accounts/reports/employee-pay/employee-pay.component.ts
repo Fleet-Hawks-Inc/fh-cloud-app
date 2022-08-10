@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, Input } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from "ngx-toastr";
 import Constants from 'src/app/pages/fleet/constants';
@@ -6,6 +6,8 @@ import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
 import { DashboardUtilityService } from 'src/app/services/dashboard-utility.service';
 import * as html2pdf from "html2pdf.js";
+import * as _ from "lodash";
+import { Table } from "primeng/table";
 
 @Component({
   selector: 'app-employee-pay',
@@ -16,8 +18,8 @@ export class EmployeePayComponent implements OnInit {
 
   @ViewChild("employerPayPdf", { static: true })
   modalContent: TemplateRef<any>;
-  
-  searchMsg = 'Please select search parameters to get the records'; 
+
+  searchMsg = 'Please select search parameters to get the records';
   filterData = {
     type: null,
     entity: null,
@@ -33,7 +35,7 @@ export class EmployeePayComponent implements OnInit {
   employees = [];
   initLoad = false;
   dataMessage: string = this.searchMsg;
-  drivers:any = [];
+  drivers: any = [];
   empLastSK = '';
   drvLastSK = '';
   empLastSKdate = '';
@@ -42,11 +44,47 @@ export class EmployeePayComponent implements OnInit {
   modelRef: any;
   pdfRecords = [];
   currentUser = '';
-  
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(private toastr: ToastrService, private accountService: AccountService, private apiService: ApiService, private dashboardUtilityService: DashboardUtilityService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getCurrentuser();
+    this.dataColumns = [
+      { field: 'empID', header: 'Employee ID', type: "text" },
+      { field: 'empName', header: 'Employee Name', type: "text" },
+      { field: 'paymentNo', header: 'Payment ID', type: "text" },
+      { field: 'txnDate', header: 'Pay Date', type: "text" },
+      { field: 'fromDate', header: 'Pay Period', type: "text" },
+      { field: 'payMode', header: 'Payment Mode', type: "text" },
+      { field: 'payModeNo', header: 'Reference No.', type: "text" },
+      { field: 'subTotal', header: 'Gross', type: "text" },
+      { field: 'taxdata.ei', header: 'EI', type: "text" },
+      { field: 'taxdata.cpp', header: 'CPP', type: "text" },
+      { field: 'taxdata.provincialTax', header: 'Pro Tax', type: "text" },
+      { field: 'taxdata.federalTax', header: 'Fed. Tax', type: "text" },
+      { field: 'deductionTotal', header: 'Deductions', type: "text" },
+      { field: 'finalTotal', header: 'Net Pay', type: "text" },
+
+
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   onScroll() {
@@ -57,14 +95,14 @@ export class EmployeePayComponent implements OnInit {
   }
 
   searchResults() {
-    if(this.filterData.type || this.filterData.entity || this.filterData.startDate || this.filterData.endDate) {
-      if(this.filterData.type && !this.filterData.entity) {
+    if (this.filterData.type || this.filterData.entity || this.filterData.startDate || this.filterData.endDate) {
+      if (this.filterData.type && !this.filterData.entity) {
         this.toastr.error("Please select driver/employee");
         return false;
-      } else if(!this.filterData.startDate && this.filterData.endDate) {
+      } else if (!this.filterData.startDate && this.filterData.endDate) {
         this.toastr.error("Please select start date");
         return false;
-      } else if(this.filterData.startDate && !this.filterData.endDate) {
+      } else if (this.filterData.startDate && !this.filterData.endDate) {
         this.toastr.error("Please select end date");
         return false;
       }
@@ -80,42 +118,42 @@ export class EmployeePayComponent implements OnInit {
   }
 
   fetchRecords() {
-    if(this.lastSK != 'end') {
+    if (this.lastSK != 'end') {
       this.accountService.getData(`employee-payments/get/employer/pay?type=${this.filterData.type}&entity=${this.filterData.entity}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&empLastKey=${this.empLastSK}&empLastDate=${this.empLastSKdate}&drvLastKey=${this.drvLastSK}&drvLastDate=${this.drvLastSKdate}`).subscribe((result: any) => {
         this.empData = this.empData.concat(result);
         this.loaded = true;
-        if(this.empData.length == 0) {
+        if (this.empData.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         } else {
           this.empData.map((k) => {
-            k.payMode = k.payMode.replace("_"," ");
+            k.payMode = k.payMode.replace("_", " ");
           })
           this.lastSK = '';
-          if(this.empData[this.empData.length-1].empsk) {
-            this.empLastSK = encodeURIComponent(this.empData[this.empData.length-1].empsk);
-            if(this.empData[this.empData.length-1].emptransDate) {
-              this.empLastSKdate = encodeURIComponent(this.empData[this.empData.length-1].emptransDate);
+          if (this.empData[this.empData.length - 1].empsk) {
+            this.empLastSK = encodeURIComponent(this.empData[this.empData.length - 1].empsk);
+            if (this.empData[this.empData.length - 1].emptransDate) {
+              this.empLastSKdate = encodeURIComponent(this.empData[this.empData.length - 1].emptransDate);
             }
           } else {
             this.empLastSK = 'end';
             this.empLastSKdate = 'end';
           }
-          if(this.empData[this.empData.length-1].drvsk) {
-            this.drvLastSK = encodeURIComponent(this.empData[this.empData.length-1].drvsk);
-            if(this.empData[this.empData.length-1].drvtransDate) {
-              this.drvLastSKdate = encodeURIComponent(this.empData[this.empData.length-1].drvtransDate);
+          if (this.empData[this.empData.length - 1].drvsk) {
+            this.drvLastSK = encodeURIComponent(this.empData[this.empData.length - 1].drvsk);
+            if (this.empData[this.empData.length - 1].drvtransDate) {
+              this.drvLastSKdate = encodeURIComponent(this.empData[this.empData.length - 1].drvtransDate);
             }
           } else {
             this.drvLastSK = 'end';
             this.drvLastSKdate = 'end';
           }
-          if(!this.empData[this.empData.length-1].empsk && !this.empData[this.empData.length-1].drvsk) {
+          if (!this.empData[this.empData.length - 1].empsk && !this.empData[this.empData.length - 1].drvsk) {
             this.lastSK = 'end';
           }
         }
       })
     }
-    
+
   }
 
   fetchEmployees() {
@@ -128,19 +166,19 @@ export class EmployeePayComponent implements OnInit {
 
   async changeType() {
     this.filterData.entity = null;
-    if(this.filterData.type == 'employee') {
-      if(this.employees.length === 0) {
+    if (this.filterData.type == 'employee') {
+      if (this.employees.length === 0) {
         this.fetchEmployees();
       }
-    } else if(this.filterData.type == 'driver') {
-      if(this.drivers.length === 0) {
+    } else if (this.filterData.type == 'driver') {
+      if (this.drivers.length === 0) {
         this.drivers = await this.dashboardUtilityService.getDrivers();
       }
     }
   }
 
   resetResults() {
-    if(this.filterData.type || this.filterData.entity || this.filterData.startDate || this.filterData.endDate) {
+    if (this.filterData.type || this.filterData.entity || this.filterData.startDate || this.filterData.endDate) {
       this.empData = [];
       this.dataMessage = this.searchMsg;
       this.filterData = {
@@ -158,17 +196,17 @@ export class EmployeePayComponent implements OnInit {
   }
 
   showPdf() {
-    if(this.empData.length > 0) {
+    if (this.empData.length > 0) {
       let entities = [];
       this.pdfRecords = [];
       this.accountService.getData(`employee-payments/get/employer/pay?type=${this.filterData.type}&entity=${this.filterData.entity}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&empLastKey=&empLastDate=&drvLastKey=&drvLastDate=&fetchType=all`).subscribe((result: any) => {
         let empData = result;
         empData.map((k) => {
-          k.payMode = k.payMode.replace("_"," ");
+          k.payMode = k.payMode.replace("_", " ");
         })
-      
+
         for (const iterator of empData) {
-          if(!entities.includes(iterator.entityId)) {
+          if (!entities.includes(iterator.entityId)) {
             let obj = {
               entityId: iterator.entityId,
               entityName: iterator.empName,
@@ -190,7 +228,7 @@ export class EmployeePayComponent implements OnInit {
             this.pdfRecords.push(obj);
           } else {
             this.pdfRecords.map((v) => {
-              if(v.entityId === iterator.entityId) {
+              if (v.entityId === iterator.entityId) {
                 v.payments.push(iterator);
               }
             })
@@ -211,15 +249,15 @@ export class EmployeePayComponent implements OnInit {
           }
           for (let index = 0; index < element.payments.length; index++) {
             const pay = element.payments[index];
-            
-            element.total.gross += Number(pay.subTotal); 
-            element.total.ei += Number(pay.taxdata.ei); 
-            element.total.cpp += Number(pay.taxdata.cpp); 
-            element.total.ded += Number(pay.deductionTotal); 
-            element.total.net += Number(pay.finalTotal); 
-            element.total.provTax += Number(pay.taxdata.provincialTax); 
-            element.total.fedTax += Number(pay.taxdata.federalTax); 
-            element.total.cra += Number(pay.cra); 
+
+            element.total.gross += Number(pay.subTotal);
+            element.total.ei += Number(pay.taxdata.ei);
+            element.total.cpp += Number(pay.taxdata.cpp);
+            element.total.ded += Number(pay.deductionTotal);
+            element.total.net += Number(pay.finalTotal);
+            element.total.provTax += Number(pay.taxdata.provincialTax);
+            element.total.fedTax += Number(pay.taxdata.federalTax);
+            element.total.cra += Number(pay.cra);
           }
         }
         let ngbModalOptions: NgbModalOptions = {
@@ -257,8 +295,11 @@ export class EmployeePayComponent implements OnInit {
 
   getCurrentuser = async () => {
     const selectedCarrier = localStorage.getItem('xfhCarrierId');
-      const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
-      this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;
+    const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
+    this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;
   };
+  clear(table: Table) {
+    table.clear();
+  }
 
 }

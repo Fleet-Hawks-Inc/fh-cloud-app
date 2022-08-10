@@ -28,16 +28,16 @@ export class BrokerageComponent implements OnInit {
   customers = {}
   loaded = false;
   dataColumns = [
-    { width: '7%', field: 'orderNumber', header: 'Order#', type: "text" },
-    { width: '6%', field: 'tripData.tripNo', header: 'Trip#', type: "text" },
-    { width: '9%', field: 'customerName', header: 'Customers', type: "text" },
-    { width: '7%', field: 'cName', header: 'Carrier', type: "text" },
-    { width: '8%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '8%', field: 'date', header: 'Bkg. Date', type: "text" },
-    { width: '18%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
-    { width: '18%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
-    { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
-    { width: '9%', field: 'bAmount', header: 'Bkg Amount', type: "text" },
+    { field: 'orderNumber', header: 'Order#', type: "text" },
+    { field: 'tripData.tripNo', header: 'Trip#', type: "text" },
+    { field: 'customerName', header: 'Customers', type: "text" },
+    { field: 'brkCarrierName', header: 'Carrier', type: "text" },
+    { field: 'createdDate', header: 'Order Date', type: "text" },
+    { field: 'date', header: 'Bkg. Date', type: "text" },
+    { field: 'pickupAddress', header: 'Pickup Location', type: "text" },
+    { field: 'dropoffAddress', header: 'Delivery Location', type: "text" },
+    { field: 'amount', header: 'Order Amount', type: "text" },
+    { field: 'bAmount', header: 'Bkg Amount', type: "text" },
   ];
   constructor(
   private apiService: ApiService,
@@ -48,8 +48,6 @@ export class BrokerageComponent implements OnInit {
   ngOnInit(): void {
   this.fetchBrokerageReport();
   this.setToggleOptions();
-  this.fetchCarriers();
-  this.fetchCustomers();
   }
 
 
@@ -68,53 +66,63 @@ export class BrokerageComponent implements OnInit {
   }
 
 
-  async fetchCarriers() {
-    let result: any = await this.apiService
-      .getData("contacts/get/type/carrier")
-      .toPromise();
-    let carrs = [];
-    for (let index = 0; index < result.length; index++) {
-      const element = result[index];
-      if (element.isDeleted === 0) {
-        carrs.push(element);
-      }
+  
+async fetchBrokerageReport(refresh ?: boolean) {
+    if (refresh === true) {
+        this.lastItemSK = '',
+        this.brokerage = [];
     }
-    this.carriersObject = carrs.reduce((a: any, b: any) => {
-      return (a[b["contactID"]] = b["companyName"]), a;
-    }, {});
-  }
-
-
-  async fetchCustomers() {
-    const customers = await this.apiService.getData(`contacts/fetch/order/customers`).toPromise();
-    customers.forEach(element => {
-      this.customers[element.contactID] = element.companyName
-    });
-  }
-
-    async fetchBrokerageReport(refresh?: boolean) {
-    if(refresh === true){
-    this.lastItemSK = '',
-    this.brokerage = [];
+    if (this.lastItemSK !== 'end') {
+        const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
+        this.dataMessage = Constant.FETCHING_DATA;
+        if (result.Items.length === 0) {
+            this.dataMessage = Constant.NO_RECORDS_FOUND;
+            this.loaded = true;
+        }
+        if (result.Items.length > 0) {
+            if (result.LastEvaluatedKey !== undefined) {
+                this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].orderSK);
+            } else {
+                this.lastItemSK = 'end'
+            }
+            this.brokerage = this.brokerage.concat(result.Items);
+            this.loaded = true;
+            for (let res of result.Items) {
+                for (let shipInfo of res.shippersReceiversInfo) {
+                    for (let shipData of shipInfo.shippers) {
+                        for (let shipPickUp of shipData.pickupPoint) {
+                            if (shipPickUp.address.manual) {
+                                res.pickupAddress = shipPickUp.address.address + ' ' +
+                                    + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
+                                    shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
+                            } else if (!shipPickUp.address.manual) {
+                                res.pickupAddress = shipPickUp.address.pickupLocation
+                            }
+                            else if (shipPickUp.length > 1) {
+                                res.pickupAddress = shipPickUp.length - 1
+                            }
+                        }
+                    }
+                    for (let receiver of shipInfo.receivers) {
+                        for (let receiveDropOf of receiver.dropPoint) {
+                            if (receiveDropOf.address.manual) {
+                                res.dropoffAddress = receiveDropOf.address.address + ' ' +
+                                    + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
+                                    receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
+                            }
+                            else if (!receiveDropOf.address.manual) {
+                                res.dropoffAddress = receiveDropOf.address.dropOffLocation
+                            }
+                            else if (receiveDropOf.length > 1) {
+                                res.dropoffAddress = receiveDropOf.length - 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-    if(this.lastItemSK !== 'end'){
-    const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
-    this.dataMessage = Constant.FETCHING_DATA;
-    if(result.Items.length === 0){
-    this.dataMessage = Constant.NO_RECORDS_FOUND;
-    this.loaded = true;
-    }
-    if(result.Items.length > 0){
-    if(result.LastEvaluatedKey !== undefined){
-    this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].orderSK);
-    }else{
-    this.lastItemSK = 'end'
-    }
-    this.brokerage = this.brokerage.concat(result.Items);
-    this.loaded = true;
-    }
-    }
-    }
+}
     
     
   onScroll = async (event: any) => {

@@ -96,11 +96,11 @@ export class ChartOfAccountsComponent implements OnInit {
     this.getAcClasses();
     this.fetchAccountClassByIDs();
     this.dataColumns = [
-      { width: '25%', field: 'actName', header: 'Account Name', type: "text" },
-      { width: '15%', field: 'actNo', header: 'Account Number', type: "text" },
-      { width: '15%', field: 'actType', header: 'Account Type', type: "text" },
-      { width: '15%', field: 'actClassID', header: 'Account Class', type: "text" },
-      { width: '24%', field: 'actDesc', header: 'Description', type: "text" },
+      { field: 'actName', header: 'Account Name', type: "text" },
+      { field: 'actNo', header: 'Account Number', type: "text" },
+      { field: 'actType', header: 'Account Type', type: "text" },
+      { field: 'actClassID', header: 'Account Class', type: "text" },
+      { field: 'actDesc', header: 'Description', type: "text" },
     ];
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
