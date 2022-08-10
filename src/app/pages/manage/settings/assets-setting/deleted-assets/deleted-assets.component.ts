@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import Constants from '../../../constants';
 import { ApiService } from '../../../../../services';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+import { NgSelectComponent } from "@ng-select/ng-select";
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-deleted-assets',
   templateUrl: './deleted-assets.component.html',
   styleUrls: ['./deleted-assets.component.css']
 })
 export class DeletedAssetsComponent implements OnInit {
-
+  @ViewChild("dt") table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   suggestedAssets = [];
@@ -21,6 +28,26 @@ export class DeletedAssetsComponent implements OnInit {
   loaded = false;
   allData = [];
   contactsObjects = [];
+  get = _.get;
+  visible = true;
+  _selectedColumns: any[];
+   assetOptions: any[];
+
+
+  
+   dataColumns = [
+    { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
+    { field: 'VIN', header: 'VIN', type: "text" },
+    { field: 'assetType', header: 'Asset Type', type: "text" },
+    { field: 'assetDetails.manufacturer', header: 'Make', type: "text" },
+    { field: 'assetDetails.licencePlateNumber', header: 'Licence Plate Number', type: "text" },
+    { field: 'assetDetails.year', header: 'Year', type: "text" },
+    { field: 'assetDetails.model', header: 'Model', type: "text" },
+    { field: 'assetDetails.ownerShip', header:'Ownership', type: "text" },
+    { field: 'assetDetails.operatorCompany', header: 'Company Name', type: "text" },
+    { field: 'currentStatus', header: 'Status', type: 'text' }
+  ];
+  
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if (value !== '') {
@@ -34,23 +61,46 @@ export class DeletedAssetsComponent implements OnInit {
     }
 
   }, 800);
+  
+   
+  
   constructor(private apiService: ApiService,
-              private toastr: ToastrService,) { }
+            private spinner: NgxSpinnerService,
+            private toastr: ToastrService,
+            private modalService: NgbModal,
+            private el: ElementRef) { }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.initDataTable();
     this.fetchContacts();
+    this.setToggleOptions();
   }
+  
   fetchContacts() {
     this.apiService.getData('contacts/get/list/ownerOperator').subscribe((result: any) => {
       this.contactsObjects = result;
     });
   }
+  
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
 
-      async initDataTable() {
+    @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+    }
+    
+   set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+
+    async initDataTable() {
         if (this.lastEvaluatedKey !== 'end') {
             const result = await this.apiService.getData('assets/fetch/deleted/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
             if (result.Items.length === 0) {
+                this.loaded = true;
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             this.suggestedAssets = [];
@@ -66,7 +116,7 @@ export class DeletedAssetsComponent implements OnInit {
             }
         }
     }
-    onScroll() {
+    onScroll = async (event: any) => {
         if (this.loaded) {
             this.initDataTable();
         }
@@ -78,6 +128,7 @@ export class DeletedAssetsComponent implements OnInit {
     this.assetID = assetIdentification;
     this.suggestedAssets = [];
   }
+  
   restoreAsset(eventData) {
       if (confirm('Are you sure you want to restore?') === true) {
         this.apiService.deleteData(`assets/restore/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
@@ -104,6 +155,10 @@ export class DeletedAssetsComponent implements OnInit {
       return false;
     }
   }
+  
+   clear(table: Table) {
+        table.clear();
+    }
 
   resetFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
