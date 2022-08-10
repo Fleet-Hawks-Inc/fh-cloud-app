@@ -247,7 +247,10 @@
                             }}"
                           >
                             <div [ngSwitch]="dataColumns.field">
-                              <span *ngSwitchCase="'Receipt#'">
+                              <span
+                                *ngSwitchCase="'Receipt#'"
+                                class="font-weight-bold"
+                              >
                                 {{ journal[dataColumns.field] }}
                               </span>
 
@@ -261,8 +264,8 @@
                                     let inv of journal.paidInvoices;
                                     let i = index
                                   "
-                                  >{{ inv.invNo }}
-                                  <span
+                                  >{{ inv.invNo
+                                  }}<span
                                     *ngIf="
                                       i !== journal.paidInvoices.length - 1
                                     "
