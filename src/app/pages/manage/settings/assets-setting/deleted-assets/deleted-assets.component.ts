@@ -32,6 +32,7 @@ export class DeletedAssetsComponent implements OnInit {
   visible = true;
   _selectedColumns: any[];
    assetOptions: any[];
+   companyName=[];
 
 
   
@@ -113,6 +114,7 @@ export class DeletedAssetsComponent implements OnInit {
                 }
                 this.allData = this.allData.concat(result.Items);
                 this.loaded = true;
+
             }
         }
     }
@@ -121,6 +123,14 @@ export class DeletedAssetsComponent implements OnInit {
             this.initDataTable();
         }
         this.loaded = false;
+    }
+    
+    refreshData(){
+      this.allData = [];
+      this.loaded = false;
+      this.lastEvaluatedKey = '';
+      this.initDataTable(); 
+      this.dataMessage = Constants.FETCHING_DATA;
     }
 
   setAsset(assetID, assetIdentification) {
