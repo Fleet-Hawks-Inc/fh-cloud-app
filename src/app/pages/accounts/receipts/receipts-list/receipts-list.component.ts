@@ -1,15 +1,18 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, TemplateRef, ViewChild } from "@angular/core";
 import * as _ from "lodash";
 import { AccountService, ApiService } from "./../../../../services";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { Table } from "primeng/table";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+declare var $: any;
 @Component({
   selector: "app-receipts-list",
   templateUrl: "./receipts-list.component.html",
   styleUrls: ["./receipts-list.component.css"],
 })
 export class ReceiptsListComponent implements OnInit {
+  @ViewChild("voidRecpt", { static: true }) recVoidModalContent: TemplateRef<any>;
   dataMessage = Constants.FETCHING_DATA;
   receipts = [];
   customersObjects: any = {};
@@ -36,11 +39,21 @@ export class ReceiptsListComponent implements OnInit {
   dataColumns: any[];
   get = _.get;
   find = _.find;
+  voidData = {
+    reason: '',
+    recptNo: '',
+    rec: ''
+  }
+  voidModalRef: any;
+  voidInd:any = '';
+  btnDisable = false;
+
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
     private toastr: ToastrService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -51,6 +64,7 @@ export class ReceiptsListComponent implements OnInit {
     this.fetchCustomersByIDs();
     this.fetchAccounts();
     this.dataColumns = [
+
       {field: 'recNo', header: 'Receipt#', type: "text" },
       {field: 'paymentModeDate', header: 'Date', type: "text" },
       {field: 'paidInvoices', header: 'Invoice#', type: "text" },
@@ -58,6 +72,7 @@ export class ReceiptsListComponent implements OnInit {
       {field: 'paymentMode', header: 'Payment', type: "text" },
       {field: 'accountID', header: 'Account', type: "text" },
       {field: 'recAmount', header: 'Account', type: "text" },
+
     ];
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
@@ -93,6 +108,7 @@ export class ReceiptsListComponent implements OnInit {
           `receipts/paging?recNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&customer=${this.filter.customer}&lastKey=${this.lastItemSK}`
         )
         .subscribe(async (result: any) => {
+          console.log('result', result)
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.disableSearch = false;
@@ -240,6 +256,27 @@ export class ReceiptsListComponent implements OnInit {
         cadTotal: res.cadTotal,
         usdTotal: res.usdTotal,
       };
+    });
+  }
+
+  OpenVoidModal(recData, index) {
+    if(recData.status == 'paid') {
+      console.log('index', index)
+      this.voidInd = index;
+      $("#voidRec").modal("show");
+      this.voidData.rec = recData.recID;
+      this.voidData.recptNo = recData.recNo;
+    }
+  }
+
+  voidReceipt() {
+    this.btnDisable = true;
+    this.accountService.postData(`receipts/void/selected`, this.voidData).subscribe((result: any) => {
+      if(result) {
+        this.btnDisable = false;
+        this.receipts[this.voidInd].status = 'voided';
+        $("#voidRec").modal("hide");
+      }
     });
   }
 }
