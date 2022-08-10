@@ -82,7 +82,7 @@ export class AddJournalComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private routerMgmtService: RouteManagementServiceService
   ) {
-    this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
+    this.sessionID = this.routerMgmtService.ManualJournalSessionID;
   }
 
   ngOnInit() {
