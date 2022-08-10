@@ -18,8 +18,6 @@ declare var $: any;
 export class BrokerageComponent implements OnInit {
   @ViewChild('dt') table: Table;
   brokerage: any = [];
-  pickUpLocation = '';
-  delVrLocation = '';
   get = _.get;
   _selectedColumns: any[];
   lastItemSK = '';
@@ -33,7 +31,7 @@ export class BrokerageComponent implements OnInit {
     { field: 'orderNumber', header: 'Order#', type: "text" },
     { field: 'tripData.tripNo', header: 'Trip#', type: "text" },
     { field: 'customerName', header: 'Customers', type: "text" },
-    { field: 'cName', header: 'Carrier', type: "text" },
+    { field: 'brkCarrierName', header: 'Carrier', type: "text" },
     { field: 'createdDate', header: 'Order Date', type: "text" },
     { field: 'date', header: 'Bkg. Date', type: "text" },
     { field: 'pickupAddress', header: 'Pickup Location', type: "text" },
@@ -50,8 +48,6 @@ export class BrokerageComponent implements OnInit {
   ngOnInit(): void {
   this.fetchBrokerageReport();
   this.setToggleOptions();
-  this.fetchCarriers();
-  this.fetchCustomers();
   }
 
 
@@ -70,35 +66,11 @@ export class BrokerageComponent implements OnInit {
   }
 
 
-  async fetchCarriers() {
-    let result: any = await this.apiService
-      .getData("contacts/get/type/carrier")
-      .toPromise();
-    let carrs = [];
-    for (let index = 0; index < result.length; index++) {
-      const element = result[index];
-      if (element.isDeleted === 0) {
-        carrs.push(element);
-      }
-    }
-    this.carriersObject = carrs.reduce((a: any, b: any) => {
-      return (a[b["contactID"]] = b["companyName"]), a;
-    }, {});
-  }
-
-
-  async fetchCustomers() {
-    const customers = await this.apiService.getData(`contacts/fetch/order/customers`).toPromise();
-    customers.forEach(element => {
-      this.customers[element.contactID] = element.companyName
-    });
-  }
-
   
 async fetchBrokerageReport(refresh ?: boolean) {
     if (refresh === true) {
         this.lastItemSK = '',
-            this.brokerage = [];
+        this.brokerage = [];
     }
     if (this.lastItemSK !== 'end') {
         const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
