@@ -44,16 +44,23 @@ export class ActivityComponent implements OnInit {
    _selectedColumns: any[];
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
     public vehicleId;
+    vehicleNo =''
     
-     dataColumns = [
-        { width: '10%', field: 'vehicleData', header: 'Vehicle', type: "text" },
-        {  width: '10%', field: 'tripNo', header: 'Trip', type: "text" },
+      dataColumns = [
+        { width: '10%', field: 'vehNm', header: 'Vehicle', type: "text" },
+        { width: '10%', field: 'tripNo', header: 'Trip', type: "text" },
         { width: '10%', field: 'orderName', header: 'Order', type: "text" },
-         { width: '10%', field: 'assetName', header: 'Assets', type: "text" },
-        { width: '19%', field: 'driverName', header: 'Drivers', type: "text" },
-        { width: '12%', field: 'uMiles', header: 'US Miles', type: "text" },
-        { width: '14%', field: 'canMiles', header: 'Canada Miles', type: "text" },
-        { width: '12%', field: 'miles', header: 'Total Miles', type: "text" },
+        { width: '10%', field: 'assetName', header: 'Assets', type: "text" },
+        { width: '22%', field: 'driverName', header: 'Drivers', type: "text" },
+        { width: '10%', field: 'locationCsv', header: 'Location', type: "text", display:"none" },
+        { width: '10%', field: 'dateCsv', header: 'Date', type: "text", display:"none" },
+        { width: '10%', field: 'usStateCsv', header: 'Province (US)', type: 'text',display:"none"  },
+        { width: '10%',field: 'usStateMilesCsv', header: 'US Miles', type: 'text',display:"none" },
+        { width: '10%',field: 'usMiles', header: 'US Total', type: "text" },
+        { width: '13%',field: 'canStateCsv', header: 'Province (Canada)', type: 'text',display:"none" },
+        { width: '10%',field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display:"none"},
+        { width: '14%',field: 'canMiles', header: 'Canada Total', type: "text" },
+        { width: '12%',field: 'miles', header: 'Total Miles', type: "text" },
     ];
     
     constructor(private apiService: ApiService,
@@ -78,7 +85,9 @@ export class ActivityComponent implements OnInit {
     fetchVehicleName() {
         this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
             this.vehicleData = result.Items;
-            console.log('datatotal',result.Items);
+           for(let vehID of this.vehicleData){
+            this.vehicleNo = vehID.vehicleIdentification;
+            }
         });
     }
 
@@ -103,37 +112,75 @@ export class ActivityComponent implements OnInit {
         this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
     }
 
-  fetchVehicleListing() {
-        if (this.lastItemSK !== 'end') {
-            this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-                this.allData = this.allData.concat(result.Items)
-                if (result.Items.length === 0) {
-                    this.dataMessage = Constants.NO_RECORDS_FOUND
-                }
-                
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
-                    this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
-                }
-                else {
-                    this.lastItemSK = 'end';
-                }
-                this.loaded = true;
 
-                for (let veh of result.Items) {
-                    let dataa = veh
-                    veh.miles = 0
-                    for (let element of dataa.tripPlanning) {
-                        veh.miles += Number(element.miles);
-                    }
-                }
-                if (result.Items.length === 0) {
-                    this.dataMessage = Constants.NO_RECORDS_FOUND
-                }
+ fetchVehicleListing() {
+  if (this.lastItemSK !== 'end') {
+    this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
+      this.allData = this.allData.concat(result.Items)
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
+      if (result.LastEvaluatedKey !== undefined) {
+        this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
+        this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
+      }
+      else {
+        this.lastItemSK = 'end';
+      }
+      this.loaded = true;
 
-            });
+      for (let veh of result.Items) {
+        let dataa = veh
+        veh.miles = 0
+        for (let element of dataa.tripPlanning) {
+          veh.miles += Number(element.miles);
         }
-    }
+      }
+      for (let i = 0; i < result.Items.length; i++) {
+        const veh: any = result.Items[i];
+        veh.miles = 0
+        veh.vehNm = ''
+        veh.location = []
+        veh.locationCsv = ''
+        veh.date = [];
+        veh.dateCsv = '';
+        veh.usState = []
+        veh.usStateCsv = ''
+        veh.usStateMiles = []
+        veh.usStateMilesCsv = ''
+        veh.canState = []
+        veh.canStateCsv = ''
+        veh.canStateMiles = []
+        veh.canStateMilesCsv = ''
+        veh.vehNm = this.vehicleNo;
+        for (let element of veh.getSingleVehicle) {
+          veh.miles += Number(element.miles);
+          veh.location.push(element.type + ': ' + element.location)
+          veh.date.push(element.type + ': ' + element.date)
+        }
+        veh.locationCsv = veh.location.join('\r\n')
+        veh.dateCsv = veh.date.join('\r\n')
+        for (let data of veh.provinceData) {
+          for (let provUS of data.usProvince) {
+            veh.usState.push(provUS.StCntry)
+            veh.usStateMiles.push(provUS.Total)
+          }
+          veh.usStateCsv = veh.usState.join('\r\n')
+          veh.usStateMilesCsv = veh.usStateMiles.join('\r\n')
+          for (let canProv of data.canProvince) {
+            veh.canState.push(canProv.StCntry)
+            veh.canStateMiles.push(canProv.Total)
+          }
+          veh.canStateCsv = veh.canState.join('\r\n')
+          veh.canStateMilesCsv = veh.canStateMiles.join('\r\n')
+        }
+      }
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
+    });
+  }
+}
     
     
     fetchFullExport() {
