@@ -69,7 +69,9 @@ export class AddJournalComponent implements OnInit {
   existingDocs = [];
   documentSlides = [];
   uploadedDocs = [];
+
   sessionID: string;
+
 
   constructor(
     private listService: ListService,

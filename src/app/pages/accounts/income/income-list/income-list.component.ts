@@ -42,10 +42,12 @@ export class IncomeListComponent implements OnInit {
     this.fetchIncomeCategories();
     // this.fetchInvoices();
     this.dataColumns = [
+
       { field: 'paymentModeDate', header: 'Income Date', type: "text" },
       { field: 'categoryID', header: 'Income Category', type: "text" },
       { field: 'paymentMode', header: 'Payment Mode', type: "text" },
       { field: 'recAmount', header: 'Amount', type: "text" },
+
     ];
 
     this._selectedColumns = this.dataColumns;
