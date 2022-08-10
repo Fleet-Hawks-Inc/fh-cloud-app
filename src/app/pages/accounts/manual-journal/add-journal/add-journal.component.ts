@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { DomSanitizer } from "@angular/platform-browser";
 import * as moment from "moment";
 import { Location } from "@angular/common";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 
 @Component({
@@ -68,6 +69,7 @@ export class AddJournalComponent implements OnInit {
   existingDocs = [];
   documentSlides = [];
   uploadedDocs = [];
+  sessionID: string;
 
   constructor(
     private listService: ListService,
@@ -77,8 +79,11 @@ export class AddJournalComponent implements OnInit {
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService,
-    private domSanitizer: DomSanitizer
-  ) { }
+    private domSanitizer: DomSanitizer,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
+  }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params["journalID"];
