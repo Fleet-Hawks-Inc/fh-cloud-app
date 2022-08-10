@@ -882,7 +882,7 @@
                                   <div class="row">
                                     <div class="col-lg-10">
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
-                                        Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        Shipper<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select (change)="selectedCustomer('shipper', $event, s)"
                                         [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
                                         [(ngModel)]="shipment.shipperID" #Aconsi="ngModel"
@@ -896,7 +896,7 @@
                                         <div>
 
                                           <div *ngIf="Aconsi.errors.required">
-                                            Consignor is required.
+                                            Shipper is required.
                                           </div>
                                         </div>
 
@@ -976,7 +976,7 @@
                                     <div class="col-lg-10">
 
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
-                                        Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        Receiver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select [ngModelOptions]="{standalone: true}"
                                         [attr.name]="'shipments['+s+'].receiverID'"
                                         (change)="selectedCustomer('receiver', $event, s)"
@@ -994,7 +994,7 @@
                                         <div>
 
                                           <div *ngIf="Aconsignee.errors.required">
-                                            Consignee is required.
+                                            Receiver is required.
                                           </div>
                                         </div>
 

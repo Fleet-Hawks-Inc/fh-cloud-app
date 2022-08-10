@@ -25,7 +25,7 @@ declare var $: any;
 })
 export class NewAciManifestComponent implements OnInit {
   activeState: boolean[] = [true, false, false];
-  public manifestID;
+  public mID;
   title = 'Add ACI e-Manifest';
   modalTitle = 'Add';
   public searchTerm = new Subject<string>();
@@ -112,6 +112,12 @@ export class NewAciManifestComponent implements OnInit {
   containers = [];
   addedContainers = [];
   passengerDocStates: any = [];
+  addresses = [
+    {
+      shipAdrs: [],
+      consAdrs: []
+    }
+  ];
   shipments = [
     {
       shipmentType: 'PARS',
@@ -248,8 +254,8 @@ export class NewAciManifestComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
-    if (this.manifestID) {
+    this.mID = this.route.snapshot.params[`mID`];
+    if (this.mID) {
       this.title = 'Edit ACI e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACIEntry();
@@ -765,7 +771,7 @@ export class NewAciManifestComponent implements OnInit {
         type: null,
         number: '',
       },
-      CCC: null,
+      CCC: this.CCC,
       cargoControlNumber: '',
       referenceOnlyShipment: false,
       portOfEntry: null,
@@ -813,6 +819,10 @@ export class NewAciManifestComponent implements OnInit {
         },
       ],
     });
+    this.addresses.push({
+      shipAdrs: [],
+      consAdrs: []
+    })
   }
   deleteShipment(i: number) {
     this.shipments.splice(i, 1);
@@ -912,11 +922,11 @@ export class NewAciManifestComponent implements OnInit {
 
   fetchACIEntry() {
     this.apiService
-      .getData('eManifests/ACI/' + this.manifestID)
+      .getData('eManifests/ACI/' + this.mID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
         this.timeCreated = result.timeCreated;
-        this.manifestID = this.manifestID;
+        this.mID = this.mID;
         this.manifestType = result.manifestType,
           this.sendId = result.sendId;
         this.CCC = result.CCC;
@@ -949,7 +959,7 @@ export class NewAciManifestComponent implements OnInit {
   }
   updateACIManifest() {
     const data = {
-      manifestID: this.manifestID,
+      manifestID: this.mID,
       manifestType: this.manifestType,
       sendId: this.sendId,
       CCC: this.CCC,
@@ -1057,5 +1067,52 @@ export class NewAciManifestComponent implements OnInit {
       .removeClass('error')
       .next()
       .remove('label');
+  }
+
+  selectedCustomer(type: string, customerID: any, index: any) {
+
+    if (customerID != '' && customerID != undefined && customerID != null) {
+      this.apiService
+        .getData(`contacts/detail/${customerID}`)
+        .subscribe((result: any) => {
+          if (result && result.Items.length > 0) {
+            if (result.Items[0].adrs && result.Items[0].adrs.length > 0) {
+              for (let i = 0; i < result.Items[0].adrs.length; i++) {
+                const element = result.Items[0].adrs[i];
+                if (element.cCode == 'US' || element.cCode == 'CA') {
+                  element["isChecked"] = false;
+                  if (type === 'shipper') {
+                    this.addresses[index]['shipAdrs'].push(element);
+                  }
+                  if (type === 'receiver') {
+                    this.addresses[index]['consAdrs'].push(element);
+                  }
+                }
+              }
+              if (type === 'shipper') {
+                this.addresses[index]['shipAdrs'][0].isChecked = true;
+              }
+              if (type === 'receiver') {
+                this.addresses[index]['consAdrs'][0].isChecked = true;
+              }
+            }
+            if (type === 'shipper' && this.addresses[index]['shipAdrs'].length > 0) {
+              this.shipments[index]['shipAdrsID'] = this.addresses[index]['shipAdrs'][0].addressID;
+            }
+            if (type === 'receiver' && this.addresses[index]['consAdrs'].length > 0) {
+              this.shipments[index]['conAdrsID'] = this.addresses[index]['consAdrs'][0].addressID;
+            }
+
+          }
+        });
+    }
+  }
+
+  getAddressID(type: string, value: boolean, i: number, id: string) {
+    if (value === true && type == 'shipper') {
+      this.shipments[i].shipperID = id;
+    } else {
+      this.shipments[i].consigneeID = id;
+    }
   }
 }

@@ -13,7 +13,7 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
 })
 export class AciDetailsComponent implements OnInit {
 
-  public manifestID;
+  public mID;
   title = 'ACI e-Manifest Details';
   data: string;
   sendId: string;
@@ -58,7 +58,7 @@ export class AciDetailsComponent implements OnInit {
   shipmentArray: any = [];
   containers: any = [];
   passengers: any = [];
-  currentStatus: string;
+  status: string;
   timeCreated: any;
   timeModified: any;
   createdBy = '';
@@ -135,12 +135,48 @@ export class AciDetailsComponent implements OnInit {
   canadianPortsObjects: any = {};
   subLocationObjects: any = {};
   releaseOfficeObjects: any = {};
+
+  items = [
+
+    {
+      label: 'Send Trip and Shipments', icon: 'pi pi-send', command: () => {
+        this.sendCBSA();
+      }
+    },
+    {
+      label: 'Change Trip and Shipments', icon: 'pi pi-send', command: () => {
+        this.sendCBSA();
+      }
+    },
+    {
+      label: 'Amend Trip and Shipments(Use After Arrival)', icon: 'pi pi-send', command: () => {
+        this.amendManifest();
+      }
+    },
+    {
+      label: 'Cancel Trip and Shipments', icon: 'pi pi-user-edit', command: () => {
+        this.cancelManifest(this.mID);
+      }
+    },
+    {
+      label: 'Send Trip Only(Shipments already on file or empty)', icon: 'pi pi-exclamation-circle', command: () => { },
+    },
+    {
+      label: 'Change Trip Only(Shipments will not be changed.If adding shipment,it must be on file)', icon: 'pi pi-exclamation-circle', command: () => { },
+    },
+    {
+      label: 'Amend Trip Only(Shipments will not be amended)', icon: 'pi pi-exclamation-circle', command: () => { },
+    },
+    {
+      label: 'Cancel Trip Only', icon: 'pi pi-exclamation-circle', command: () => { },
+    }
+  ];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService,
     private router: Router, private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService) { }
 
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
+    this.mID = this.route.snapshot.params[`mID`];
     this.fetchACIEntry();
     this.fetchAssetsCodeName();
     this.fetchDocuments();
@@ -224,9 +260,9 @@ export class AciDetailsComponent implements OnInit {
   }
   fetchACIEntry() {
     this.apiService
-      .getData('eManifests/ACIdetails/' + this.manifestID)
+      .getData('eManifests/aci-detail/' + this.mID)
       .subscribe(async (result: any) => {
-        this.manifestID = this.manifestID;
+        this.mID = this.mID;
         this.data = result.data;
         this.sendId = result.sendId;
         this.companyKey = result.companyKey;
@@ -264,7 +300,7 @@ export class AciDetailsComponent implements OnInit {
         this.containers = result.containers,
           this.shipments = result.shipments;
         this.fetchLoadingStateCities(result.shipments);
-        this.currentStatus = result.currentStatus;
+        this.status = result.status;
         this.timeCreated = moment(result.timeCreated).format(`MMMM D YYYY, h:mm:ss a`);
         this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
         this.createdBy = result.createdBy;
@@ -286,18 +322,18 @@ export class AciDetailsComponent implements OnInit {
     let record = {
       date: this.createdDate,
       time: this.createdTime,
-      eventID: this.manifestID,
+      eventID: this.mID,
       manifestType: 'ACI',
       status: val
     };
     this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
-      this.currentStatus = val;
+      this.status = val;
     });
   }
-  sendCBSAFn() {
+  sendCBSA() {
     this.apiService
-      .getData('eManifests/ACI/CBSAdetails/' + this.manifestID).subscribe((result: any) => {
+      .getData('eManifests/send-aci/' + this.mID).subscribe((result: any) => {
         // this.sendBorderConnectOption = result;
         // if (this.sendBorderConnectOption === true) {
         //   const val = 'Queued';
@@ -404,7 +440,7 @@ export class AciDetailsComponent implements OnInit {
   }
   amendManifest() {
     const amend = true;
-    this.router.navigateByUrl('/dispatch/cross-border/ACI-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
+    this.router.navigateByUrl('/dispatch/cross-border/ACI-edit-eManifest/' + this.mID + `?amendManifest=` + amend);
   }
   cancelManifest(manifestID) {
     this.apiService.getData(`eManifests/ACImanifest/cancelManifest/` + manifestID).subscribe();

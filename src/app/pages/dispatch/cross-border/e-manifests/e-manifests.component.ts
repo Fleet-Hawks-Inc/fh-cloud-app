@@ -370,8 +370,13 @@ export class EManifestsComponent implements OnInit {
     }
   }
 
-  detailPage(id) {
-    this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
+  detailPage(type: string, id: string) {
+    if (type == 'ace') {
+      this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
+    }
+    if (type == 'aci') {
+      this.router.navigateByUrl(`/dispatch/cross-border/aci-details/${id}`)
+    }
   }
   deleteACEEntry(event: Event, mID: string) {
     try {

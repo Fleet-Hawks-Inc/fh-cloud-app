@@ -17,7 +17,7 @@ export class AceDetailsComponent implements OnInit {
   driversModel = false;
   trucksModel = false;
   shipmentsModel = false;
-  public manifestID;
+  public mID;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   tripNumber: string;
@@ -165,7 +165,7 @@ export class AceDetailsComponent implements OnInit {
     },
     {
       label: 'Cancel completed eManifest', icon: 'pi pi-exclamation-circle', command: () => {
-        this.cancelManifest(this.manifestID);
+        this.cancelManifest(this.mID);
       },
     }
   ];
@@ -176,7 +176,7 @@ export class AceDetailsComponent implements OnInit {
     private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`mID`];
+    this.mID = this.route.snapshot.params[`mID`];
     this.fetchACEEntry();
     this.fetchAssetsCodeName();
     this.fetchDocuments();
@@ -270,7 +270,7 @@ export class AceDetailsComponent implements OnInit {
   }
   fetchACEEntry() {
     this.apiService
-      .getData('eManifests/ace-detail/' + this.manifestID)
+      .getData('eManifests/ace-detail/' + this.mID)
       .subscribe(async (result: any) => {
 
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
@@ -315,7 +315,7 @@ export class AceDetailsComponent implements OnInit {
     let record = {
       date: this.createdDate,
       time: this.createdTime,
-      eventID: this.manifestID,
+      eventID: this.mID,
       manifestType: 'ACE',
       status: val
     };
@@ -340,7 +340,7 @@ export class AceDetailsComponent implements OnInit {
   }
   sendCBPFn() {
     this.apiService
-      .getData('eManifests/ACE/CBPdetails/' + this.manifestID).toPromise().then(result => {
+      .getData('eManifests/send-ace/' + this.mID).toPromise().then(result => {
         if (result) {
           this.currentStatus = 'DRAFT';
         }
@@ -492,6 +492,6 @@ export class AceDetailsComponent implements OnInit {
 
   amendManifest() {
     const amend = true;
-    this.router.navigateByUrl('/dispatch/cross-border/ace-manifest/' + this.manifestID + `?amendManifest=` + amend);
+    this.router.navigateByUrl('/dispatch/cross-border/ace-manifest/' + this.mID + `?amendManifest=` + amend);
   }
 }

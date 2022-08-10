@@ -211,7 +211,7 @@
                               <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
                                  <tr>
                                     <td *ngFor="let col of columns" style="cursor: pointer;"
-                                       [ngStyle]="{ width: col.width }" (click)="detailPage(rowData.mID)">
+                                       [ngStyle]="{ width: col.width }" (click)="detailPage('ace', rowData.mID)">
                                        <div [ngSwitch]="col.field">
                                           <span *ngSwitchCase="'tripNumber'">
                                              <b>
@@ -373,7 +373,7 @@
                               <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
                                  <tr>
                                     <td *ngFor="let col of columns" style="cursor: pointer;"
-                                       [ngStyle]="{ width: col.width }" (click)="detailPage(rowData.mID)">
+                                       [ngStyle]="{ width: col.width }" (click)="detailPage('aci', rowData.mID)">
                                        <div [ngSwitch]="col.field">
                                           <span *ngSwitchCase="'tripNumber'">
                                              <b>
