@@ -91,14 +91,14 @@ export class FuelEntryListComponent implements OnInit {
   _selectedColumns: any[];
   fsUpdate: any = false;
   dataColumns = [
-    { width: "12%", field: "data.date", header: "Date Time", type: "date" },
-    { width: "12%", field: "data.cardNo", header: "Fuel Card #", type: "text" },
-    { width: "12%", field: "data.unitNo", header: "Unit #", type: "text" },
-    { width: "12%", field: "data.useType", header: "Use Type", type: "text" },
-    { width: "12%", field: "data.type", header: " Type", type: "text" },
-    { width: "12%", field: "data.amt", header: "Fuel Amount", type: "text" },
-    { width: "10%", field: "data.site", header: "Site", type: "text" },
-    { width: "12%", field: "data.city", header: "Province", type: "text" },
+    { field: "data.date", header: "Date Time", type: "date" },
+    { field: "data.cardNo", header: "Fuel Card #", type: "text" },
+    { field: "data.unitNo", header: "Unit #", type: "text" },
+    { field: "data.useType", header: "Use Type", type: "text" },
+    { field: "data.type", header: " Type", type: "text" },
+    { field: "data.amt", header: "Fuel Amount", type: "text" },
+    { field: "data.site", header: "Site", type: "text" },
+    { field: "data.city", header: "Province", type: "text" },
   ];
   fSurcharge = {
     from: null,
@@ -112,10 +112,10 @@ export class FuelEntryListComponent implements OnInit {
   fsLoaded = false;
   addUpdate = "Add";
   fsColumns = [
-    { width: "20%", field: "from", header: "From", type: "text" },
-    { width: "20%", field: "to", header: "To", type: "text" },
-    { width: "20%", field: "ltl", header: "LTL", type: "text" },
-    { width: "20%", field: "tl", header: "FTL", type: "text" },
+    { field: "from", header: "From", type: "text" },
+    { field: "to", header: "To", type: "text" },
+    { field: "ltl", header: "LTL", type: "text" },
+    { field: "tl", header: "FTL", type: "text" },
   ];
 
   constructor(

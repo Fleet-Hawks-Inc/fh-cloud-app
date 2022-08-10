@@ -1,7 +1,7 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccountService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
-import  Constants  from '../../../fleet/constants';
+import Constants from '../../../fleet/constants';
 import * as _ from "lodash";
 import { Table } from 'primeng/table';
 @Component({
@@ -64,16 +64,17 @@ export class JournalListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       if (this.filter.jrNo !== null && this.filter.jrNo !== '') {
         searchParam = encodeURIComponent(`"${this.filter.jrNo}"`);
-     } else {
-       searchParam = null;
-     }
+      } else {
+        searchParam = null;
+      }
       this.accountService.getData(`journal/paging?jrNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
-        .subscribe(async(result: any) => {
+        .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true
           }
-          if(result.length > 0) {
+          if (result.length > 0) {
             this.disableSearch = false;
             if (result[result.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
@@ -86,22 +87,22 @@ export class JournalListComponent implements OnInit {
             });
             this.loaded = true;
           }
-      });
+        });
     }
   }
 
   deleteJournal(journalID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.deleteData(`journal/delete/${journalID}`)
-      .subscribe((result: any) => {
-        if (result !== undefined) {
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastItemSK = '';
-          this.journals = [];
-          this.fetchJournals();
-          this.toaster.success('Manual journal deleted successfully.');
-        }
-      });
+        .subscribe((result: any) => {
+          if (result !== undefined) {
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.lastItemSK = '';
+            this.journals = [];
+            this.fetchJournals();
+            this.toaster.success('Manual journal deleted successfully.');
+          }
+        });
     }
   }
 
@@ -147,7 +148,7 @@ export class JournalListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-    this.fetchJournals();
+      this.fetchJournals();
     }
     this.loaded = false;
   }

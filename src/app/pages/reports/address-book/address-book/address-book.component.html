@@ -215,7 +215,9 @@
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchCase="'cName'">
-                              <span class="line-height-lg text-capitalize">
+                              <span
+                                class="line-height-lg font-weight-bold text-capitalize"
+                              >
                                 {{ customer.cName }}
                               </span>
                             </span>

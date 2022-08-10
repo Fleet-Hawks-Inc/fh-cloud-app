@@ -59,15 +59,15 @@ export class UsersListComponent implements OnInit {
   subRole = []
   dataColumns = 
   [
-  { width: '9%', field: 'employeeID', header: 'Employee ID', type: 'text' },
-  { width: '6.5%', field: 'name', header: 'Name', type: 'text' },
-  { width: '8%', field: 'userLoginData.userName', header: 'Username', type: 'text' },
-  { width: '8%', field: 'userType', header: 'UserType', type: 'text' },
-  { width: '8.5%', field: 'userAccount.department', header: 'Department', type: 'text' },
-  { width: '45%', field: 'userSub', header: 'User Roles', type: 'text' },
-  { width: '6.5%', field: 'workPhone', header: 'Phone', type: 'text' },
-  { width: '9%', field: 'workEmail', header: 'Email', type: 'text' },
-  { width: '6.5%', field: 'currentStatus', header: 'Status', type: 'text' },
+  { field: 'employeeID', header: 'Employee ID', type: 'text' },
+  { field: 'name', header: 'Name', type: 'text' },
+  { field: 'userLoginData.userName', header: 'Username', type: 'text' },
+  { field: 'userType', header: 'UserType', type: 'text' },
+  { field: 'userAccount.department', header: 'Department', type: 'text' },
+  { field: 'userSub', header: 'User Roles', type: 'text' },
+  { field: 'workPhone', header: 'Phone', type: 'text' },
+  { field: 'workEmail', header: 'Email', type: 'text' },
+  { field: 'currentStatus', header: 'Status', type: 'text' },
   ];
 
   constructor(private apiService: ApiService,
