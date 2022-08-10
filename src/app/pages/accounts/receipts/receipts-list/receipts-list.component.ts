@@ -51,13 +51,13 @@ export class ReceiptsListComponent implements OnInit {
     this.fetchCustomersByIDs();
     this.fetchAccounts();
     this.dataColumns = [
-      { width: '10%', field: 'recNo', header: 'Receipt#', type: "text" },
-      { width: '10%', field: 'paymentModeDate', header: 'Date', type: "text" },
-      { width: '25%', field: 'paidInvoices', header: 'Invoice#', type: "text" },
-      { width: '25%', field: 'customerID', header: 'Customer', type: "text" },
-      { width: '10%', field: 'paymentMode', header: 'Payment', type: "text" },
-      { width: '10%', field: 'accountID', header: 'Account', type: "text" },
-      { width: '10%', field: 'recAmount', header: 'Account', type: "text" },
+      {field: 'recNo', header: 'Receipt#', type: "text" },
+      {field: 'paymentModeDate', header: 'Date', type: "text" },
+      {field: 'paidInvoices', header: 'Invoice#', type: "text" },
+      {field: 'customerID', header: 'Customer', type: "text" },
+      {field: 'paymentMode', header: 'Payment', type: "text" },
+      {field: 'accountID', header: 'Account', type: "text" },
+      {field: 'recAmount', header: 'Account', type: "text" },
     ];
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()

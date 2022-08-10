@@ -33,11 +33,11 @@ export class JournalListComponent implements OnInit {
   ngOnInit() {
     this.fetchJournals();
     this.dataColumns = [
-      { width: '20%', field: 'jrNo', header: 'Journal#', type: "text" },
-      { width: '20%', field: 'txnDate', header: 'Journal Date', type: "text" },
-      { width: '11%', field: 'referenceNo', header: 'Reference', type: "text" },
-      { width: '20%', field: 'creditTotalAmount', header: 'Amount', type: "text" },
-      { width: '22%', field: 'createdBy', header: 'Created By', type: "text" },
+      { field: 'jrNo', header: 'Journal#', type: "text" },
+      { field: 'txnDate', header: 'Journal Date', type: "text" },
+      { field: 'referenceNo', header: 'Reference', type: "text" },
+      { field: 'creditTotalAmount', header: 'Amount', type: "text" },
+      { field: 'createdBy', header: 'Created By', type: "text" },
     ];
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
