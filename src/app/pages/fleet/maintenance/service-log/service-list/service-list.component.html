@@ -208,10 +208,9 @@
                               icon="pi pi-filter-slash"
                               (click)="clear(dt)"
                             ></button>
-
-                            <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
-                            <!--    icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"-->
-                            <!--    pTooltip="Excel"></button> -->
+                            <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                pTooltip="Excel"></button> 
                             <p-multiSelect
                               [options]="dataColumns"
                               [(ngModel)]="selectedColumns"
@@ -318,31 +317,14 @@
                                <span class="badge badge-dark p-1" *ngSwitchCase="'currentStatus'">
                                 {{ get(vehicle, dataColumns.field) | titlecase }}
                               </span>
-                              <span *ngSwitchCase="'taskName'">
-                                                          <span
-                            title="Service Task"
-                            *ngFor="
-                              let task of vehicle.allServiceTasks.serviceTaskList;
-                              let j = index;
-                              let $last = last
-                            "
-                          >
-                            {{ task.taskName ? task.taskName : "-"
-                            }}<span *ngIf="!$last" class="list-format">, </span>
-                          </span>
-                          <span *ngIf="vehicle.allServiceTasks.serviceTaskList == 0"
-                            >-
-                          </span>
+                              <span *ngSwitchCase="'taskList'">
+  
+                          
+                          {{ get(vehicle, dataColumns.field) }}
                               </span>
-                              <span *ngSwitchCase="'totalLogs'">
+                              <span *ngSwitchCase="'logsTotal'">
                                 <span>
-                                  {{
-                                    (
-                                      vehicle.allServiceParts.total +
-                                      vehicle.allServiceTasks.total
-                                    ).toFixed(2)
-                                  }}
-                                  {{ vehicle.allServiceParts.currency }}
+                                        {{ get(vehicle, dataColumns.field) }}
                                 </span>
                               </span>
                               <span *ngSwitchDefault>
