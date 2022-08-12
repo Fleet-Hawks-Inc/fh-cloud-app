@@ -751,6 +751,7 @@ export class VehicleDetailComponent implements OnInit {
         }).subscribe(
             result => {
                 this.showSuccess();
+               this.getVehicle();
             },
             error => {
                 console.log('error', error)

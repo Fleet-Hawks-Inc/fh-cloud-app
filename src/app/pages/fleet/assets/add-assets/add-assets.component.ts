@@ -963,30 +963,7 @@ export class AddAssetsComponent implements OnInit {
     }
     //append other fields
     formData.append("data", JSON.stringify(data));
-    if(this.assetsData.hosAssetID > 0){
-      this.assetObj = {
-         FhIdentifier: this.assetID,
-         AssetId : this.assetsData.hosAssetID,
-      
-         Number: this.assetsData.assetIdentification,
-         HOSHomeBaseId: '18',
-         VIN: this.assetsData.VIN,
-         Plate: this.assetsData.assetDetails.licencePlateNumber,
-         RegistrationState: this.assetsData.assetDetails.licenceStateCode,
-         Type: '1',
-         Active: '1'
-        }
-
-        this.eldService.postData("assets", {
-          Asset: this.assetObj
-        }).subscribe(result => {
-          this.showSuccess()
-          return result
-        }, error => {
-            console.log('error', error)
-            this.showError(error)
-        })
-    }
+  
  
 
     this.apiService.putData("assets/", formData, true).subscribe({
@@ -1013,10 +990,10 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        this.updateVehEld();
         this.hasSuccess = true;
-        this.toastr.success("Asset updated successfully.");
+        this.showUpdateSuccess();
         this.dashboardUtilityService.refreshAssets = true;
-        this.cancel();
         this.Success = "";
       },
     });
@@ -1271,6 +1248,38 @@ export class AddAssetsComponent implements OnInit {
 showSuccess() {
     this.messageService.add({severity:'success',
      summary: 'Success', detail: 'Asset updated successfully in ELD'});
+}
+
+showUpdateSuccess() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Asset updated successfully'});
+}
+
+updateVehEld(){
+  if(this.assetsData.hosAssetID > 0){
+    this.assetObj = {
+       FhIdentifier: this.assetID,
+       AssetId : this.assetsData.hosAssetID,
+    
+       Number: this.assetsData.assetIdentification,
+       HOSHomeBaseId: '18',
+       VIN: this.assetsData.VIN,
+       Plate: this.assetsData.assetDetails.licencePlateNumber,
+       RegistrationState: this.assetsData.assetDetails.licenceStateCode,
+       Type: '1',
+       Active: '1'
+      }
+
+      this.eldService.postData("assets", {
+        Asset: this.assetObj
+      }).subscribe(result => {
+        this.showSuccess()
+        return result
+      }, error => {
+          console.log('error', error)
+          this.showError(error)
+      })
+  }
 }
 
 }

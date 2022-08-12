@@ -142,7 +142,6 @@ export class AssetDetailComponent implements OnInit {
     licStateCode = ''
     hosAssetID = 0
     assetObj = {}
-    disable = false;
     // Charts
     public chartOptions = {
         scaleShowVerticalLines: false,
@@ -654,9 +653,7 @@ export class AssetDetailComponent implements OnInit {
     }
 
     updateEldAssetD() {
-        console.log('this.hosAssetID--',this.hosAssetID)
         if(!this.hosAssetID){
-            console.log('this.hosAssetID-if-',this.hosAssetID)
             this.assetObj = {
                 FhIdentifier: this.assetID,
                 AssetId : 0,
@@ -674,8 +671,8 @@ export class AssetDetailComponent implements OnInit {
         this.eldService.postData("assets", {
             Asset: this.assetObj
         }).subscribe(result => {
-            this.showSuccess()
-            this.disable = true;
+            this.showSuccess();
+            this.fetchAsset();
             return result
         }, error => {
             console.log('error', error)

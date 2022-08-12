@@ -1396,66 +1396,44 @@ export class AddVehicleComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(data));
-    if(this.hosVehicleId >0){
-       this.vehicleObj = {
-          FhIdentifier: this.vehicleID,
-          AssetId : this.hosVehicleId,
-          Number: this.vehicleIdentification,
-          HOSHomeBaseId: '18',
-          VIN: this.VIN,
-          Plate: this.plateNumber,
-          RegistrationState: this.stateCode,
-          Type: '0',
-          Active: '1'
-
-      }
-
-      this.eldService.postData("assets", {
-        Asset: this.vehicleObj
-      }).subscribe(
-        result => {
-          this.showSuccess()
-        },
-        error => {
-            console.log('error', error)
-            this.showError(error)
-        });
-    }
+  
 
     try {
-      return await new Promise((resolve, reject) => {
-        this.apiService.putData("vehicles", formData, true).subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  //val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                  if (err) return reject(err);
-                  this.submitDisabled = false;
-                },
-                error: () => {
-                  this.submitDisabled = false;
-                },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            this.submitDisabled = false;
-            this.response = res;
-            this.Success = "";
-            this.toastr.success("Vehicle Updated successfully");
-            this.dashboardUtilityService.refreshVehicles = true;
-            this.cancel();
-          },
+        return await new Promise((resolve, reject) => {
+          this.apiService.putData("vehicles", formData, true).subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                    //val.message = val.message.replace(/".*"/, 'This Field');
+                    this.errors[val.context.label] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                    if (err) return reject(err);
+                    this.submitDisabled = false;
+                  },
+                  error: () => {
+                    this.submitDisabled = false;
+                  },
+                  next: () => { },
+                });
+            },
+            next: (res) => {
+              this.submitDisabled = false;
+              this.response = res;
+              this.updateVehEld()
+              this.Success = "";
+             this.showUpdateSuccess();
+              this.dashboardUtilityService.refreshVehicles = true;
+             
+            },
+          });
         });
-      });
+     
     } catch (error) {
       this.submitDisabled = false;
     }
@@ -1683,4 +1661,37 @@ showSuccess() {
      summary: 'Success', detail: 'Vehicle updated successfully in ELD'});
 }
 
+showUpdateSuccess() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Vehicle updated successfully'});
+}
+
+updateVehEld(){
+  if(this.hosVehicleId >0){
+    this.vehicleObj = {
+       FhIdentifier: this.vehicleID,
+       AssetId : this.hosVehicleId,
+       Number: this.vehicleIdentification,
+       HOSHomeBaseId: '18',
+       VIN: this.VIN,
+       Plate: this.plateNumber,
+       RegistrationState: this.stateCode,
+       Type: '0',
+       Active: '1'
+
+   }
+
+   this.eldService.postData("assets", {
+     Asset: this.vehicleObj
+   }).subscribe(
+     result => {
+       this.showSuccess()
+       this.cancel();
+
+     },
+     error => {
+         this.showError(error)
+     });
+ }
+}
 }
