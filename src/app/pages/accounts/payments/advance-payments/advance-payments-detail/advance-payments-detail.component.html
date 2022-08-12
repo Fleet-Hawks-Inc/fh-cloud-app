@@ -390,8 +390,8 @@
                       {{ paymentData.advType ? paymentData.advType : "-" }}
                     </td>
 
-                    <td class="pl-3 pt-1">
-                      {{ entityName }}
+                    <td class="pl-3 pt-1 text-capitalize">
+                      <strong>{{ paymentData.paymentTo | titlecase }}</strong>:- {{ entityName }} 
                     </td>
                     <td class="pl-3 pt-1">
                       {{ paymentData.amount | number: "1.2-2" }}
