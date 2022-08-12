@@ -116,7 +116,7 @@ gas_ConsumedLTR = 0;
 gas_ConsumedGL = 0;
 
 def_ConsumedLTR = 0;
-def_ConsumedGL = 0;
+def_ConsumedGL = 0;2
 visible = true;
 loadMsg: string = Constants.NO_LOAD_DATA;
 isSearch = false;
@@ -125,20 +125,20 @@ _selectedColumns: any[];
   
     
      dataColumns = [
-        { width: '8%', field: 'dateTime', header: 'Date/Time', type: "text" },
-        { width: '6%', field: 'data.useType', header: 'Use Type', type: "text" },
-        { width: '6.20%', field: 'unitSearch', header: 'Unit Name', type: "text" },
-        { width: '7%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
-        { width: '12%', field: 'data.city', header: 'City', type: "text" },
-        { width: '6.20%', field: 'data.type', header: 'Fuel Type', type: "text" },
-        { width: '7%', field: 'data.qty', header: 'Fuel Quantity', type: "text" },
-        { width: '8%', field: 'uom', header: 'Litres or Gallons', type: "text" },
-        { width: '6%', field: 'data.odometer', header: 'Odometer', type: "text" },
-        { width: '8%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
-        { width: '11%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
-        { width: '8%', field: 'data.discAmt', header: 'Total Discount', type: "text" },
-        { width: '6%', field: 'data.amt', header: 'Amount', type: "text" },
-        { width: '6%', field: 'data.currency', header: 'Currency', type: "text" },
+        {  field: 'dateTime', header: 'Date/Time', type: "text" },
+        {  field: 'data.useType', header: 'Use Type', type: "text" },
+        {  field: 'unitSearch', header: 'Unit Name', type: "text" },
+        {  field: 'data.cardNo', header: 'Fuel Card', type: "text" },
+        {  field: 'data.city', header: 'City', type: "text" },
+        {  field: 'data.type', header: 'Fuel Type', type: "text" },
+        {  field: 'data.qty', header: 'Fuel Quantity', type: "text" },
+        {  field: 'uom', header: 'Litres or Gallons', type: "text" },
+        {  field: 'data.odometer', header: 'Odometer', type: "text" },
+        {  field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
+        {  field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
+        {  field: 'data.discAmt', header: 'Total Discount', type: "text" },
+        {  field: 'data.amt', header: 'Amount', type: "text" },
+        {  field: 'data.currency', header: 'Currency', type: "text" },
        
     ];
 
