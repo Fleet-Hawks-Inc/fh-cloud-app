@@ -17,293 +17,248 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                             </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2">
-                            <button type="button" class="btn btn-sm btn-success mr-3"
-                                (click)="searchFilter()">Search</button>
+                            <button type="button" class="btn btn-sm btn-success mr-3" (click)="searchFilter()">Search</button>
                         </div>
 
                         <div class="col-md-7 col-lg-7 text-right pr-1">
-                            <a routerLink="/reports/fleet/vehicles/activity-list"
-                                class="btn btn-sm btn-success">Vehicles
+                            <a routerLink="/reports/fleet/vehicles/activity-list" class="btn btn-sm btn-success">Vehicles
                                 List</a>
 
                         </div>
                     </div>
                 </form>
             </header>
-            
-             <div class="col-lg-12">
+
+            <div class="col-lg-12">
                 <div class="m-1 text-dark">
                     <div class="form-group row pt-3">
                         <div class="col-3 mb-3">
                             <div class="p-3 bg-white">
-                                 <div>
+                                <div>
                                     <h4 class="mt-0 mb-4 font-weight-bold">Vehicle Name</h4>
-                                    <h3 class="text-capitalize"> <span
-                                    *ngFor="let data of vehicleData">{{data.vehicleIdentification}}</span>
+                                    <h3 class="text-capitalize"> <span *ngFor="let data of vehicleData">{{data.vehicleIdentification}}</span>
                                     </h3>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-                <section class="m-2">
-                 <div class="row mb-3">
-                      <div class="col-lg-12">
-                           <div class="bg-white p-3 text-dark">
-                               <div class="form-group row pt-2">
-                                   <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                       <p-table #dt 
-                                       [value]="allData" 
-                                       [resizableColumns]="true" 
-                                       columnResizeMode="expand"
-                                        scrollDirection="both" 
-                                        [columns]="selectedColumns" 
-                                        [loading]="!loaded"
-                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                        [scrollable]="true" 
-                                        [loading]="!loaded" 
-                                        scrollHeight="100%"
-                                        dataKey="tripSK"
-                                        responsiveLayout="scroll">
-                                           
-                                            <ng-template pTemplate="caption">
-                                                <div class="p-d-flex d-flex justify-content-between align-items-center">
-                                                  <div>
+
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row pt-2">
+                                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
+                                    <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" [loading]="!loaded" scrollHeight="100%" dataKey="tripSK" responsiveLayout="scroll">
+
+                                        <ng-template pTemplate="caption">
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
                                                     <h3 class="m-0"> Vehicle Detail Report </h3>
                                                 </div>
-                                                  <div class="text-right">
-                                                      <span>Showing {{ allData.length }} entries</span>
-                                                       &nbsp;
-                                                      <button type="button" pButton (click)="refreshData()"
-                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
-                                                        icon="fas fa-sync"></button>
-                                                        <button pButton pRipple pTooltip="Clear Filter"
-                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
-                                                        (click)="clear(dt)"></button>
-                                                        <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                                                        icon="fas fa-regular fa-file-excel" (click)="fetchFullExport()"
-                                                        pTooltip="Excel"></button>
-                                                         <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
-                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
-                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                                <div class="text-right">
+                                                   <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
+                                                    &nbsp;
+                                                    <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns">
                                                     </p-multiSelect>
-                                                      </div>
-                                                    </div>
-                                                </ng-template>
-                                                 <ng-template pTemplate="header" let-columns>
-                                                     <tr>
-                                                           <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
-                                                          <th *ngFor="let dataColumns of columns"
-                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                     [ngStyle]="{ width: dataColumns.width }">
-                                                         <div [ngSwitch]="dataColumns.field" style="width:10%">
-                                                             <span *ngSwitchDefault>
-                                                            <div class="flex justify-content-center align-items-center"
-                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                                                <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn [ngStyle]="{ width: dataColumns.width, 'display': dataColumns.display }">
+                                                    <div [ngSwitch]="dataColumns.field" style="width:10%">
+                                                        <span *ngSwitchDefault>
+                                                            <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
                                                                 {{dataColumns.header}}
                                                                 <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                                                <p-columnFilter [type]="dataColumns.type"
-                                                                    [field]="dataColumns.field" matchMode="contains"
-                                                                    [showMatchModes]="false" [showOperator]="false"
-                                                                    [showAddButton]="false" display="menu">
+                                                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
                                                                 </p-columnFilter>
                                                             </div>
                                                         </span>
-                                                             
-                                                             </div>      
-                                                              </th>
-                                                         </tr>
-                                                     </ng-template>
-                                                     
-                                                     <ng-template pTemplate="body" let-vehicle let-columns="columns"
-                                            let-rowIndex="rowIndex" let-expanded="expanded">
+
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="body" let-vehicle let-columns="columns" let-rowIndex="rowIndex" let-expanded="expanded">
 
                                             <tr style="cursor: pointer">
-                                                 <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width: 3%">
-                                            <button type="button" pButton [pRowToggler]="vehicle"
-                                           class="p-button-text p-button-rounded p-button-plain" [icon]="
+                                                <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width: 3%">
+                                                    <button type="button" pButton [pRowToggler]="vehicle" class="p-button-text p-button-rounded p-button-plain" [icon]="
                                               expanded
                                                ? 'pi pi-chevron-down'
                                           : 'pi pi-chevron-right'
                                              "></button>
-                                            </td>
-                                            
-                                                <td *ngFor="let dataColumns of columns" 
-                                                   [ngStyle]="{ width: dataColumns.width }"
-                                                    style="height:40px;cursor: pointer;"
-                                                    >
-                                                    <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchCase="'vehicleData'">
-                                                            <span
-                                                              *ngFor="let data of vehicleData">
-                                                           {{data.vehicleIdentification}}
-                                                        </span>
-                                                        </span>
-                                                
-                                                        <span *ngSwitchCase="'canMiles'">
-                                                        {{vehicle.canMiles | number : '1.2-2' }}
-                                                        </span>
-                                                       
-                                                        <span *ngSwitchCase="'miles'">
-                                                            {{vehicle.miles | number : '1.2-2'}}
-                                                        </span>
-                                                        
-                                                        <span *ngSwitchCase="'uMiles'">
-                                                          {{vehicle.usMiles | number : '1.2-2' }} <br>
-                                                       </span>
-                                                       
-                                                        <span *ngSwitchDefault> {{get(vehicle,dataColumns.field)}}</span>
-                                                    </div>
+                                                </td>
 
+                                                <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width, 'display': dataColumns.display}" style="height:40px;cursor: pointer;">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        <span *ngSwitchCase="'vehNm'">
+                                                            {{get(vehicle,dataColumns.field)}}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'tripNo'">
+                                                            {{get(vehicle,dataColumns.field)}}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'orderName'">
+                                                            {{get(vehicle,dataColumns.field)}}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'assetName'">
+                                                            {{get(vehicle,dataColumns.field)}}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'driverName'">
+                                                            {{get(vehicle,dataColumns.field)}}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'canMiles'">
+                                                            {{(get(vehicle,dataColumns.field)).toFixed(2)}}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'miles'">
+                                                            <span>
+                                                                {{(get(vehicle,dataColumns.field)).toFixed(2)}}</span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'usMiles'">
+                                                            {{(get(vehicle,dataColumns.field)).toFixed(2)}}<br>
+                                                        </span>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </ng-template>
-                                                
-                                    <ng-template pTemplate="emptymessage" let-columns>
+
+                                        <ng-template pTemplate="emptymessage" let-columns>
                                             <div class="col-lg-12 mt-3 text-center">
-                                                <span >{{dataMessage}}</span>
+                                                <span>{{dataMessage}}</span>
                                                 <br /><br>
-                                    </div>
+                                            </div>
                                         </ng-template>
                                         <!-- Summary Section with Load More button -->
 
                                         <ng-template pTemplate="summary" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastItemSK !=='end' && allData.length !==0 ">
-                                                <button type="button " (click)="onScroll($event) "
-                                                    class="btn btn-success btn-sm text-light ">Load
+                                            <div class="col-lg-12 mt-3 text-center " *ngIf="lastItemSK !=='end' && allData.length !==0 ">
+                                                <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
                                                     More..</button>
 
                                                 <br /><br>
                                             </div>
-                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !=='end'">
-                                                Total Records: {{allData.length}}</div>
-                                                 <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
                                                 Total Records: {{allData.length}}</div>
                                         </ng-template>
-                           
-                                     
+
+
                                         <ng-template pTemplate="rowexpansion" let-vehicle>
                                             <tr>
                                                 <td class="p-0 custom-bg-light border-0">
                                                     <div class="p-3">
-                                                        <p-table [value]="vehicle"
-                                                            styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                                                        <p-table [value]="vehicle" styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
                                                             <ng-template pTemplate="header">
 
                                                 <td style="vertical-align:top;">
-                                                     
-                                                <tr>
-                                                  <th class="border-0 p-0">
-                                                     <span> Location </span>
-                                                          </th>
-                                                          </tr>
-                                                    <span *ngFor="let item of vehicle.tripPlanning"
-                                                        >
-                                                        
-                                                        <b>
-                                                            {{item.type}}:
-                                                        </b>
-                                                        {{item.location}}<br>
-                                                    </span>
-                                                </td>
 
-                                                <td style="vertical-align:top;">
+                                            <tr>
+                                                <th class="border-0 p-0">
+                                                    <span> Location </span>
+                                                </th>
+                                            </tr>
+                                            <span *ngFor="let item of vehicle.tripPlanning">
+
+                                                <b>
+                                                    {{item.type}}:
+                                                </b>
+                                                {{item.location}}<br>
+                                            </span>
+                                            </td>
+
+                                            <td style="vertical-align:top;">
                                                 <tr>
-                                                  <th class="border-0 p-0">
-                                                     <span style="margin-left: 150px;"> Date </span>
-                                                          </th>
-                                                          </tr>
-                                                       <span *ngFor="let item of vehicle.tripPlanning"
-                                                        style="margin-left: 150px;">
-                                                        <b>
-                                                            {{item.type}}:
-                                                        </b>
-                                                        {{item.date}}<br>
-                                                    </span>
-                                                </td>
-                                                
-                                                 <td style="vertical-align:top;">
+                                                    <th class="border-0 p-0">
+                                                        <span style="margin-left: 150px;"> Date </span>
+                                                    </th>
+                                                </tr>
+                                                <span *ngFor="let item of vehicle.tripPlanning" style="margin-left: 150px;">
+                                                    <b>
+                                                        {{item.type}}:
+                                                    </b>
+                                                    {{item.date}}<br>
+                                                </span>
+                                            </td>
+
+                                            <td style="vertical-align:top;">
                                                 <tr>
-                                                  <th class="border-0 p-0">
-                                                     <span style="margin-left: 150px;"> Province(US) </span>
-                                                          </th>
-                                                          </tr>
-                                                          <span style="margin-left: 150px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
-                                                    <span 
-                                                    *ngFor="let item1 of vehicle.provinceData"
-                                                        >
-                                                        <span *ngFor="let item2 of item1.usProvince"style="margin-left: 150px;">
-                                                          {{item2.StCntry}}<br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-                                                
-                                                 <td style="vertical-align:top;">
-                                                <tr>
-                                                  <th class="border-0 p-0">
-                                                     <span style="margin-left: 150px;"> US(Total) </span>
-                                                          </th>
-                                                          </tr>
-                                                    <span style="margin-left: 150px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
-                                                    <span 
-                                                    *ngFor="let item1 of vehicle.provinceData"
-                                                        >
-                                                        <span *ngFor="let item2 of item1.usProvince" 
-                                                        style="margin-left: 150px;">
-                                                          {{item2.Total}}<br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-                                                 <td style="vertical-align:top;">
-                                                <tr>
-                                                  <th class="border-0 p-0">
-                                                     <span  style="margin-left: 150px;"> Province(Canada)</span>
-                                                          </th>
-                                                          </tr>
+                                                    <th class="border-0 p-0">
+                                                        <span style="margin-left: 150px;"> Province(US) </span>
+                                                    </th>
+                                                </tr>
                                                 <span style="margin-left: 150px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
-                                                    <span 
-                                                    *ngFor="let item1 of vehicle.provinceData"
-                                                        >
-                                                        <span *ngFor="let item2 of item1.canProvince" 
-                                                        style="margin-left: 150px;">
-                                                          {{item2.StCntry}}<br>
-                                                        </span>
+                                                <span *ngFor="let item1 of vehicle.provinceData">
+                                                    <span *ngFor="let item2 of item1.usProvince" style="margin-left: 150px;">
+                                                        {{item2.StCntry}}<br>
                                                     </span>
-                                                </td>
-                                                
-                                                 <td style="vertical-align:top;">
+                                                </span>
+                                            </td>
+
+                                            <td style="vertical-align:top;">
                                                 <tr>
-                                                  <th class="border-0 p-0">
-                                                     <span  style="margin-left: 140px;"> Canada(Total)</span>
-                                                          </th>
-                                                          </tr>
-                                                    <span style="margin-left: 140px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
-                                                    <span 
-                                                    *ngFor="let item1 of vehicle.provinceData"
-                                                        >
-                                                        <span *ngFor="let item2 of item1.canProvince" 
-                                                        style="margin-left: 140px;">
-                                                          {{item2.Total}}<br>
-                                                        </span>
+                                                    <th class="border-0 p-0">
+                                                        <span style="margin-left: 150px;"> US(Total) </span>
+                                                    </th>
+                                                </tr>
+                                                <span style="margin-left: 150px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
+                                                <span *ngFor="let item1 of vehicle.provinceData">
+                                                    <span *ngFor="let item2 of item1.usProvince" style="margin-left: 150px;">
+                                                        {{item2.Total}}<br>
                                                     </span>
-                                                </td>
-                                                
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align:top;">
+                                                <tr>
+                                                    <th class="border-0 p-0">
+                                                        <span style="margin-left: 150px;"> Province(Canada)</span>
+                                                    </th>
+                                                </tr>
+                                                <span style="margin-left: 150px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
+                                                <span *ngFor="let item1 of vehicle.provinceData">
+                                                    <span *ngFor="let item2 of item1.canProvince" style="margin-left: 150px;">
+                                                        {{item2.StCntry}}<br>
+                                                    </span>
+                                                </span>
+                                            </td>
+
+                                            <td style="vertical-align:top;">
+                                                <tr>
+                                                    <th class="border-0 p-0">
+                                                        <span style="margin-left: 140px;"> Canada(Total)</span>
+                                                    </th>
+                                                </tr>
+                                                <span style="margin-left: 140px;" *ngIf="vehicle.provinceData.length === 0 ">-</span>
+                                                <span *ngFor="let item1 of vehicle.provinceData">
+                                                    <span *ngFor="let item2 of item1.canProvince" style="margin-left: 140px;">
+                                                        {{item2.Total}}<br>
+                                                    </span>
+                                                </span>
+                                            </td>
+
                                         </ng-template>
                                     </p-table>
                                 </div>
@@ -311,14 +266,14 @@
                                 </tr>
 
                                 </ng-template>
-                                                
-                                           </p-table>
-                                       </div>
-                                   </div>
-                               </div>
-                          </div>
-                     </div>
-                </section>
-        </section>
+
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     </div>
+</section>
+</section>
+</div>
 </section>

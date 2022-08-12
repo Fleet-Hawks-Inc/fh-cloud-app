@@ -10,59 +10,22 @@
         <form class="formgrid grid">
           <div class="row" style="padding-top: 9px">
             <div class="col">
-              <p-autoComplete
-                #autoComp
-                id="autoCmpSugDriver"
-                [placeholder]="'Type Drivers Name'"
-                class="mr-2"
-                [forceSelection]="true"
-                emptyMessage="No data found."
-                [(ngModel)]="driverName"
-                [suggestions]="suggestedDrivers"
-                [minLength]="2"
-                (completeMethod)="getSuggestions($event.query)"
-                (onSelect)="setDriver($event.driverID)"
-                field="fullName"
-              >
+              <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Type Drivers Name'" class="mr-2"
+                [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="driverName"
+                [suggestions]="suggestedDrivers" [minLength]="2" (completeMethod)="getSuggestions($event.query)"
+                (onSelect)="setDriver($event.driverID)" field="fullName">
               </p-autoComplete>
-              <p-dropdown
-                id="drpDvrType"
-                [style]="{ minWidth: '200px' }"
-                [options]="driverTypeOption"
-                class="mr-2"
-                placeholder="Select a Driver Type"
-                [(ngModel)]="driverType"
-                optionLabel="name"
-                optionValue="value"
-              >
+              <p-dropdown id="drpDvrType" [style]="{ minWidth: '200px' }" [options]="driverTypeOption" class="mr-2"
+                placeholder="Select a Driver Type" [(ngModel)]="driverType" optionLabel="name" optionValue="value">
               </p-dropdown>
 
-              <button
-                id="btnSearch"
-                type="button"
-                [disabled]="isSearch"
-                pButton
-                class="mr-2"
-                icon="pi pi-search"
-                pTooltip="Search"
-                (click)="searchFilter()"
-              ></button>
-              <button
-                id="btnResetFilter"
-                type="button"
-                [disabled]="isSearch"
-                pButton
-                class="mr-2"
-                icon="pi pi-refresh"
-                pTooltip="Reset"
-                (click)="resetFilter()"
-              ></button>
+              <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search"
+                pTooltip="Search" (click)="searchFilter()"></button>
+              <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-refresh"
+                pTooltip="Reset" (click)="resetFilter()"></button>
               <div style="float: right">
-                <div
-                  class="col-md-9 col-lg-9 text-right pr-1"
-                  routerLink="/reports/fleet/drivers"
-                  class="btn btn-sm btn-success mt-1"
-                >
+                <div class="col-md-9 col-lg-9 text-right pr-1" routerLink="/reports/fleet/drivers"
+                  class="btn btn-sm btn-success mt-1">
                   Back
                 </div>
               </div>
@@ -76,57 +39,28 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-3">
-                <div
-                  class="col-lg-12"
-                  style="height: calc(100vh - 149px); overflow-y: scroll"
-                >
-                  <p-table
-                    #dt
-                    [value]="drivers"
-                    [resizableColumns]="true"
-                    columnResizeMode="expand"
-                    scrollDirection="both"
-                    [columns]="selectedColumns"
-                    [loading]="!loaded"
-                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [scrollable]="true"
-                    [loading]="!loaded"
-                    scrollHeight="100%"
-                  >
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="drivers" [resizableColumns]="true" columnResizeMode="fit" scrollDirection="both"
+                    [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" autolayout="true"
+                    [loading]="!loaded" scrollHeight="100%">
                     <ng-template pTemplate="caption">
-                      <div
-                        class="p-d-flex d-flex justify-content-between align-items-center"
-                      >
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
                         <div>
                           <h3 class="m-0">Driver Activity</h3>
                         </div>
                         <div class="text-right">
                           <span>Showing {{ drivers.length }} entries </span>
                           &nbsp;
-                          <button
-                            type="button"
-                            pButton
-                            (click)="refreshData()"
-                            pTooltip="Refresh"
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-sync"
-                          ></button>
-                          <button
-                            pButton
-                            pRipple
-                            pTooltip="Clear Filter"
-                            class="p-button-outlined mr-2"
-                            icon="pi pi-filter-slash"
-                            (click)="clear(dt)"
-                          ></button>
-                          <p-multiSelect
-                            [options]="dataColumns"
-                            [(ngModel)]="selectedColumns"
-                            optionLabel="header"
-                            selectedItemsLabel="{0} columns selected"
-                            [style]="{ minWidth: '200px' }"
-                            placeholder="Choose Columns"
-                          >
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
                           </p-multiSelect>
                         </div>
                       </div>
@@ -134,33 +68,16 @@
 
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th
-                          *ngFor="let dataColumns of columns"
-                          [pSortableColumn]="dataColumns.field"
-                          pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }"
-                        >
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
-                              <div
-                                class="flex justify-content-center align-items-center"
-                                alignFrozen="right"
-                                pFrozenColumn
-                                [frozen]="true"
-                              >
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
                                 {{ dataColumns.header }}
-                                <p-sortIcon
-                                  [field]="dataColumns.field"
-                                ></p-sortIcon>
-                                <p-columnFilter
-                                  [type]="dataColumns.type"
-                                  [field]="dataColumns.field"
-                                  matchMode="contains"
-                                  [showMatchModes]="false"
-                                  [showOperator]="false"
-                                  [showAddButton]="false"
-                                  display="menu"
-                                >
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
                                 </p-columnFilter>
                               </div>
                             </span>
@@ -169,24 +86,12 @@
                       </tr>
                     </ng-template>
 
-                    <ng-template
-                      pTemplate="body"
-                      let-driver
-                      let-columns="columns"
-                      let-rowIndex="rowIndex"
-                    >
+                    <ng-template pTemplate="body" let-driver let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td
-                          *ngFor="let dataColumns of columns"
-                          [ngStyle]="{ width: dataColumns.width }"
-                          style="height: 42px; cursor: pointer"
-                          [routerLink]="driver.url"
-                        >
+                        <td *ngFor="let dataColumns of columns" style="height: 42px; cursor: pointer"
+                          [routerLink]="driver.url">
                           <div [ngSwitch]="dataColumns.field">
-                            <span
-                              class="font-weight-bold line-height-lg text-capitalize"
-                              *ngSwitchCase="'firstName'"
-                            >
+                            <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'firstName'">
                               {{ driver.firstName }}
                               {{ driver.middleName }}
                               {{ driver.lastName }}
@@ -196,74 +101,58 @@
                             </span>
                             <span *ngSwitchCase="'startDate'">
                               {{
-                                driver[dataColumns.field]
-                                  ? driver[dataColumns.field]
-                                  : "-"
+                              driver[dataColumns.field]
+                              ? driver[dataColumns.field]
+                              : "-"
                               }}
                             </span>
                             <span *ngSwitchCase="'phone'">
                               {{
-                                driver[dataColumns.field]
-                                  ? driver[dataColumns.field]
-                                  : "-"
+                              driver[dataColumns.field]
+                              ? driver[dataColumns.field]
+                              : "-"
                               }}
                             </span>
                             <span *ngSwitchCase="'licenceExpiry'">
                               {{
-                                driver[dataColumns.field]
-                                  ? driver[dataColumns.field]
-                                  : "-"
+                              driver[dataColumns.field]
+                              ? driver[dataColumns.field]
+                              : "-"
                               }}
                             </span>
                             <span *ngSwitchCase="'licStateName'">
                               {{
-                                driver[dataColumns.field]
-                                  ? driver[dataColumns.field]
-                                  : "-"
+                              driver[dataColumns.field]
+                              ? driver[dataColumns.field]
+                              : "-"
                               }}
                             </span>
                             <span *ngSwitchDefault>
-                              {{ get(driver, dataColumns.field) }}</span
-                            >
+                              {{ get(driver, dataColumns.field) }}</span>
                           </div>
                         </td>
                       </tr>
                     </ng-template>
 
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{ dataMessage }}
+                      <td colspan="10" class="text-center">
+                        <br />
+                        {{dataMessage}}
                         <br /><br />
-                      </div>
+                      </td>
                     </ng-template>
 
                     <ng-template pTemplate="summary" let-columns>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="
                           lastEvaluatedKey !== 'end' && drivers.length !== 0
-                        "
-                      >
-                        <button
-                          type="button "
-                          (click)="onScroll($event)"
-                          class="btn btn-success btn-sm text-light"
-                        >
+                        ">
+                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
 
                         <br /><br />
                       </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastEvaluatedKey !== 'end'"
-                      >
-                        Total Records: {{ drivers.length }}
-                      </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastEvaluatedKey === 'end'"
-                      >
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
                         Total Records: {{ drivers.length }}
                       </div>
                     </ng-template>
