@@ -101,7 +101,9 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-asset>
                       <tr>
-                        <td>{{ asset.displayName }}</td>
+                        <td class="font-weight-bold">
+                          {{ asset.displayName }}
+                        </td>
                         <td>{{ asset.timeCreated }}</td>
                         <td>{{ asset.module }}</td>
                         <td>

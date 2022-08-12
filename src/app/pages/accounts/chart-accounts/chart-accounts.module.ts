@@ -25,6 +25,7 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
+import {ToggleButtonModule} from 'primeng/togglebutton';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -114,6 +115,7 @@ const routes: Routes = [
     TooltipModule,
     DialogModule,
     CheckboxModule,
+    ToggleButtonModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
