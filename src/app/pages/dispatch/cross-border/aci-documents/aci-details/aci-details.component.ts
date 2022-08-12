@@ -117,7 +117,6 @@ export class AciDetailsComponent implements OnInit {
     travelDocuments: [],
   };
   borderResponses = [];
-  errors = {};
   form;
   documentTypeList: any = [];
   documentsTypesObjects: any = {};
@@ -135,6 +134,8 @@ export class AciDetailsComponent implements OnInit {
   canadianPortsObjects: any = {};
   subLocationObjects: any = {};
   releaseOfficeObjects: any = {};
+  errorsDisplay = false;
+  errors = [];
 
   items = [
 
@@ -333,16 +334,14 @@ export class AciDetailsComponent implements OnInit {
   }
   sendCBSA() {
     this.apiService
-      .getData('eManifests/send-aci/' + this.mID).subscribe((result: any) => {
-        // this.sendBorderConnectOption = result;
-        // if (this.sendBorderConnectOption === true) {
-        //   const val = 'Queued';
-        //   const setStatus: any = this.apiService.getData('ACIeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
-        //     this.toastr.success('Status Updated Successfully!');
-        //      this.currentStatus = val;
-        //   });
-        // }
-      });
+      .getData('eManifests/send-aci/' + this.mID).toPromise().then(result => {
+        if (result) {
+          this.status = 'DRAFT';
+        }
+      }).catch(err => {
+        this.errorsDisplay = true;
+        this.errors = err.error;
+      })
   }
 
   showShipmentDetails(shipmentID) {

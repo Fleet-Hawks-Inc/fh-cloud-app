@@ -1358,7 +1358,7 @@
                                           <ul class="p-0 m-0 text-left">
                                             <li *ngFor="let item of searchResults;">
                                               <a href="javascript:;"
-                                                (click)="userAddress(s, p, item,'delivery')">{{item.address.label}}</a>
+                                                (click)="userAddress(s, p, item,'delivery')">{{item.address}}</a>
                                             </li>
                                           </ul>
                                         </div>
@@ -2014,10 +2014,10 @@
                     <div class="row">
                       <div class="col-lg-10 text-right">
                         <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
-                        <button type="button" *ngIf="!manifestID" (click)="addACIManifest()"
-                          [disabled]="!aAci1.form.valid" class="btn btn-success">Save</button>
-                        <button type="button" *ngIf="manifestID" (click)="updateACIManifest()"
-                          [disabled]="!aAci1.form.valid" class="btn btn-success">Update</button>
+                        <button type="button" *ngIf="!mID" (click)="addACIManifest()" [disabled]="!aAci1.form.valid"
+                          class="btn btn-success">Save</button>
+                        <button type="button" *ngIf="mID" (click)="updateACIManifest()" [disabled]="!aAci1.form.valid"
+                          class="btn btn-success">Update</button>
                       </div>
                     </div>
                   </div>

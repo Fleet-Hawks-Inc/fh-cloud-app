@@ -225,7 +225,7 @@
                                             <th>Quantity</th>
                                             <th>Last Edited</th>
                                             <th>Loaded On</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -279,10 +279,10 @@
                                                 <span *ngIf="shipment.loadedOn.type == 'TRAILER'">Asset
                                                 </span>[{{shipment.loadedOn.number}}]
                                             </td>
-                                            <td class="actions"> <a
+                                            <!-- <td class="actions"> <a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -313,7 +313,7 @@
                                             <th>Type</th>
                                             <th>Driver#</th>
                                             <th>Documents</th>
-                                            <th width="10%">Action</th>
+                                            <!-- <th width="10%">Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -382,11 +382,11 @@
                                                     *ngFor="let document of passenger.travelDocuments; let s= index;">{{document.number}}<span
                                                         *ngIf="s != passenger.travelDocuments.length-1">,</span></span>
                                             </td>
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -418,7 +418,7 @@
                                             <th width="10%">Licence Country</th>
                                             <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -447,12 +447,12 @@
                                                 title="Click to see details of vehicle"><span
                                                     *ngFor="let seal of truck.sealNumbers;let s= index;">{{seal}}<span
                                                         *ngIf="s != truck.sealNumbers.length-1">,</span></span></td>
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -485,7 +485,7 @@
                                             <th width="15%">Licence Province</th>
                                             <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -506,12 +506,12 @@
                                             <td><span
                                                     *ngFor="let seal of trailer.sealNumbers;let s= index;">{{seal}}<span
                                                         *ngIf="s != trailer.sealNumbers.length-1">,</span> </span></td>
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -543,7 +543,7 @@
                                             <th>Loaded On</th>
                                             <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -562,11 +562,11 @@
                                                     *ngFor="let seal of container.sealNumbers; let s= index;">{{seal}}<span
                                                         *ngIf="s != container.sealNumbers.length-1">,</span> </span>
                                             </td>
-                                            <td class="actions"><a
+                                            <!-- <td class="actions"><a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1148,3 +1148,32 @@
         </div>
     </div>
 </div>
+
+
+<p-dialog header="Please check these error(s) before sending manifest" [modal]="true" [style]="{ width: '40vw'}"
+    [(visible)]="errorsDisplay">
+    <div class="row">
+        <div class="col">
+            <div *ngFor="let err of errors" class="text-danger">
+                <i class="pi pi-exclamation-circle"></i> {{err.schema.title}}
+
+
+                <strong>
+                    <span *ngIf="err.schema.type == 'object'">
+                        <span *ngFor="let item of err.instance | keyvalue">
+                            <b>{{item.key}}: {{item.value}}</b>
+                        </span>
+                    </span>
+                    <span *ngIf="err.schema.type == 'string'">
+                        <span *ngIf="err.instance">{{err.instance}}</span>
+                        <span *ngIf="err.instance == ''">""</span>
+
+                    </span>
+                </strong> {{err.message}}
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button class="" (click)="errorsDisplay = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
