@@ -1,19 +1,17 @@
-import { Component, Directive, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Auth } from 'aws-amplify';
-import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { Component, Directive, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { Auth } from "aws-amplify";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { environment } from "../../../environments/environment";
 declare var $: any;
 declare var jQuery: any;
-
 
 @Directive()
 export class CommonSideBarComponent implements OnInit {
   //constructor(private router: Router) {}
   companyID: string;
 
-
-  constructor(private routeManagement: RouteManagementServiceService) { }
+  constructor(private routeManagement: RouteManagementServiceService) {}
   environment = environment.isFeatureEnabled;
 
   isFleetEnabled = environment.isFleetEnabled;
@@ -32,7 +30,7 @@ export class CommonSideBarComponent implements OnInit {
    */
   async checkBConnectAccess() {
     let currentUser = (await Auth.currentSession()).getIdToken().payload;
-    if (currentUser.carrierID != '' && currentUser.carrierID != undefined) {
+    if (currentUser.carrierID != "" && currentUser.carrierID != undefined) {
       if (this.BConnectAccess.includes(currentUser.carrierID)) {
         this.isBAccess = true;
       } else {
@@ -49,22 +47,22 @@ export class CommonSideBarComponent implements OnInit {
       // window.theme = {};
       // Bootstrap Toggle
       (function ($) {
-        'use strict';
+        "use strict";
 
         var $window = $(window);
 
         var toggleClass = function ($el) {
-          if (!!$el.data('toggleClassBinded')) {
+          if (!!$el.data("toggleClassBinded")) {
             return false;
           }
 
           var $target, className, eventName;
 
-          $target = $($el.attr('data-target'));
-          className = $el.attr('data-toggle-class');
-          eventName = $el.attr('data-fire-event');
+          $target = $($el.attr("data-target"));
+          className = $el.attr("data-toggle-class");
+          eventName = $el.attr("data-fire-event");
 
-          $el.on('click.toggleClass', function (e) {
+          $el.on("click.toggleClass", function (e) {
             e.preventDefault();
             $target.toggleClass(className);
 
@@ -78,13 +76,13 @@ export class CommonSideBarComponent implements OnInit {
             }
           });
 
-          $el.data('toggleClassBinded', true);
+          $el.data("toggleClassBinded", true);
 
           return true;
         };
 
         $(function () {
-          $('[data-toggle-class][data-target]').each(function () {
+          $("[data-toggle-class][data-target]").each(function () {
             toggleClass($(this));
           });
         });
@@ -92,22 +90,22 @@ export class CommonSideBarComponent implements OnInit {
 
       // Navigation
       (function ($) {
-        'use strict';
+        "use strict";
 
-        var $items = $('.nav-main li.nav-parent');
+        var $items = $(".nav-main li.nav-parent");
 
         function expand($li) {
-          $li.children('ul.nav-children').slideDown('fast', function () {
-            $li.addClass('nav-expanded');
-            $(this).css('display', '');
+          $li.children("ul.nav-children").slideDown("fast", function () {
+            $li.addClass("nav-expanded");
+            $(this).css("display", "");
             ensureVisible($li);
           });
         }
 
         function collapse($li) {
-          $li.children('ul.nav-children').slideUp('fast', function () {
-            $(this).css('display', '');
-            $li.removeClass('nav-expanded');
+          $li.children("ul.nav-children").slideUp("fast", function () {
+            $(this).css("display", "");
+            $li.removeClass("nav-expanded");
           });
         }
 
@@ -123,16 +121,16 @@ export class CommonSideBarComponent implements OnInit {
               {
                 scrollTop: scroller.scrollTop() + top,
               },
-              'fast'
+              "fast"
             );
           }
         }
 
         function buildSidebarNav(anchor, prev, next, ev) {
-          if (anchor.prop('href')) {
+          if (anchor.prop("href")) {
             var arrowWidth =
               parseInt(
-                window.getComputedStyle(anchor.get(0), ':after').width,
+                window.getComputedStyle(anchor.get(0), ":after").width,
                 10
               ) || 0;
             if (ev.offsetX > anchor.get(0).offsetWidth - arrowWidth) {
@@ -148,22 +146,22 @@ export class CommonSideBarComponent implements OnInit {
           }
         }
 
-        $items.find('> a').on('click', function (ev) {
-          var $html = $('html'),
+        $items.find("> a").on("click", function (ev) {
+          var $html = $("html"),
             $window = $(window),
             $anchor = $(this),
-            $prev = $anchor.closest('ul.nav').find('> li.nav-expanded'),
-            $next = $anchor.closest('li'),
+            $prev = $anchor.closest("ul.nav").find("> li.nav-expanded"),
+            $next = $anchor.closest("li"),
             $ev = ev;
 
-          if ($anchor.attr('href') == '#') {
+          if ($anchor.attr("href") == "#") {
             ev.preventDefault();
           }
 
-          if (!$html.hasClass('sidebar-left-big-icons')) {
+          if (!$html.hasClass("sidebar-left-big-icons")) {
             buildSidebarNav($anchor, $prev, $next, $ev);
           } else if (
-            $html.hasClass('sidebar-left-big-icons') &&
+            $html.hasClass("sidebar-left-big-icons") &&
             $window.width() < 768
           ) {
             buildSidebarNav($anchor, $prev, $next, $ev);
@@ -176,73 +174,73 @@ export class CommonSideBarComponent implements OnInit {
         );
         if ($.browser.chrome && !$.browser.mobile) {
           var flag = true;
-          $('.sidebar-left .nav-main li a').on('click', function () {
+          $(".sidebar-left .nav-main li a").on("click", function () {
             flag = false;
             setTimeout(function () {
               flag = true;
             }, 200);
           });
 
-          $('.nano').on('mouseenter', function (e) {
-            $(this).addClass('hovered');
+          $(".nano").on("mouseenter", function (e) {
+            $(this).addClass("hovered");
           });
 
-          $('.nano').on('mouseleave', function (e) {
+          $(".nano").on("mouseleave", function (e) {
             if (flag) {
-              $(this).removeClass('hovered');
+              $(this).removeClass("hovered");
             }
           });
         }
 
-        $('.nav-main a').filter(':not([href])').attr('href', '#');
+        $(".nav-main a").filter(":not([href])").attr("href", "#");
       }.apply(this, [jQuery]));
 
       // Tab Navigation
       (function ($) {
-        'use strict';
+        "use strict";
 
-        if ($('html.has-tab-navigation').get(0)) {
+        if ($("html.has-tab-navigation").get(0)) {
           var $window = $(window),
-            $toggleMenuButton = $('.toggle-menu'),
-            $navActive = $('.tab-navigation nav > ul .nav-active'),
-            $tabNav = $('.tab-navigation'),
-            $tabItem = $('.tab-navigation nav > ul > li a'),
-            $contentBody = $('.content-body');
+            $toggleMenuButton = $(".toggle-menu"),
+            $navActive = $(".tab-navigation nav > ul .nav-active"),
+            $tabNav = $(".tab-navigation"),
+            $tabItem = $(".tab-navigation nav > ul > li a"),
+            $contentBody = $(".content-body");
 
-          $tabItem.on('click', function (e) {
+          $tabItem.on("click", function (e) {
             if (
-              $(this).parent().hasClass('dropdown') ||
-              $(this).parent().hasClass('dropdown-submenu')
+              $(this).parent().hasClass("dropdown") ||
+              $(this).parent().hasClass("dropdown-submenu")
             ) {
               if ($window.width() < 992) {
-                if ($(this).parent().hasClass('nav-expanded')) {
+                if ($(this).parent().hasClass("nav-expanded")) {
                   $(this)
-                    .closest('li')
-                    .find('> ul')
-                    .slideUp('fast', function () {
-                      $(this).css('display', '');
-                      $(this).closest('li').removeClass('nav-expanded');
+                    .closest("li")
+                    .find("> ul")
+                    .slideUp("fast", function () {
+                      $(this).css("display", "");
+                      $(this).closest("li").removeClass("nav-expanded");
                     });
                 } else {
-                  if ($(this).parent().hasClass('dropdown')) {
-                    $tabItem.parent().removeClass('nav-expanded');
+                  if ($(this).parent().hasClass("dropdown")) {
+                    $tabItem.parent().removeClass("nav-expanded");
                   }
 
-                  $(this).parent().addClass('expanding');
+                  $(this).parent().addClass("expanding");
 
                   $(this)
-                    .closest('li')
-                    .find('> ul')
-                    .slideDown('fast', function () {
-                      $tabItem.parent().removeClass('expanding');
-                      $(this).closest('li').addClass('nav-expanded');
-                      $(this).css('display', '');
+                    .closest("li")
+                    .find("> ul")
+                    .slideDown("fast", function () {
+                      $tabItem.parent().removeClass("expanding");
+                      $(this).closest("li").addClass("nav-expanded");
+                      $(this).css("display", "");
 
                       if (
                         $(this).position().top + $(this).height() <
                         $window.scrollTop()
                       ) {
-                        $('html,body').animate(
+                        $("html,body").animate(
                           { scrollTop: $(this).offset().top - 100 },
                           300
                         );
@@ -250,39 +248,39 @@ export class CommonSideBarComponent implements OnInit {
                     });
                 }
               } else {
-                if (!$(this).parent().hasClass('dropdown')) {
+                if (!$(this).parent().hasClass("dropdown")) {
                   e.preventDefault();
                   return false;
                 }
 
-                if ($(this).parent().hasClass('nav-expanded')) {
-                  $tabItem.parent().removeClass('nav-expanded');
-                  $contentBody.removeClass('tab-menu-opened');
+                if ($(this).parent().hasClass("nav-expanded")) {
+                  $tabItem.parent().removeClass("nav-expanded");
+                  $contentBody.removeClass("tab-menu-opened");
                   return;
                 }
 
-                $tabItem.parent().removeClass('nav-expanded');
-                $contentBody.addClass('tab-menu-opened');
-                $(this).parent().addClass('nav-expanded');
+                $tabItem.parent().removeClass("nav-expanded");
+                $contentBody.addClass("tab-menu-opened");
+                $(this).parent().addClass("nav-expanded");
               }
             }
           });
 
-          $window.on('scroll', function () {
+          $window.on("scroll", function () {
             if ($window.width() < 992) {
               var tabNavOffset =
-                $tabNav.position().top + $tabNav.height() + 100,
+                  $tabNav.position().top + $tabNav.height() + 100,
                 windowOffset = $window.scrollTop();
 
               if (windowOffset > tabNavOffset) {
-                $tabNav.removeClass('show');
+                $tabNav.removeClass("show");
               }
             }
           });
 
-          $toggleMenuButton.on('click', function () {
-            if (!$tabNav.hasClass('show')) {
-              $('html,body').animate(
+          $toggleMenuButton.on("click", function () {
+            if (!$tabNav.hasClass("show")) {
+              $("html,body").animate(
                 { scrollTop: $tabNav.offset().top - 50 },
                 300
               );
@@ -315,7 +313,6 @@ export class CommonSideBarComponent implements OnInit {
   }
 
   Logout() {
-
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('jwt');
     //this.router.navigate(['/Login']);
@@ -361,29 +358,35 @@ export class CommonSideBarComponent implements OnInit {
   generateUserSessionID() {
     return this.routeManagement.userSessionID;
   }
-  generateIncomeTransactionsSessionID(){
+  generateIncomeTransactionsSessionID() {
     return this.routeManagement.IncomeTransactionsSessionID;
- }
- generateExpenseTransactionsSessionID(){
-  return this.routeManagement.ExpenseTransactionsSessionID;
-}
-generateManualJournalSessionID(){
-  return this.routeManagement.ManualJournalSessionID;
-}
+  }
+  generateExpenseTransactionsSessionID() {
+    return this.routeManagement.ExpenseTransactionsSessionID;
+  }
+  generateManualJournalSessionID() {
+    return this.routeManagement.ManualJournalSessionID;
+  }
+  generatePlannerListSessionId() {
+    return this.routeManagement.PlannerListSessionID;
+  }
 }
 
 @Component({
-  selector: 'fleet-sidebar',
-  templateUrl: './fleet-sidebar.component.html',
+  selector: "fleet-sidebar",
+  templateUrl: "./fleet-sidebar.component.html",
 })
 export class FleetSidebarComponent extends CommonSideBarComponent {
-  constructor(private router: Router, routeManagement: RouteManagementServiceService) {
+  constructor(
+    private router: Router,
+    routeManagement: RouteManagementServiceService
+  ) {
     super(routeManagement);
   }
   //super(router: Router) { }
   Logout() {
     Auth.signOut();
-    this.router.navigate(['/Login']);
+    this.router.navigate(["/Login"]);
 
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('jwt');
@@ -392,11 +395,14 @@ export class FleetSidebarComponent extends CommonSideBarComponent {
 }
 
 @Component({
-  selector: 'compliance-sidebar',
-  templateUrl: './compliance-sidebar.component.html',
+  selector: "compliance-sidebar",
+  templateUrl: "./compliance-sidebar.component.html",
 })
 export class ComplianceSidebarComponent extends CommonSideBarComponent {
-  constructor(private router: Router, routeManagement: RouteManagementServiceService) {
+  constructor(
+    private router: Router,
+    routeManagement: RouteManagementServiceService
+  ) {
     super(routeManagement);
   }
   //super(router: Router) { }
@@ -408,47 +414,46 @@ export class ComplianceSidebarComponent extends CommonSideBarComponent {
 }
 
 @Component({
-  selector: 'alert-sidebar',
-  templateUrl: './alert-sidebar.component.html',
+  selector: "alert-sidebar",
+  templateUrl: "./alert-sidebar.component.html",
 })
-export class AlertSidebarComponent extends CommonSideBarComponent { }
+export class AlertSidebarComponent extends CommonSideBarComponent {}
 
 @Component({
-  selector: 'setting-sidebar',
-  templateUrl: './setting-sidebar.component.html',
+  selector: "setting-sidebar",
+  templateUrl: "./setting-sidebar.component.html",
 })
-export class SettingSidebarComponent extends CommonSideBarComponent { }
+export class SettingSidebarComponent extends CommonSideBarComponent {}
 
 @Component({
-  selector: 'dispatch-sidebar',
-  templateUrl: './dispatch-sidebar.component.html',
+  selector: "dispatch-sidebar",
+  templateUrl: "./dispatch-sidebar.component.html",
 })
-export class DispatchSidebarComponent extends CommonSideBarComponent {
-}
+export class DispatchSidebarComponent extends CommonSideBarComponent {}
 
 @Component({
-  selector: 'accounts-sidebar',
-  templateUrl: './accounts-sidebar.component.html',
+  selector: "accounts-sidebar",
+  templateUrl: "./accounts-sidebar.component.html",
 })
-export class AccountsSidebarComponent extends CommonSideBarComponent { }
+export class AccountsSidebarComponent extends CommonSideBarComponent {}
 
 @Component({
-  selector: 'safety-sidebar',
-  templateUrl: './safety-sidebar.component.html',
+  selector: "safety-sidebar",
+  templateUrl: "./safety-sidebar.component.html",
 })
-export class SafetySidebarComponent extends CommonSideBarComponent { }
+export class SafetySidebarComponent extends CommonSideBarComponent {}
 
 @Component({
-  selector: 'manage-sidebar',
-  templateUrl: './manage-sidebar.component.html',
+  selector: "manage-sidebar",
+  templateUrl: "./manage-sidebar.component.html",
 })
-export class ManageSidebarComponent extends CommonSideBarComponent { }
+export class ManageSidebarComponent extends CommonSideBarComponent {}
 
 @Component({
-  selector: 'report-sidebar',
-  templateUrl: './module-report-sidebar.component.html',
+  selector: "report-sidebar",
+  templateUrl: "./module-report-sidebar.component.html",
 })
-export class ReportsSidebarComponent extends CommonSideBarComponent { }
+export class ReportsSidebarComponent extends CommonSideBarComponent {}
 
 export const MultiSidebarComponents = [
   FleetSidebarComponent,
