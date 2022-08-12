@@ -18,6 +18,7 @@ import { environment } from '../../../../../environments/environment';
 })
 export class InventoryListComponent implements OnInit {
     @ViewChild('dt') table: Table;
+    @ViewChild('rqt') tablee: Table;
     @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
     environment = environment.isFeatureEnabled;
     dataMessage: string = Constants.FETCHING_DATA;
@@ -120,7 +121,7 @@ export class InventoryListComponent implements OnInit {
         { field: 'itemName', header: 'Item Name', type: "text" },
         { field: 'category', header: 'Category', type: "text" },
         { field: 'vendor', header: 'Vendor', type: "text" },
-        { field: 'unitcost', header: 'Unit Cost', type: "text" },
+        { field: 'unitCost', header: 'Unit Cost', type: "text" },
         { field: 'tax', header: 'Tax', type: "text" },
         { field: 'quantity', header: 'Quantity', type: "text" },
         { field: 'totalCost', header: 'Total Cost', type: "text" },
@@ -324,6 +325,10 @@ export class InventoryListComponent implements OnInit {
                     }
                     this.items = this.items.concat(result.Items);
                     this.loaded = true;
+                    for(let data of result.Items){
+                    data.unitCost = data.cost + ' ' + data.costUnitType;
+                    data.totalCost = data.totalCost + ' ' + data.costUnitType;
+                    }
                 }
             });
         }
