@@ -1,62 +1,62 @@
 <ul class="nav nav-main mr-0 bg-white">
 
-  <!-- <li routerLinkActive="nav-active">
+    <!-- <li routerLinkActive="nav-active">
     <a class="nav-link" [routerLink]="['/dispatch', 'overview']"> -->
-  <!-- <i class="fas fa-file-alt" aria-hidden="true"></i> -->
-  <!-- <i class="icon-icon-dispatch"></i>
+    <!-- <i class="fas fa-file-alt" aria-hidden="true"></i> -->
+    <!-- <i class="icon-icon-dispatch"></i>
       <span>Overview</span>
     </a>
   </li> -->
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'orders', 'order-list', generateOrderSessionID()]">
-      <!-- <i class="fas fa-truck-loading" aria-hidden="true"></i> -->
-      <i class="icon-icon-order"></i>
-      <span>Orders</span>
-    </a>
-  </li>
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'trips', 'trip-list',generateTripSessionID()]">
-      <i class="fas fa-road" aria-hidden="true"></i>
-      <span>Trips</span>
-    </a>
-  </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch', 'orders', 'order-list', generateOrderSessionID()]">
+            <!-- <i class="fas fa-truck-loading" aria-hidden="true"></i> -->
+            <i class="icon-icon-order"></i>
+            <span>Orders</span>
+        </a>
+    </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch', 'trips', 'trip-list',generateTripSessionID()]">
+            <i class="fas fa-road" aria-hidden="true"></i>
+            <span>Trips</span>
+        </a>
+    </li>
 
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'routes', 'list']">
-      <i class="fas fa-route" aria-hidden="true"></i>
-      <span>Routes</span>
-    </a>
-  </li>
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'planner', 'calendar-view']">
-      <!-- <i class="far fa-file-alt" aria-hidden="true"></i> -->
-      <i class="far fa-calendar-alt"></i>
-      <span> Planner</span>
-    </a>
-  </li>
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'scheduler','scheduler-list']">
-      <i class="fas fa-file-alt"></i>
-      <span>Scheduler</span>
-    </a>
-  </li>
-  <li routerLinkActive="nav-active" *ngIf="isBAccess">
-    <a class="nav-link" [routerLink]="['/dispatch', 'cross-border','manifests']">
-      <i class="fas fa-flag-usa" aria-hidden="true"></i>
-      <span>Cross Border</span>
-    </a>
-  </li>
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'zone', 'list']">
-      <i class="fas fa-map-marker-alt fa-fw" aria-hidden="true"></i>
-      <span>Zone</span>
-    </a>
-  </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch', 'routes', 'list']">
+            <i class="fas fa-route" aria-hidden="true"></i>
+            <span>Routes</span>
+        </a>
+    </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch', 'planner', 'calendar-view',generatePlannerListSessionId()]">
+            <!-- <i class="far fa-file-alt" aria-hidden="true"></i> -->
+            <i class="far fa-calendar-alt"></i>
+            <span> Planner</span>
+        </a>
+    </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch', 'scheduler','scheduler-list']">
+            <i class="fas fa-file-alt"></i>
+            <span>Scheduler</span>
+        </a>
+    </li>
+    <li routerLinkActive="nav-active" *ngIf="isBAccess">
+        <a class="nav-link" [routerLink]="['/dispatch', 'cross-border','manifests']">
+            <i class="fas fa-flag-usa" aria-hidden="true"></i>
+            <span>Cross Border</span>
+        </a>
+    </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch', 'zone', 'list']">
+            <i class="fas fa-map-marker-alt fa-fw" aria-hidden="true"></i>
+            <span>Zone</span>
+        </a>
+    </li>
 
-  <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch/total-miles/total-miles']">
-      <i class="fas fa-route"></i>
-      <span>Total Miles Calculator</span>
-    </a>
-  </li>
+    <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/dispatch/total-miles/total-miles']">
+            <i class="fas fa-route"></i>
+            <span>Total Miles Calculator</span>
+        </a>
+    </li>
 </ul>

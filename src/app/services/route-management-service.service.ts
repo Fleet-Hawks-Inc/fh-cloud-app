@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
+import { Injectable } from "@angular/core";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class RouteManagementServiceService {
   public orderUpdateSessionID: string;
@@ -21,6 +21,7 @@ export class RouteManagementServiceService {
   public IncomeTransactionsSessionID: string;
   public ExpenseTransactionsSessionID: string;
   public ManualJournalSessionID: string;
+  public PlannerListSessionID: string;
 
   constructor() {
     this.orderUpdateSessionID = uuidv4();
@@ -39,69 +40,73 @@ export class RouteManagementServiceService {
     this.IncomeTransactionsSessionID = uuidv4();
     this.ExpenseTransactionsSessionID = uuidv4();
     this.ManualJournalSessionID = uuidv4();
+    this.PlannerListSessionID = uuidv4();
   }
 
   driverUpdated() {
-    return this.driverUpdateSessionID = uuidv4();
+    return (this.driverUpdateSessionID = uuidv4());
   }
 
   orderUpdated() {
-    return this.orderUpdateSessionID = uuidv4();
+    return (this.orderUpdateSessionID = uuidv4());
   }
 
   tripUpdated() {
-    return this.tripUpdateSessionID = uuidv4();
+    return (this.tripUpdateSessionID = uuidv4());
   }
   vehicleUpdated() {
-    return this.vehicleUpdateSessionID = uuidv4();
+    return (this.vehicleUpdateSessionID = uuidv4());
   }
   assetUpdated() {
-    return this.assetUpdateSessionID = uuidv4();
+    return (this.assetUpdateSessionID = uuidv4());
   }
   fuelUpdated() {
-    return this.fuelUpdateSessionID = uuidv4();
+    return (this.fuelUpdateSessionID = uuidv4());
   }
 
   maintainanceUpdated() {
-    return this.maintainanceSessionID = uuidv4();
+    return (this.maintainanceSessionID = uuidv4());
   }
 
   serviceLogUpdated() {
-    return this.serviceLogSessionID = uuidv4();
+    return (this.serviceLogSessionID = uuidv4());
   }
 
   chartAccountUpdate() {
-    return this.chartAccountSessionID = uuidv4();
+    return (this.chartAccountSessionID = uuidv4());
   }
 
   serviceReminderUpdated() {
-    return this.serviceRemindersSessionID = uuidv4();
+    return (this.serviceRemindersSessionID = uuidv4());
   }
 
   inventoryUpdated() {
-    return this.inventorySessionID = uuidv4();
+    return (this.inventorySessionID = uuidv4());
   }
 
   deviceUpdated() {
-    return this.deviceSessionID = uuidv4();
+    return (this.deviceSessionID = uuidv4());
   }
 
   userUpdated() {
-    return this.userSessionID = uuidv4();
+    return (this.userSessionID = uuidv4());
   }
 
   IncomeTransactionUpdate() {
-    return this.IncomeTransactionsSessionID = uuidv4();
+    return (this.IncomeTransactionsSessionID = uuidv4());
   }
 
   ExpenseTransactionsUpdate() {
-    return this.ExpenseTransactionsSessionID = uuidv4();
+    return (this.ExpenseTransactionsSessionID = uuidv4());
   }
 
   ManualJournalSessionIDUpdate() {
-    return this.ManualJournalSessionID = uuidv4();
+    return (this.ManualJournalSessionID = uuidv4());
   }
 
+  PlannerListSessionIDUpdate() {
+    return (this.PlannerListSessionID = uuidv4());
+  }
 
   resetAllCache() {
     this.tripUpdateSessionID = uuidv4();
@@ -120,5 +125,6 @@ export class RouteManagementServiceService {
     this.IncomeTransactionsSessionID = uuidv4();
     this.ExpenseTransactionsSessionID = uuidv4();
     this.ManualJournalSessionID = uuidv4();
+    this.PlannerListSessionID = uuidv4();
   }
 }

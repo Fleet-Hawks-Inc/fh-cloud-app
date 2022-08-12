@@ -16,9 +16,9 @@ import { FullCalendarModule } from "@fullcalendar/angular";
 
 const routes: Routes = [
   {
-    path: "calendar-view",
+    path: "calendar-view/:sessionID",
     component: CalendarViewComponent,
-    data: { title: "Planner" },
+    data: { title: "Planner", reuseRoute: true },
   },
   {
     path: "map-view",

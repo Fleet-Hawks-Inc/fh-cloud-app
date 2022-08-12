@@ -1,12 +1,9 @@
-
-
-
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import * as _ from "lodash";
-import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { OverlayPanel } from "primeng/overlaypanel";
-import { Table } from 'primeng/table';
+import { Table } from "primeng/table";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { environment } from "src/environments/environment";
 import { ApiService, DashboardUtilityService } from "../../../../services";
 import Constants from "../../../fleet/constants";
@@ -26,7 +23,7 @@ export class TripListComponent implements OnInit {
   dataMessageCancel: string = Constants.NO_RECORDS_FOUND;
   dataMessageDeliver: string = Constants.NO_RECORDS_FOUND;
   dataMessageTonu: string = Constants.NO_RECORDS_FOUND;
-  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild("op") overlaypanel: OverlayPanel;
   form;
   title = "Trips";
   tripID = "";
@@ -139,7 +136,7 @@ export class TripListComponent implements OnInit {
       name: "LTL",
       value: "LTL",
     },
-  ]
+  ];
 
   pageLength = 10;
   serviceUrl = "";
@@ -188,33 +185,42 @@ export class TripListComponent implements OnInit {
   find = _.find;
   display: any;
   dataColumns = [
-    { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
-    { width: '6%', field: 'orderType', header: 'Type', type: "text" },
-    { width: '7%', field: 'orderNames', header: 'Order#', type: "text" },
-    { width: '6%', field: 'dateCreated', header: 'Date', type: "text" },
-    { width: '17%', field: 'pickupLocation', header: 'Pickup Location', type: "text" },
-    { width: '17%', field: 'dropLocation', header: 'Drop Off Location', type: "text" },
-    { width: '7%', field: 'vehicleNames', header: 'Vehicle', type: "text" },
-    { width: '7%', field: 'assetNames', header: 'Asset', type: "text" },
-    { width: '7%', field: 'driverNames', header: 'Driver', type: "text" },
-    { width: '7%', field: 'carrierNames', header: 'Carrier', type: "text" },
-    { width: '7%', field: 'tripStatus', header: 'Status', type: "text" },
-  ]; 
+    { width: "6%", field: "tripNo", header: "Trip#", type: "text" },
+    { width: "6%", field: "orderType", header: "Type", type: "text" },
+    { width: "7%", field: "orderNames", header: "Order#", type: "text" },
+    { width: "6%", field: "dateCreated", header: "Date", type: "text" },
+    {
+      width: "17%",
+      field: "pickupLocation",
+      header: "Pickup Location",
+      type: "text",
+    },
+    {
+      width: "17%",
+      field: "dropLocation",
+      header: "Drop Off Location",
+      type: "text",
+    },
+    { width: "7%", field: "vehicleNames", header: "Vehicle", type: "text" },
+    { width: "7%", field: "assetNames", header: "Asset", type: "text" },
+    { width: "7%", field: "driverNames", header: "Driver", type: "text" },
+    { width: "7%", field: "carrierNames", header: "Carrier", type: "text" },
+    { width: "7%", field: "tripStatus", header: "Status", type: "text" },
+  ];
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
-    private dashboardUtilityService: DashboardUtilityService
-  ) { }
+    private dashboardUtilityService: DashboardUtilityService,
+    private routingService: RouteManagementServiceService
+  ) {}
 
   async ngOnInit() {
-    this.setToggleOptions()
+    this.setToggleOptions();
     this.initDataTable();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.assetsObject = await this.dashboardUtilityService.getAssets();
     this.vehiclesObject = await this.dashboardUtilityService.getVehicles();
-
   }
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
@@ -226,7 +232,7 @@ export class TripListComponent implements OnInit {
 
   set selectedColumns(val: any[]) {
     //restore original order
-    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    this._selectedColumns = this.dataColumns.filter((col) => val.includes(col));
   }
 
   async fetchTrips(result, _type = null) {
@@ -408,8 +414,8 @@ export class TripListComponent implements OnInit {
           `trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`
         )
         .subscribe({
-          complete: () => { },
-          error: () => { },
+          complete: () => {},
+          error: () => {},
           next: (_result: any) => {
             this.trips = [];
             this.confirmedTrips = [];
@@ -530,11 +536,10 @@ export class TripListComponent implements OnInit {
           }
           $("#tripStatusModal").modal("show");
         } else {
-          this.display = false,
-          this.toastr.error(
-        
-            "Please assign driver(s)/carrier(s) to the trip first."
-          );
+          (this.display = false),
+            this.toastr.error(
+              "Please assign driver(s)/carrier(s) to the trip first."
+            );
         }
       });
   }
@@ -609,12 +614,12 @@ export class TripListComponent implements OnInit {
   }
 
   /**
-     * Clears the table filters
-     * @param table Table 
-     */
-   clear(table: Table) {
+   * Clears the table filters
+   * @param table Table
+   */
+  clear(table: Table) {
     table.clear();
-}
+  }
 
   updateTrip() {
     let tripObj = {
@@ -669,11 +674,11 @@ export class TripListComponent implements OnInit {
           $("#tripStatusModal").modal("hide");
           $("#assignConfirmationModal").modal("hide");
           this.toastr.success("Trip status updated successfully");
+          this.routingService.PlannerListSessionIDUpdate();
         } else {
           this.statDisabled = false;
           this.toastr.error("Internal Server error");
         }
-
       });
   }
 
@@ -686,22 +691,21 @@ export class TripListComponent implements OnInit {
       this.lastEvaluatedKey = "";
       this.trips = [];
     }
-    this.spinner.show();
     // this.orders = [];
     if (this.lastEvaluatedKey !== "end") {
-      this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.trim()
+      this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.trim();
       this.apiService
         .getData(
           "trips/fetch/records/all?searchValue=" +
-          this.tripsFiltr.searchValue +
-          "&startDate=" +
-          this.tripsFiltr.start +
-          "&endDate=" +
-          this.tripsFiltr.end +
-          "&category=" +
-          this.tripsFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+            this.tripsFiltr.searchValue +
+            "&startDate=" +
+            this.tripsFiltr.start +
+            "&endDate=" +
+            this.tripsFiltr.end +
+            "&category=" +
+            this.tripsFiltr.category +
+            "&lastKey=" +
+            this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -730,11 +734,8 @@ export class TripListComponent implements OnInit {
               this.lastEvaluatedKey = "end";
             }
             this.isLoad = false;
-            this.spinner.hide();
           },
-          (_err) => {
-            this.spinner.hide();
-          }
+          (_err) => {}
         );
     }
   }
