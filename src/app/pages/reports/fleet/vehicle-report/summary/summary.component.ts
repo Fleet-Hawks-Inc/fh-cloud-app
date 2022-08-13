@@ -62,15 +62,15 @@ export class SummaryComponent implements OnInit {
   currentView = 'list';
  
   dataColumns = [
-    { width: '15%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
-    { width: '13%', field: 'VIN', header: 'VIN', type: "text" },
-    { width: '8%', field: 'year', header: 'Year', type: "text" },
-    { width: '10%', field: 'manufacturerID', header: 'Make', type: "text" },
-    { width: '12%', field: 'modelID', header: 'Model', type: "text" },
-    { width: '10%', field: 'vehicleType', header: 'Type', type: "text" },
-    { width: '12%', field: 'ownership', header: 'Ownership', type: "text" },
-    { width: '12%', field: 'plateNumber', header: 'Plate Number', type: "text" },
-    { width: '8%', field: 'currentStatus', header: 'Status', type: 'text' },
+    {  field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    {  field: 'VIN', header: 'VIN', type: "text" },
+    {  field: 'year', header: 'Year', type: "text" },
+    {  field: 'manufacturerID', header: 'Make', type: "text" },
+    {  field: 'modelID', header: 'Model', type: "text" },
+    {  field: 'vehicleType', header: 'Type', type: "text" },
+    {  field: 'ownership', header: 'Ownership', type: "text" },
+    {  field: 'plateNumber', header: 'Plate Number', type: "text" },
+    {  field: 'currentStatus', header: 'Status', type: 'text' },
     
   ];
   
