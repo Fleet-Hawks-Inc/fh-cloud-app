@@ -113,36 +113,32 @@ export class InventoryListComponent implements OnInit {
     _reqSelectedColumns: any[];
     get = _.get;
 
-
-   
         // columns of data table
     dataColumns = [
         { field: 'partNumber', header: 'Part#', type: "text" },
         { field: 'itemName', header: 'Item Name', type: "text" },
         { field: 'category', header: 'Category', type: "text" },
-        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'vendorName', header: 'Vendor', type: "text" },
         { field: 'unitCost', header: 'Unit Cost', type: "text" },
         { field: 'tax', header: 'Tax', type: "text" },
         { field: 'quantity', header: 'Quantity', type: "text" },
         { field: 'totalCost', header: 'Total Cost', type: "text" },
-        { field: 'warehouseDetails', header: 'Warehouse Details', type: "text" },
+        { field: 'wareName', header: 'Warehouse Details', type: "text" },
     ];
     reqDataColumns = [
         { field: 'partNumber', header: 'Part#', type: "text" },
-        { field: 'reqItemName', header: 'Item Name', type: "text" },
-        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'itemName', header: 'Item Name', type: "text" },
+        { field: 'vendorName', header: 'Vendor', type: "text" },
         { field: 'quantity', header: 'Quantity', type: "text" },
     ];
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
     ngOnInit() {
         this.setToggleOptions();
-        this.fetchWarehouses();
         this.fetchAllItemsList();
         this.setreqToggleOptions();
         this.initDataTable();
         this.initDataTableRequired();
-        this.fetchVendors();
         this.listService.fetchVendors();
         this.disableButton();
         this.allVendors = this.listService.vendorList;
@@ -174,12 +170,6 @@ export class InventoryListComponent implements OnInit {
         //restore original order
         this._reqSelectedColumns = this.reqDataColumns.filter(col => val.includes(col));
     }
-    
-    
-    
-    
-
-
 
     getItemSuggestions = _.debounce(function (value, type) {
         if (value != '') {
@@ -274,11 +264,7 @@ export class InventoryListComponent implements OnInit {
         }
     }
 
-    fetchVendors() {
-        this.apiService.getData(`contacts/get/list`).subscribe((result) => {
-            this.vendors = result;
-        });
-    }
+
 
 
 
@@ -288,11 +274,7 @@ export class InventoryListComponent implements OnInit {
 
     
 
-    fetchWarehouses() {
-        this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
-            this.warehouses = result;
-        });
-    }
+
 
     deleteItem(eventData) {
         if (confirm('Are you sure you want to delete?') === true) {
