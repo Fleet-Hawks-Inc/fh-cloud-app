@@ -101,7 +101,9 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-driver>
                       <tr>
-                        <td>{{ driver.displayName }}</td>
+                        <td class="font-weight-bold">
+                          {{ driver.displayName }}
+                        </td>
                         <td>{{ driver.timeCreated }}</td>
                         <td>{{ driver.module }}</td>
                         <td>

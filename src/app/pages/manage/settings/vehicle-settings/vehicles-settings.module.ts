@@ -1,9 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
-
 import { NgSelectModule } from "@ng-select/ng-select";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { DeletedVehiclesComponent } from "./deleted-vehicles/deleted-vehicles.component";
@@ -19,6 +17,13 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ChartsModule } from "ng2-charts";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { SharedModule } from "../../../../shared/shared.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+
+
 const routes: Routes = [
   {
     path: "deleted-vehicles",
@@ -43,6 +48,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     FormsModule,
+    SharedModule,
     NgbModule,
     InfiniteScrollModule,
     NgSelectModule,
@@ -56,6 +62,10 @@ const routes: Routes = [
     AutoCompleteModule,
     DialogModule,
     DropdownModule,
+    OverlayPanelModule,
+    NgSelectModule,
+    NgxSpinnerModule,
+    ChartsModule
   ],
 })
 export class VehiclesSettingsModule { }

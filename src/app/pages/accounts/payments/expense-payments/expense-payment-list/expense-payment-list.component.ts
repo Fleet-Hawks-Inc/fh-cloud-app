@@ -79,6 +79,7 @@ export class ExpensePaymentListComponent implements OnInit {
       this.disableSearch = false;
       if (result.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
+        this.loaded = true
       } else {
         if (result[result.length - 1].sk !== undefined) {
           this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);

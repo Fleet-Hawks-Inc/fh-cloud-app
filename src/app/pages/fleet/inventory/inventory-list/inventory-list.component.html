@@ -391,14 +391,14 @@
                         #dt
                         [value]="items"
                         [resizableColumns]="true"
-                        columnResizeMode="expand"
+                        columnResizeMode="fit"
                         scrollDirection="both"
                         [columns]="selectedColumns"
                         [loading]="!loaded"
                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                        [scrollable]="true"
                         [loading]="!loaded"
                         scrollHeight="100%"
+                        autoLayout="true"
                       >
                         <!-- Caption template of data table -->
                         <ng-template pTemplate="caption">
@@ -409,7 +409,7 @@
                               <h3 class="m-0">Inventory</h3>
                             </div>
                             <div class="text-right">
-                              <span>Showing {{ items.length }} entries </span>
+<span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                               &nbsp;
                               <button
                                 type="button"
@@ -472,7 +472,6 @@
                               *ngFor="let dataColumns of columns"
                               [pSortableColumn]="dataColumns.field"
                               pResizableColumn
-                              style="width: 14%"
                             >
                               <div [ngSwitch]="dataColumns.field">
                                 <span *ngSwitchDefault>
@@ -501,7 +500,6 @@
                               </div>
                             </th>
                             <th
-                              style="width: 100px"
                               alignFrozen="right"
                               pFrozenColumn
                               [frozen]="true"
@@ -520,7 +518,7 @@
                           <tr>
                             <td
                               *ngFor="let dataColumns of columns"
-                              style="width: 14%; cursor: pointer"
+                              style=" cursor: pointer"
                               routerLink="/fleet/inventory/detail/{{
                                 exItems.itemID
                               }}"
@@ -547,11 +545,8 @@
                                     get(exItems, dataColumns.field) | titlecase
                                   }}</span>
                                 </span>
-                                <span *ngSwitchCase="'unitcost'">
-                                  <span
-                                    >{{ exItems.cost }}
-                                    {{ exItems.costUnitType }}</span
-                                  >
+                                <span *ngSwitchCase="'unitCost'">
+                              {{ get(exItems, dataColumns.field) }}
                                 </span>
                                 <span *ngSwitchCase="'warehouseDetails'">
                                   <span>{{
@@ -564,7 +559,7 @@
                               </div>
                             </td>
                             <td
-                              style="text-align: center; width: 100px"
+                              style="text-align: center"
                               pFrozenColumn
                               alignFrozen="right"
                               [frozen]="true"
@@ -592,12 +587,15 @@
                         </ng-template>
                         <!-- Empty Template -->
 
-                        <ng-template pTemplate="emptymessage" let-columns>
-                          <div class="col-lg-12 mt-3 text-center">
-                            {{ dataMessage }}
-                            <br /><br />
-                          </div>
-                        </ng-template>
+                           <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                          <td colspan="10" class="text-center">
+                            <br/>
+                            {{dataMessage}}
+                            <br/><br/>
+                          </td>
+                        </tr>
+                      </ng-template>
                         <!-- Summary Section with Load More button -->
 
                         <ng-template pTemplate="summary" let-columns>
@@ -633,16 +631,16 @@
                       aria-labelledby="reefer-tab"
                     >
                       <p-table
-                        #dt
+                        #rqt
                         [value]="requiredItems"
                         [resizableColumns]="true"
-                        columnResizeMode="expand"
+                        columnResizeMode="fit"
                         scrollDirection="both"
                         [columns]="reqSelectedColumns"
                         [loading]="!loaded"
                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                        [scrollable]="true"
                         [loading]="!loaded"
+                        autoLayout="true"
                         scrollHeight="100%"
                       >
                         <!-- Caption template of data table -->
@@ -654,9 +652,7 @@
                               <h3 class="m-0">Inventory</h3>
                             </div>
                             <div class="text-right">
-                              <span
-                                >Showing {{ requiredItems.length }} entries
-                              </span>
+                            <span>Showing {{rqt.filteredValue ? rqt.filteredValue.length : rqt.totalRecords}} of {{rqt.totalRecords}} Entries.</span>
                               &nbsp;
                               <button
                                 type="button"
@@ -689,7 +685,7 @@
                                 pTooltip="Clear Filter"
                                 class="p-button-outlined mr-2"
                                 icon="pi pi-filter-slash"
-                                (click)="clear(dt)"
+                                (click)="clear(rqt)"
                               ></button>
                               <button
                                 type="button"
@@ -697,7 +693,7 @@
                                 pRipple
                                 class="p-button-outlined mr-2"
                                 icon="fas fa-regular fa-file-excel"
-                                (click)="dt.exportCSV()"
+                                (click)="rqt.exportCSV()"
                                 pTooltip="Excel"
                               ></button>
                               <p-multiSelect
@@ -719,7 +715,6 @@
                               *ngFor="let reqDataColumns of columns"
                               [pSortableColumn]="reqDataColumns.field"
                               pResizableColumn
-                              style="width: 25%"
                             >
                               <div [ngSwitch]="reqDataColumns.field">
                                 <span *ngSwitchDefault>
@@ -748,7 +743,6 @@
                               </div>
                             </th>
                             <th
-                              style="width: 100px"
                               alignFrozen="right"
                               pFrozenColumn
                               [frozen]="true"
@@ -767,7 +761,7 @@
                           <tr>
                             <td
                               *ngFor="let reqDataColumns of columns"
-                              style="width: 25%; cursor: pointer"
+                              style="cursor: pointer"
                             >
                               <div [ngSwitch]="reqDataColumns.field">
                                 <span *ngSwitchCase="'reqItemName'">
@@ -794,7 +788,7 @@
                               </div>
                             </td>
                             <td
-                              style="text-align: center; width: 100px"
+                              style="text-align: center"
                               pFrozenColumn
                               alignFrozen="right"
                               [frozen]="true"
@@ -822,12 +816,15 @@
                         </ng-template>
                         <!-- Empty Template -->
 
-                        <ng-template pTemplate="emptymessage" let-columns>
-                          <div class="col-lg-12 mt-3 text-center">
-                            {{ dataMessage }}
-                            <br /><br />
-                          </div>
-                        </ng-template>
+                            <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                          <td colspan="5" class="text-center">
+                            <br/>
+                            {{dataMessage}}
+                            <br/><br/>
+                          </td>
+                        </tr>
+                      </ng-template>
                         <!-- Summary Section with Load More button -->
 
                         <ng-template pTemplate="summary" let-columns>

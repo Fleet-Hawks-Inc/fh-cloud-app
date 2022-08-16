@@ -49,20 +49,20 @@ export class ActivityComponent implements OnInit {
     this.fetchAssetActivity()
     this.fetchAsset();
     this.dataColumns = [
-      { width: '10%', field: 'assetNm', header: 'Asset', type: "text", },
-      { width: '11%', field: 'tripNo', header: 'Trip#', type: "text" },
-      { width: '11%', field: 'orderName', header: 'Order#', type: "text" },
-      { width: '11%', field: 'vehicle', header: 'Vehicle', type: 'text' },
-      { width: '16%', field: 'driverName', header: 'Driver', type: 'text' },
-      {  field: 'locationCsv', header: 'Location', type: "text", display:"none" },
-      { field: 'dateCsv', header: 'Date', type: "text", display:"none" },
-      { width: '8%', field: 'usStateCsv', header: 'Province (US)', type: 'text',display:"none"  },
-      { width: '8%', field: 'usStateMilesCsv', header: 'US Miles', type: 'text',display:"none" },
-      { width: '12%', field: 'usMiles', header: 'US Total', type: 'text', },
-      { width: '9%', field: 'canStateCsv', header: 'Province (Canada)', type: 'text',display:"none" },
-      { width: '14%', field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display:"none"},
-      { width: '13%', field: 'canMiles', header: 'Canada Total', type: 'text' },
-      { width: '13%', field: 'miles', header: 'Total Miles', type: 'text' },
+      { field: 'assetNm', header: 'Asset', type: "text", },
+      { field: 'tripNo', header: 'Trip#', type: "text" },
+      { field: 'orderName', header: 'Order#', type: "text" },
+      { field: 'vehicle', header: 'Vehicle', type: 'text' },
+      { field: 'driverName', header: 'Driver', type: 'text' },
+      { field: 'locationCsv', header: 'Location', type: "text", display: "none" },
+      { field: 'dateCsv', header: 'Date', type: "text", display: "none" },
+      { field: 'usStateCsv', header: 'Province (US)', type: 'text', display: "none" },
+      { field: 'usStateMilesCsv', header: 'US Miles', type: 'text', display: "none" },
+      { field: 'usMiles', header: 'US Total', type: 'text', },
+      { field: 'canStateCsv', header: 'Province (Canada)', type: 'text', display: "none" },
+      { field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display: "none" },
+      { field: 'canMiles', header: 'Canada Total', type: 'text' },
+      { field: 'miles', header: 'Total Miles', type: 'text' },
     ]
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
@@ -86,7 +86,7 @@ export class ActivityComponent implements OnInit {
   fetchAsset() {
     this.apiService.getData(`assets/fetch/detail/${this.astId}`).subscribe((result: any) => {
       this.assetData = result.Items;
-      for(let astD of  this.assetData  ) {
+      for (let astD of this.assetData) {
         this.assetN = astD.assetIdentification;
       }
     });
@@ -118,7 +118,7 @@ export class ActivityComponent implements OnInit {
         }
         this.loaded = true;
         for (let index = 0; index < result.Items.length; index++) {
-          const res:any = result.Items[index];
+          const res: any = result.Items[index];
 
           res.miles = 0
           res.assetNm = ''
@@ -134,16 +134,16 @@ export class ActivityComponent implements OnInit {
           res.canStateCsv = ''
           res.canStateMiles = []
           res.canStateMilesCsv = ''
-          
+
           res.assetNm = this.assetN;
-        
+
           for (let element of res.singleAstTripD) {
-            
+
             res.miles += Number(element.miles);
-            
-              res.location.push(element.type + ": " + element.location)
-              res.date.push(element.type + ": " + element.date)
-           
+
+            res.location.push(element.type + ": " + element.location)
+            res.date.push(element.type + ": " + element.date)
+
 
           }
           res.locationCsv = res.location.join('\r\n')

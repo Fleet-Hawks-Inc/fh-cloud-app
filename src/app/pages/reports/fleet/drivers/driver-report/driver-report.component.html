@@ -67,10 +67,11 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-2">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                    <p-table #dt [value]="data" [resizableColumns]="true" columnResizeMode="expand"
+                                    <p-table #dt [value]="data" [resizableColumns]="true" columnResizeMode="fit"
                                         scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
                                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                        [scrollable]="true" [loading]="!loaded" dataKey="tripNo" scrollHeight="100%">
+                                        autoLayout="true" [loading]="!loaded" dataKey="tripNo" responsiveLayout="scroll"
+                                        scrollHeight="100%">
                                         <ng-template pTemplate="caption">
                                             <div class="p-d-flex d-flex justify-content-between align-items-center">
                                                 <div>
@@ -97,7 +98,7 @@
                                                 </th>
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                    [ngStyle]="{ width: dataColumns.width ,'display': dataColumns.display}">
+                                                    [ngStyle]="{ 'display': dataColumns.display}">
                                                     <div [ngSwitch]="dataColumns.field" style="width:10%">
                                                         <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center"
@@ -128,7 +129,7 @@
                                                       "></button>
                                                 </td>
                                                 <td *ngFor="let dataColumns of columns" pResizableColumn
-                                                    [ngStyle]="{ width: dataColumns.width,'display': dataColumns.display}">
+                                                    [ngStyle]="{'display': dataColumns.display}">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchCase="'drin'" class="text-capitalize">
                                                             {{get(driver,dataColumns.field)}}
@@ -145,10 +146,11 @@
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="emptymessage" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center">
-                                                <span>{{dataMessage}}</span>
-                                                <br /><br>
-                                            </div>
+                                            <td colspan="5" class="text-center">
+                                                <br />
+                                                {{dataMessage}}
+                                                <br /><br />
+                                            </td>
                                         </ng-template>
                                         <!-- Summary Section with Load More button  -->
 
@@ -166,7 +168,7 @@
                                         </ng-template>
                                         <ng-template pTemplate="rowexpansion" let-order>
                                             <tr>
-                                                <td class="p-0 custom-bg-light border-0">
+                                                <td colspan="5" class="p-0 custom-bg-light border-0">
                                                     <div class="p-3">
                                                         <p-table [value]="order"
                                                             styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">

@@ -45,7 +45,7 @@ export class SummaryComponent implements OnInit {
     this.dataColumns = [
       { field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
       { field: 'VIN', header: 'VIN', type: "text" },
-      { field: 'assetType', header: 'Asset Type', type: "text" },
+      { field: 'astTyp', header: 'Asset Type', type: "text" },
       { field: 'assetDetails.manufacturer', header: 'Make', type: 'text' },
       { field: '-', header: 'Last Location', type: 'text' },
       { field: 'assetDetails.licencePlateNumber', header: 'License Plate Number', type: "text" },
@@ -108,6 +108,8 @@ export class SummaryComponent implements OnInit {
           this.loaded = true;
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
+        this.allData = this.allData.concat(result.Items);
+
         this.suggestedAssets = [];
         if (result.Items.length > 0) {
 
@@ -117,14 +119,16 @@ export class SummaryComponent implements OnInit {
           else {
             this.lastItemSK = 'end';
           }
-          this.allData = this.allData.concat(result.Items);
-          /*
-            result[`Items`].map((v: any) => {
-              v.assetType = v.assetType.replace("_", " ")
-              this.allData.push(v)
-            });
-            */
           this.loaded = true;
+         
+          for (let i = 0; i < this.allData.length; i++) {
+            const res: any = this.allData[i];
+            res.astTyp = '';
+            if(res.assetType){
+              res.astTyp = res.assetType.replace("_", " ")
+            }
+            
+          }
         }
       });
     }

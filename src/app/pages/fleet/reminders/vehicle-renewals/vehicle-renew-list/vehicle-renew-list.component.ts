@@ -65,11 +65,11 @@ export class VehicleRenewListComponent implements OnInit {
   
   // columns of data table
    dataColumns = [
-    { width: '15%', field: 'entityID', header: 'Vehicle', type: 'text' },
-    { width: '19%', field: 'status', header: 'Vehicle Renewal Type', type: 'text' },
-    { width: '19%', field: 'tasks.dueDate', header: 'Due Date', type: 'text' },
-    { width: '17%', field: 'tasks.time', header: 'Send Reminder', type: 'text' },
-    { width: '24%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+    { field: 'entityID', header: 'Vehicle', type: 'text' },
+    { field: 'status', header: 'Vehicle Renewal Type', type: 'text' },
+    { field: 'tasks.dueDate', header: 'Due Date', type: 'text' },
+    { field: 'tasks.time', header: 'Send Reminder', type: 'text' },
+    { field: 'subscribers', header: 'Subscribers', type: 'text' },
   ];
 
   constructor(private apiService: ApiService, 
