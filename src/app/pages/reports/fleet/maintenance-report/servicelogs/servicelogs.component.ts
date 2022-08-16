@@ -71,14 +71,14 @@ export class ServicelogsComponent implements OnInit {
      
      
   dataColumns = [
-        { width: '7%', field: 'unitType', header: 'Unit Type', type: "text" },
-        { width: '7%', field: 'unitName', header: 'Vehicle/Asset', type: "text" },
-        { width: '7%', field: 'odometer', header: 'Odometer', type: "text" },
-        { width: '7%', field: 'vendorID', header: 'Vendor', type: "text" },
-        { width: '7%', field: 'serviceTaskList', header: 'Service Task', type: "text" },
-        { width: '7%', field: 'completionDate', header: 'Service Date', type: "text" },
-        { width: '7%', field: 'currentStatus', header: 'Status', type: "text" },
-        { width: '7%', field: 'allServiceTasks.subTotal', header: 'Service Cost', type: "text" },
+        {  field: 'unitType', header: 'Unit Type', type: "text" },
+        {  field: 'unitName', header: 'Vehicle/Asset', type: "text" },
+        {  field: 'odometer', header: 'Odometer', type: "text" },
+        {  field: 'vendorID', header: 'Vendor', type: "text" },
+        {  field: 'serviceTaskList', header: 'Service Task', type: "text" },
+        {  field: 'completionDate', header: 'Service Date', type: "text" },
+        {  field: 'currentStatus', header: 'Status', type: "text" },
+        {  field: 'allServiceTasks.subTotal', header: 'Service Cost', type: "text" },
         
     ];
      

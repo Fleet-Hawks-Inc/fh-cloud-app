@@ -64,11 +64,11 @@ export class SremindersComponent implements OnInit {
   
   
   dataColumns = [
-        { width: '7%', field: 'entityID', header: 'Vehicle', type: "text" },
-        { width: '7%', field: 'tasks.taskID', header: 'Service Task', type: "text" },
-        { width: '7%', field: 'createdDate', header: 'Next Due', type: "text" },
-        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
-        { width: '7%', field: 'status', header: 'Renewal Status', type: "text" },
+        {  field: 'entityID', header: 'Vehicle', type: "text" },
+        {  field: 'tasks.taskID', header: 'Service Task', type: "text" },
+        {  field: 'createdDate', header: 'Next Due', type: "text" },
+        {  field: 'subscribers', header: 'Subscribers', type: "text" },
+        {  field: 'status', header: 'Renewal Status', type: "text" },
     ];
   
   constructor(private apiService: ApiService, 

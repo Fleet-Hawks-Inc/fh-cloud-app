@@ -10,94 +10,41 @@
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select
-                [(ngModel)]="unitID"
-                name="unitID"
-                style="width: 100%"
-                placeholder="Search by vehicle"
-              >
-                <ng-option
-                  *ngFor="let data of vehicleSet"
-                  [value]="data.vehicleID"
-                >
+              <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%" placeholder="Search by vehicle">
+                <ng-option *ngFor="let data of vehicleSet" [value]="data.vehicleID">
                   {{ data.vehicleIdentification }}
                 </ng-option>
               </ng-select>
             </div>
 
             <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select
-                [(ngModel)]="assetUnitID"
-                name="assetUnitID"
-                style="width: 100%"
-                placeholder="Search by reefer"
-              >
-                <ng-option
-                  *ngFor="let data of assetsSet"
-                  [value]="data.assetID"
-                >
+              <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%" placeholder="Search by reefer">
+                <ng-option *ngFor="let data of assetsSet" [value]="data.assetID">
                   {{ data.assetIdentification }}
                 </ng-option>
               </ng-select>
             </div>
             <!-- Set spacing issue -->
             <div class="col-md-3 col-lg-3 pr-0">
-              <div
-                class="input-daterange input-group input-group-sm"
-                data-plugin-datepicker=""
-              >
+              <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                 <span class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input
-                  [(ngModel)]="start"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0"
-                >
+                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
                 </span>
-                <input
-                  [(ngModel)]="end"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
+                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
               </div>
             </div>
 
             <div class="col-md-2 col-lg-2">
-              <button
-                type="submit"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-3"
-              >
+              <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <button
-                class="btn btn-sm btn-success"
-                (click)="resetFilter()"
-                type="submit"
-              >
+              <button class="btn btn-sm btn-success" (click)="resetFilter()" type="submit">
                 Reset
               </button>
             </div>
@@ -146,10 +93,7 @@
                         <h5 class="m-1 font-weight-bold">
                           {{ gas_ConsumedLTR | number: "1.2-2" }} LTR
                         </h5>
-                        <h5
-                          class="m-1 font-weight-bold"
-                          style="padding-bottom: 5px"
-                        >
+                        <h5 class="m-1 font-weight-bold" style="padding-bottom: 5px">
                           {{ gas_ConsumedGL | number: "1.2-2" }} GL
                         </h5>
                       </div>
@@ -160,10 +104,7 @@
                         <h5 class="m-1 font-weight-bold">
                           {{ def_ConsumedLTR | number: "1.2-2" }} LTR
                         </h5>
-                        <h5
-                          class="m-1 font-weight-bold"
-                          style="padding-bottom: 5px"
-                        >
+                        <h5 class="m-1 font-weight-bold" style="padding-bottom: 5px">
                           {{ def_ConsumedGL | number: "1.2-2" }} GL
                         </h5>
                       </div>
@@ -209,70 +150,25 @@
             <div class="card">
               <section class="m-2">
                 <div class="row mb-3">
-                  <div
-                    class="col-lg-12"
-                    style="height: calc(111vh - 149px); overflow-y: scroll"
-                  >
+                  <div class="col-lg-12" style="height: calc(111vh - 149px); overflow-y: scroll">
                     <div class="bg-white p-3 text-dark">
-                      <p-table
-                        #dt
-                        [value]="fuelList"
-                        [resizableColumns]="true"
-                        columnResizeMode="expand"
-                        scrollDirection="both"
-                        [columns]="selectedColumns"
-                        [loading]="!loaded"
-                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                        [scrollable]="true"
-                        scrollHeight="100%"
-                      >
+                      <p-table #dt [value]="fuelList" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%" autoLayout="true" columnResizeMode="fit">
                         <!-- Caption template of data table -->
                         <ng-template pTemplate="caption">
-                          <div
-                            class="p-d-flex d-flex justify-content-between align-items-center"
-                          >
+                          <div class="p-d-flex d-flex justify-content-between align-items-center">
                             <div>
                               <h3 class="m-0">Fuel Summary</h3>
                             </div>
 
                             <div class="text-right">
-                              <span>Showing {{ fuelList.length }} entries</span>
+                              <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                               &nbsp;
-                              <button
-                                type="button"
-                                pButton
-                                (click)="refreshData()"
-                                pTooltip="Refresh"
-                                class="p-button-outlined mr-2"
-                                icon="fas fa-sync"
-                              ></button>
-                              <button
-                                pButton
-                                pRipple
-                                pTooltip="Clear Filter"
-                                class="p-button-outlined mr-2"
-                                (click)="clear(dt)"
-                                icon="pi pi-filter-slash"
-                              ></button>
+                              <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                              <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
 
-                              <button
-                                type="button"
-                                pButton
-                                pRipple
-                                class="p-button-outlined mr-2"
-                                icon="fas fa-regular fa-file-excel"
-                                (click)="csvExport()"
-                                pTooltip="Excel"
-                              ></button>
+                              <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="csvExport()" pTooltip="Excel"></button>
 
-                              <p-multiSelect
-                                [options]="dataColumns"
-                                [(ngModel)]="selectedColumns"
-                                optionLabel="header"
-                                selectedItemsLabel="{0} columns selected"
-                                [style]="{ minWidth: '200px' }"
-                                placeholder="Choose Columns"
-                              >
+                              <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                               </p-multiSelect>
                             </div>
                           </div>
@@ -280,32 +176,12 @@
                         <!-- Header template of DataTable -->
                         <ng-template pTemplate="header" let-columns>
                           <tr>
-                            <th
-                              *ngFor="let dataColumns of columns"
-                              [pSortableColumn]="dataColumns.field"
-                              pResizableColumn
-                            [ngStyle]="{ width: dataColumns.width }"
-                            >
+                            <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                               <span>
-                                <div
-                                  class="flex justify-content-center align-items-center"
-                                  alignFrozen="right"
-                                  pFrozenColumn
-                                  [frozen]="true"
-                                >
+                                <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
                                   {{ dataColumns.header }}
-                                  <p-sortIcon
-                                    [field]="dataColumns.field"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    [type]="dataColumns.type"
-                                    [field]="dataColumns.field"
-                                    matchMode="contains"
-                                    [showMatchModes]="false"
-                                    [showOperator]="false"
-                                    [showAddButton]="false"
-                                    display="menu"
-                                  >
+                                  <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                  <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
                                   </p-columnFilter>
                                 </div>
                               </span>
@@ -314,20 +190,10 @@
                         </ng-template>
 
                         <!-- Body Template of Data Table -->
-                        <ng-template
-                          pTemplate="body"
-                          let-fuelEntry
-                          let-columns="columns"
-                          let-rowIndex="rowIndex"
-                        >
+                        <ng-template pTemplate="body" let-fuelEntry let-columns="columns" let-rowIndex="rowIndex">
                           <tr>
-                            <td
-                              *ngFor="let dataColumns of columns"
-                              [ngStyle]="{ width: dataColumns.width }"
-                              style="height: 40px;
-                                cursor: pointer;"
-                              
-                            >
+                            <td *ngFor="let dataColumns of columns" style="height: 40px;
+                                cursor: pointer;">
                               <div [ngSwitch]="dataColumns.field">
                                 <span *ngSwitchCase="'data.useType'">
                                   {{
@@ -369,47 +235,31 @@
                                   </span>
                                 </span>
                                 <span *ngSwitchDefault>
-                                  {{ get(fuelEntry, dataColumns.field) }}</span
-                                >
+                                  {{ get(fuelEntry, dataColumns.field) }}</span>
                               </div>
                             </td>
                           </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage" let-columns>
-                          <div class="col-lg-12 mt-3 text-center">
+                          <td colspan="14" class="text-center">
+                            <br />
                             {{ dataMessage }}
-                            <br /><br />
-                          </div>
+                            <br /> <br />
+                          </td>
                         </ng-template>
                         <!-- Summary Section with Load More button -->
 
                         <ng-template pTemplate="summary" let-columns>
-                          <div
-                            class="col-lg-12 mt-3 text-center"
-                            *ngIf="
+                          <div class="col-lg-12 mt-3 text-center" *ngIf="
                               lastItemSK !== 'end' && fuelList.length !== 0
-                            "
-                          >
-                            <button
-                              type="button "
-                              (click)="onScroll()"
-                              class="btn btn-success btn-sm text-light"
-                            >
+                            ">
+                            <button type="button " (click)="onScroll()" class="btn btn-success btn-sm text-light">
                               Load More..
                             </button>
 
                             <br /><br />
                           </div>
-                          <div
-                            class="col-lg-12 mt-3 text-center"
-                            *ngIf="lastItemSK !== 'end'"
-                          >
-                            Total Records: {{ fuelList.length }}
-                          </div>
-                          <div
-                            class="col-lg-12 mt-3 text-center"
-                            *ngIf="lastItemSK === 'end'"
-                          >
+                          <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
                             Total Records: {{ fuelList.length }}
                           </div>
                         </ng-template>

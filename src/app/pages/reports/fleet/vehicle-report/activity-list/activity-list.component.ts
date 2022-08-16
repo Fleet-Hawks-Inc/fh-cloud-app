@@ -53,18 +53,18 @@ export class ActivityListComponent implements OnInit {
   _selectedColumns: any[];
   
   dataColumns = [
-    { width: '11.20%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
-    { width: '9%', field: 'VIN', header: 'VIN', type: "text" },
-    { width: '7%', field: 'startDate', header: 'Start Date', type: "text" },
-    { width: '6%', field: 'manufacturerID', header: 'Make', type: "text" },
-    { width: '6%', field: 'modelID', header: 'Model', type: "text" },
-    { width: '5%', field: 'year', header: 'Year', type: "text" },
-    { width: '10.50%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
-    { width: '7.50%', field: 'ownership', header: 'Ownership', type: "text" },
-    { width: '9.2%', field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
-    { width: '11.20%', field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
-    { width: '8.30%', field: 'plateNumber', header: 'Plate Number', type: "text" },
-    { width: '6%', field: 'currentStatus', header: 'Status', type: 'text' },
+    {  field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    {  field: 'VIN', header: 'VIN', type: "text" },
+    {  field: 'startDate', header: 'Start Date', type: "text" },
+    {  field: 'manufacturerID', header: 'Make', type: "text" },
+    {  field: 'modelID', header: 'Model', type: "text" },
+    {  field: 'year', header: 'Year', type: "text" },
+    {  field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    {  field: 'ownership', header: 'Ownership', type: "text" },
+    {  field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
+    {  field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    {  field: 'plateNumber', header: 'Plate Number', type: "text" },
+    {  field: 'currentStatus', header: 'Status', type: 'text' },
   ];
 
   constructor(private apiService: ApiService,

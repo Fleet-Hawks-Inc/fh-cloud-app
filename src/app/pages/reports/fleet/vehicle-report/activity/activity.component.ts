@@ -47,20 +47,20 @@ export class ActivityComponent implements OnInit {
     vehicleNo =''
     
       dataColumns = [
-        { width: '10%', field: 'vehNm', header: 'Vehicle', type: "text" },
-        { width: '10%', field: 'tripNo', header: 'Trip', type: "text" },
-        { width: '10%', field: 'orderName', header: 'Order', type: "text" },
-        { width: '10%', field: 'assetName', header: 'Assets', type: "text" },
-        { width: '22%', field: 'driverName', header: 'Drivers', type: "text" },
-        { width: '10%', field: 'locationCsv', header: 'Location', type: "text", display:"none" },
-        { width: '10%', field: 'dateCsv', header: 'Date', type: "text", display:"none" },
-        { width: '10%', field: 'usStateCsv', header: 'Province (US)', type: 'text',display:"none"  },
-        { width: '10%',field: 'usStateMilesCsv', header: 'US Miles', type: 'text',display:"none" },
-        { width: '10%',field: 'usMiles', header: 'US Total', type: "text" },
-        { width: '13%',field: 'canStateCsv', header: 'Province (Canada)', type: 'text',display:"none" },
-        { width: '10%',field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display:"none"},
-        { width: '14%',field: 'canMiles', header: 'Canada Total', type: "text" },
-        { width: '12%',field: 'miles', header: 'Total Miles', type: "text" },
+        {  field: 'vehNm', header: 'Vehicle', type: "text" },
+        {  field: 'tripNo', header: 'Trip', type: "text" },
+        {  field: 'orderName', header: 'Order', type: "text" },
+        {  field: 'assetName', header: 'Assets', type: "text" },
+        {  field: 'driverName', header: 'Drivers', type: "text" },
+        {  field: 'locationCsv', header: 'Location', type: "text", display:"none" },
+        {  field: 'dateCsv', header: 'Date', type: "text", display:"none" },
+        {  field: 'usStateCsv', header: 'Province (US)', type: 'text',display:"none"  },
+        {  field: 'usStateMilesCsv', header: 'US Miles', type: 'text',display:"none" },
+        {  field: 'usMiles', header: 'US Total', type: "text" },
+        {  field: 'canStateCsv', header: 'Province (Canada)', type: 'text',display:"none" },
+        {  field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display:"none"},
+        {  field: 'canMiles', header: 'Canada Total', type: "text" },
+        {  field: 'miles', header: 'Total Miles', type: "text" },
     ];
     
     constructor(private apiService: ApiService,
@@ -153,6 +153,7 @@ export class ActivityComponent implements OnInit {
         veh.canStateMiles = []
         veh.canStateMilesCsv = ''
         veh.vehNm = this.vehicleNo;
+        console.log('vName',veh.vehNm);
         for (let element of veh.getSingleVehicle) {
           veh.miles += Number(element.miles);
           veh.location.push(element.type + ': ' + element.location)
