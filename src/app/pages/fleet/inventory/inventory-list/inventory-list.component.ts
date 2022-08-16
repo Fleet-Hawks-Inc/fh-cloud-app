@@ -113,8 +113,6 @@ export class InventoryListComponent implements OnInit {
     _reqSelectedColumns: any[];
     get = _.get;
 
-
-   
         // columns of data table
     dataColumns = [
         { field: 'partNumber', header: 'Part#', type: "text" },
@@ -129,8 +127,8 @@ export class InventoryListComponent implements OnInit {
     ];
     reqDataColumns = [
         { field: 'partNumber', header: 'Part#', type: "text" },
-        { field: 'reqItemName', header: 'Item Name', type: "text" },
-        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'itemName', header: 'Item Name', type: "text" },
+        { field: 'vendorName', header: 'Vendor', type: "text" },
         { field: 'quantity', header: 'Quantity', type: "text" },
     ];
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
@@ -172,12 +170,6 @@ export class InventoryListComponent implements OnInit {
         //restore original order
         this._reqSelectedColumns = this.reqDataColumns.filter(col => val.includes(col));
     }
-    
-    
-    
-    
-
-
 
     getItemSuggestions = _.debounce(function (value, type) {
         if (value != '') {

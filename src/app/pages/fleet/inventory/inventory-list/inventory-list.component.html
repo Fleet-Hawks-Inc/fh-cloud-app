@@ -759,15 +759,18 @@
                               style="cursor: pointer"
                             >
                               <div [ngSwitch]="reqDataColumns.field">
-                                <span *ngSwitchCase="'reqItemName'">
-                                  <span>{{
-                                    allItems[reqItems.partNumber] | titlecase
-                                  }}</span>
+                                <span *ngSwitchCase="'itemName'">
+                                 {{
+                                    (get(reqItems, reqDataColumns.field)
+                                      ? get(reqItems, reqDataColumns.field)
+                                      : "-"
+                                    ) | titlecase
+                                  }}
                                 </span>
-                                <span *ngSwitchCase="'vendor'">
-                                  <span>{{
-                                    (vendors[reqItems.preferredVendorID]
-                                      ? vendors[reqItems.preferredVendorID]
+                                <span *ngSwitchCase="'vendorName'">
+                                  <span>  {{
+                                    (get(reqItems, reqDataColumns.field)
+                                      ? get(reqItems, reqDataColumns.field)
                                       : "-"
                                     ) | titlecase
                                   }}</span>
