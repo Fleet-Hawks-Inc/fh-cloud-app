@@ -713,7 +713,7 @@
             BOL/POD# : {{ bolNumber }}
           </p>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-7">
           <label class="control-label font-weight-bold text-lg-right pt-2"
             >Select Status</label
           >
@@ -728,26 +728,28 @@
             baseZIndex="1000"
           >
           </p-dropdown>
+        </div>
 
-          <button
-            type="button"
-            class="btn btn-default"
-            data-dismiss="modal"
-            style="margin-left: 100%; margin-top: -24%"
-            (click)="updateTripStatus(); display = false"
-          >
-            Close
-          </button>
+        <div class="col-lg-5 pt-2">
+          <div class="mt-1 pt-1">
+            <button
+              type="button"
+              class="btn btn-default btn-sm mt-4 mr-3"
+              data-dismiss="modal"
+              (click)="updateTripStatus(); display = false"
+            >
+              Close
+            </button>
 
-          <button
-            type="button"
-            class="btn btn-success"
-            [disabled]="statDisabled"
-            style="margin-left: 133%; margin-top: -39%"
-            (click)="updateTripStatus(); display = false"
-          >
-            Save
-          </button>
+            <button
+              type="button"
+              class="btn btn-success btn-sm mt-4"
+              [disabled]="statDisabled"
+              (click)="updateTripStatus(); display = false"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -82,7 +82,7 @@ export class ActivityListComponent implements OnInit {
   dataColumns = [
     { field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
     { field: 'VIN', header: 'VIN', type: "text" },
-    { field: 'assetType', header: 'Asset Type', type: "text" },
+    { field: 'astTyp', header: 'Asset Type', type: "text" },
     {field: 'manufacturer', header: 'Make', type: 'text' },
     { field: 'licencePlateNumber', header: 'License Plate Number', type: "text" },
     { field: 'year', header: 'Year', type: "text" },
@@ -194,6 +194,17 @@ export class ActivityListComponent implements OnInit {
         }
         this.allData = this.allData.concat(result.data)
         this.loaded = true;
+
+        for (let i = 0; i < this.allData.length; i++) {
+          const res: any = this.allData[i];
+          res.astTyp = '';
+          if(res.assetType){
+            res.astTyp = res.assetType.replace("_", " ")
+          }
+          
+
+        }
+
       }
 
     }

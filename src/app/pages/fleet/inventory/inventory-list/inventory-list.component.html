@@ -545,11 +545,8 @@
                                     get(exItems, dataColumns.field) | titlecase
                                   }}</span>
                                 </span>
-                                <span *ngSwitchCase="'unitcost'">
-                                  <span
-                                    >{{ exItems.cost }}
-                                    {{ exItems.costUnitType }}</span
-                                  >
+                                <span *ngSwitchCase="'unitCost'">
+                              {{ get(exItems, dataColumns.field) }}
                                 </span>
                                 <span *ngSwitchCase="'warehouseDetails'">
                                   <span>{{
@@ -634,7 +631,7 @@
                       aria-labelledby="reefer-tab"
                     >
                       <p-table
-                        #dt
+                        #rqt
                         [value]="requiredItems"
                         [resizableColumns]="true"
                         columnResizeMode="fit"
@@ -655,7 +652,7 @@
                               <h3 class="m-0">Inventory</h3>
                             </div>
                             <div class="text-right">
-                            <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
+                            <span>Showing {{rqt.filteredValue ? rqt.filteredValue.length : rqt.totalRecords}} of {{rqt.totalRecords}} Entries.</span>
                               &nbsp;
                               <button
                                 type="button"
@@ -688,7 +685,7 @@
                                 pTooltip="Clear Filter"
                                 class="p-button-outlined mr-2"
                                 icon="pi pi-filter-slash"
-                                (click)="clear(dt)"
+                                (click)="clear(rqt)"
                               ></button>
                               <button
                                 type="button"
@@ -696,7 +693,7 @@
                                 pRipple
                                 class="p-button-outlined mr-2"
                                 icon="fas fa-regular fa-file-excel"
-                                (click)="dt.exportCSV()"
+                                (click)="rqt.exportCSV()"
                                 pTooltip="Excel"
                               ></button>
                               <p-multiSelect

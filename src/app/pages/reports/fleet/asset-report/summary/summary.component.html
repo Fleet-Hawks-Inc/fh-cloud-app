@@ -308,15 +308,11 @@
                           <span> {{ get(asset, dataColumns.field) }}</span>
                         </span>
 
-                        <span *ngSwitchCase="'assetType'">
-                          <span>
-                            {{
-                              (asset.assetType
-                                ? asset.assetType.replace("_", " ")
-                                : "-"
-                              ) | titlecase
-                            }}
-                          </span>
+                        <span *ngSwitchCase="'astTyp'">
+                          <span> {{  (get(asset, dataColumns.field)
+                            ? get(asset, dataColumns.field)
+                            : "-"
+                          ) }}</span>
                         </span>
                         <span *ngSwitchCase="'assetDetails.manufacturer'">
                           <span>
@@ -359,11 +355,11 @@
 
                 <!-- Empty Template -->
                 <ng-template pTemplate="emptymessage" let-columns>
-                  <tr>
+                 
                     <td colspan="7" style = 'text-align: center;'>
                       {{ dataMessage }}
                     </td>
-                  </tr>
+                 
                 </ng-template>
                 <!-- Summary Section with Load More button -->
                 <ng-template pTemplate="summary" let-columns>
