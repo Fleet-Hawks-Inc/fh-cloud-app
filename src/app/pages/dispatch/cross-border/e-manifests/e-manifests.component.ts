@@ -41,7 +41,7 @@ export class EManifestsComponent implements OnInit {
     { width: '8%', field: 'shipments', header: 'Shipment#' },
     { width: '8%', field: 'shipTypes', header: 'Shipment Type' },
     { width: '13%', field: 'arrDateTime', header: 'Est. Arrival Date & Time' },
-    { width: '15%', field: 'portOfEntry', header: 'Canada Port of Entry' },
+    { width: '15%', field: 'POE', header: 'Canada Port of Entry' },
     { width: '15%', field: 'drivers', header: 'Drivers' },
     { width: '8%', field: 'truck', header: 'Truck' },
     { width: '10%', field: 'assets', header: 'Assets' },
@@ -425,7 +425,7 @@ export class EManifestsComponent implements OnInit {
         if (result.length > 0) {
           for (let i = 0; i < result.length; i++) {
             const element = result[i];
-            element.arrDateTime = `${element.estimatedArrivalDate} ${element.estimatedArrivalTime}`;
+            element.arrDateTime = `${element.arvDate} ${element.arvTime}`;
             element.drivers = element.drivers.toString().toUpperCase();
             element.assets = element.assets.toString().toUpperCase();
             element.shipments = element.shipments.toString().toUpperCase();
@@ -433,7 +433,7 @@ export class EManifestsComponent implements OnInit {
             element.shippers = element.shippers.toString().toUpperCase();
             element.receivers = element.receivers.toString().toUpperCase();
             element.status = element.status.replaceAll('_', ' ');
-            element.portOfEntry = `Code: ${element.portOfEntry}, Location: ${this.canadianPortsObjects[element.portOfEntry]}`;
+            element.POE = `Code: ${element.POE}, Location: ${this.canadianPortsObjects[element.POE]}`;
           }
           this.ACIList = result;
           this.loaded = true;
@@ -596,7 +596,7 @@ export class EManifestsComponent implements OnInit {
     }
   }
 
-  refreshData() {
+  refreshACE() {
     this.ACEList = [];
     this.lastEvaluatedKey = '';
     this.loaded = false;

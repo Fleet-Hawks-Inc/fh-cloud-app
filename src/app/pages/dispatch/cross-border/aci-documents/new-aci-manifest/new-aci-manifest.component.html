@@ -99,7 +99,7 @@
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input class="form-control" type="text" placeholder="yyyy/mm/dd" name="estimatedArrivalDate"
                           #Edate1="ngModel" required [(ngModel)]="estimatedArrivalDate" ngbDatepicker
-                          #d6="ngbDatepicker" (change)="onChangeHideErrors('estimatedArrivalDate')"
+                          #d6="ngbDatepicker" (change)="selectEstTime();onChangeHideErrors('estimatedArrivalDate')"
                           [minDate]="getcurrentDate" (click)="d6.toggle()" />
                         <div *ngIf="Edate1.invalid && (Edate1.dirty || Edate1.touched)" class="text-danger">
                           <div>
@@ -117,8 +117,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime"
-                          (change)="onChangeHideErrors('estimatedArrivalTime')" placeholder="Select estimated time"
-                          #Etime1="ngModel" required>'
+                          (change)="selectEstTime();onChangeHideErrors('estimatedArrivalTime')"
+                          placeholder="Select estimated time" #Etime1="ngModel" required>'
                           <ng-option *ngFor="let time of timeList" [value]="time.value">
                             {{time.description}}</ng-option>
                         </ng-select>
@@ -137,8 +137,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2"> ETA Time Zone<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select name="estimatedArrivalTimeZone" [(ngModel)]="estimatedArrivalTimeZone"
-                          (change)="onChangeHideErrors('estimatedArrivalTimeZone')" placeholder="Select time zone"
-                          #Ezone="ngModel" required>
+                          (change)="selectEstTime();onChangeHideErrors('estimatedArrivalTimeZone')"
+                          placeholder="Select time zone" #Ezone="ngModel" required>
                           <ng-option value="PST">Pacific Standard Time</ng-option>
                           <ng-option value="AST">Atlantic Standard Time</ng-option>
                           <ng-option value="CST">Central Standard Time</ng-option>

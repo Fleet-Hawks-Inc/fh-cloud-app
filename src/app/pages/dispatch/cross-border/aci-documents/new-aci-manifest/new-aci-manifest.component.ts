@@ -228,6 +228,7 @@ export class NewAciManifestComponent implements OnInit {
   createdTime: '';
   amendManifest = false;
   errorFastCard = false;
+  orgTripNumber: string;
   constructor(
     private httpClient: HttpClient,
     private HereMap: HereMapService,
@@ -857,6 +858,7 @@ export class NewAciManifestComponent implements OnInit {
         shipments: this.shipments,
       },
       currentStatus: 'DRAFT',
+      orgTripNumber: this.orgTripNumber
     };
     for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
       for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
@@ -972,6 +974,7 @@ export class NewAciManifestComponent implements OnInit {
             }
           }
           this.fetchAssetType();
+          this.orgTripNumber = result.orgTripNumber;
         }
       });
   }
@@ -1001,6 +1004,7 @@ export class NewAciManifestComponent implements OnInit {
 
       currentStatus: this.status,
       timeCreated: this.timeCreated,
+      orgTripNumber: this.orgTripNumber,
 
     };
     for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
@@ -1088,8 +1092,21 @@ export class NewAciManifestComponent implements OnInit {
       .remove('label');
   }
 
-  selectedCustomer(type: string, customerID: any, index: any) {
+  selectEstTime() {
+    this.shipments.forEach(elem => {
+      elem.estimatedArrivalDate = this.estimatedArrivalDate;
+      elem.estimatedArrivalTime = this.estimatedArrivalTime;
+      elem.estimatedArrivalTimeZone = this.estimatedArrivalTimeZone;
+    })
+  }
 
+  selectedCustomer(type: string, customerID: any, index: any) {
+    if (type === 'shipper') {
+      this.addresses[index]['shipAdrs'] = [];
+    }
+    if (type === 'receiver') {
+      this.addresses[index]['consAdrs'] = [];
+    }
     if (customerID != '' && customerID != undefined && customerID != null) {
       this.apiService
         .getData(`contacts/detail/${customerID}`)
@@ -1129,9 +1146,9 @@ export class NewAciManifestComponent implements OnInit {
 
   getAddressID(type: string, value: boolean, i: number, id: string) {
     if (value === true && type == 'shipper') {
-      this.shipments[i].shipperID = id;
+      this.shipments[i]['shipAdrsID'] = id;
     } else {
-      this.shipments[i].consigneeID = id;
+      this.shipments[i]['conAdrsID'] = id;
     }
   }
 }

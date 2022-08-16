@@ -12,7 +12,7 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
   styleUrls: ['./aci-details.component.css']
 })
 export class AciDetailsComponent implements OnInit {
-
+  trucksModel = false;
   public mID;
   title = 'ACI e-Manifest Details';
   data: string;
@@ -301,7 +301,7 @@ export class AciDetailsComponent implements OnInit {
         this.containers = result.containers,
           this.shipments = result.shipments;
         this.fetchLoadingStateCities(result.shipments);
-        this.status = result.status;
+        this.status = result.status.replaceAll('_', ' ');
         this.timeCreated = moment(result.timeCreated).format(`MMMM D YYYY, h:mm:ss a`);
         this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
         this.createdBy = result.createdBy;
@@ -439,9 +439,9 @@ export class AciDetailsComponent implements OnInit {
   }
   amendManifest() {
     const amend = true;
-    this.router.navigateByUrl('/dispatch/cross-border/ACI-edit-eManifest/' + this.mID + `?amendManifest=` + amend);
+    this.router.navigateByUrl('/dispatch/cross-border/aci-manifest/' + this.mID + `?amendManifest=` + amend);
   }
   cancelManifest(manifestID) {
-    this.apiService.getData(`eManifests/ACImanifest/cancelManifest/` + manifestID).subscribe();
+    this.apiService.getData(`eManifests/aci-cancel/` + manifestID).subscribe();
   }
 }

@@ -196,7 +196,7 @@
                         <div class="text-right">
                           <span>Showing {{ ACEList.length }} entries </span>
                           &nbsp;
-                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                          <button type="button" pButton (click)="refreshACE()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button type="button" pButton pTooltip="Add" [routerLink]="[
                               '/dispatch',
@@ -234,7 +234,7 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
                         <td *ngFor="let col of columns" style="cursor: pointer" [ngStyle]="{ width: col.width }"
-                          (click)="detailPage(rowData.mID)">
+                          (click)="detailPage('ace', rowData.mID)">
                           <div [ngSwitch]="col.field">
                             <span *ngSwitchCase="'tripNumber'">
                               <b> {{ get(rowData, col.field) }}</b>
@@ -327,8 +327,8 @@
                   </p-table>
                 </p-tabPanel>
                 <p-tabPanel header="ACI eManifest">
-                  <p-table #dt responsiveLayout="scroll" styleClass="p-datatable-md" [value]="ACEList"
-                    [columns]="ACE_Options" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
+                  <p-table #dt responsiveLayout="scroll" styleClass="p-datatable-md" [value]="ACIList"
+                    [columns]="ACI_Options" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
                     [scrollable]="true" [loading]="!loaded"
                     styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped" [scrollable]="true"
                     scrollHeight="100%">
@@ -340,9 +340,9 @@
                         </div>
 
                         <div class="text-right">
-                          <span>Showing {{ ACEList.length }} entries </span>
+                          <span>Showing {{ ACIList.length }} entries </span>
                           &nbsp;
-                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                          <button type="button" pButton (click)="refreshACI()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button type="button" pButton pTooltip="Add" [routerLink]="[
                               '/dispatch',
@@ -355,7 +355,7 @@
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
                             icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
 
-                          <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACE_Options" optionLabel="header"
+                          <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACI_Options" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns">
                           </p-multiSelect>
@@ -380,7 +380,7 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
                         <td *ngFor="let col of columns" style="cursor: pointer" [ngStyle]="{ width: col.width }"
-                          (click)="detailPage(rowData.mID)">
+                          (click)="detailPage('aci', rowData.mID)">
                           <div [ngSwitch]="col.field">
                             <span *ngSwitchCase="'tripNumber'">
                               <b> {{ get(rowData, col.field) }}</b>
@@ -394,7 +394,7 @@
                             <span *ngSwitchCase="'arrDateTime'">
                               <b> {{ get(rowData, col.field) | titlecase }}</b>
                             </span>
-                            <span *ngSwitchCase="'usPortOfArrival'">
+                            <span *ngSwitchCase="'POE'">
                               <b> {{ get(rowData, col.field) | titlecase }}</b>
                             </span>
                             <span *ngSwitchCase="'drivers'">
@@ -449,7 +449,7 @@
                             </button>
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
                               <ng-template pTemplate>
-                                <a routerLink="/dispatch/cross-border/ace-manifest/{{
+                                <a routerLink="/dispatch/cross-border/aci-manifest/{{
                                     rowData.mID
                                   }}" class="dropdown-item">Edit
                                 </a>
