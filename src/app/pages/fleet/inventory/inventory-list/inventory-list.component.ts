@@ -120,12 +120,12 @@ export class InventoryListComponent implements OnInit {
         { field: 'partNumber', header: 'Part#', type: "text" },
         { field: 'itemName', header: 'Item Name', type: "text" },
         { field: 'category', header: 'Category', type: "text" },
-        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'vendorName', header: 'Vendor', type: "text" },
         { field: 'unitCost', header: 'Unit Cost', type: "text" },
         { field: 'tax', header: 'Tax', type: "text" },
         { field: 'quantity', header: 'Quantity', type: "text" },
         { field: 'totalCost', header: 'Total Cost', type: "text" },
-        { field: 'warehouseDetails', header: 'Warehouse Details', type: "text" },
+        { field: 'wareName', header: 'Warehouse Details', type: "text" },
     ];
     reqDataColumns = [
         { field: 'partNumber', header: 'Part#', type: "text" },
@@ -137,12 +137,10 @@ export class InventoryListComponent implements OnInit {
 
     ngOnInit() {
         this.setToggleOptions();
-        this.fetchWarehouses();
         this.fetchAllItemsList();
         this.setreqToggleOptions();
         this.initDataTable();
         this.initDataTableRequired();
-        this.fetchVendors();
         this.listService.fetchVendors();
         this.disableButton();
         this.allVendors = this.listService.vendorList;
@@ -274,11 +272,7 @@ export class InventoryListComponent implements OnInit {
         }
     }
 
-    fetchVendors() {
-        this.apiService.getData(`contacts/get/list`).subscribe((result) => {
-            this.vendors = result;
-        });
-    }
+
 
 
 
@@ -288,11 +282,7 @@ export class InventoryListComponent implements OnInit {
 
     
 
-    fetchWarehouses() {
-        this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
-            this.warehouses = result;
-        });
-    }
+
 
     deleteItem(eventData) {
         if (confirm('Are you sure you want to delete?') === true) {

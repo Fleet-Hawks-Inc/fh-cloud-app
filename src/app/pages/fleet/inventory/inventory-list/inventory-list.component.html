@@ -524,11 +524,8 @@
                               }}"
                             >
                               <div [ngSwitch]="dataColumns.field">
-                                <span *ngSwitchCase="'vendor'">
-                                  <span>{{
-                                    vendors[exItems.warehouseVendorID]
-                                      | titlecase
-                                  }}</span>
+                                <span *ngSwitchCase="'vendorName'">
+                              {{get(exItems, dataColumns.field) | titlecase}}
                                 </span>
                                 <span *ngSwitchCase="'partNumber'">
                                   <span>{{
@@ -548,10 +545,8 @@
                                 <span *ngSwitchCase="'unitCost'">
                               {{ get(exItems, dataColumns.field) }}
                                 </span>
-                                <span *ngSwitchCase="'warehouseDetails'">
-                                  <span>{{
-                                    warehouses[exItems.warehouseID] | titlecase
-                                  }}</span>
+                                <span *ngSwitchCase="'wareName'">
+                                 {{get(exItems, dataColumns.field) | titlecase}}
                                 </span>
                                 <span *ngSwitchDefault>
                                   {{ get(exItems, dataColumns.field) }}</span
