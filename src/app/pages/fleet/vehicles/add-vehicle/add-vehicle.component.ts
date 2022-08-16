@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
 import * as moment from 'moment';
-import { ToastrService } from "ngx-toastr";
 import { from, Subject } from 'rxjs';
 import {
   map
@@ -303,7 +302,6 @@ export class AddVehicleComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private location: Location,
-    private toastr: ToastrService,
     private router: Router,
     private httpClient: HttpClient,
     private listService: ListService,
@@ -769,7 +767,7 @@ export class AddVehicleComponent implements OnInit {
             this.response = res;
             this.Success = "";
             this.submitDisabled = false;
-            this.toastr.success("Vehicle Added Successfully");
+            this.showVehAddMessage();
             this.router.navigateByUrl("/fleet/vehicles/list");
             this.dashboardUtilityService.refreshVehicles = true;
             this.dashboardUtilityService.refreshVehCount = true;
@@ -1425,6 +1423,9 @@ export class AddVehicleComponent implements OnInit {
             next: (res) => {
               this.submitDisabled = false;
               this.response = res;
+              if(!this.hosVehicleId){
+                this.cancel();
+              }
               this.updateVehEld()
               this.Success = "";
              this.showUpdateSuccess();
@@ -1515,7 +1516,7 @@ export class AddVehicleComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroupsList();
-        this.toastr.success("Group added successfully");
+        this.showGrpAddMessage();
         $("#addGroupModal").modal("hide");
         this.fetchGroupsList();
       },
@@ -1664,6 +1665,16 @@ showSuccess() {
 showUpdateSuccess() {
   this.messageService.add({severity:'success',
    summary: 'Success', detail: 'Vehicle updated successfully'});
+}
+
+showVehAddMessage() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Vehicle Added Successfully'});
+}
+
+showGrpAddMessage() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Group Added Successfully'});
 }
 
 updateVehEld(){

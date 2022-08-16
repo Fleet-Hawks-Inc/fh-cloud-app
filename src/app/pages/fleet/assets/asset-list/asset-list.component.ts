@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ApiService, DashboardUtilityService, ListService } from '../../../../services';
-import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
@@ -11,6 +10,7 @@ import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -134,12 +134,12 @@ export class AssetListComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService,
     private httpClient: HttpClient,
     private hereMap: HereMapService,
     private dashboardUtilityService: DashboardUtilityService,
     private listService: ListService,
-    private onboard: OnboardDefaultService) { }
+    private onboard: OnboardDefaultService,
+    private messageService: MessageService,) { }
 
   async ngOnInit(): Promise<void> {
     this.setToggleOptions();
@@ -292,7 +292,7 @@ export class AssetListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.initDataTable();
-        this.toastr.success('Asset Deleted Successfully!');
+        this.showAssetDelM();
       });
     }
 
@@ -406,7 +406,7 @@ export class AssetListComponent implements OnInit {
       }
     }
     else {
-      this.toastr.error("No Records found")
+      this.showCsvError();
     }
   }
 
@@ -472,4 +472,16 @@ export class AssetListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
+
+  showAssetDelM(){
+    this.messageService.add({severity:'success',
+    summary: 'Success', detail: 'Asset deleted successfully'});
+}
+showCsvError() {
+  this.messageService.add({
+      severity: 'error', summary: 'Error',
+      detail:'No Records found'
+  });
+}
+
 }

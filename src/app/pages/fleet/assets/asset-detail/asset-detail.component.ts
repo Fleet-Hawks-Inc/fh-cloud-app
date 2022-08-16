@@ -5,7 +5,6 @@ import { ColumnMode, SelectionType } from "@swimlane/ngx-datatable";
 import * as moment from "moment";
 
 import { NgxSpinnerService } from "ngx-spinner";
-import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/manage/constants";
@@ -227,7 +226,6 @@ export class AssetDetailComponent implements OnInit {
     sessionID: string;
 
     constructor(
-        private toastr: ToastrService,
         private domSanitizer: DomSanitizer,
         private apiService: ApiService,
         private route: ActivatedRoute,
@@ -452,7 +450,7 @@ export class AssetDetailComponent implements OnInit {
         if (!this.assetData.devices.includes(this.devices)) {
             this.assetData.devices.push(this.devices);
         } else {
-            this.toastr.error(`Device already selected`);
+            this.showDeviceSelectedM();
         }
         this.fetchDevicesByID();
     }
@@ -483,9 +481,9 @@ export class AssetDetailComponent implements OnInit {
                 },
                 next: (res) => {
                     if (this.messageStatus) {
-                        this.toastr.success("Device added successfully");
+                       this.showDeviceAddedM();
                     } else {
-                        this.toastr.success("Device removed successfully");
+                       this.showDeviceRemoveM();
                     }
                     $("#attachDeviceModal").modal("hide");
                 },
@@ -653,7 +651,7 @@ export class AssetDetailComponent implements OnInit {
     }
 
     updateEldAssetD() {
-        if(!this.hosAssetID){
+        if(this.hosAssetID !=0){
             this.assetObj = {
                 FhIdentifier: this.assetID,
                 AssetId : 0,
@@ -690,5 +688,20 @@ export class AssetDetailComponent implements OnInit {
     showSuccess() {
         this.messageService.add({severity:'success',
          summary: 'Success', detail: 'Asset added successfully in ELD'});
+    }
+
+    showDeviceAddedM(){
+        this.messageService.add({severity:'success',
+        summary: 'Success', detail: 'Device added successfully'});
+      }
+
+    showDeviceRemoveM(){
+        this.messageService.add({severity:'success',
+        summary: 'Success', detail: 'Device removed successfully'});
+    }
+
+    showDeviceSelectedM(){
+        this.messageService.add({severity: 'error',
+         summary: 'Error', detail: 'Device already selected'});
     }
 }

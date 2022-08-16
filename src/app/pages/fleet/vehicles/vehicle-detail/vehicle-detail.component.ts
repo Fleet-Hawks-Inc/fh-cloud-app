@@ -5,7 +5,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { ToastrService } from 'ngx-toastr';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../services';
@@ -264,7 +263,6 @@ export class VehicleDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private httpClient: HttpClient,
-        private toastr: ToastrService,
         private domSanitizer: DomSanitizer,
         private countryStateCity: CountryStateCityService,
         private modalService: NgbModal,
@@ -605,7 +603,7 @@ export class VehicleDetailComponent implements OnInit {
         this.apiService
             .deleteData("vehicles/" + this.vehicleID)
             .subscribe((result: any) => {
-                this.toastr.success("Vehicle Deleted Successfully!");
+                this.showVehDltMess();
                 this.router.navigateByUrl("/fleet/vehicles/list");
             });
     }
@@ -772,6 +770,11 @@ export class VehicleDetailComponent implements OnInit {
     showSuccess() {
         this.messageService.add({severity:'success',
          summary: 'Success', detail: 'Vehicle added successfully in ELD'});
+    }
+
+    showVehDltMess() {
+        this.messageService.add({severity:'success',
+         summary: 'Success', detail: 'Vehicle Deleted Successfully'});
     }
 
 }

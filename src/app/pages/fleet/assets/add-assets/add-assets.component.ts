@@ -16,7 +16,6 @@ import {
 import { from, Subject, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ModalService } from "../../../../services/modal.service";
-import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
@@ -236,7 +235,6 @@ export class AddAssetsComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private location: Location,
-    private toastr: ToastrService,
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
     private listService: ListService,
@@ -624,7 +622,7 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toastr.success("Asset added successfully.");
+        this.showAssetAddedM();
         this.dashboardUtilityService.refreshAssets = true;
         this.dashboardUtilityService.refreshAstCount = true;
         this.router.navigateByUrl(`/fleet/assets/list/${this.routerMgmtService.assetUpdated()}`);
@@ -990,6 +988,9 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        if(!this.assetsData.hosAssetID){
+          this.cancel();
+        }
         this.updateVehEld();
         this.hasSuccess = true;
         this.showUpdateSuccess();
@@ -1124,7 +1125,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroupsList();
-        this.toastr.success("Group added successfully.");
+        this.showGroupAddedM();
         $("#addGroupModal").modal("hide");
         this.groupData[`groupName`] = "";
         this.groupData[`groupMembers`] = [];
@@ -1255,6 +1256,15 @@ showUpdateSuccess() {
    summary: 'Success', detail: 'Asset updated successfully'});
 }
 
+showGroupAddedM(){
+  this.messageService.add({severity:'success',
+  summary: 'Success', detail: 'Group added successfully'});
+}
+showAssetAddedM(){
+  this.messageService.add({severity:'success',
+  summary: 'Success', detail: 'Asset added successfully'});
+}
+
 updateVehEld(){
   if(this.assetsData.hosAssetID > 0){
     this.assetObj = {
@@ -1274,7 +1284,7 @@ updateVehEld(){
         Asset: this.assetObj
       }).subscribe(result => {
         this.showSuccess()
-        return result
+        this.cancel();
       }, error => {
           console.log('error', error)
           this.showError(error)
