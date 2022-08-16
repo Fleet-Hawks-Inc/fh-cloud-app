@@ -5,116 +5,63 @@
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 9px">
             <div class="col-md-2 col-lg-2 pr-1">
-              <ng-select
-                [(ngModel)]="tripsFiltr.category"
-                name="category"
-                placeholder="Search by Category"
-                (change)="categoryChange($event)"
-              >
-                <ng-option
-                  *ngFor="let data of categoryFilter"
-                  value="{{ data.value }}"
-                >
+              <ng-select [(ngModel)]="tripsFiltr.category" name="category" placeholder="Search by Category"
+                (change)="categoryChange($event)">
+                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
                   {{ data.name }}
                 </ng-option>
               </ng-select>
             </div>
             <div class="col-md-2 col-lg-2 pr-1">
-              <div
-                class="input-group input-group-md mb-3"
-                *ngIf="
+              <div class="input-group input-group-md mb-3" *ngIf="
                   tripsFiltr.category != 'driver' &&
                   tripsFiltr.category != 'vehicle' &&
                   tripsFiltr.category != 'asset' &&
                   tripsFiltr.category != 'tripType' &&
                   tripsFiltr.category != 'orderNo' &&
                   tripsFiltr.category != 'tripStatus'
-                "
-              >
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search"
-                  name="searchValue"
-                  [(ngModel)]="tripsFiltr.searchValue"
-                />
+                ">
+                <input type="text" class="form-control" placeholder="Search" name="searchValue"
+                  [(ngModel)]="tripsFiltr.searchValue" />
               </div>
 
-              <ng-select
-                [(ngModel)]="tripsFiltr.searchValue"
-                name="searchValue"
-                placeholder="Search By Trip Type"
-                *ngIf="tripsFiltr.category == 'tripType'"
-              >
+              <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Trip Type"
+                *ngIf="tripsFiltr.category == 'tripType'">
                 <ng-option value="FTL"> FTL</ng-option>
                 <ng-option value="LTL"> LTL</ng-option>
               </ng-select>
 
-              <ng-select
-                [(ngModel)]="tripsFiltr.searchValue"
-                name="searchValue"
-                placeholder="Search By Trip Status"
-                *ngIf="tripsFiltr.category == 'tripStatus'"
-              >
-                <ng-option
-                  value="{{ data.value }}"
-                  *ngFor="let data of statusData"
-                >
+              <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Trip Status"
+                *ngIf="tripsFiltr.category == 'tripStatus'">
+                <ng-option value="{{ data.value }}" *ngFor="let data of statusData">
                   {{ data.name }}
                 </ng-option>
               </ng-select>
 
-              <ng-select
-                [(ngModel)]="tripsFiltr.searchValue"
-                name="searchValue"
-                placeholder="Select Driver"
-                *ngIf="tripsFiltr.category == 'driver'"
-              >
-                <ng-option
-                  value="{{ data.key }}"
-                  *ngFor="let data of driversObject | keyvalue"
-                >
+              <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Select Driver"
+                *ngIf="tripsFiltr.category == 'driver'">
+                <ng-option value="{{ data.key }}" *ngFor="let data of driversObject | keyvalue">
                   {{ data.value }}
                 </ng-option>
               </ng-select>
 
-              <ng-select
-                [(ngModel)]="tripsFiltr.searchValue"
-                name="searchValue"
-                placeholder="Select Vehicle"
-                *ngIf="tripsFiltr.category == 'vehicle'"
-              >
-                <ng-option
-                  value="{{ data.key }}"
-                  *ngFor="let data of vehiclesObject | keyvalue"
-                >
+              <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Select Vehicle"
+                *ngIf="tripsFiltr.category == 'vehicle'">
+                <ng-option value="{{ data.key }}" *ngFor="let data of vehiclesObject | keyvalue">
                   {{ data.value }}
                 </ng-option>
               </ng-select>
 
-              <ng-select
-                [(ngModel)]="tripsFiltr.searchValue"
-                name="searchValue"
-                placeholder="Select Asset"
-                *ngIf="tripsFiltr.category == 'asset'"
-              >
-                <ng-option
-                  value="{{ data.key }}"
-                  *ngFor="let data of assetsObject | keyvalue"
-                >
+              <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Select Asset"
+                *ngIf="tripsFiltr.category == 'asset'">
+                <ng-option value="{{ data.key }}" *ngFor="let data of assetsObject | keyvalue">
                   {{ data.value }}
                 </ng-option>
               </ng-select>
 
-              <input
-                *ngIf="tripsFiltr.category == 'orderNo'"
-                type="text"
-                autocomplete="off"
-                placeholder="Search By Order"
-                [(ngModel)]="tripsFiltr.searchValue"
-                name="searchValue"
-                class="form-control"
-              />
+              <input *ngIf="tripsFiltr.category == 'orderNo'" type="text" autocomplete="off"
+                placeholder="Search By Order" [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
+                class="form-control" />
             </div>
 
             <div class="col-lg-3 col-md-3 pr-1">
@@ -125,53 +72,23 @@
                   </span>
                 </span>
 
-                <input
-                  [(ngModel)]="tripsFiltr.startDate"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0"
-                >
+                <input [(ngModel)]="tripsFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
+                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
                 </span>
-                <input
-                  [(ngModel)]="tripsFiltr.endDate"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
+                <input [(ngModel)]="tripsFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                  (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
+                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
               </div>
             </div>
 
             <div class="col-md-2 col-lg-2">
-              <button
-                type="submit"
-                class="btn btn-sm btn-success mr-3"
-                (click)="filterTrips()"
-              >
+              <button type="submit" class="btn btn-sm btn-success mr-3" (click)="filterTrips()">
                 Search
               </button>
-              <button
-                type="submit"
-                class="btn btn-sm btn-success"
-                (click)="resetFilter()"
-              >
+              <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">
                 Reset
               </button>
             </div>
@@ -186,103 +103,51 @@
                 <div class="form-group row pt-1">
                   <div class="col-lg-12">
                     <div class="mb-3 pb-1">
-                      <ul
-                        class="nav nav-tabs mb-3 top-tabs"
-                        id="top-tabs"
-                        role="tablist"
-                        alignFrozen="right"
-                        pFrozenColumn
-                        [frozen]="true"
-                      >
+                      <ul class="nav nav-tabs mb-3 top-tabs" id="top-tabs" role="tablist" alignFrozen="right"
+                        pFrozenColumn [frozen]="true">
                         <li class="nav-item">
-                          <span
-                            class="nav-link navtabs"
-                            id="confirmed-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'confirmed' }"
-                          >
-                            Confirmed : {{ confirmedTrips.length }}</span
-                          >
+                          <span class="nav-link navtabs" id="confirmed-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'confirmed' }">
+                            Confirmed : {{ confirmedTrips.length }}</span>
                         </li>
                         <li class="nav-item">
-                          <span
-                            class="nav-link navtabs"
-                            id="dispatchedTrip-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'dispatched' }"
-                          >
-                            Dispatched : {{ dispatchedTrips.length }}</span
-                          >
+                          <span class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'dispatched' }">
+                            Dispatched : {{ dispatchedTrips.length }}</span>
                         </li>
                         <li class="nav-item">
-                          <span
-                            class="nav-link navtabs"
-                            id="started-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'started' }"
-                          >
-                            Started : {{ startedTrips.length }}</span
-                          >
+                          <span class="nav-link navtabs" id="started-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'started' }">
+                            Started : {{ startedTrips.length }}</span>
                         </li>
                         <li class="nav-item">
-                          <span
-                            class="nav-link navtabs"
-                            id="enroute-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'enroute' }"
-                          >
-                            En-Route : {{ enrouteTrips.length }}</span
-                          >
+                          <span class="nav-link navtabs" id="enroute-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'enroute' }">
+                            En-Route : {{ enrouteTrips.length }}</span>
                         </li>
                         <li class="nav-item navtabs">
-                          <span
-                            class="nav-link"
-                            id="delivered-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'delivered' }"
-                          >
-                            Delivered : {{ deliveredTrips.length }}</span
-                          >
+                          <span class="nav-link" id="delivered-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'delivered' }">
+                            Delivered : {{ deliveredTrips.length }}</span>
                         </li>
                         <li class="nav-item navtabs">
-                          <span
-                            class="nav-link"
-                            id="tonu-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'tonu' }"
-                          >
-                            TONU : {{ tonuTrips.length }}</span
-                          >
+                          <span class="nav-link" id="tonu-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'tonu' }">
+                            TONU : {{ tonuTrips.length }}</span>
                         </li>
                         <li class="nav-item">
-                          <span
-                            class="nav-link navtabs"
-                            id="cancelled-tab"
-                            href="javascript:;"
-                            [ngClass]="{ active: activeTab == 'cancelled' }"
-                          >
-                            Cancelled : {{ cancelledTrips.length }}</span
-                          >
+                          <span class="nav-link navtabs" id="cancelled-tab" href="javascript:;"
+                            [ngClass]="{ active: activeTab == 'cancelled' }">
+                            Cancelled : {{ cancelledTrips.length }}</span>
                         </li>
                       </ul>
                     </div>
-                    <p-table
-                      #dt
-                      [value]="trips"
-                      [resizableColumns]="true"
-                      columnResizeMode="expand"
-                      scrollDirection="both"
-                      [columns]="selectedColumns"
-                      [loading]="!loaded"
-                      styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                      [scrollable]="true"
-                      scrollHeight="100%"
-                    >
+                    <p-table #dt [value]="trips" [resizableColumns]="true" columnResizeMode="fit" scrollDirection="both"
+                      [columns]="selectedColumns" [loading]="!loaded" autolayout="true" dataKey="tripNo"
+                      styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%">
                       <!-- Caption template of data table -->
                       <ng-template pTemplate="caption">
-                        <div
-                          class="p-d-flex d-flex justify-content-between align-items-center"
-                        >
+                        <div class="p-d-flex d-flex justify-content-between align-items-center">
                           <div>
                             <h3 class="m-0">Trips</h3>
                           </div>
@@ -290,92 +155,43 @@
                           <div class="text-right">
                             <span>Showing {{ trips.length }} entries </span>
                             &nbsp;
-                            <button
-                              type="button"
-                              pButton
-                              (click)="refreshData()"
-                              pTooltip="Refresh"
-                              class="p-button-outlined mr-2"
-                              icon="fas fa-sync"
-                            ></button>
-                            <button
-                              type="button"
-                              pButton
-                              pTooltip="Add"
-                              routerLink="/dispatch/trips/add-trip"
-                              class="p-button-outlined mr-2"
-                              icon="pi pi-plus"
-                            ></button>
-                            <button
-                              pButton
-                              pRipple
-                              pTooltip="Clear Filter"
-                              class="p-button-outlined mr-2"
-                              icon="pi pi-filter-slash"
-                              (click)="clear(dt)"
-                            ></button>
+                            <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                              class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                            <button type="button" pButton pTooltip="Add" routerLink="/dispatch/trips/add-trip"
+                              class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                            <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                              icon="pi pi-filter-slash" (click)="clear(dt)"></button>
 
-                            <button
-                              type="button"
-                              pButton
-                              pRipple
-                              class="p-button-outlined mr-2"
-                              icon="fas fa-regular fa-file-excel"
-                              (click)="dt.exportCSV()"
-                              pTooltip="Excel"
-                            ></button>
+                            <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                              icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                           </div>
                         </div>
                       </ng-template>
                       <!-- Header template of DataTable -->
                       <ng-template pTemplate="header" let-columns>
                         <tr>
-                          <th
-                            *ngFor="let dataColumns of columns"
-                            [pSortableColumn]="dataColumns.field"
-                            pResizableColumn
-                            [ngStyle]="{ width: dataColumns.width }"
-                          >
+                          <th style="width: 50px" alignFrozen="left" pFrozenColumn [frozen]="true">
+                          </th>
+                          <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                            [ngStyle]="{ 'display': dataColumns.display}">
                             <span [ngSwitch]="dataColumns.field">
                               <span *ngSwitchCase="'orderType'">
-                                <div
-                                  class="flex justify-content-center align-items-center"
-                                  alignFrozen="left"
-                                  pFrozenColumn
-                                  [frozen]="true"
-                                >
+                                <div class="flex justify-content-center align-items-center" alignFrozen="left"
+                                  pFrozenColumn [frozen]="true">
                                   {{ dataColumns.header }}
                                   <p-sortIcon [field]="dataColumns.field">
                                   </p-sortIcon>
-                                  <p-columnFilter
-                                    [type]="dataColumns.type"
-                                    [field]="dataColumns.field"
-                                    [showOperator]="false"
-                                    [showMatchModes]="false"
-                                    matchMode="in"
-                                    [showAddButton]="false"
-                                    display="menu"
-                                  >
-                                    <ng-template
-                                      pTemplate="filter"
-                                      let-value
-                                      let-filter="filterCallback"
-                                    >
-                                      <p-multiSelect
-                                        [options]="ordtyp"
-                                        placeholder="Any"
-                                        (onChange)="filter($event.value)"
-                                        optionLabel="name"
-                                        optionValue="value"
-                                      >
-                                        <ng-template
-                                          let-option
-                                          pTemplate="item"
-                                        >
+                                  <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                    [showOperator]="false" [showMatchModes]="false" matchMode="in"
+                                    [showAddButton]="false" display="menu">
+                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                      <p-multiSelect [options]="ordtyp" placeholder="Any"
+                                        (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
+                                        <ng-template let-option pTemplate="item">
                                           <div>
                                             <span class="ml-1">{{
                                               option.name
-                                            }}</span>
+                                              }}</span>
                                           </div>
                                         </ng-template>
                                       </p-multiSelect>
@@ -384,44 +200,22 @@
                                 </div>
                               </span>
                               <span *ngSwitchCase="'tripStatus'">
-                                <div
-                                  class="flex justify-content-center align-items-center"
-                                  alignFrozen="left"
-                                  pFrozenColumn
-                                  [frozen]="true"
-                                >
+                                <div class="flex justify-content-center align-items-center" alignFrozen="left"
+                                  pFrozenColumn [frozen]="true">
                                   {{ dataColumns.header }}
                                   <p-sortIcon [field]="dataColumns.field">
                                   </p-sortIcon>
-                                  <p-columnFilter
-                                    [type]="dataColumns.type"
-                                    [field]="dataColumns.field"
-                                    [showOperator]="false"
-                                    [showMatchModes]="false"
-                                    matchMode="in"
-                                    [showAddButton]="false"
-                                    display="menu"
-                                  >
-                                    <ng-template
-                                      pTemplate="filter"
-                                      let-value
-                                      let-filter="filterCallback"
-                                    >
-                                      <p-multiSelect
-                                        [options]="statusData"
-                                        placeholder="Any"
-                                        (onChange)="filter($event.value)"
-                                        optionLabel="name"
-                                        optionValue="value"
-                                      >
-                                        <ng-template
-                                          let-option
-                                          pTemplate="item"
-                                        >
+                                  <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                    [showOperator]="false" [showMatchModes]="false" matchMode="in"
+                                    [showAddButton]="false" display="menu">
+                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                      <p-multiSelect [options]="statusData" placeholder="Any"
+                                        (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
+                                        <ng-template let-option pTemplate="item">
                                           <div>
                                             <span class="ml-1">{{
                                               option.name
-                                            }}</span>
+                                              }}</span>
                                           </div>
                                         </ng-template>
                                       </p-multiSelect>
@@ -430,67 +224,44 @@
                                 </div>
                               </span>
                               <span *ngSwitchDefault>
-                                <div
-                                  class="flex justify-content-center align-items-center"
-                                  alignFrozen="right"
-                                  pFrozenColumn
-                                  [frozen]="true"
-                                >
+                                <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                  pFrozenColumn [frozen]="true">
                                   {{ dataColumns.header }}
                                   <p-sortIcon [field]="dataColumns.field">
                                   </p-sortIcon>
-                                  <p-columnFilter
-                                    [type]="dataColumns.type"
-                                    [field]="dataColumns.field"
-                                    matchMode="contains"
-                                    [showMatchModes]="false"
-                                    [showOperator]="false"
-                                    [showAddButton]="false"
-                                    display="menu"
-                                  >
+                                  <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                    matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                    [showAddButton]="false" display="menu">
                                   </p-columnFilter>
                                 </div>
                               </span>
                             </span>
                           </th>
-                          <th
-                            style="width: 6%"
-                            alignFrozen="right"
-                            pFrozenColumn
-                            [frozen]="true"
-                          >
+                          <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">
                             Actions
                           </th>
                         </tr>
                       </ng-template>
-                      <ng-template
-                        pTemplate="body"
-                        let-trip
-                        let-columns="columns"
-                        let-rowIndex="rowIndex"
-                      >
-                        <tr>
-                          <td
-                            *ngFor="let dataColumns of columns"
-                            [ngStyle]="{ width: dataColumns.width }"
-                            style="cursor: pointer"
-                            routerLink="/dispatch/trips/trip-details//{{
+                      <ng-template pTemplate="body" let-trip let-columns="columns" let-rowIndex="rowIndex"
+                        let-expanded="expanded">
+                        <tr style="cursor: pointer">
+                          <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width: 3%">
+                            <button type="button" pButton [pRowToggler]="trip"
+                              class="p-button-text p-button-rounded p-button-plain" [icon]="
+                              expanded
+                                ? 'pi pi-chevron-down'
+                                : 'pi pi-chevron-right'
+                            "></button>
+                          </td>
+                          <td *ngFor="let dataColumns of columns" pResizableColumn
+                            [ngStyle]="{ 'display': dataColumns.display}" style="cursor: pointer" routerLink="/dispatch/trips/trip-details//{{
                               trip.tripID
-                            }}"
-                          >
-                            <div
-                              [ngSwitch]="dataColumns.field"
-                              style="text-transform: capitalize"
-                            >
-                              <span
-                                *ngSwitchCase="'tripNo'"
-                                class="font-weight-bold"
-                              >
+                            }}">
+                            <div [ngSwitch]="dataColumns.field" style="text-transform: capitalize">
+                              <span *ngSwitchCase="'tripNo'" class="font-weight-bold">
                                 {{ trip.tripNo }}
-                                <span
-                                  *ngIf="trip.split && trip.split.length > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.split && trip.split.length > 1"
+                                  class="badge badge-dark ng-star-inserted">
                                   +{{ trip.split.length - 1 }}
                                 </span>
                               </span>
@@ -500,15 +271,12 @@
                               </span>
 
                               <span *ngSwitchCase="'orderNames'">
-                                <span
-                                  *ngFor="
+                                <span *ngFor="
                                     let ordr of trip.orderNames;
                                     let $last = last
-                                  "
-                                >
+                                  ">
                                   {{ ordr }}
-                                  <span *ngIf="!$last" class="list-format"
-                                    >,
+                                  <span *ngIf="!$last" class="list-format">,
                                   </span>
                                 </span>
                               </span>
@@ -519,237 +287,196 @@
 
                               <span *ngSwitchCase="'pickupLocation'">
                                 {{ trip.pickupLocation }}
-                                <span
-                                  *ngIf="trip.pickupLocationCount > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted">
                                   +{{ trip.pickupLocationCount - 1 }}
                                 </span>
                               </span>
 
                               <span *ngSwitchCase="'dropLocation'">
                                 {{ trip.dropLocation }}
-                                <span
-                                  *ngIf="trip.dropLocationCount > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted">
                                   +{{ trip.dropLocationCount - 1 }}
                                 </span>
                               </span>
 
                               <span *ngSwitchCase="'vehicleNames'">
                                 {{ trip.vehicleNames[0] }}
-                                <span
-                                  *ngIf="trip.vehicleNames.length > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.vehicleNames.length > 1" class="badge badge-dark ng-star-inserted">
                                   +{{ trip.vehicleNames.length - 1 }}
                                 </span>
                               </span>
 
                               <span *ngSwitchCase="'assetNames'">
                                 {{ trip.assetNames[0] }}
-                                <span
-                                  *ngIf="trip.assetNames.length > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.assetNames.length > 1" class="badge badge-dark ng-star-inserted">
                                   +{{ trip.assetNames.length - 1 }}
                                 </span>
                               </span>
 
                               <span *ngSwitchCase="'driverNames'">
                                 {{ trip.driverNames[0] }}
-                                <span
-                                  *ngIf="trip.driverNames.length > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.driverNames.length > 1" class="badge badge-dark ng-star-inserted">
                                   +{{ trip.driverNames.length - 1 }}
                                 </span>
                               </span>
 
                               <span *ngSwitchCase="'carrierNames'">
                                 {{ trip.carrierNames[0] }}
-                                <span
-                                  *ngIf="trip.carrierIdCount > 1"
-                                  class="badge badge-dark ng-star-inserted"
-                                >
+                                <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted">
                                   +{{ trip.carrierIdCount - 1 }}
                                 </span>
                               </span>
 
                               <span *ngSwitchCase="'tripStatus'">
-                                <span
-                                  class="badge badge-dark p-1 text-capitalize"
-                                  *ngIf="!trip.stlLink"
-                                  >{{ trip.newStatus }}
+                                <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{
+                                  trip.newStatus }}
                                 </span>
-                                <span
-                                  class="badge badge-dark p-1 text-capitalize"
-                                  *ngIf="trip.stlLink"
-                                  >Settled</span
-                                >
+                                <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
                               </span>
                             </div>
                           </td>
-                          <td
-                            style="width: 6%; overflow: inherit !important"
-                            alignFrozen="right"
-                            pFrozenColumn
-                            [frozen]="true"
-                          >
+                          <td style="width: 6%; overflow: inherit !important" alignFrozen="right" pFrozenColumn
+                            [frozen]="true">
                             <div class="dropdown dropright">
-                              <button
-                                (click)="op.toggle($event)"
-                                pButton
-                                type="button"
-                                class="bg-transparent border-0"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-haspopup="true"
-                                id="dropdownMenuButton-{{ rowIndex }}"
-                                [disabled]="trip.disabledEdit"
-                                icon="fas fa-ellipsis-v"
-                                style="color: #000"
-                              ></button>
-                              <p-overlayPanel
-                                #op
-                                [showCloseIcon]="true"
-                                [style]="{ width: '160px' }"
-                              >
+                              <button (click)="op.toggle($event)" pButton type="button" class="bg-transparent border-0"
+                                data-toggle="dropdown" aria-expanded="false" aria-haspopup="true"
+                                id="dropdownMenuButton-{{ rowIndex }}" [disabled]="trip.disabledEdit"
+                                icon="fas fa-ellipsis-v" style="color: #000"></button>
+                              <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
                                 <ng-template pTemplate>
-                                  <a
-                                    class="dropdown-item"
-                                    *ngIf="!trip.canEdit"
-                                    routerLink="/dispatch/trips/edit-trip/{{
+                                  <a class="dropdown-item" *ngIf="!trip.canEdit" routerLink="/dispatch/trips/edit-trip/{{
                                       trip.tripID
-                                    }}"
-                                    >Edit</a
-                                  >
-                                  <a
-                                    class="dropdown-item"
-                                    *ngIf="trip.tripStatus === 'confirmed'"
-                                    href="javascript:;"
-                                    (click)="op.hide(); deleteTrip(trip)"
-                                    >Delete</a
-                                  >
-                                  <a
-                                    class="dropdown-item"
-                                    href="javascript:;"
-                                    *ngIf="trip.showStatus"
-                                    (click)="
+                                    }}">Edit</a>
+                                  <a class="dropdown-item" *ngIf="trip.tripStatus === 'confirmed'" href="javascript:;"
+                                    (click)="op.hide(); deleteTrip(trip)">Delete</a>
+                                  <a class="dropdown-item" href="javascript:;" *ngIf="trip.showStatus" (click)="
                                       op.hide();
                                       openStatusModal(trip.tripID, rowIndex)
-                                    "
-                                    >Update Status</a
-                                  >
-                                  <a
-                                    class="dropdown-item"
-                                    *ngIf="trip.canRecall"
-                                    routerLink="/dispatch/trips/edit-trip/{{
+                                    ">Update Status</a>
+                                  <a class="dropdown-item" *ngIf="trip.canRecall" routerLink="/dispatch/trips/edit-trip/{{
                                       trip.tripID
-                                    }}"
-                                    [queryParams]="{ state: 'recall' }"
-                                    >Recall</a
-                                  >
+                                    }}" [queryParams]="{ state: 'recall' }">Recall</a>
                                 </ng-template>
                               </p-overlayPanel>
                             </div>
                           </td>
                         </tr>
                       </ng-template>
-                      <ng-template pTemplate="emptymessage" let-columns>
-                        <div class="col-lg-12 mt-3 text-center">
-                          {{ dataMessage }} <br /><br />
-                        </div>
-                      </ng-template>
+                      <!-- <ng-template pTemplate="emptymessage" let-columns>
+                        <td colspan="10" class="text-center">
+                          <br />
+                          {{dataMessage}}
+                          <br /><br />
+                        </td>s
+                      </ng-template> -->
                       <ng-template pTemplate="summary" let-columns>
-                        <div
-                          class="col-lg-12 mt-3 text-center"
-                          *ngIf="
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="
                             lastEvaluatedKey !== 'end' && trips.length !== 0
-                          "
-                        >
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm text-light"
-                            (click)="onScroll()"
-                          >
+                          ">
+                          <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
                             Load More..
                           </button>
                         </div>
-                        <div
-                          class="col-lg-12 mt-3 text-center"
-                          *ngIf="lastEvaluatedKey === 'end'"
-                        >
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
                           Total Records: {{ trips.length }}
                         </div>
                       </ng-template>
+
+                      <ng-template pTemplate="rowexpansion" let-trip>
+                        <tr>
+                          <td colspan="6" class="p-0 custom-bg-light border-0">
+                            <div class="p-3" style="margin-left: 60px;">
+                              <p-table [value]="trip.tripPlanning"
+                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                                <ng-template pTemplate="header">
+                        <tr>
+                          <th class="border-0 p-0">Pickup Location</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-trip>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <b>
+                                <span *ngIf="trip.type ===  'Pickup'">
+                                  <span> {{trip.location}} <br></span>
+                                </span>
+                              </b>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
                     </p-table>
                   </div>
+                  </td>
+                  <td colspan="5" class="p-0 custom-bg-light border-0">
+                    <div class="p-3">
+                      <p-table [value]="trip.tripPlanning"
+                        styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th class="border-0 p-0">
+                              Drop Off Location
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-trip>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <b>
+                                  <span *ngIf="trip.type ===  'Delivery'">
+                                    {{trip.location}}<br>
+                                  </span>
+                                </b>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </td>
+                  </tr>
+                  </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </section>
   </div>
 </section>
+</section>
+</div>
+</section>
 
-<p-dialog
-  header="Update Trip Status"
-  [(visible)]="display"
-  [style]="{ width: '25vw', height: '37%' }"
->
+<p-dialog header="Update Trip Status" [(visible)]="display" [style]="{ width: '25vw', height: '37%' }">
   <div class="form-group row text-dark">
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12">
-          <label class="control-label font-weight-bold text-lg-right pt-2"
-            >Trip Information</label
-          >
+          <label class="control-label font-weight-bold text-lg-right pt-2">Trip Information</label>
           <p>
             Trip# : {{ tripNumber }} <br />
             BOL/POD# : {{ bolNumber }}
           </p>
         </div>
-        <div class="col-lg-7">
-          <label class="control-label font-weight-bold text-lg-right pt-2"
-            >Select Status</label
-          >
+        <div class="col-lg-8">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Select Status</label>
           <br />
-          <p-dropdown
-            [options]="statusData"
-            [(ngModel)]="tripStatus"
-            [style]="{ width: '90%' }"
-            optionLabel="name"
-            optionValue="value"
-            appendTo="body"
-            baseZIndex="1000"
-          >
+          <p-dropdown [options]="statusData" [(ngModel)]="tripStatus" [style]="{ width: '90%' }" optionLabel="name"
+            optionValue="value" appendTo="body" baseZIndex="1000">
           </p-dropdown>
-        </div>
 
-        <div class="col-lg-5 pt-2">
-          <div class="mt-1 pt-1">
-            <button
-              type="button"
-              class="btn btn-default btn-sm mt-4 mr-3"
-              data-dismiss="modal"
-              (click)="updateTripStatus(); display = false"
-            >
-              Close
-            </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 100%; margin-top: -24%"
+            (click)="updateTripStatus(); display = false">
+            Close
+          </button>
 
-            <button
-              type="button"
-              class="btn btn-success btn-sm mt-4"
-              [disabled]="statDisabled"
-              (click)="updateTripStatus(); display = false"
-            >
-              Save
-            </button>
-          </div>
+          <button type="button" class="btn btn-success" [disabled]="statDisabled"
+            style="margin-left: 133%; margin-top: -39%" (click)="updateTripStatus(); display = false">
+            Save
+          </button>
         </div>
       </div>
     </div>
@@ -757,12 +484,7 @@
 </p-dialog>
 
 <!-- confirmation modal -->
-<div
-  class="modal fade"
-  id="assignConfirmationModal"
-  role="dialog"
-  tabindex="-1"
->
+<div class="modal fade" id="assignConfirmationModal" role="dialog" tabindex="-1">
   <div class="modal-dialog" role="document" style="max-width: 500px">
     <div class="modal-content">
       <div class="modal-header">
@@ -777,27 +499,17 @@
             <div class="col-lg-12">
               <div class="row">
                 <div class="col-lg-12">
-                  <label class="control-label pt-2"
-                    >Do you want to cancel the associated order(s)?</label
-                  >
+                  <label class="control-label pt-2">Do you want to cancel the associated order(s)?</label>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-default"
-            (click)="cancelOrder('no')"
-          >
+          <button type="button" class="btn btn-default" (click)="cancelOrder('no')">
             No
           </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            (click)="cancelOrder('yes')"
-          >
+          <button type="button" class="btn btn-success" (click)="cancelOrder('yes')">
             Yes
           </button>
         </div>
