@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild ,Input } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from "ngx-toastr";
 import Constants from 'src/app/pages/fleet/constants';
@@ -6,6 +6,8 @@ import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
 import { DashboardUtilityService } from 'src/app/services/dashboard-utility.service';
 import * as html2pdf from "html2pdf.js";
+import * as _ from "lodash";
+import { Table } from "primeng/table";
 
 @Component({
   selector: 'app-employer-pay',
@@ -41,12 +43,53 @@ export class EmployerPayComponent implements OnInit {
   modelRef: any;
   pdfRecords = [];
   currentUser = '';
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   
   constructor(private toastr: ToastrService, private accountService: AccountService, private apiService: ApiService, private dashboardUtilityService: DashboardUtilityService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getCurrentuser();
+    this.dataColumns = [
+      { field: 'empID', header: 'Employee ID', type: "text" },
+      { field: 'empName', header: 'Employee Name', type: "text" },
+      { field: 'paymentNo', header: 'Payment ID', type: "text" },
+      { field: 'txnDate', header: 'Pay Date', type: "text" },
+      { field: 'fromDate', header: 'Pay Period', type: "text" },
+      { field: 'payMode', header: 'Payment Mode', type: "text" },
+      { field: 'payModeNo', header: 'Reference No.', type: "text" },
+      { field: 'taxdata.ei', header: 'EI', type: "text" },
+      { field: 'taxdata.cpp', header: 'CPP', type: "text" },
+      { field: 'taxdata.provincialTax', header: 'Pro Tax', type: "text" },
+      { field: 'taxdata.federalTax', header: 'Fed. Tax', type: "text" },
+      { field: 'taxdata.emplEI', header: 'Co. EI', type: "text" },
+      { field: 'taxdata.emplCPP', header: 'Co. CPP', type: "text" },
+      { field: 'finalTotal', header: 'Gross', type: "text" },
+      { field: 'cra', header: 'Pay CRA', type: "text" },
+
+
+
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
   }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  
+  }
+  
 
   onScroll() {
     if (this.loaded) {
@@ -261,4 +304,7 @@ export class EmployerPayComponent implements OnInit {
       const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
       this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;
   };
+  clear(table: Table) {
+    table.clear();
+  }
 }
