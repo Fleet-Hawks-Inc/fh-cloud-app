@@ -8,12 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import * as _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { ApiService, DashboardUtilityService, HereMapService, ListService } from '../../../../services';
 import { OnboardDefaultService } from '../../../../services/onboard-default.service';
 import Constants from '../../constants';
 import { Subscription } from 'rxjs';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: 'app-vehicle-list',
@@ -112,8 +112,9 @@ export class VehicleListComponent implements OnInit {
     { field: 'isImport', header: 'Added By', type: "text" },
   ];
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
-    private onboard: OnboardDefaultService, private listService: ListService, private dashboardUtilityService: DashboardUtilityService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private spinner: NgxSpinnerService,
+    private onboard: OnboardDefaultService, private listService: ListService,
+    private messageService: MessageService, private dashboardUtilityService: DashboardUtilityService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
   }
 
 
@@ -418,7 +419,7 @@ export class VehicleListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.initDataTable();
-        this.toastr.success('Vehicle Deleted Successfully!');
+        this.showVehicleDltM();
       });
     }
   }
@@ -605,7 +606,7 @@ export class VehicleListComponent implements OnInit {
         this.modalService.dismissAll();
       }, 60000);
     } else {
-      this.toastr.error('Connection to DashCam failed.')
+      this.showConnectionFaildError();
     }
   }
 
@@ -624,4 +625,17 @@ export class VehicleListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
+
+  showVehicleDltM() {
+    this.messageService.add({severity:'success',
+     summary: 'Success', detail: 'Vehicle deleted successfully'});
+  }
+
+  showConnectionFaildError() {
+    this.messageService.add({
+        severity: 'error', summary: 'Error',
+        detail: 'Connection to DashCam failed.'
+    });
+}
+
 }
