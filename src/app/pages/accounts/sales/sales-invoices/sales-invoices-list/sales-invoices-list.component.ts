@@ -37,14 +37,14 @@ export class SalesInvoicesListComponent implements OnInit {
     this.fetchSales();
     this.fetchCustomersByIDs();
     this.dataColumns = [
-      { width: '8%', field: 'txnDate', header: 'Date', type: "text" },
-      { width: '10%', field: 'sInvNo', header: 'Sales Invoice#', type: "text" },
-      { width: '10%', field: 'sRef', header: 'Reference#', type: "text" },
-      { width: '13%', field: 'customerID', header: 'Customer', type: "text" },
-      { width: '8%', field: 'dueDate', header: 'Due Date', type: "text" },
-      { width: '15%', field: 'total.finalTotal', header: 'Amount', type: "text" },
-      { width: '15%', field: 'payStatus', header: 'Payment Status', type: "text" },
-      { width: '15%', field: 'status', header: 'Status', type: "text" },
+      {field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'sInvNo', header: 'Sales Invoice#', type: "text" },
+      { field: 'sRef', header: 'Reference#', type: "text" },
+      { field: 'customerID', header: 'Customer', type: "text" },
+      {field: 'dueDate', header: 'Due Date', type: "text" },
+      { field: 'total.finalTotal', header: 'Amount', type: "text" },
+      { field: 'payStatus', header: 'Payment Status', type: "text" },
+      { field: 'status', header: 'Status', type: "text" },
     ];
 
 
