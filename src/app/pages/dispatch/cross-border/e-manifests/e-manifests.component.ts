@@ -156,27 +156,27 @@ export class EManifestsComponent implements OnInit {
     this.setToggleOptions()
   }
   setToggleOptions() {
-    this.selectedColumns = this.ACE_Options;
-    this.selectedColumns1 = this.ACI_Options;
+    this.aceColumns = this.ACE_Options;
+    this.aciColumns = this.ACI_Options;
   }
 
-  @Input() get selectedColumns(): any[] {
+  @Input() get aceColumns(): any[] {
     return this._selectedColumns;
   }
 
-  set selectedColumns(val: any[]) {
+  set aceColumns(val: any[]) {
     //restore original order
     this._selectedColumns = this.ACE_Options.filter(col => val.includes(col));
 
   }
 
-  @Input() get selectedColumns1(): any[] {
-    return this.selectedColumns1;
+  @Input() get aciColumns(): any[] {
+    return this._selectedColumns1;
   }
 
-  set selectedColumns1(val: any[]) {
+  set aciColumns(val: any[]) {
     //restore original order
-    this.selectedColumns1 = this.ACI_Options.filter(col => val.includes(col));
+    this._selectedColumns1 = this.ACI_Options.filter(col => val.includes(col));
 
   }
   fetchaceShipmentType() {

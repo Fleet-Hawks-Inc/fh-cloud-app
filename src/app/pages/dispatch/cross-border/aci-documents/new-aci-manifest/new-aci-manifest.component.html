@@ -14,11 +14,7 @@
             <div class="card-body">
               <form class="form-horizontal form-bordered" method="get" #aAci1="ngForm">
                 <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Start
-                      new ACI eManifest</label>
-                  </div>
+
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10">
@@ -44,17 +40,21 @@
                             </div>
                           </div>
                           <div class="col-lg-8 pl-0">
-                            <input type="text" class="form-control" name="tripNumber"
-                              placeholder="8 or 25 digits , eg. TEST0001 " [(ngModel)]="tripNumber" #TripNum1="ngModel"
-                              required pattern="^[A-Z0-9]{4,21}$">
+                            <ng-select name="tripNumber" [clearable]="false" placeholder="Search by trip"
+                              [(ngModel)]="tripNumber" #TripNum="ngModel">
+                              <ng-option *ngFor="let trip of trips" value="{{ trip.tripNo }}">
+                                {{ trip.tripNo }}
+                              </ng-option>
+                            </ng-select>
+
                             <div *ngIf="TripNum1.invalid && (TripNum1.dirty || TripNum1.touched)" class="text-danger">
                               <div *ngIf="TripNum1.errors.required">
                                 Trip number is required.
                               </div>
-                              <div *ngIf="TripNum1.errors.pattern">
+                              <!-- <div *ngIf="TripNum1.errors.pattern">
                                 Trip number must be of 4-21 alphanumeric with no spaces or special characters and
                                 letters must be upper case.
-                              </div>
+                              </div> -->
                             </div>
                           </div>
                         </div>

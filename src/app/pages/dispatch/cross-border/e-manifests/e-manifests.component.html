@@ -209,7 +209,7 @@
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
                             icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
 
-                          <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACE_Options" optionLabel="header"
+                          <p-multiSelect [options]="aceColumns" [(ngModel)]="ACE_Options" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns">
                           </p-multiSelect>
@@ -355,7 +355,7 @@
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
                             icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
 
-                          <p-multiSelect [options]="selectedColumns" [(ngModel)]="ACI_Options" optionLabel="header"
+                          <p-multiSelect [options]="aciColumns" [(ngModel)]="ACI_Options" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns">
                           </p-multiSelect>

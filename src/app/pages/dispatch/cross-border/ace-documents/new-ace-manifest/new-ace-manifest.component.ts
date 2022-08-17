@@ -261,8 +261,8 @@ export class NewAceManifestComponent implements OnInit {
   }
 
   fetchTrips() {
-    this.apiService.getData("common/get/manifests").subscribe((result: any) => {
-      this.trips = result;
+    this.apiService.getData("trips/get/manifests").subscribe((result: any) => {
+      this.trips = result.Items;
     });
   }
 
@@ -1251,9 +1251,9 @@ export class NewAceManifestComponent implements OnInit {
 
   getAddressID(type: string, value: boolean, i: number, id: string) {
     if (value === true && type == 'shipper') {
-      this.shipments[i].shipperID = id;
+      this.shipments[i]['shipAdrsID'] = id;
     } else {
-      this.shipments[i].consigneeID = id;
+      this.shipments[i]['conAdrsID'] = id;
     }
   }
 

@@ -118,6 +118,7 @@ export class NewAciManifestComponent implements OnInit {
       consAdrs: []
     }
   ];
+  trips = [];
   shipments = [
     {
       shipmentType: 'PARS',
@@ -280,6 +281,12 @@ export class NewAciManifestComponent implements OnInit {
     await this.fetchCountries();
     this.fetchCarrier();
     this.fetchAssetType();
+    this.fetchTrips();
+    this.fetchJsonFiles();
+
+  }
+
+  fetchJsonFiles() {
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
       this.CANPorts = data;
     });
@@ -319,6 +326,7 @@ export class NewAciManifestComponent implements OnInit {
         this.countriesList = data;
       });
   }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -835,6 +843,12 @@ export class NewAciManifestComponent implements OnInit {
   }
   deleteShipment(i: number) {
     this.shipments.splice(i, 1);
+  }
+
+  fetchTrips() {
+    this.apiService.getData("trips/get/manifests").subscribe((result: any) => {
+      this.trips = result.Items;
+    });
   }
 
   addACIManifest() {

@@ -13,6 +13,9 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
 })
 export class AciDetailsComponent implements OnInit {
   trucksModel = false;
+  driversModel = false;
+  passengersModel = false;
+  shipmentsModel = false;
   public mID;
   title = 'ACI e-Manifest Details';
   data: string;
@@ -146,7 +149,7 @@ export class AciDetailsComponent implements OnInit {
     },
     {
       label: 'Change Trip and Shipments', icon: 'pi pi-send', command: () => {
-        this.sendCBSA();
+        this.amendManifest();
       }
     },
     {
@@ -159,18 +162,18 @@ export class AciDetailsComponent implements OnInit {
         this.cancelManifest(this.mID);
       }
     },
-    {
-      label: 'Send Trip Only(Shipments already on file or empty)', icon: 'pi pi-exclamation-circle', command: () => { },
-    },
-    {
-      label: 'Change Trip Only(Shipments will not be changed.If adding shipment,it must be on file)', icon: 'pi pi-exclamation-circle', command: () => { },
-    },
-    {
-      label: 'Amend Trip Only(Shipments will not be amended)', icon: 'pi pi-exclamation-circle', command: () => { },
-    },
-    {
-      label: 'Cancel Trip Only', icon: 'pi pi-exclamation-circle', command: () => { },
-    }
+    // {
+    //   label: 'Send Trip Only(Shipments already on file or empty)', icon: 'pi pi-exclamation-circle', command: () => { },
+    // },
+    // {
+    //   label: 'Change Trip Only(Shipments will not be changed.If adding shipment,it must be on file)', icon: 'pi pi-exclamation-circle', command: () => { },
+    // },
+    // {
+    //   label: 'Amend Trip Only(Shipments will not be amended)', icon: 'pi pi-exclamation-circle', command: () => { },
+    // },
+    // {
+    //   label: 'Cancel Trip Only', icon: 'pi pi-exclamation-circle', command: () => { },
+    // }
   ];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService,
     private router: Router, private httpClient: HttpClient,
@@ -378,6 +381,7 @@ export class AciDetailsComponent implements OnInit {
       notifyParties: fetchedShipmentData[0].notifyParties,
       commodities: fetchedShipmentData[0].commodities
     };
+    this.shipmentsModel = true;
   }
   async showDriverDetails(driverID: any) {
     const fetchedDriverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
@@ -398,6 +402,7 @@ export class AciDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
+    this.driversModel = true;
   }
   async showMainDriverDetails() {
     this.driverData = {
@@ -417,6 +422,7 @@ export class AciDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
+    this.driversModel = true;
   }
   async showPassengerDetails(passengerID: any) {
     const fetchedPassengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
@@ -436,6 +442,7 @@ export class AciDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
+    this.passengersModel = true;
   }
   amendManifest() {
     const amend = true;

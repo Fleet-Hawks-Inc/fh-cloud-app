@@ -45,8 +45,8 @@
                         <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
                         <ng-select name="tripNumber" [clearable]="false" placeholder="Search by trip"
                           [(ngModel)]="tripNumber" #TripNum="ngModel">
-                          <ng-option *ngFor="let trip of trips | keyvalue" value="{{ trip.value }}">
-                            {{ trip.value }}
+                          <ng-option *ngFor="let trip of trips" value="{{ trip.tripNo }}">
+                            {{ trip.tripNo }}
                           </ng-option>
                         </ng-select>
                         <!-- <input type="text" class="form-control" name="tripNumber" maxlength="21"
