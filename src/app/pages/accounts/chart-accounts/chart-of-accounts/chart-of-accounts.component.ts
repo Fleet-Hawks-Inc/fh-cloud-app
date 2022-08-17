@@ -549,6 +549,7 @@ export class ChartOfAccountsComponent implements OnInit {
       actName: null,
     };
     this.lastItemSK = "";
+    this.allAccounts = [];
     this.accounts = [];
     this.fetchAccounts();
   }
