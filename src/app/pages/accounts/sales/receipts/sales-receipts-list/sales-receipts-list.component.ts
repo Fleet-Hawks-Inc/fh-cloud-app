@@ -38,13 +38,13 @@ export class SalesReceiptsListComponent implements OnInit {
     this.fetchCustomersByIDs();
     this.fetchInvoicesByID();
     this.dataColumns = [
-      { width: '256px', field: 'txnDate', header: 'Date', type: "text" },
-      { width: '256px', field: 'sRPTNo', header: 'Payment#', type: "text" },
-      { width: '256px', field: 'customerID', header: 'Customer', type: "text" },
-      { width: '256px', field: 'payRef', header: 'Reference#', type: "text" },
-      { width: '256px', field: 'invoiceIds', header: 'Invoice#', type: "text" },
-      { width: '256px', field: 'payMode', header: 'Payment Mode', type: "text" },
-      { width: '256px', field: 'totalAmt', header: 'Amount', type: "text" },
+      { field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'sRPTNo', header: 'Payment#', type: "text" },
+      { field: 'customerID', header: 'Customer', type: "text" },
+      { field: 'payRef', header: 'Reference#', type: "text" },
+      { field: 'invoiceIds', header: 'Invoice#', type: "text" },
+      { field: 'payMode', header: 'Payment Mode', type: "text" },
+      { field: 'totalAmt', header: 'Amount', type: "text" },
     ];
 
 
