@@ -45,7 +45,6 @@
               </div>
             </div>
             <div class="col-md-2 col-lg-2 pr-0">
-              <div class="input-group input-group-sm mb-3">
                 <ng-select
                   [(ngModel)]="vendorID"
                   name="vendorID"
@@ -59,10 +58,8 @@
                     {{ data.companyName }}</ng-option
                   >
                 </ng-select>
-              </div>
             </div>
             <div class="col-md-2 col-lg-2 pr-0">
-              <div class="input-group input-group-sm mb-3">
                 <ng-select
                   [(ngModel)]="category"
                   name="category"
@@ -77,7 +74,6 @@
                   <ng-option value="fluids">Fluids</ng-option>
                   <ng-option value="miscellaneous">Miscellaneous</ng-option>
                 </ng-select>
-              </div>
             </div>
             <div class="col-md-2 col-lg-2">
               <button
@@ -95,36 +91,7 @@
                 Reset
               </button>
             </div>
-            <div class="col-md-4 col-lg-4 text-right pr-1">
-              <div class="btn-group flex-wrap ml-2">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-upload"></i> Export<span
-                    class="caret"
-                  ></span>
-                </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
-                    position: absolute;
-                    will-change: transform;
-                    top: 0px;
-                    left: 0px;
-                    transform: translate3d(0px, 38px, 0px);
-                  "
-                >
-                  <a class="dropdown-item text-1" (click)="existingCSV()"
-                    >CSV</a
-                  >
-                </div>
-              </div>
-            </div>
+           
           </div>
           <!-- For Required Inventory -->
           <div
@@ -197,34 +164,6 @@
               >
                 Reset
               </button>
-            </div>
-            <div class="col-md-6 col-lg-6 text-right pr-1">
-              <div class="btn-group flex-wrap ml-2">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-upload"></i>Export<span class="caret"></span>
-                </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
-                    position: absolute;
-                    will-change: transform;
-                    top: 0px;
-                    left: 0px;
-                    transform: translate3d(0px, 38px, 0px);
-                  "
-                >
-                  <a class="dropdown-item text-1" (click)="requiredCSV()"
-                    >CSV</a
-                  >
-                </div>
-              </div>
             </div>
           </div>
         </form>
@@ -319,9 +258,9 @@
                         [columns]="selectedColumns"
                         [loading]="!loaded"
                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                        [scrollable]="true"
-                        [loading]="!loaded"
                         scrollHeight="100%"
+                        autoLayout="true" 
+                        columnResizeMode="fit"
                       >
                         <!-- Caption template of data table -->
                         <ng-template pTemplate="caption">
@@ -332,8 +271,8 @@
                               <h3 class="m-0">Existing Inventory</h3>
                             </div>
                             <div class="text-right">
-                              <span>Showing {{ items.length }} entries </span>
-                              &nbsp;
+                               <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
+                          &nbsp;
                               <button
                                 type="button"
                                 pButton
@@ -378,7 +317,6 @@
                               *ngFor="let dataColumns of columns"
                               [pSortableColumn]="dataColumns.field"
                               pResizableColumn
-                              style="width: 14.5%"
                             >
                               <div [ngSwitch]="dataColumns.field">
                                 <span *ngSwitchDefault>
@@ -417,11 +355,7 @@
                           <tr>
                             <td
                               *ngFor="let dataColumns of columns"
-                              style="
-                                width: 14.5%;
-                                height: 40px;
-                                cursor: pointer;
-                              "
+                              style="height: 40px; cursor: pointer;"
                             >
                               <div [ngSwitch]="dataColumns.field">
                                 <span *ngSwitchCase="'partNumber'">
@@ -468,10 +402,11 @@
                         <!-- Empty Template -->
 
                         <ng-template pTemplate="emptymessage" let-columns>
-                          <div class="col-lg-12 mt-3 text-center">
-                            {{ dataMessage }}
-                            <br /><br />
-                          </div>
+                          <td colspan="7" class="text-center">
+                              <br />
+                              {{ dataMessage }}
+                              <br /> <br />
+                            </td>
                         </ng-template>
                         <!-- Summary Section with Load More button -->
 

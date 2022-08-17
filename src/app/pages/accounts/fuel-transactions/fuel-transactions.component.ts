@@ -53,7 +53,7 @@ export class FuelTransactionsComponent implements OnInit {
   vehicleIdentification = '';
   unitID = null;
   assetUnitID = null;
-  unitName: string; 
+  unitName: string;
   start: any = '';
   end: any = '';
   lastTimeCreated = ''
@@ -73,17 +73,17 @@ export class FuelTransactionsComponent implements OnInit {
   loaded = false;
   _selectedColumns: any[];
   dataColumns = [
-    { width: '12%', field: 'data.date', header: 'Date Time', type: "date" },
-    { width: '12%', field: 'data.cardNo', header: 'Fuel Card #', type: "text" },
-    { width: '12%', field: 'data.unitNo', header: 'Unit #', type: 'text' },
-    { width: '12%', field: 'data.useType', header: 'Use Type', type: 'text' },
-    { width: '12%', field: 'data.type', header: ' Type', type: 'text' },
-    { width: '12%', field: 'data.amt', header: 'Fuel Amount', type: 'text' },
-    { width: '12%', field: 'gst', header: 'GST', type: 'text' },
-    { width: '12%', field: 'data.site', header: 'Site', type: 'text' },
-    { width: '12%', field: 'data.city', header: 'Province', type: 'text' }
+    { field: 'data.date', header: 'Date Time', type: "date" },
+    { field: 'data.cardNo', header: 'Fuel Card #', type: "text" },
+    { field: 'data.unitNo', header: 'Unit #', type: 'text' },
+    { field: 'data.useType', header: 'Use Type', type: 'text' },
+    { field: 'data.type', header: ' Type', type: 'text' },
+    { field: 'data.amt', header: 'Fuel Amount', type: 'text' },
+    { field: 'gst', header: 'GST', type: 'text' },
+    { field: 'data.site', header: 'Site', type: 'text' },
+    { field: 'data.city', header: 'Province', type: 'text' }
   ];
-  accounts:any = {};
+  accounts: any = {};
   txnData = {
     drAccountID: null,
     crAccountID: null,
@@ -125,10 +125,10 @@ export class FuelTransactionsComponent implements OnInit {
       result[`Items`].forEach(element => {
         element.gst = '';
         element.pst = '';
-        if(element.data && element.data.tax) {
+        if (element.data && element.data.tax) {
           for (const iterator of element.data.tax) {
-            if(iterator.taxCode) {
-              if(iterator.taxCode === 'GST') {
+            if (iterator.taxCode) {
+              if (iterator.taxCode === 'GST') {
                 element.gst = iterator.amount;
               } else if (iterator.taxCode === 'PST') {
                 element.pst = iterator.amount;
@@ -136,7 +136,7 @@ export class FuelTransactionsComponent implements OnInit {
             }
           }
         }
-        
+
         element.selected = false;
         let date: any = moment(element.date)
         if (element.time) {
@@ -216,7 +216,7 @@ export class FuelTransactionsComponent implements OnInit {
     }
 
     for (const iterator of this.fuelList) {
-      if(iterator.selected && !fuelIds.includes(iterator.data.fuelID)) {
+      if (iterator.selected && !fuelIds.includes(iterator.data.fuelID)) {
         fuelIds.push(iterator.data.fuelID);
         let obj = {
           fuelID: iterator.data.fuelID,
@@ -227,20 +227,20 @@ export class FuelTransactionsComponent implements OnInit {
         this.txnData.fuelData.push(obj);
       }
     }
-    if(fuelIds.length > 0) {
+    if (fuelIds.length > 0) {
       $("#fuelTxnModel").modal("show");
     }
   }
 
   saveFuelTxn() {
-    if(this.txnData.drAccountID && this.txnData.crAccountID) {
-      if(this.txnData.drAccountID === this.txnData.crAccountID) {
+    if (this.txnData.drAccountID && this.txnData.crAccountID) {
+      if (this.txnData.drAccountID === this.txnData.crAccountID) {
         this.toaster.error("Please select different account for debit and credit. ");
         return false;
       }
       this.submitDisabled = true;
       this.accountService.postData("chartAc/add/fuel/txn", this.txnData, true).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -257,7 +257,7 @@ export class FuelTransactionsComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -271,7 +271,7 @@ export class FuelTransactionsComponent implements OnInit {
         },
       });
     }
-    
+
   }
 
   /**
@@ -317,7 +317,7 @@ export class FuelTransactionsComponent implements OnInit {
 
   }
   checkAcc() {
-    if(this.txnData.crAccountID === this.txnData.drAccountID) {
+    if (this.txnData.crAccountID === this.txnData.drAccountID) {
       this.txnData.drAccountID = null;
     }
   }
@@ -325,14 +325,14 @@ export class FuelTransactionsComponent implements OnInit {
   countSelection(index) {
     let count = 0;
     for (const iterator of this.fuelList) {
-      if(iterator.selected) {
+      if (iterator.selected) {
         count += 1;
       }
     }
-    if(count >= 2) {
+    if (count >= 2) {
       this.fuelList[index].selected = false;
     }
-    
+
   }
 
 }

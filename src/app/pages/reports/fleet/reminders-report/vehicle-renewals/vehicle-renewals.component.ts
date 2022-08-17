@@ -58,11 +58,11 @@ export class VehicleRenewalsComponent implements OnInit {
   find = _.find;
   
    dataColumns = [
-        { width: '7%', field: 'entityID', header: 'Vehicle', type: "text" },
-        { width: '7%', field: 'status', header: 'Vehicle Renewal Type', type: "text" },
-        { width: '7%', field: 'tasks.dueDate', header: 'Due Date', type: "text" },
-        { width: '7%', field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
-        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+        {  field: 'entityID', header: 'Vehicle', type: "text" },
+        {  field: 'status', header: 'Vehicle Renewal Type', type: "text" },
+        {  field: 'tasks.dueDate', header: 'Due Date', type: "text" },
+        {  field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+        {  field: 'subscribers', header: 'Subscribers', type: "text" },
     ];
 
   constructor(private apiService: ApiService, 

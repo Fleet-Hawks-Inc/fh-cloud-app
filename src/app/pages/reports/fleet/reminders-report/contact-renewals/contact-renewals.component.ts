@@ -55,11 +55,11 @@ export class ContactRenewalsComponent implements OnInit {
   find = _.find;
 
   dataColumns = [
-    { width: '7%', field: 'entityID', header: 'Contact', type: "text" },
-    { width: '7%', field: 'status', header: 'Contact Renewal Type', type: "text" },
-    { width: '7%', field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
-    { width: '7%', field: 'tasks.dueDate', header: 'Expiration Date', type: "text" },
-    { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+    { field: 'entityID', header: 'Contact', type: "text" },
+    { field: 'status', header: 'Contact Renewal Type', type: "text" },
+    { field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+    { field: 'tasks.dueDate', header: 'Expiration Date', type: "text" },
+    { field: 'subscribers', header: 'Subscribers', type: "text" },
   ];
 
   constructor(private listService: ListService,

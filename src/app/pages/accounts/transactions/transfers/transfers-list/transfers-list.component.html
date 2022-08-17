@@ -108,7 +108,7 @@
                       <tr>
                         <td *ngFor="let dataColumns of columns" style="cursor:pointer" [routerLink]="tranfer.url">
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'Transfer#'">
+                            <span *ngSwitchCase="'trNo'" class="font-weight-bold">
                               {{ tranfer[dataColumns.field] | titlecase }}
                             </span>
 

@@ -10,16 +10,10 @@
             <button class="btn btn-sm btn-success mr-3" (click)="openModal()">
               Service Log PDF
             </button>
-            <a
-              routerLink="/fleet/maintenance/service-log/edit/{{ logID }}"
-              class="btn btn-default btn-sm mr-2"
-              ><i class="fas fa-pencil-alt"></i> Edit Service Log</a
-            >
-            <a
-              routerLink="/fleet/maintenance/service-log/list/{{ logID }}"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> Service Logs List</a
-            >
+            <a routerLink="/fleet/maintenance/service-log/edit/{{ logID }}" class="btn btn-default btn-sm mr-2"><i
+                class="fas fa-pencil-alt"></i> Edit Service Log</a>
+            <a routerLink="/fleet/maintenance/service-log/list/{{ logID }}" class="btn btn-sm btn-default"><i
+                class="fas fa-list"></i> Service Logs List</a>
           </div>
         </div>
       </header>
@@ -39,10 +33,7 @@
                   </div>
                 </div>
                 <div style="width: 13%">
-                  <div
-                    class="text-center p-4 cerbor serviceboxh"
-                    *ngIf="logsData.unitType != 'asset'"
-                  >
+                  <div class="text-center p-4 cerbor serviceboxh" *ngIf="logsData.unitType != 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle
                     </p>
@@ -50,10 +41,7 @@
                       {{ vehiclesObject[vehicle] | titlecase }}
                     </p>
                   </div>
-                  <div
-                    class="text-center p-4 cerbor"
-                    *ngIf="logsData.unitType == 'asset'"
-                  >
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">Asset</p>
                     <p class="mb-0 text-3">
                       {{ assetsObject[assetID] | titlecase }}
@@ -61,10 +49,7 @@
                   </div>
                 </div>
                 <div style="width: 12%">
-                  <div
-                    class="text-center p-4 cerbor serviceboxh"
-                    *ngIf="logsData.unitType != 'asset'"
-                  >
+                  <div class="text-center p-4 cerbor serviceboxh" *ngIf="logsData.unitType != 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle plate no.
                     </p>
@@ -72,10 +57,7 @@
                       {{ vehiclePlateNo ? vehiclePlateNo : "-" }}
                     </p>
                   </div>
-                  <div
-                    class="text-center p-4 cerbor"
-                    *ngIf="logsData.unitType == 'asset'"
-                  >
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Asset plate no.
                     </p>
@@ -86,10 +68,7 @@
                   </div>
                 </div>
                 <div style="width: 13%">
-                  <div
-                    class="text-center p-4 cerbor serviceboxh"
-                    *ngIf="logsData.unitType != 'asset'"
-                  >
+                  <div class="text-center p-4 cerbor serviceboxh" *ngIf="logsData.unitType != 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle VIN
                     </p>
@@ -97,10 +76,7 @@
                       {{ vehicleVIN ? vehicleVIN : "-" }}
                     </p>
                   </div>
-                  <div
-                    class="text-center p-4 cerbor"
-                    *ngIf="logsData.unitType == 'asset'"
-                  >
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Asset VIN
                     </p>
@@ -126,9 +102,9 @@
                     </p>
                     <p class="mb-0 text-3">
                       {{
-                        completionDate
-                          ? (completionDate | date: "yyyy/MM/dd")
-                          : "-"
+                      completionDate
+                      ? (completionDate | date: "yyyy/MM/dd")
+                      : "-"
                       }}
                     </p>
                   </div>
@@ -148,7 +124,7 @@
                     </p>
                     <p class="mb-0 text-3">
                       {{
-                        (vendorID ? vendorsObject[vendorID] : "-") | titlecase
+                      (vendorID ? vendorsObject[vendorID] : "-") | titlecase
                       }}
                     </p>
                   </div>
@@ -163,16 +139,13 @@
               <div class="form-group row pt-1">
                 <div class="col-lg-12">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Issue Details</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Issue
+                    Details</label>
                 </div>
                 <div class="col-lg-12">
                   <div class="row mt-2">
                     <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-striped table-responsive-lg"
-                      >
+                      <table class="table table-bordered table-striped table-responsive-lg">
                         <thead>
                           <tr>
                             <th width="80%">Issue</th>
@@ -181,7 +154,7 @@
                         </thead>
                         <tbody>
                           <tr *ngIf="issuesObject.length == 0">
-                            <td colspan="2" style="text-align:center;">-</td>
+                            <td colspan="2" style="text-align:center;">{{noRecordMessage}}</td>
                           </tr>
                           <tr *ngFor="let data of issuesObject">
                             <td>{{ data.issueName | titlecase }}</td>
@@ -202,16 +175,13 @@
               <div class="form-group row pt-1">
                 <div class="col-lg-12">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Service Tasks</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                    Tasks</label>
                 </div>
                 <div class="col-lg-12">
                   <div class="row mt-2">
                     <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-striped table-responsive-lg"
-                      >
+                      <table class="table table-bordered table-striped table-responsive-lg">
                         <thead>
                           <tr>
                             <th width="80%">Task</th>
@@ -220,7 +190,7 @@
                         </thead>
                         <tbody>
                           <tr *ngIf="allServiceTasks?.length == 0">
-                            <td colspan="2" style="text-align:center;">-</td>
+                            <td colspan="2" style="text-align:center;">{{noRecordMessage}}</td>
                           </tr>
                           <tr *ngFor="let item of allServiceTasks">
                             <td>{{ item.taskName }}</td>
@@ -242,16 +212,13 @@
               <div class="form-group row pt-1">
                 <div class="col-lg-12">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Service Parts</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                    Parts</label>
                 </div>
                 <div class="col-lg-12">
                   <div class="row mt-2">
                     <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-striped table-responsive-lg"
-                      >
+                      <table class="table table-bordered table-striped table-responsive-lg">
                         <thead>
                           <tr>
                             <th width="20%">Items</th>
@@ -263,7 +230,7 @@
                         </thead>
                         <tbody>
                           <tr *ngIf="allServiceParts?.length == 0">
-                            <td colspan="5" style="text-align:center;">-</td>
+                            <td colspan="5" style="text-align:center;">{{noRecordMessage}}</td>
                           </tr>
                           <tr *ngFor="let item of allServiceParts">
                             <td>{{ item.partNumber }}</td>
@@ -288,9 +255,7 @@
               <div class="form-group row pt-1">
                 <div class="col-lg-12">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Description</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Description</label>
                   <p>
                     {{ description ? description : "-" }}
                   </p>
@@ -300,44 +265,25 @@
           </div>
         </div>
 
-        <div
-          class="row mb-3"
-          *ngIf="logImages?.length > 0 || logDocs?.length > 0"
-        >
+        <div class="row mb-3" *ngIf="logImages?.length > 0 || logDocs?.length > 0">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-1">
                 <div class="col-lg-6" *ngIf="logImages?.length > 0">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Photos</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Photos</label>
                   <div class="row">
-                    <div
-                      class="col-lg-4 mb-2"
-                      *ngFor="let item of logImages; let i = index"
-                    >
+                    <div class="col-lg-4 mb-2" *ngFor="let item of logImages; let i = index">
                       <div class="vehicle-photo-box">
-                        <img
-                          [src]="item.path"
-                          width="100%"
-                          class="img-fluid"
-                          style="height: 180px; object-fit: cover"
-                        />
+                        <img [src]="item.path" width="100%" class="img-fluid"
+                          style="height: 180px; object-fit: cover" />
                         <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                         <hr class="m-3" />
                         <div class="row">
                           <div class="col-lg-8">Image {{ i + 1 }}</div>
                           <div class="col-lg-4 text-right">
-                            <a
-                              href="javascript:;"
-                              (click)="delete('image', item.name, i)"
-                              class="modal-with-form"
-                            >
-                              <i
-                                class="fas fa-times text-danger"
-                                (click)="delete('image', item.name, i)"
-                              ></i>
+                            <a href="javascript:;" (click)="delete('image', item.name, i)" class="modal-with-form">
+                              <i class="fas fa-times text-danger" (click)="delete('image', item.name, i)"></i>
                             </a>
                           </div>
                         </div>
@@ -347,36 +293,18 @@
                 </div>
                 <div class="col-lg-6" *ngIf="logDocs?.length > 0">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Document(s)</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Document(s)</label>
                   <div class="row" *ngFor="let doc of logDocs; let d = index">
                     <div class="col-lg-9">
-                      <a
-                        href="javascript:;"
-                        href="{{ doc.path }}"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        (click)="setPDFSrc(doc.path)"
-                        >Document {{ d + 1 }}</a
-                      >
+                      <a href="javascript:;" href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
+                        (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                     </div>
                     <div class="col-lg-3 text-right">
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="delete('doc', doc.name, d)"
-                        ><i class="fas fa-trash-alt"></i
-                      ></a>
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="setPDFSrc(doc.path)"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                      >
-                        <i class="fas fa-eye"></i
-                      ></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                        (click)="delete('doc', doc.name, d)"><i class="fas fa-trash-alt"></i></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)"
+                        data-toggle="modal" data-target="#viewDocModal">
+                        <i class="fas fa-eye"></i></a>
                     </div>
                   </div>
                 </div>
@@ -391,9 +319,7 @@
                 <div class="col-lg-12">
                   <div class="row mt-2">
                     <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-striped table-responsive-lg"
-                      >
+                      <table class="table table-bordered table-striped table-responsive-lg">
                         <thead>
                           <tr>
                             <th>Sub Total:</th>
@@ -428,24 +354,13 @@
 </section>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div
-  class="modal fade"
-  id="viewDocModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="viewDocModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -471,20 +386,11 @@
 <ng-template #logModal let-modal>
   <div class="modal-body" id="log_wrap">
     <section class="cheque-wrapper" id="log_wrap">
-      <table
-        width="100%"
-        border="0"
-        align="center"
-        cellpadding="0"
-        cellspacing="0"
-      >
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
             <td width="50%">
-              <h3
-                class="text-dark font-bold"
-                style="font-size: 26px; margin-bottom: 5px"
-              >
+              <h3 class="text-dark font-bold" style="font-size: 26px; margin-bottom: 5px">
                 Service Log Details
               </h3>
             </td>
@@ -510,70 +416,44 @@
         </tbody>
       </table>
 
-      <table
-        width="100%"
-        class="table-bordered"
-        style="color: #000000; font-size: 13px; margin-bottom: 10px"
-        cellpadding="0"
-        cellspacing="0"
-      >
+      <table width="100%" class="table-bordered" style="color: #000000; font-size: 13px; margin-bottom: 10px"
+        cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
             <td class="p-2" style="width: 65%">
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span style="font-weight: 500; color: #000000"
-                  >Unit Type:-
+                <span style="font-weight: 500; color: #000000">Unit Type:-
                 </span>
                 {{ logsData.unitType | titlecase }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span
-                  *ngIf="logsData.unitType != 'asset'"
-                  style="font-weight: 500; color: #000000"
-                  >Vehicle:-
+                <span *ngIf="logsData.unitType != 'asset'" style="font-weight: 500; color: #000000">Vehicle:-
                 </span>
                 {{ vehiclesObject[vehicle] | titlecase }}
               </p>
-              <p
-                class="text-dark mb-0"
-                *ngIf="logsData.unitType != 'asset'"
-                style="font-weight: 600"
-              >
-                <span style="font-weight: 500; color: #000000"
-                  >Odometer Miles:-
+              <p class="text-dark mb-0" *ngIf="logsData.unitType != 'asset'" style="font-weight: 600">
+                <span style="font-weight: 500; color: #000000">Odometer Miles:-
                 </span>
                 {{ odometer ? odometer : "-" }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span
-                  *ngIf="logsData.unitType == 'asset'"
-                  style="font-weight: 500; color: #000000"
-                  >Asset:-
+                <span *ngIf="logsData.unitType == 'asset'" style="font-weight: 500; color: #000000">Asset:-
                 </span>
                 {{ assetsObject[assetID] }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span
-                  *ngIf="logsData.unitType != 'asset'"
-                  style="font-weight: 500; color: #000000"
-                  >Vehicle Plate No.:-
+                <span *ngIf="logsData.unitType != 'asset'" style="font-weight: 500; color: #000000">Vehicle Plate No.:-
                 </span>
                 {{ vehiclePlateNo }}
               </p>
 
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span
-                  *ngIf="logsData.unitType == 'asset'"
-                  style="font-weight: 500; color: #000000"
-                  >Asset Plate No.:-
+                <span *ngIf="logsData.unitType == 'asset'" style="font-weight: 500; color: #000000">Asset Plate No.:-
                 </span>
                 {{ assetPlateNo }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span
-                  *ngIf="logsData.unitType == 'asset'"
-                  style="font-weight: 500; color: #000000"
-                  >Asset Vin:-
+                <span *ngIf="logsData.unitType == 'asset'" style="font-weight: 500; color: #000000">Asset Vin:-
                 </span>
                 {{ assetVin }}
               </p>
@@ -581,11 +461,10 @@
 
             <td class="p-2" style="width: 45%; vertical-align: top">
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span style="font-weight: 500; color: #000000"
-                  >Completion Date:-
+                <span style="font-weight: 500; color: #000000">Completion Date:-
                 </span>
                 {{
-                  completionDate ? (completionDate | date: "yyyy/MM/dd") : "-"
+                completionDate ? (completionDate | date: "yyyy/MM/dd") : "-"
                 }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
@@ -597,10 +476,7 @@
                 {{ vendorID ? vendorsObject[vendorID] : "-" }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
-                <span
-                  *ngIf="logsData.unitType != 'asset'"
-                  style="font-weight: 500; color: #000000"
-                  >Vehicle Vin:-
+                <span *ngIf="logsData.unitType != 'asset'" style="font-weight: 500; color: #000000">Vehicle Vin:-
                 </span>
                 {{ vehicleVIN }}
               </p>
@@ -610,20 +486,15 @@
       </table>
 
       <h5 style="color: #231f20"><b>Issue Details</b></h5>
-      <table
-        width="100%"
-        style="
+      <table width="100%" style="
           color: #000000;
           font-size: 13px;
           margin-bottom: 10px;
           border: 1px solid #999999;
-        "
-      >
+        ">
         <thead>
           <tr>
-            <td
-              width="65%"
-              style="
+            <td width="65%" style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -631,13 +502,10 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Issue:
             </td>
-            <td
-              width="35%"
-              style="
+            <td width="35%" style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -645,40 +513,31 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Assigned To
             </td>
           </tr>
         </thead>
         <tbody>
           <tr *ngIf="issuesObject?.length == 0">
-            <td
-              colspan=""
-              style="
+            <td colspan="" style="
                 padding-top: 10px;
                 padding-bottom: 10px;
                 text-align:center;
-              "
-            >
-            -
+              ">
+              -
             </td>
           </tr>
 
           <tr *ngFor="let data of issuesObject">
-            <td
-              height="25"
-              style="
+            <td height="25" style="
                 font-size: 13px;
                 border-right: 1px solid #999999;
                 padding-left: 10px;
-              "
-            >
+              ">
               {{ data.issueName | titlecase }}
             </td>
-            <td
-              style="font-size: 13px; padding-left: 10px; padding-right: 10px"
-            >
+            <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
               {{ users[data.assignedTo] | titlecase }}
             </td>
           </tr>
@@ -686,20 +545,15 @@
       </table>
 
       <h5 style="color: #231f20"><b>Service Tasks</b></h5>
-      <table
-        width="100%"
-        style="
+      <table width="100%" style="
           color: #000000;
           border: 1px solid #999999;
           font-size: 13px;
           margin-bottom: 10px;
-        "
-      >
+        ">
         <thead>
           <tr>
-            <td
-              width="65%"
-              style="
+            <td width="65%" style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -707,13 +561,10 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Task
             </td>
-            <td
-              width="35%"
-              style="
+            <td width="35%" style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -721,35 +572,26 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Total
             </td>
           </tr>
         </thead>
         <tbody>
           <tr *ngIf="allServiceTasks?.length == 0">
-            <td
-              colspan=""
-              style="padding-top: 10px; padding-bottom: 10px; text-align:center;"
-            >
-             -
+            <td colspan="" style="padding-top: 10px; padding-bottom: 10px; text-align:center;">
+              -
             </td>
           </tr>
           <tr *ngFor="let data of allServiceTasks">
-            <td
-              height="25"
-              style="
+            <td height="25" style="
                 font-size: 13px;
                 border-right: 1px solid #999999;
                 padding-left: 10px;
-              "
-            >
+              ">
               {{ data.taskName | titlecase }}
             </td>
-            <td
-              style="font-size: 13px; padding-left: 10px; padding-right: 10px"
-            >
+            <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
               {{ data.laborCost }} {{ currency }}
             </td>
           </tr>
@@ -758,32 +600,24 @@
 
       <h5 style="color: #231f20"><b>Service Part</b></h5>
 
-      <table
-        width="100%"
-        style="
+      <table width="100%" style="
           color: #000000;
           border: 1px solid #999999;
           font-size: 13px;
           margin-bottom: 10px;
-        "
-      >
+        ">
         <thead>
           <tr>
-            <td
-              width="65%"
-              style="
+            <td width="65%" style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
                 padding-left: 10px;
                 padding-right: 10px;
-              "
-            >
+              ">
               Items
             </td>
-            <td
-              width="35%"
-              style="
+            <td width="35%" style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -791,40 +625,31 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Total
             </td>
           </tr>
         </thead>
         <tbody>
           <tr *ngIf="allServiceParts?.length == 0">
-            <td
-              colspan=""
-              style="padding-top: 10px; padding-bottom: 10px; text-align:center;"
-            >
-            -
+            <td colspan="" style="padding-top: 10px; padding-bottom: 10px; text-align:center;">
+              -
             </td>
           </tr>
           <tr *ngFor="let data of allServiceParts">
-            <td
-              height="25"
-              style="
+            <td height="25" style="
                 font-size: 13px;
                 border-right: 1px solid #999999;
                 padding-left: 10px;
-              "
-            >
+              ">
               {{ data.partNumber | titlecase }}
             </td>
-            <td
-              style="
+            <td style="
                 font-size: 13px;
                 border-right: 1px solid #999999;
                 padding-left: 10px;
                 padding-right: 10px;
-              "
-            >
+              ">
               {{ data.partCost }} {{ currency }}
             </td>
           </tr>
@@ -832,15 +657,12 @@
       </table>
 
       <h5 style="color: #231f20"><b> Description</b></h5>
-      <table
-        width="100%"
-        style="
+      <table width="100%" style="
           color: #000000;
           border: 1px solid #999999;
           font-size: 13px;
           margin-bottom: 10px;
-        "
-      >
+        ">
         <div class="row">
           <div class="col-lg-12">
             <div class="bg-white p-1 text-dark">
@@ -856,30 +678,21 @@
         </div>
       </table>
 
-      <table
-        width="100%"
-        style="
+      <table width="100%" style="
           color: #000000;
           border: 1px solid #999999;
           font-size: 13px;
           margin-bottom: 10px;
-        "
-        *ngIf="logImages?.length > 0 || logDocs?.length > 0"
-      >
+        " *ngIf="logImages?.length > 0 || logDocs?.length > 0">
         <div class="row">
           <div class="col-lg-12">
             <div class="bg-white p-2 text-dark">
               <div class="form-group row pt-1">
                 <div class="col-lg-12" *ngIf="logImages?.length > 0">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Photos</label
-                  >
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Photos</label>
                 </div>
-                <div
-                  class="col-lg-3 mb-2"
-                  *ngFor="let item of logImages; let i = index"
-                >
+                <div class="col-lg-3 mb-2" *ngFor="let item of logImages; let i = index">
                   <img [src]="item.path" class="img-fluid border p-2" />
                   <p class="mb-0 text-center text-dark font-weight-bold">
                     Image {{ i + 1 }}
@@ -892,20 +705,11 @@
               </div>
               <div class="col-lg-12" *ngIf="logDocs?.length > 0">
                 <label
-                  class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                  >Document(s)</label
-                >
+                  class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Document(s)</label>
                 <div *ngFor="let doc of logDocs; let d = index">
                   <div>
-                    <pdf-viewer
-                      src="{{ doc.path }}"
-                      [fit-to-page]="false"
-                      [show-all]="true"
-                      [render-text]="true"
-                      [original-size]="false"
-                      [autoresize]="true"
-                      style="max-width: 100%; display: block"
-                    >
+                    <pdf-viewer src="{{ doc.path }}" [fit-to-page]="false" [show-all]="true" [render-text]="true"
+                      [original-size]="false" [autoresize]="true" style="max-width: 100%; display: block">
                     </pdf-viewer>
                   </div>
                   <div class="row">
@@ -923,19 +727,15 @@
       </table>
 
       <h5 style="color: #231f20"><b> Total</b></h5>
-      <table
-        width="100%"
-        style="
+      <table width="100%" style="
           color: #000000;
           font-size: 13px;
           margin-bottom: 10px;
           border: 1px solid #999999;
-        "
-      >
+        ">
         <thead>
           <tr>
-            <td
-              style="
+            <td style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -943,12 +743,10 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Sub Total:
             </td>
-            <td
-              style="
+            <td style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -956,13 +754,11 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Taxes:
             </td>
 
-            <td
-              style="
+            <td style="
                 font-size: 13px;
                 background-color: #e8e8e8;
                 border: 1px solid #999999;
@@ -970,55 +766,43 @@
                 padding-right: 10px;
                 padding-bottom: 2px;
                 padding-top: 2px;
-              "
-            >
+              ">
               Grand Total:
             </td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td
-              height="25"
-              style="
+            <td height="25" style="
                 width: 35%;
                 font-size: 13px;
                 border-right: 1px solid #999999;
                 padding-left: 10px;
-              "
-            >
+              ">
               {{ (partsSubTotal + taskTotal).toFixed(2) }}
               {{ currency }}
             </td>
-            <td
-              style="
+            <td style="
                 width: 30%;
                 font-size: 13px;
                 padding-left: 10px;
                 padding-right: 10px;
-              "
-            >
+              ">
               {{ taxes ? taxes : "-" }}
             </td>
-            <td
-              height="25"
-              style="
+            <td height="25" style="
                 width: 35%;
                 font-size: 13px;
                 border-left: 1px solid #999999;
                 padding-left: 10px;
-              "
-            >
+              ">
               {{ finalTotal ? finalTotal : "-"
               }}<span *ngIf="finalTotal"> {{ currency }}</span>
             </td>
           </tr>
         </tbody>
       </table>
-      <table
-        width="100%"
-        style="color: #000000; font-size: 13px; margin-bottom: 10px"
-      >
+      <table width="100%" style="color: #000000; font-size: 13px; margin-bottom: 10px">
         <tr>
           <td colspan="2">
             <table border="0" align="center" cellpadding="0" cellspacing="0">
@@ -1026,11 +810,7 @@
                 <tr>
                   <td align="center">
                     <h2 class="LH20" style="font-size: 13px">Powered By</h2>
-                    <img
-                      src="../../../../../../assets/img/logo.png"
-                      width="207"
-                      height="28"
-                    />
+                    <img src="../../../../../../assets/img/logo.png" width="207" height="28" />
                   </td>
                 </tr>
               </tbody>
