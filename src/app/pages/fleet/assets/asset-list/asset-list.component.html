@@ -170,13 +170,11 @@
                               : "-"
                               }}
                             </span>
-                            <span *ngSwitchCase="'assetType'">
-                              {{
-                              (asset.assetType
-                              ? asset.assetType.replace("_", " ")
-                              : "-"
-                              ) | titlecase
-                              }}</span>
+                            
+                            <span *ngSwitchCase="'assetT'">
+                               {{ get(asset, dataColumns.field) | titlecase }}
+                              </span>
+                           
                             <span *ngSwitchCase="'manufacturer'">
                               {{
                               (asset.manufacturer ? asset.manufacturer : "-")

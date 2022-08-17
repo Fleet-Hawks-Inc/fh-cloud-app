@@ -117,7 +117,7 @@ export class AssetListComponent implements OnInit {
   dataColumns = [
     { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
     { field: 'VIN', header: 'VIN', type: "text" },
-    { field: 'assetType', header: 'Asset Type', type: "text" },
+    { field: 'assetT', header: 'Asset Type', type: "text" },
     { field: 'manufacturer', header: 'Make', type: "text" },
     { field: 'licencePlateNumber', header: 'Licence Plate Number', type: "text" },
     { field: 'year', header: 'Year', type: "text" },
@@ -146,7 +146,7 @@ export class AssetListComponent implements OnInit {
     this.setAssetOptions();
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-    await this.initDataTable();
+    this.initDataTable();
     this.fetchContacts();
     this.isSubscriptionsValid();
   }
@@ -329,15 +329,16 @@ export class AssetListComponent implements OnInit {
       this.loaded = true;
       this.isSearch = false;
       for(let res of result.data){
-          if(res.assetDetails.ownerShip === 'rented') {
-            res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
+          if(res.ownerShip === 'rented') {
+            res.comName = res.ownCname ? res.ownCname : "-" 
              }
-          if(res.assetDetails.ownerShip === 'leased') {
-           res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
+          if(res.ownerShip === 'leased') {
+           res.comName = res.ownCname ? res.ownCname : "-" 
              }
-          if(res.assetDetails.ownerShip === 'ownerOperator') {
-          res.comName = res.assetDetails.ownerOperator ? this.contactsObjects[res.assetDetails.ownerOperator] : "-"
-             }
+           if(res.ownerShip === 'ownerOperator') {
+           res.comName = res.ownerOperator ? this.contactsObjects[res.ownerOperator] : '-'
+        }
+       res.assetT = res.assetType ? res.assetType.replace("_", " ") : "-" 
         }
     }
   }
@@ -366,61 +367,6 @@ export class AssetListComponent implements OnInit {
       return false;
     }
   }
-
-
-  generateAssetsCSV() {
-    if (this.allData.length > 0) {
-    console.log(this.allData)
-      let dataObject = []
-      let csvArray = []
-      this.allData.forEach(element => {
-        let obj = {}
-        obj["Asset Name/Number"] = element.assetIdentification
-        obj["VIN"] = element.VIN
-        obj["Asset Type"] = element.assetType
-        obj["Make"] = element.manufacturer
-        obj["License Plate Number"] = element.licencePlateNumber
-        obj["Year"] = element.year
-        obj["ownerShip"] = element.ownerShip ? element.ownerShip : '-'
-        obj["Company Name"] = element.ownCname
-        obj["Annual Safety Date"] = element.annualSafetyDate
-        obj["Status"] = element.currentStatus
-        obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
-        if (element.ownerShip === 'ownerOperator') {
-          obj["Company Name"] = element.ownerOperator ? this.contactsObjects[element.ownerOperator] : ''
-        }
-        if (element.ownerShip === 'rented') {
-          obj["Company Name"] = element.ownCname ? element.ownCname : '-'
-        }
-        if (element.ownerShip === 'leased') {
-          obj["Company Name"] = element.ownCname ? element.ownCname : '-'
-        }
-        dataObject.push(obj)
-      });
-      let headers = Object.keys(dataObject[0]).join(',')
-      headers += '\n'
-      csvArray.push(headers)
-      dataObject.forEach(element => {
-        let obj = Object.values(element).join(',')
-        obj += '\n'
-        csvArray.push(obj)
-      });
-      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    }
-    else {
-      this.toastr.error("No Records found")
-    }
-  }
-
 
 
 /*
