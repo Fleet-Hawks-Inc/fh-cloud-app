@@ -41,12 +41,14 @@
                           </div>
                           <div class="col-lg-8 pl-0">
                             <ng-select name="tripNumber" [clearable]="false" placeholder="Search by trip"
-                              [(ngModel)]="tripNumber" #TripNum="ngModel">
+                              [(ngModel)]="tripNumber" #TripNum1="ngModel">
                               <ng-option *ngFor="let trip of trips" value="{{ trip.tripNo }}">
                                 {{ trip.tripNo }}
                               </ng-option>
                             </ng-select>
-
+                            <!-- <input type="text" class="form-control" name="tripNumber"
+                              placeholder="8 or 25 digits , eg. TEST0001 " [(ngModel)]="tripNumber" #TripNum1="ngModel"
+                              required pattern="^[A-Z0-9]{4,21}$"> -->
                             <div *ngIf="TripNum1.invalid && (TripNum1.dirty || TripNum1.touched)" class="text-danger">
                               <div *ngIf="TripNum1.errors.required">
                                 Trip number is required.
