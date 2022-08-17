@@ -234,8 +234,11 @@
                           <span> {{ get(asset, dataColumns.field) }}</span>
                         </span>
 
-                        <span *ngSwitchCase="'assetType'">
-                          <span> {{ get(asset, dataColumns.field) }}</span>
+                        <span *ngSwitchCase="'astTyp'">
+                          <span> {{  (get(asset, dataColumns.field)
+                            ? get(asset, dataColumns.field)
+                            : "-"
+                          ) }}</span>
                         </span>
                         <span *ngSwitchCase="'manufacturer'">
                           <span>
@@ -309,13 +312,12 @@
 
                 <!-- Empty Template -->
                 <ng-template pTemplate="emptymessage" let-columns>
-                  <tr>
-<td colspan="9" style = 'text-align: center;'>
-  {{ dataMessage }}
-</td>
-                  </tr>
-                  
-                   
+       
+                  <td colspan="9" style = 'text-align: center;'>
+                    <br />
+                    {{ dataMessage }}
+                  </td>
+        
                 </ng-template>
                 <!-- Summary Section with Load More button -->
                 <ng-template pTemplate="summary" let-columns>

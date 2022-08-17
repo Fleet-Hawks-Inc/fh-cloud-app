@@ -58,13 +58,13 @@ export class SalesOrderListComponent implements OnInit {
     this.fetchCustomersByIDs();
     this.fetchSales();
     this.dataColumns = [
-      { width: '10%', field: 'txnDate', header: 'Date', type: "text" },
-      { width: '12%', field: 'sOrNo', header: 'Sales Order#', type: "text" },
-      { width: '12%', field: 'sRef', header: 'Reference#', type: "text" },
-      { width: '15%', field: 'cusInfo.customerID', header: 'Customer', type: "text" },
-      { width: '15%', field: 'shipDate', header: 'Shipment Date', type: "text" },
-      { width: '15%', field: 'total.finalTotal', header: 'Amount', type: "text" },
-      { width: '15%', field: 'status', header: 'Status', type: "text" },
+      { field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'sOrNo', header: 'Sales Order#', type: "text" },
+      { field: 'sRef', header: 'Reference#', type: "text" },
+      { field: 'cusInfo.customerID', header: 'Customer', type: "text" },
+      { field: 'shipDate', header: 'Shipment Date', type: "text" },
+      { field: 'total.finalTotal', header: 'Amount', type: "text" },
+      { field: 'status', header: 'Status', type: "text" },
     ];
 
 

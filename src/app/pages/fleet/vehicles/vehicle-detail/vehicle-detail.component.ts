@@ -5,13 +5,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { ToastrService } from 'ngx-toastr';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../services';
 import Constants from '../../constants';
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
-
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 
@@ -234,7 +234,8 @@ export class VehicleDetailComponent implements OnInit {
         autoplay: true,
         autoplaySpeed: 5000,
     };
-
+    hosVehicleId = 0
+    vehicleObj = {}
 
 
     contactsObjects: any = {};
@@ -249,7 +250,7 @@ export class VehicleDetailComponent implements OnInit {
     groupsObjects: any = {};
     groupName: any = '';
     groupId: any = '';
-
+    stateCode = ''
     deviceInfo = {
         deviceType: '',
         deviceId: '',
@@ -262,12 +263,13 @@ export class VehicleDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private httpClient: HttpClient,
-        private toastr: ToastrService,
         private domSanitizer: DomSanitizer,
         private countryStateCity: CountryStateCityService,
         private modalService: NgbModal,
         private formBuilder: RxFormBuilder,
-        private routerMgmtService: RouteManagementServiceService
+        private routerMgmtService: RouteManagementServiceService,
+        private eldService: ELDService,
+        private messageService: MessageService,
     ) {
         this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
     }
@@ -386,6 +388,9 @@ export class VehicleDetailComponent implements OnInit {
             .getData("vehicles/" + this.vehicleID)
             .subscribe(async (vehicleResult: any) => {
                 vehicleResult = vehicleResult.Items[0];
+
+                this.hosVehicleId = vehicleResult.hosVehicleId
+                this.stateCode = vehicleResult.stateID;
 
                 // Check if DashCam is added to enable Share Live location button
                 if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
@@ -598,7 +603,7 @@ export class VehicleDetailComponent implements OnInit {
         this.apiService
             .deleteData("vehicles/" + this.vehicleID)
             .subscribe((result: any) => {
-                this.toastr.success("Vehicle Deleted Successfully!");
+                this.showVehDltMess();
                 this.router.navigateByUrl("/fleet/vehicles/list");
             });
     }
@@ -616,7 +621,7 @@ export class VehicleDetailComponent implements OnInit {
 
     deleteDocument(value: string, name: string, index: string) {
         this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-          if(value == 'image'){
+            if(value == 'image') {
                 this.slides = [];
                 this.uploadedDocs = result.Attributes.uploadedPhotos;
                 this.existingDocs = result.Attributes.uploadedPhotos;
@@ -627,8 +632,8 @@ export class VehicleDetailComponent implements OnInit {
                     }
                     this.slides.push(obj);
                 })
-          }
-          else if (value == 'doc') {
+            }
+            else if (value == 'doc') {
                 this.docs = [];
                 this.uploadedDocs = result.Attributes.uploadedDocs;
                 this.existingDocs = result.Attributes.uploadedDocs;
@@ -720,4 +725,56 @@ export class VehicleDetailComponent implements OnInit {
             });
         }
     }
+
+    updateEldVehicle() {
+        console.log('this.hosVehicleId-starting',this.hosVehicleId)
+        if(this.hosVehicleId != 0){
+            console.log('this.hosVehicleId-if',this.hosVehicleId)
+            this.vehicleObj = {
+                FhIdentifier: this.vehicleID,
+                AssetId : 0,
+                Number: this.vehicleIdentification,
+                HOSHomeBaseId: '18',
+                VIN: this.VIN,
+                Plate: this.plateNumber,
+                RegistrationState: this.stateCode,
+                Type: '0',
+                Active: '1'
+    
+            }
+        }
+      
+        this.eldService.postData("assets", {
+            Asset: this.vehicleObj
+        }).subscribe(
+            result => {
+                this.showSuccess();
+               this.getVehicle();
+            },
+            error => {
+                console.log('error', error)
+                this.showError(error);
+            });
+           
+        }
+       
+
+
+    showError(error: any) {
+        this.messageService.add({
+            severity: 'error', summary: 'Error',
+            detail: error.error.message
+        });
+    }
+
+    showSuccess() {
+        this.messageService.add({severity:'success',
+         summary: 'Success', detail: 'Vehicle added successfully in ELD'});
+    }
+
+    showVehDltMess() {
+        this.messageService.add({severity:'success',
+         summary: 'Success', detail: 'Vehicle Deleted Successfully'});
+    }
+
 }

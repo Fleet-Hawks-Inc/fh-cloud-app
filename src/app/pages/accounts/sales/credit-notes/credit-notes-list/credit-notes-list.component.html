@@ -54,9 +54,9 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                  <p-table #dt [value]="allCredits" [resizableColumns]="true" columnResizeMode="expand"
+                  <p-table #dt [value]="allCredits" [resizableColumns]="true" columnResizeMode="fit"
                     scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
-                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" autolayout="true"
                     scrollHeight="100%">
                     <!-- Caption template of data table -->
                     <ng-template pTemplate="caption">
@@ -88,8 +88,7 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }">
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
                               <div class="flex justify-content-center align-items-center" alignFrozen="right"
@@ -111,8 +110,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-creditN let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
-                          style="cursor: pointer" routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td *ngFor="let dataColumns of columns" style="cursor: pointer" routerLink="/accounts/sales/credit-notes/detail/{{
                             creditN.creditID
                           }}">
                           <div [ngSwitch]="dataColumns.field">
@@ -164,9 +162,10 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
+                      <td colspan="7" class="text-center">
+                        <br>
                         {{ dataMessage }} <br /><br />
-                      </div>
+                      </td>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
                       <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allCredits.length !== 0">

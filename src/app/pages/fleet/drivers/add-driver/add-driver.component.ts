@@ -272,6 +272,7 @@ export class AddDriverComponent
   licStates = [];
   uploadedDocs = [];
   uploadLicence = [];
+  uploadLicDocs = [];
   abstractDocs = [];
   existingPhotos = [];
   existingDocs = [];
@@ -695,7 +696,6 @@ export class AddDriverComponent
   selectLicDoc(event, obj){
   let files = [...event.target.files];
   if(obj === 'uploadLicence'){
-  this.uploadLicence = [];
   for(let i=0;i<files.length;i++){
   let name = files[i].name.split('.');
   let ext = name[name.length - 1].toLowerCase();
@@ -1296,9 +1296,9 @@ export class AddDriverComponent
       this.absDocs = result.docsAbs;
     }
   
-    this.driverData[`uploadLicence`] = [];
+  
     if(result.uploadLicence !== undefined && result.uploadLicence.length > 0){
-    this.uploadLicence = result.licDocs
+    this.uploadLicDocs = result.licDocs
     }
 
     
@@ -1626,7 +1626,7 @@ export class AddDriverComponent
       this.deletedUploads.push(name);
     }
     else if(type === 'licDocs'){
-    this.uploadLicence.splice(index, 1);
+    this.uploadLicDocs.splice(index, 1);
     this.driverData.uploadLicence.splice(index, 1);
     this.deletedUploads.push(name);
     }

@@ -524,11 +524,8 @@
                               }}"
                             >
                               <div [ngSwitch]="dataColumns.field">
-                                <span *ngSwitchCase="'vendor'">
-                                  <span>{{
-                                    vendors[exItems.warehouseVendorID]
-                                      | titlecase
-                                  }}</span>
+                                <span *ngSwitchCase="'vendorName'">
+                              {{get(exItems, dataColumns.field) | titlecase}}
                                 </span>
                                 <span *ngSwitchCase="'partNumber'">
                                   <span>{{
@@ -545,16 +542,11 @@
                                     get(exItems, dataColumns.field) | titlecase
                                   }}</span>
                                 </span>
-                                <span *ngSwitchCase="'unitcost'">
-                                  <span
-                                    >{{ exItems.cost }}
-                                    {{ exItems.costUnitType }}</span
-                                  >
+                                <span *ngSwitchCase="'unitCost'">
+                              {{ get(exItems, dataColumns.field) }}
                                 </span>
-                                <span *ngSwitchCase="'warehouseDetails'">
-                                  <span>{{
-                                    warehouses[exItems.warehouseID] | titlecase
-                                  }}</span>
+                                <span *ngSwitchCase="'wareName'">
+                                 {{get(exItems, dataColumns.field) | titlecase}}
                                 </span>
                                 <span *ngSwitchDefault>
                                   {{ get(exItems, dataColumns.field) }}</span
@@ -634,7 +626,7 @@
                       aria-labelledby="reefer-tab"
                     >
                       <p-table
-                        #dt
+                        #rqt
                         [value]="requiredItems"
                         [resizableColumns]="true"
                         columnResizeMode="fit"
@@ -655,7 +647,7 @@
                               <h3 class="m-0">Inventory</h3>
                             </div>
                             <div class="text-right">
-                            <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
+                            <span>Showing {{rqt.filteredValue ? rqt.filteredValue.length : rqt.totalRecords}} of {{rqt.totalRecords}} Entries.</span>
                               &nbsp;
                               <button
                                 type="button"
@@ -688,7 +680,7 @@
                                 pTooltip="Clear Filter"
                                 class="p-button-outlined mr-2"
                                 icon="pi pi-filter-slash"
-                                (click)="clear(dt)"
+                                (click)="clear(rqt)"
                               ></button>
                               <button
                                 type="button"
@@ -696,7 +688,7 @@
                                 pRipple
                                 class="p-button-outlined mr-2"
                                 icon="fas fa-regular fa-file-excel"
-                                (click)="dt.exportCSV()"
+                                (click)="rqt.exportCSV()"
                                 pTooltip="Excel"
                               ></button>
                               <p-multiSelect
@@ -767,15 +759,18 @@
                               style="cursor: pointer"
                             >
                               <div [ngSwitch]="reqDataColumns.field">
-                                <span *ngSwitchCase="'reqItemName'">
-                                  <span>{{
-                                    allItems[reqItems.partNumber] | titlecase
-                                  }}</span>
+                                <span *ngSwitchCase="'itemName'">
+                                 {{
+                                    (get(reqItems, reqDataColumns.field)
+                                      ? get(reqItems, reqDataColumns.field)
+                                      : "-"
+                                    ) | titlecase
+                                  }}
                                 </span>
-                                <span *ngSwitchCase="'vendor'">
-                                  <span>{{
-                                    (vendors[reqItems.preferredVendorID]
-                                      ? vendors[reqItems.preferredVendorID]
+                                <span *ngSwitchCase="'vendorName'">
+                                  <span>  {{
+                                    (get(reqItems, reqDataColumns.field)
+                                      ? get(reqItems, reqDataColumns.field)
                                       : "-"
                                     ) | titlecase
                                   }}</span>

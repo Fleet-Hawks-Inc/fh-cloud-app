@@ -1,6 +1,3 @@
-
-
-
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import * as _ from "lodash";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -188,18 +185,18 @@ export class TripListComponent implements OnInit {
   find = _.find;
   display: any;
   dataColumns = [
-    { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
-    { width: '6%', field: 'orderType', header: 'Type', type: "text" },
-    { width: '7%', field: 'orderNames', header: 'Order#', type: "text" },
-    { width: '6%', field: 'dateCreated', header: 'Date', type: "text" },
-    { width: '17%', field: 'pickupLocation', header: 'Pickup Location', type: "text" },
-    { width: '17%', field: 'dropLocation', header: 'Drop Off Location', type: "text" },
-    { width: '7%', field: 'vehicleNames', header: 'Vehicle', type: "text" },
-    { width: '7%', field: 'assetNames', header: 'Asset', type: "text" },
-    { width: '7%', field: 'driverNames', header: 'Driver', type: "text" },
-    { width: '7%', field: 'carrierNames', header: 'Carrier', type: "text" },
-    { width: '7%', field: 'tripStatus', header: 'Status', type: "text" },
-  ]; 
+    { field: 'tripNo', header: 'Trip#', type: "text" },
+    { field: 'orderType', header: 'Type', type: "text" },
+    { field: 'orderNames', header: 'Order#', type: "text" },
+    { field: 'dateCreated', header: 'Date', type: "text" },
+    { field: 'pickupLocation', header: 'Pickup Location', type: "text", display: "none" },
+    { field: 'dropLocation', header: 'Drop Off Location', type: "text", display: "none" },
+    { field: 'vehicleNames', header: 'Vehicle', type: "text" },
+    { field: 'assetNames', header: 'Asset', type: "text" },
+    { field: 'driverNames', header: 'Driver', type: "text" },
+    { field: 'carrierNames', header: 'Carrier', type: "text" },
+    { field: 'tripStatus', header: 'Status', type: "text" },
+  ];
 
   constructor(
     private apiService: ApiService,
@@ -531,10 +528,10 @@ export class TripListComponent implements OnInit {
           $("#tripStatusModal").modal("show");
         } else {
           this.display = false,
-          this.toastr.error(
-        
-            "Please assign driver(s)/carrier(s) to the trip first."
-          );
+            this.toastr.error(
+
+              "Please assign driver(s)/carrier(s) to the trip first."
+            );
         }
       });
   }
@@ -612,9 +609,9 @@ export class TripListComponent implements OnInit {
      * Clears the table filters
      * @param table Table 
      */
-   clear(table: Table) {
+  clear(table: Table) {
     table.clear();
-}
+  }
 
   updateTrip() {
     let tripObj = {
