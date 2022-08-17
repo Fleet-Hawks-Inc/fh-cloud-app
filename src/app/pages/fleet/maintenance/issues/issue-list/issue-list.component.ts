@@ -74,7 +74,7 @@ export class IssueListComponent implements OnInit {
   // columns of data table
   dataColumns = [
     { field: 'unitType', header: 'Unit Type', type: "text" },
-    { field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
+    { field: 'vehAstName', header: 'Vehicle/Asset', type: "text" },
     { field: 'issueName', header: 'Issue Name', type: "text" },
     { field: 'reportedDate', header: 'Reported On', type: "text" },
     { field: 'reportedBy', header: 'Reported By', type: "text" },
@@ -196,8 +196,15 @@ export class IssueListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.issues = this.issues.concat(result.Items)
-
             this.loaded = true;
+            for(let res of result.Items){
+            if(res.unitType === 'asset'){
+            res.vehAstName = this.assetList[res.unitID] ? this.assetList[res.unitID] : '-'
+            }
+            else if(res.unitType === 'vehicle'){
+            res.vehAstName = this.vehicleList[res.unitID] ? this.vehicleList[res.unitID] : '-'
+            }
+            }
           }
         });
     }

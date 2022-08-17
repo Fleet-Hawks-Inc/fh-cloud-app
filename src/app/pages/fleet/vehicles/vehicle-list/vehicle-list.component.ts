@@ -296,6 +296,10 @@ export class VehicleListComponent implements OnInit {
       this.vehicles = this.vehicles.concat(result.data)
       this.loaded = true;
       this.isSearch = false;
+      for(let res of result.data){
+      res.driverName = this.driversList[res.driverID] ? this.driversList[res.driverID]: '-'
+      res.teamDriverName = this.driversList[res.teamDriverID] ? this.driversList[res.teamDriverID]: '-'
+      }
       await this.getDashCamConnection(this.vehicles);
       await this.getDashCamStatus(this.vehicles);
       for (const iterator of this.vehicles) {
