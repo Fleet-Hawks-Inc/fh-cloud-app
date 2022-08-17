@@ -56,9 +56,12 @@
             <div class="text-right pr-0" [ngClass]="
                   filterData.type ? 'col-md-3 col-lg-3' : 'col-md-5 col-lg-5'
                 ">
-              <button type="button" (click)="showPdf()" class="btn btn-sm btn-success">
-                <i class="fa fa-download"></i> PDF
-              </button>
+
+              <div *ngIf="empData.length !== 0">
+                <button type="button" (click)="showPdf()" class="btn btn-sm btn-success">
+                  <i class="fa fa-download"></i> PDF
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -103,8 +106,7 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }">
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
                               <div class="flex justify-content-center align-items-center" alignFrozen="right"
@@ -183,7 +185,9 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                       <td colspan="14" class="text-center">
+                        <br>
                         {{ dataMessage }}
+                        <br><br>
                       </td>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
