@@ -122,7 +122,7 @@ export class AssetListComponent implements OnInit {
     { field: 'licencePlateNumber', header: 'Licence Plate Number', type: "text" },
     { field: 'year', header: 'Year', type: "text" },
     { field: 'ownerShip', header: 'Ownership', type: "text" },
-    { field: 'operatorCompany', header: 'Company Name', type: "text" },
+    { field: 'comName', header: 'Company Name', type: "text" },
     { field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
     { field: 'currentStatus', header: 'Status', type: 'text' },
     { field: 'isImport', header: 'Added By', type: "text" },
@@ -328,6 +328,17 @@ export class AssetListComponent implements OnInit {
       this.allData = this.allData.concat(result.data)
       this.loaded = true;
       this.isSearch = false;
+      for(let res of result.data){
+          if(res.assetDetails.ownerShip === 'rented') {
+            res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
+             }
+          if(res.assetDetails.ownerShip === 'leased') {
+           res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
+             }
+          if(res.assetDetails.ownerShip === 'ownerOperator') {
+          res.comName = res.assetDetails.ownerOperator ? this.contactsObjects[res.assetDetails.ownerOperator] : "-"
+             }
+        }
     }
   }
 

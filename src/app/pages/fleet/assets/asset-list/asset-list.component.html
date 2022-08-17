@@ -95,7 +95,7 @@
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel" (click)="generateAssetsCSV()" pTooltip="Excel"></button>
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns">
@@ -192,23 +192,6 @@
                               | titlecase
                               }}
                             </span>
-
-                            <span *ngSwitchCase="'operatorCompany'">
-                              <span *ngIf="asset.ownerShip === 'ownerOperator'">
-                                {{
-                                asset.ownerOperator
-                                ? contactsObjects[asset.ownerOperator]
-                                : "-"
-                                }}
-                              </span>
-                              <span *ngIf="asset.ownerShip === 'rented'">
-                                {{ asset.ownCname ? asset.ownCname : "-" }}
-                              </span>
-                              <span *ngIf="asset.ownerShip === 'leased'">
-                                {{ asset.ownCname ? asset.ownCname : "-" }}
-                              </span>
-                            </span>
-
                             <span *ngSwitchCase="'currentStatus'">
                               <span class="badge badge-dark p-1">{{
                                 asset.currentStatus | titlecase

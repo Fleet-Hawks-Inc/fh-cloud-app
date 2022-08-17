@@ -248,9 +248,7 @@
                                     <span class="font-weight-bold line-height-lg text-capitalize">{{ asset.assetIdentification }}</span>
                                   </span>
 
-                                  <span *ngSwitchCase="'VIN'">
-                                    <span> {{asset.VIN}}</span>
-                                  </span>
+                                
 
                                   <span *ngSwitchCase="'assetType'">
                                     <span>
@@ -314,22 +312,8 @@
                               | titlecase
                               }}
                                   </span>
-
-                                  <span *ngSwitchCase="'assetDetails.operatorCompany'">
-                                    <span *ngIf="asset.assetDetails.ownerShip === 'ownerOperator'">
-                                      {{
-                                asset.assetDetails.ownerOperator
-                                ? contactsObjects[asset.assetDetails.ownerOperator]
-                                : "-"
-                                }}
-                                    </span>
-                                    <span *ngIf="asset.assetDetails.ownerShip === 'rented'">
-                                      {{ asset.assetDetails.ownCname ? asset.assetDetails.ownCname : "-" }}
-                                    </span>
-                                    <span *ngIf="asset.assetDetails.ownerShip === 'leased'">
-                                      {{ asset.assetDetails.ownCname ? asset.assetDetails.ownCname : "-" }}
-                                    </span>
-                                  </span>
+                                  <span *ngSwitchDefault>
+                                  {{ get(asset, dataColumns.field) }}</span>
 
                                 </div>
                               </td>
