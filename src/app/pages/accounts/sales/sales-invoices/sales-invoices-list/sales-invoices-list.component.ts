@@ -1,16 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
 import { Table } from 'primeng/table';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services';
+import { OverlayPanel } from "primeng/overlaypanel";
 @Component({
   selector: 'app-sales-invoices-list',
   templateUrl: './sales-invoices-list.component.html',
   styleUrls: ['./sales-invoices-list.component.css']
 })
 export class SalesInvoicesListComponent implements OnInit {
-
+  @ViewChild("op") overlaypanel: OverlayPanel;
   isSearch: boolean = false;
   dataMessage = Constants.FETCHING_DATA;
 
