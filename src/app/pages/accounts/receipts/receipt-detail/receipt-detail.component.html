@@ -286,7 +286,7 @@
                         *ngIf="receiptData.transactionLog.length == 0"
                         class="text-center"
                       >
-                        <td colspan="4">{{ dataMessage }}</td>
+                        <td colspan="5">{{ dataMessage }}</td>
                       </tr>
                       <tr *ngFor="let dt of receiptData.transactionLog">
                         <td *ngIf="receiptData.isFeatEnabled">
@@ -385,7 +385,7 @@
                 >
                   <strong> {{ customerName }} </strong>
                   <!-- <strong>ABC Logistics</strong><br> -->
-                  <!-- 28 Cliveden Ave Delta, BC V3M 5R5 Canada<br> --> 
+                  <!-- 28 Cliveden Ave Delta, BC V3M 5R5 Canada<br> -->
                 </p>
               </td>
               <!-- <td valign="top" align="right"> <h2 style="font-size:20px;">&nbsp;</h2>
@@ -513,7 +513,8 @@
                   "
                 >
                   <strong>Grand Total:</strong>
-                   {{ receiptData.recAmount | number: "1.2-2" }} {{ receiptData.recAmountCur }}
+                  {{ receiptData.recAmount | number: "1.2-2" }}
+                  {{ receiptData.recAmountCur }}
                 </p>
               </td>
             </tr>
