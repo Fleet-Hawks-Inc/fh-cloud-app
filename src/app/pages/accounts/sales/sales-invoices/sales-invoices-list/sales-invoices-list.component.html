@@ -160,18 +160,17 @@
                               {{ get(salesInvo, dataColumns.field) }}</span>
                           </div>
                         </td>
-                        <td style="width: 6%; overflow: inherit !important" alignFrozen="right" pFrozenColumn
-                          [frozen]="true">
+                        <td columnResizeMode="fit" alignFrozen="right" pFrozenColumn [frozen]="true">
                           <div class="dropdown dropright">
-                            <button [disabled]="salesInvo.status == 'voided' || salesInvo.status == 'closed'"
-                              (click)="op.toggle($event)" pButton type="button" class="bg-transparent border-0"
-                              data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" icon="fas fa-ellipsis-v"
-                              style="color: #000;"></button>
+                            <button (click)="op.toggle($event)"
+                              [disabled]="salesInvo.status == 'voided' || salesInvo.status == 'closed'" pButton
+                              type="button" id="dropdownMenuButton-{{ rowIndex }}" icon="fas fa-ellipsis-v"
+                              style="color: #000; background-color: transparent; border: transparent;"></button>
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
                               <ng-template pTemplate>
                                 <a *ngIf="salesInvo.status === 'open'"
-                                  (click)="sendConfirmationEmail(rowIndex, salesInvo.saleID)" class="dropdown-item"
-                                  href="javascript:;">Send email to customer</a>
+                                  (click)="op.hide();sendConfirmationEmail(rowIndex, salesInvo.saleID)"
+                                  class="dropdown-item" href="javascript:;">Send email to customer</a>
 
                                 <a routerLink="/accounts/sales/invoices/edit/{{
                                     salesInvo.saleID
@@ -179,7 +178,7 @@
 
                                 <a *ngIf="salesInvo.status !== 'voided' &&
                                   salesInvo.status !== 'partially_deducted'"
-                                  (click)="voidOrderInvoice(rowIndex, salesInvo.saleID)" class="dropdown-item"
+                                  (click)="op.hide();voidOrderInvoice(rowIndex,salesInvo.saleID)" class="dropdown-item"
                                   href="javascript:;">Void</a>
                               </ng-template>
                             </p-overlayPanel>

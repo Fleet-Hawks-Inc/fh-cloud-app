@@ -190,15 +190,15 @@
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
                               <ng-template pTemplate>
                                 <a *ngIf="salesOrd.status === 'open'"
-                                  (click)="sendConfirmationEmail(rowIndex, salesOrd.saleID)" class="dropdown-item"
-                                  href="javascript:;">Send email to
+                                  (click)="op.hide();sendConfirmationEmail(rowIndex, salesOrd.saleID)"
+                                  class="dropdown-item" href="javascript:;">Send email to
                                   customer</a>
 
                                 <a *ngIf="!salesOrd.invStatus" routerLink="/accounts/sales/orders/edit/{{
                                   salesOrd.saleID
                                 }}" class="dropdown-item" href="javascript:;">Edit</a>
 
-                                <a *ngIf="!salesOrd.invStatus" (click)="deleteSale(salesOrd.saleID)"
+                                <a *ngIf="!salesOrd.invStatus" (click)="op.hide();deleteSale(salesOrd.saleID)"
                                   class="dropdown-item" href="javascript:;">Delete</a>
 
                                 <a [routerLink]="[ '/accounts','sales','orders','add' ]" [queryParams]="{
