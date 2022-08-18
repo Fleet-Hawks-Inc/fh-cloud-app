@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ApiService, DashboardUtilityService, ListService } from '../../../../services';
+import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +11,6 @@ import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
-import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -117,12 +117,12 @@ export class AssetListComponent implements OnInit {
   dataColumns = [
     { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
     { field: 'VIN', header: 'VIN', type: "text" },
-    { field: 'assetType', header: 'Asset Type', type: "text" },
+    { field: 'assetT', header: 'Asset Type', type: "text" },
     { field: 'manufacturer', header: 'Make', type: "text" },
     { field: 'licencePlateNumber', header: 'Licence Plate Number', type: "text" },
     { field: 'year', header: 'Year', type: "text" },
     { field: 'ownerShip', header: 'Ownership', type: "text" },
-    { field: 'operatorCompany', header: 'Company Name', type: "text" },
+    { field: 'comName', header: 'Company Name', type: "text" },
     { field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
     { field: 'currentStatus', header: 'Status', type: 'text' },
     { field: 'isImport', header: 'Added By', type: "text" },
@@ -134,19 +134,19 @@ export class AssetListComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
     private httpClient: HttpClient,
     private hereMap: HereMapService,
     private dashboardUtilityService: DashboardUtilityService,
     private listService: ListService,
-    private onboard: OnboardDefaultService,
-    private messageService: MessageService,) { }
+    private onboard: OnboardDefaultService) { }
 
   async ngOnInit(): Promise<void> {
     this.setToggleOptions();
     this.setAssetOptions();
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-    await this.initDataTable();
+    this.initDataTable();
     this.fetchContacts();
     this.isSubscriptionsValid();
   }
@@ -292,7 +292,7 @@ export class AssetListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.initDataTable();
-        this.showAssetDelM();
+        this.toastr.success('Asset Deleted Successfully!');
       });
     }
 
@@ -328,6 +328,18 @@ export class AssetListComponent implements OnInit {
       this.allData = this.allData.concat(result.data)
       this.loaded = true;
       this.isSearch = false;
+      for(let res of result.data){
+          if(res.ownerShip === 'rented') {
+            res.comName = res.ownCname ? res.ownCname : "-" 
+             }
+          if(res.ownerShip === 'leased') {
+           res.comName = res.ownCname ? res.ownCname : "-" 
+             }
+           if(res.ownerShip === 'ownerOperator') {
+           res.comName = res.ownerOperator ? this.contactsObjects[res.ownerOperator] : '-'
+        }
+       res.assetT = res.assetType ? res.assetType.replace("_", " ") : "-" 
+        }
     }
   }
 
@@ -355,61 +367,6 @@ export class AssetListComponent implements OnInit {
       return false;
     }
   }
-
-
-  generateAssetsCSV() {
-    if (this.allData.length > 0) {
-    console.log(this.allData)
-      let dataObject = []
-      let csvArray = []
-      this.allData.forEach(element => {
-        let obj = {}
-        obj["Asset Name/Number"] = element.assetIdentification
-        obj["VIN"] = element.VIN
-        obj["Asset Type"] = element.assetType
-        obj["Make"] = element.manufacturer
-        obj["License Plate Number"] = element.licencePlateNumber
-        obj["Year"] = element.year
-        obj["ownerShip"] = element.ownerShip ? element.ownerShip : '-'
-        obj["Company Name"] = element.ownCname
-        obj["Annual Safety Date"] = element.annualSafetyDate
-        obj["Status"] = element.currentStatus
-        obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
-        if (element.ownerShip === 'ownerOperator') {
-          obj["Company Name"] = element.ownerOperator ? this.contactsObjects[element.ownerOperator] : ''
-        }
-        if (element.ownerShip === 'rented') {
-          obj["Company Name"] = element.ownCname ? element.ownCname : '-'
-        }
-        if (element.ownerShip === 'leased') {
-          obj["Company Name"] = element.ownCname ? element.ownCname : '-'
-        }
-        dataObject.push(obj)
-      });
-      let headers = Object.keys(dataObject[0]).join(',')
-      headers += '\n'
-      csvArray.push(headers)
-      dataObject.forEach(element => {
-        let obj = Object.values(element).join(',')
-        obj += '\n'
-        csvArray.push(obj)
-      });
-      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    }
-    else {
-      this.showCsvError();
-    }
-  }
-
 
 
 /*
@@ -472,16 +429,4 @@ export class AssetListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-
-  showAssetDelM(){
-    this.messageService.add({severity:'success',
-    summary: 'Success', detail: 'Asset deleted successfully'});
-}
-showCsvError() {
-  this.messageService.add({
-      severity: 'error', summary: 'Error',
-      detail:'No Records found'
-  });
-}
-
 }

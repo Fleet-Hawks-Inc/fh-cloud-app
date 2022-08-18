@@ -45,7 +45,7 @@ export class DeletedAssetsComponent implements OnInit {
     { field: 'assetDetails.year', header: 'Year', type: "text" },
     { field: 'assetDetails.model', header: 'Model', type: "text" },
     { field: 'assetDetails.ownerShip', header:'Ownership', type: "text" },
-    { field: 'assetDetails.operatorCompany', header: 'Company Name', type: "text" },
+    { field: 'comName', header: 'Company Name', type: "text" },
     { field: 'currentStatus', header: 'Status', type: 'text' }
   ];
   
@@ -114,10 +114,22 @@ export class DeletedAssetsComponent implements OnInit {
                 }
                 this.allData = this.allData.concat(result.Items);
                 this.loaded = true;
-
+                
+                for(let res of result.Items){
+                    if(res.assetDetails.ownerShip === 'rented') {
+                      res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
+                    }
+                     if(res.assetDetails.ownerShip === 'leased') {
+                      res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
+                    }
+                    if(res.assetDetails.ownerShip === 'ownerOperator') {
+                      res.comName = res.assetDetails.ownerOperator ? this.contactsObjects[res.assetDetails.ownerOperator] : "-"
+                    }
+                }
             }
         }
     }
+    
     onScroll = async (event: any) => {
         if (this.loaded) {
             this.initDataTable();
