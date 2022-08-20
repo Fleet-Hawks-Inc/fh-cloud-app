@@ -274,11 +274,9 @@
                           <div [ngSwitch]="dataColumns.field" style="height: 40px; cursor: pointer">
                             <span
                               class="font-weight-bold line-height-lg text-capitalize"
-                              *ngSwitchCase="'firstName'"
+                              *ngSwitchCase="'fullName'"
                             >
-                              {{ driver.firstName }}
-                              {{ driver.middleName }}
-                              {{ driver.lastName }}
+                              {{ get(driver, dataColumns.field) | titlecase }}
                             </span>
                             <span *ngSwitchCase="'driverType'">
                               {{ driver[dataColumns.field] | titlecase }}
