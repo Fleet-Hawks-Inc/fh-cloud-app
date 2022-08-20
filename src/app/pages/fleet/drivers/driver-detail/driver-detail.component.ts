@@ -15,6 +15,9 @@ import { from } from 'rxjs';
 import { passwordStrength } from 'check-password-strength';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
+
 declare var $: any;
 @Component({
     selector: 'app-driver-detail',
@@ -112,7 +115,7 @@ export class DriverDetailComponent implements OnInit {
     hosType: any;
     hosCycle: any;
     timezone: any;
-    uploadLicence:any = [];
+    uploadLicence: any = [];
     optzone: any;
     yardsObjects: any = {};
     statesObject: any = {};
@@ -193,8 +196,38 @@ export class DriverDetailComponent implements OnInit {
         currency: null,
         default: false
     }
+    eldDriver = {
+        driverId: '',
+        driverFstName: '',
+        driverMdlName: '',
+        driverLstName: '',
+        userName: '',
+        licensePlateNo: '',
+        startingTime: '',
+        Jurisdiction: '',
+        homeBase: '',
+        units: '',
+        active: true,
+        personalUse: true,
+        yardMove: true,
+        exemption: true,
+        wifi: true,
+        allowUseExemption: true,
+        allowTakePhoto: true
 
-
+    }
+    display: any;
+    driverObj = {}
+    startTimeCode: number
+    jurisdictionC: number
+    fuelCode: number
+    persnlUse: number
+    active: number
+    yardM: number
+    exemp: number
+    wifi: number
+    useExemp: number
+    takePhoto: number
     constructor(
         private hereMap: HereMapService,
         private apiService: ApiService,
@@ -204,7 +237,9 @@ export class DriverDetailComponent implements OnInit {
         private httpClient: HttpClient,
         private toastr: ToastrService,
         private countryStateCity: CountryStateCityService,
-        private routerMgmtService: RouteManagementServiceService
+        private routerMgmtService: RouteManagementServiceService,
+        private eldService: ELDService,
+        private messageService: MessageService,
     ) {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
@@ -554,6 +589,7 @@ export class DriverDetailComponent implements OnInit {
         if (address != '') {
             for (let a = 0; a < address.length; a++) {
                 address.map(async (e: any) => {
+                    console.log('statecode---', e.stateCode)
                     if (e.manual) {
                         e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(e.countryCode);
                         e.stateName = await this.countryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
@@ -618,9 +654,9 @@ export class DriverDetailComponent implements OnInit {
         delete this.driverDataUpdate.hosDetails.cycleInfo;
         delete this.driverDataUpdate.carrierID;
         delete this.driverDataUpdate.timeModified;
-        if(type === 'licDocs'){
-        this.uploadLicence.splice(index, 1);
-        this.driverDataUpdate.licDocs.splice(index, 1);
+        if (type === 'licDocs') {
+            this.uploadLicence.splice(index, 1);
+            this.driverDataUpdate.licDocs.splice(index, 1);
             this.deleteUploadedFile(name);
             try {
                 const formData = new FormData();
@@ -660,7 +696,7 @@ export class DriverDetailComponent implements OnInit {
             }
         }
     }
-    
+
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
@@ -700,5 +736,133 @@ export class DriverDetailComponent implements OnInit {
                     });
                 }
             });
+    }
+
+    showEldModel() {
+        this.eldDriver.driverId = this.driverID;
+
+        this.eldDriver.driverLstName = this.driverData.lastName;
+        if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
+            this.eldDriver.driverFstName = `${this.driverData.firstName} ${this.driverData.middleName}`;
+        } else {
+            this.eldDriver.driverFstName = `${this.driverData.firstName} `;
+        }
+        this.eldDriver.userName = this.userName;
+
+        this.display = true;
+    }
+
+    submitClick() {
+        if (this.eldDriver.startingTime == 'Midnight') {
+            this.startTimeCode = 0
+        }
+        if (this.eldDriver.units == 'Km/Liters') {
+            this.fuelCode = 2
+        }
+        else if (this.eldDriver.units == 'Miles/Gallons') {
+            this.fuelCode = 1
+        }
+        if (this.eldDriver.active == true) {
+            this.active = 1
+        }
+        else {
+            this.active = 0
+        }
+
+        if (this.eldDriver.personalUse == true) {
+            this.persnlUse = 1
+        }
+        else {
+            this.persnlUse = 0
+        }
+
+        if (this.eldDriver.yardMove == true) {
+            this.yardM = 1
+        }
+        else {
+            this.yardM = 0
+        }
+
+        if (this.eldDriver.exemption == true) {
+            this.exemp = 1
+        }
+        else {
+            this.exemp = 0
+        }
+
+        if (this.eldDriver.wifi == true) {
+            this.wifi = 1
+        }
+        else {
+            this.wifi = 0
+        }
+
+
+        if (this.eldDriver.allowUseExemption == true) {
+            this.useExemp = 1
+        }
+        else {
+            this.useExemp = 0
+        }
+
+
+        if (this.eldDriver.allowTakePhoto == true) {
+            this.takePhoto = 1
+        }
+        else {
+            this.takePhoto = 0
+        }
+
+        if (this.eldDriver.Jurisdiction == 'North') {
+            this.jurisdictionC = 2
+        }
+        else {
+            this.jurisdictionC = 1
+        }
+        this.driverObj = {
+
+            Name: this.eldDriver.driverFstName,
+            LastName: this.eldDriver.driverLstName,
+            HOSUserName: this.eldDriver.userName,
+            HOSHomeBaseId: this.eldDriver.userName,
+            JurisdictionCode: this.jurisdictionC,
+            Starting24HTime: this.startTimeCode,
+            FuelUnitCode: this.fuelCode,
+            IsActive: this.active,
+            PersonalUse: this.persnlUse,
+            YardMove: this.yardM,
+            Exemption: this.exemp,
+            Wifi: this.wifi,
+            AllowDriverExemptionSelection: this.useExemp,
+            TakeDVIRPhotoEnabled: this.takePhoto
+
+        }
+
+        console.log('this.driverObj--0--', this.driverObj)
+        // this.eldService.postData("drivers", {
+        //     Driver: this.driverObj
+        // }).subscribe(result => {
+        //     this.showSuccess();
+        //     return result
+        // }, error => {
+        //     console.log('error', error)
+        //     this.showError(error)
+        // })
+    }
+
+    showError(error: any) {
+        this.messageService.add({
+            severity: 'error', summary: 'Error',
+            detail: error.error.message
+        });
+    }
+
+    showSuccess() {
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Success', detail: 'driver added successfully in ELD'
+        });
+
+
     }
 }

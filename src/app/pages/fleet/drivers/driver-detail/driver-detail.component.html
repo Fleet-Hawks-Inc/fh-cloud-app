@@ -10,30 +10,16 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
-            <a
-              class="text-uppercase btn btn-sm btn-dark mr-2"
-              data-toggle="modal"
-              data-target="#driverPasswordModal"
-              href="javascript:;"
-              >Change Password</a
-            >
-            <a
-              class="text-uppercase btn btn-sm btn-dark mr-2"
-              data-toggle="modal"
-              data-target="#driverOtherDetailsModal"
-              href="javascript:;"
-              >Driver Detailed Information</a
-            >
-            <a
-              routerLink="/fleet/drivers/edit/{{ driverID }}"
-              class="btn btn-default btn-sm mr-2"
-              ><i class="fas fa-pencil-alt"></i> Edit Driver</a
-            >
-            <a
-              routerLink="/fleet/drivers/list/{{ sessionId }}"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> Drivers List</a
-            >
+            <button type="button" class="btn btn-sm btn-success mr-3" (click)="showEldModel()"> Update ELD
+              Driver</button>
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#driverPasswordModal"
+              href="javascript:;">Change Password</a>
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
+              data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
+            <a routerLink="/fleet/drivers/edit/{{ driverID }}" class="btn btn-default btn-sm mr-2"><i
+                class="fas fa-pencil-alt"></i> Edit Driver</a>
+            <a routerLink="/fleet/drivers/list/{{ sessionId }}" class="btn btn-sm btn-default"><i
+                class="fas fa-list"></i> Drivers List</a>
           </div>
         </div>
       </header>
@@ -42,9 +28,7 @@
         <div class="row">
           <div class="col-lg-12 pr-1 pl-2">
             <div class="bg-white">
-              <div
-                class="row pl-4 pr-4 pt-3 pb-3 align-items-center text-capitalize"
-              >
+              <div class="row pl-4 pr-4 pt-3 pb-3 align-items-center text-capitalize">
                 <div class="col-md-2 col-lg-2 cerbor pl-2 sixboxh">
                   <div class="text-center p-1">
                     <i class="fa fa-user text-7"></i>
@@ -93,9 +77,7 @@
                   <div class="text-center p-1">
                     <i class="far fa-envelope text-7"></i>
                     <br />
-                    <p
-                      class="mb-0 text-3 font-weight-bold text-dark text-lowercase"
-                    >
+                    <p class="mb-0 text-3 font-weight-bold text-dark text-lowercase">
                       {{ email ? email : "NA" }}
                     </p>
                     <p class="mb-0">EMAIL</p>
@@ -121,10 +103,7 @@
               <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">
                 Trips
               </h2>
-              <table
-                id="diverTbl"
-                class="row-border hover table table-bordered table-striped mb-0"
-              >
+              <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
                 <thead>
                   <tr>
                     <th>Trip Date</th>
@@ -143,33 +122,24 @@
                     <td>{{ trip.dateCreated | date: "yyyy/MM/dd" }}</td>
                     <td>{{ trip.tripNo }}</td>
                     <td>
-                      <span
-                        *ngFor="let driver of trip.driverIDs; let isLast = last"
-                        >{{ driverList[driver]
-                        }}<span *ngIf="!isLast">, </span></span
-                      >
+                      <span *ngFor="let driver of trip.driverIDs; let isLast = last">{{ driverList[driver]
+                        }}<span *ngIf="!isLast">, </span></span>
                     </td>
                     <td>
-                      <span
-                        *ngFor="
+                      <span *ngFor="
                           let vehicle of trip.vehicleIDs;
                           let isLast = last
-                        "
-                        >{{ vehicleList[vehicle]
-                        }}<span *ngIf="!isLast">, </span></span
-                      >
+                        ">{{ vehicleList[vehicle]
+                        }}<span *ngIf="!isLast">, </span></span>
                     </td>
                     <td>
-                      <span
-                        *ngFor="let asset of trip.assetIDs; let isLast = last"
-                        >{{ assetList[asset]
-                        }}<span *ngIf="!isLast">, </span></span
-                      >
+                      <span *ngFor="let asset of trip.assetIDs; let isLast = last">{{ assetList[asset]
+                        }}<span *ngIf="!isLast">, </span></span>
                     </td>
                     <td>
                       <span class="badge badge-dark p-1">{{
                         trip.tripStatus
-                      }}</span>
+                        }}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -185,37 +155,26 @@
                   <div class="boxshadow1">
                     <div class="widgetload">
                       <div class="widgettbload">
-                        <h2
-                          class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                        >
+                        <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                           <i class="fas fa-user"></i> Driver Log
                         </h2>
                       </div>
                     </div>
-                    <div
-                      class="timeline timeline-simple changelog pr-3"
-                      style="max-height: 497px; overflow-x: auto; width: 100%"
-                    >
-                      <div
-                        class="tm-body text-dark"
-                        *ngIf="driverLogs.length > 0"
-                      >
+                    <div class="timeline timeline-simple changelog pr-3"
+                      style="max-height: 497px; overflow-x: auto; width: 100%">
+                      <div class="tm-body text-dark" *ngIf="driverLogs.length > 0">
                         <ol class="tm-items">
                           <li *ngFor="let data of driverLogs">
                             <div class="tm-box">
-                              <span class="release-date"
-                                >{{ data.createdDate | date: "yyyy/MM/dd" }} -
-                                {{ data.createdTime }}</span
-                              >
+                              <span class="release-date">{{ data.createdDate | date: "yyyy/MM/dd" }} -
+                                {{ data.createdTime }}</span>
                               <ul class="list-unstyled">
                                 <li>
                                   {{ data.userFirstName | titlecase }}
                                   {{ data.userLastName | titlecase }}
                                   {{ data.eventParams.message }}
                                   {{ data.eventParams.type }}
-                                  <b class="text-success"
-                                    >{{ data.firstName }} {{ data.lastName }}</b
-                                  >
+                                  <b class="text-success">{{ data.firstName }} {{ data.lastName }}</b>
                                   ({{ data.isImport }})
                                 </li>
                               </ul>
@@ -223,10 +182,7 @@
                           </li>
                         </ol>
                       </div>
-                      <div
-                        class="mt-3 mb-3 text-center"
-                        *ngIf="driverLogs.length == 0"
-                      >
+                      <div class="mt-3 mb-3 text-center" *ngIf="driverLogs.length == 0">
                         {{ dataMessage }}
                       </div>
                     </div>
@@ -241,47 +197,24 @@
   </div>
 </section>
 
-<div
-  class="modal fade"
-  id="driverOtherDetailsModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="driverOtherDetailsModal"
-  aria-hidden="true"
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="max-width: 1024px"
-  >
+<div class="modal fade" id="driverOtherDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverOtherDetailsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1024px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Driver Details</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
           </i>
         </button>
       </div>
-      <div
-        class="modal-body text-dark"
-        style="max-height: 500px; overflow: scroll"
-      >
+      <div class="modal-body text-dark" style="max-height: 500px; overflow: scroll">
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">
             Basic Details
           </div>
           <div class="col-lg-6 text-right mb-2">
-            <button
-              type="button"
-              data-toggle="modal"
-              data-target="#driverProfileModal"
-              class="btn btn-sm btn-success"
-            >
+            <button type="button" data-toggle="modal" data-target="#driverProfileModal" class="btn btn-sm btn-success">
               <i class="fas fa-eye text-light"></i> View Photo
             </button>
           </div>
@@ -289,9 +222,7 @@
         <div class="row">
           <div class="col-6">
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Driver Type:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -299,73 +230,49 @@
               </div>
             </div>
             <div class="row m-0" *ngIf="driverType == 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Employee ID:
               </div>
               <div class="col-lg-6 p-2 bor_half">{{ employeeId }}</div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Contractor ID:
               </div>
               <div class="col-lg-6 p-2 bor_half">{{ employeeId }}</div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Corporation Type:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
                 {{ corporationType }}
               </div>
             </div>
-            <div
-              class="row m-0"
-              *ngIf="
+            <div class="row m-0" *ngIf="
                 corporationType == 'company' || corporationType == 'corporation'
-              "
-            >
-              <div
-                *ngIf="corporationType == 'company'"
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              ">
+              <div *ngIf="corporationType == 'company'"
+                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Vendor:
               </div>
-              <div
-                *ngIf="corporationType == 'corporation'"
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div *ngIf="corporationType == 'corporation'"
+                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Corporation Name:
               </div>
-              <div
-                class="col-lg-6 p-2 bor_half text-capitalize"
-                *ngIf="corporationType === 'company'"
-              >
+              <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'company'">
                 {{ contactsObject[vendor] }}
               </div>
-              <div
-                class="col-lg-6 p-2 bor_half text-capitalize"
-                *ngIf="corporationType === 'corporation'"
-              >
+              <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'corporation'">
                 {{ corporation }}
               </div>
             </div>
-            <div
-              class="row m-0"
-              *ngIf="
+            <div class="row m-0" *ngIf="
                 driverType != 'employee' &&
                 corporationType != 'company' &&
                 corporationType != 'corporation'
-              "
-            >
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              ">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 owner Operator:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -373,9 +280,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Driver Status:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -383,9 +288,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 User Name:
               </div>
               <div class="col-lg-6 p-2 bor_half text-lowercase">
@@ -393,9 +296,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Driver Name:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -403,9 +304,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Driver Gender:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -414,9 +313,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Birth Date:
               </div>
               <div class="col-lg-6 p-2 bor_half">
@@ -428,42 +325,22 @@
                 <div class="vehicle-common-box p-3">
                   <div class="row">
                     <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-3"
-                        >Abstract History Document(s)</label
-                      >
+                      <label class="control-label font-weight-bold text-3">Abstract History Document(s)</label>
                     </div>
                     <div class="col-lg-6 text-right"></div>
                   </div>
                   <hr class="solid mt-2" />
 
-                  <div
-                    class="row mb-1"
-                    *ngFor="let item of absDocs; let d = index"
-                  >
+                  <div class="row mb-1" *ngFor="let item of absDocs; let d = index">
                     <div class="col-lg-9">
-                      <a
-                        href="{{ item.path }}"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        (click)="setPDFSrc(item.path)"
-                        >Document {{ d + 1 }}</a
-                      >
+                      <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal"
+                        (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                     </div>
                     <div class="col-lg-3 text-right">
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="delete('abs', item.name, d, nullVar)"
-                        ><i class="fas fa-trash-alt"></i
-                      ></a>
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="setPDFSrc(item.path)"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        ><i class="fas fa-eye"></i
-                      ></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                        (click)="delete('abs', item.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(item.path)"
+                        data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
                     </div>
                   </div>
                 </div>
@@ -472,9 +349,7 @@
           </div>
           <div class="col-6">
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Citizenship:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -482,17 +357,13 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Phone:
               </div>
               <div class="col-lg-6 p-2 bor_half">{{ phone }}</div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Email:
               </div>
               <div class="col-lg-6 p-2 bor_half text-lowercase">
@@ -500,9 +371,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Group:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -511,9 +380,7 @@
               </div>
             </div>
             <div class="row m-0" *ngIf="driverType == 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Start Date:
               </div>
               <div class="col-lg-6 p-2 bor_half">
@@ -521,21 +388,17 @@
               </div>
             </div>
             <div class="row m-0" *ngIf="driverType == 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Termination Date:
               </div>
               <div class="col-lg-6 p-2 bor_half">
                 {{
-                  terminationDate ? (terminationDate | date: "yyyy/MM/dd") : "-"
+                terminationDate ? (terminationDate | date: "yyyy/MM/dd") : "-"
                 }}
               </div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Contract Start Date:
               </div>
               <div class="col-lg-6 p-2 bor_half">
@@ -543,9 +406,7 @@
               </div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Contract End Date:
               </div>
               <div class="col-lg-6 p-2 bor_half">
@@ -553,16 +414,14 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Assigned Vehicle:
               </div>
               <div class="col-lg-6 p-2 bor_half">
                 {{
-                  vehicleList[assignedVehicle]
-                    ? vehicleList[assignedVehicle]
-                    : "-"
+                vehicleList[assignedVehicle]
+                ? vehicleList[assignedVehicle]
+                : "-"
                 }}
               </div>
             </div>
@@ -573,11 +432,7 @@
             Address Details
           </div>
         </div>
-        <div
-          id="address_div"
-          *ngFor="let item of address; let i = index"
-          class="mt-2"
-        >
+        <div id="address_div" *ngFor="let item of address; let i = index" class="mt-2">
           <div class="row">
             <div class="col-lg-12">
               <label class="control-label font-weight-bold">
@@ -586,31 +441,21 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Address:
             </div>
-            <div
-              class="col-lg-6 p-2 bor_half text-capitalize"
-              *ngIf="item.manual == undefined || item.manual == false"
-            >
+            <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual == undefined || item.manual == false">
               {{ item.userLocation ? item.userLocation : "-" }}
             </div>
-            <div
-              class="col-lg-6 p-2 bor_half text-capitalize"
-              *ngIf="item.manual"
-            >
+            <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual">
               {{ item.address1 ? item.address1 : "-" }}
               <span *ngIf="item.address2 != undefined || item.address2 != ''">{{
                 item.address2
-              }}</span>
+                }}</span>
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Address Type:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -618,9 +463,7 @@
             </div>
           </div>
           <div class="row m-0" *ngIf="item.manual">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               City:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -628,9 +471,7 @@
             </div>
           </div>
           <div class="row m-0" *ngIf="item.manual">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Zipcode:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -639,9 +480,7 @@
           </div>
 
           <div class="row m-0" *ngIf="item.manual">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Province/State:
             </div>
 
@@ -650,9 +489,7 @@
             </div>
           </div>
           <div class="row m-0" *ngIf="item.manual">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Country:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -666,29 +503,22 @@
           </div>
         </div>
         <div class="row">
-          <div
-            class="col-lg-12"
-            [style.width]="documents.length > 1 ? '50%' : '100%'"
-            *ngFor="let item of documents; let i = index"
-          >
+          <div class="col-lg-12" [style.width]="documents.length > 1 ? '50%' : '100%'"
+            *ngFor="let item of documents; let i = index">
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Document Type:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
                 {{
-                  item.documentType
-                    ? documentsTypesObects[item.documentType]
-                    : "-"
+                item.documentType
+                ? documentsTypesObects[item.documentType]
+                : "-"
                 }}
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Document#:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -696,9 +526,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Issuing Authority:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -706,9 +534,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Issuing Country:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -716,9 +542,7 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Issuing Province/State:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -726,26 +550,22 @@
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Issue Date:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
                 {{
-                  item.issueDate ? (item.issueDate | date: "yyyy/MM/dd") : "-"
+                item.issueDate ? (item.issueDate | date: "yyyy/MM/dd") : "-"
                 }}
               </div>
             </div>
             <div class="row m-0">
-              <div
-                class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-              >
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                 Expiry Date:
               </div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">
                 {{
-                  item.expiryDate ? (item.expiryDate | date: "yyyy/MM/dd") : "-"
+                item.expiryDate ? (item.expiryDate | date: "yyyy/MM/dd") : "-"
                 }}
               </div>
             </div>
@@ -754,42 +574,22 @@
                 <div class="vehicle-common-box p-3">
                   <div class="row">
                     <div class="col-lg-12">
-                      <label class="control-label font-weight-bold text-3"
-                        >Document(s)</label
-                      >
+                      <label class="control-label font-weight-bold text-3">Document(s)</label>
                     </div>
                   </div>
                   <hr class="solid mt-2" />
 
-                  <div
-                    class="row mb-1"
-                    *ngFor="let doc of assetsDocs[i]; let d = index"
-                  >
+                  <div class="row mb-1" *ngFor="let doc of assetsDocs[i]; let d = index">
                     <div class="col-lg-9">
-                      <a
-                        href="{{ doc.path }}"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        (click)="setPDFSrc(doc.path)"
-                        >Document {{ d + 1 }}</a
-                      >
+                      <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
+                        (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                     </div>
 
                     <div class="col-lg-3 text-right">
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="delete('doc', doc.name, i, d)"
-                        ><i class="fas fa-trash-alt"></i
-                      ></a>
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="setPDFSrc(doc.path)"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        ><i class="fas fa-eye"></i
-                      ></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                        (click)="delete('doc', doc.name, i, d)"><i class="fas fa-trash-alt"></i></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)"
+                        data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
                     </div>
                   </div>
                 </div>
@@ -807,9 +607,7 @@
           <div class="row">
             <div class="col-lg-6">
               <div class="row m-0">
-                <div
-                  class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                >
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                   ACE ID:
                 </div>
                 <div class="col-lg-6 p-2 bor_half">
@@ -817,9 +615,7 @@
                 </div>
               </div>
               <div class="row m-0">
-                <div
-                  class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                >
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                   ACI ID:
                 </div>
                 <div class="col-lg-6 p-2 bor_half">
@@ -827,9 +623,7 @@
                 </div>
               </div>
               <div class="row m-0">
-                <div
-                  class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                >
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                   CSA:
                 </div>
                 <div class="col-lg-6 p-2 bor_half">
@@ -840,9 +634,7 @@
             </div>
             <div class="col-lg-6">
               <div class="row m-0">
-                <div
-                  class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                >
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                   Fast Card#:
                 </div>
                 <div class="col-lg-6 p-2 bor_half">
@@ -850,9 +642,7 @@
                 </div>
               </div>
               <div class="row m-0">
-                <div
-                  class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                >
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                   Fast Expiry Date:
                 </div>
                 <div class="col-lg-6 p-2 bor_half">
@@ -873,9 +663,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       CDL#:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -883,9 +671,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Issued Province/State:
                     </div>
 
@@ -894,9 +680,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Issued Country:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -905,9 +689,7 @@
                   </div>
 
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       WCB#:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -915,9 +697,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Health Care#:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -925,9 +705,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Vehicle Type:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -935,9 +713,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Licence Expiration:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
@@ -945,9 +721,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Send Notification:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
@@ -956,16 +730,14 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Medical Card Renewal:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
                       {{
-                        liceMedicalCardRenewal
-                          ? (liceMedicalCardRenewal | date: "yyyy/MM/dd")
-                          : "-"
+                      liceMedicalCardRenewal
+                      ? (liceMedicalCardRenewal | date: "yyyy/MM/dd")
+                      : "-"
                       }}
                     </div>
                   </div>
@@ -973,7 +745,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="col-lg-6">
             <div class="row">
               <div class="col-lg-12">
@@ -984,9 +756,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Default Payment Type:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -994,37 +764,31 @@
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Loaded Miles:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{
-                        payPerMile.loadedMiles ? payPerMile.loadedMiles : "0"
+                      payPerMile.loadedMiles ? payPerMile.loadedMiles : "0"
                       }}
                       {{ payPerMile.currency }}
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Loaded Miles (Team):
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{
-                        payPerMile.loadedMilesTeam
-                          ? payPerMile.loadedMilesTeam
-                          : "0"
+                      payPerMile.loadedMilesTeam
+                      ? payPerMile.loadedMilesTeam
+                      : "0"
                       }}
                       {{ payPerMile.currency }}
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Empty Miles:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1033,126 +797,105 @@
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Empty Miles (Team):
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{
-                        payPerMile.emptyMilesTeam
-                          ? payPerMile.emptyMilesTeam
-                          : "0"
+                      payPerMile.emptyMilesTeam
+                      ? payPerMile.emptyMilesTeam
+                      : "0"
                       }}
                       {{ payPerMile.currency }}
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Percentage'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Load Pay Percentage:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{
-                        payPercentage.loadPayPercentage
-                          ? payPercentage.loadPayPercentage
-                          : "-"
+                      payPercentage.loadPayPercentage
+                      ? payPercentage.loadPayPercentage
+                      : "-"
                       }}
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Percentage'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Load Pay Percentage Of:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{
-                        payPercentage.loadPayPercentageOf
-                          ? payPercentage.loadPayPercentageOf
-                          : "-"
+                      payPercentage.loadPayPercentageOf
+                      ? payPercentage.loadPayPercentageOf
+                      : "-"
                       }}
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Hour'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Rate:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
                       {{ payPerHour.rate }}
                       <span *ngIf="payPerHour.currency != undefined">{{
                         payPerHour.currency ? payPerHour.currency : "-"
-                      }}</span>
+                        }}</span>
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Hour'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Waiting period Pay ($):
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{ payPerHour.waitingPay ? payPerHour.waitingPay : "-" }}
                       <span *ngIf="payPerHour.currency != undefined">{{
                         payPerHour.currency
-                      }}</span>
+                        }}</span>
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Pay Per Hour'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Waiting hour start after:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
                       {{
-                        payPerHour.waitingHourAfter
-                          ? payPerHour.waitingHourAfter
-                          : "-"
+                      payPerHour.waitingHourAfter
+                      ? payPerHour.waitingHourAfter
+                      : "-"
                       }}
                     </div>
                   </div>
-                  <div
-                    class="row m-0"
-                    *ngIf="paymentType === 'Pay Per Delivery'"
-                  >
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                  <div class="row m-0" *ngIf="paymentType === 'Pay Per Delivery'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Delivery Rate:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
                       {{
-                        payPerDelivery.deliveryRate
-                          ? payPerDelivery.deliveryRate
-                          : "0"
+                      payPerDelivery.deliveryRate
+                      ? payPerDelivery.deliveryRate
+                      : "0"
                       }}
                       <span *ngIf="payPerDelivery.currency == undefined">{{
                         payPerDelivery.currency
-                      }}</span>
+                        }}</span>
                     </div>
                   </div>
                   <div class="row m-0" *ngIf="paymentType === 'Flat Rate'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Flat Rate:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
                       {{ payFlatRate.flatRate ? payFlatRate.flatRate : "0" }}
                       <span *ngIf="payFlatRate.currency != undefined">{{
                         payFlatRate.currency
-                      }}</span>
+                        }}</span>
                     </div>
                   </div>
 
                   <div class="row m-0" *ngIf="driverType == 'employee'">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       SIN:
                     </div>
                     <div class="col-lg-6 p-2 bor_half">
@@ -1160,9 +903,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Pay Period:
                     </div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1175,51 +916,31 @@
           </div>
         </div>
         <div class="row" *ngIf="uploadLicence.length > 0">
-              <div class="col-lg-12 mt-2">
-                <div class="vehicle-common-box p-3">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-3"
-                        >Licence Document(s)</label
-                      >
-                    </div>
-                    <div class="col-lg-6 text-right"></div>
-                  </div>
-                  <hr class="solid mt-2" />
+          <div class="col-lg-12 mt-2">
+            <div class="vehicle-common-box p-3">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold text-3">Licence Document(s)</label>
+                </div>
+                <div class="col-lg-6 text-right"></div>
+              </div>
+              <hr class="solid mt-2" />
 
-                  <div
-                    class="row mb-1"
-                    *ngFor="let item of uploadLicence; let d = index"
-                  >
-                    <div class="col-lg-9">
-                      <a
-                        href="{{ item.path }}"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        (click)="setPDFSrc(item.path)"
-                        >Document {{ d + 1 }}</a
-                      >
-                    </div>
-                    <div class="col-lg-3 text-right">
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="delete('licDocs', item.name, d, nullVar)"
-                        ><i class="fas fa-trash-alt"></i
-                      ></a>
-                      <a
-                        href="javascript:;"
-                        class="btn btn-deafault pull-right btn-xs"
-                        (click)="setPDFSrc(item.path)"
-                        data-toggle="modal"
-                        data-target="#viewDocModal"
-                        ><i class="fas fa-eye"></i
-                      ></a>
-                    </div>
-                  </div>
+              <div class="row mb-1" *ngFor="let item of uploadLicence; let d = index">
+                <div class="col-lg-9">
+                  <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal"
+                    (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
+                </div>
+                <div class="col-lg-3 text-right">
+                  <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                    (click)="delete('licDocs', item.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>
+                  <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(item.path)"
+                    data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
         <div id="compliance_div" class="mt-3">
           <div class="row">
             <div class="col-lg-12 font-weight-bold text-4 text-dark">
@@ -1227,9 +948,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Status:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1237,9 +956,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Remarks:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1247,9 +964,7 @@
             </div>
           </div>
           <div class="row m-0" *ngIf="hosStatus == 'non_Exempted'">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Allow Personal Conveyance (PC):
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1258,9 +973,7 @@
             </div>
           </div>
           <div class="row m-0" *ngIf="hosStatus == 'non_Exempted'">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Allow Yard Move (YM):
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1269,9 +982,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Type:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1280,9 +991,7 @@
           </div>
 
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Cycle:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1290,9 +999,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Operating Zone:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1300,9 +1007,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Home Terminal:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1310,9 +1015,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Home Terminal Timezone:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1327,9 +1030,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Name:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1337,9 +1038,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Relationship:
             </div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">
@@ -1347,9 +1046,7 @@
             </div>
           </div>
           <div class="row m-0">
-            <div
-              class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"
-            >
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
               Phone:
             </div>
             <div class="col-lg-6 p-2 bor_half">
@@ -1362,28 +1059,13 @@
   </div>
 </div>
 
-<div
-  class="modal fade"
-  id="driverProfileModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="driverProfileModal"
-  aria-hidden="true"
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="width: 250px"
-  >
+<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog" aria-labelledby="driverProfileModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Driver Profile Image</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
           </i>
         </button>
@@ -1391,36 +1073,20 @@
       <div class="modal-body text-dark">
         <div class="row">
           <div class="col-lg-12">
-            <img
-              [src]="profile[0].path"
-              class="img-fluid rounded"
-              height="200px"
-              width="100%"
-            />
+            <img [src]="profile[0].path" class="img-fluid rounded" height="200px" width="100%" />
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div
-  class="modal fade"
-  id="viewDocModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="viewDocModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -1428,24 +1094,14 @@
         <div class="form-row">
           <div class="form-group col-md-12">
             <div>
-              <iframe
-                [src]="pdfSrc"
-                frameborder="0"
-                width="100%"
-                height="400px"
-              >
+              <iframe [src]="pdfSrc" frameborder="0" width="100%" height="400px">
               </iframe>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-default"
-          data-dismiss="modal"
-          data-toggle="modal"
-        >
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal">
           Cancel
         </button>
       </div>
@@ -1453,76 +1109,38 @@
   </div>
 </div>
 <!-- Change password modal -->
-<div
-  class="modal fade"
-  id="driverPasswordModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="driverPasswordModal"
-  aria-hidden="true"
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="max-width: 500px"
-  >
+<div class="modal fade" id="driverPasswordModal" tabindex="-1" role="dialog" aria-labelledby="driverPasswordModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Change Password</h5>
-        <button
-          type="button"
-          class="close"
-          (click)="pwdModalClose()"
-          aria-label="Close"
-        >
+        <button type="button" class="close" (click)="pwdModalClose()" aria-label="Close">
           <i class="far fa-window-close" style="font-size: 25px"> </i>
         </button>
       </div>
-      <div
-        class="modal-body text-dark"
-        style="max-height: 500px; overflow: scroll"
-      >
-        <form
-          id="driverForm"
-          class="form-horizontal form-bordered text-capitalize"
-          name="driverForm"
-          [mustMatch]="['password', 'confirmPassword']"
-          (ngSubmit)="driverF.form.valid && onChangePassword()"
-          novalidate
-          #driverF="ngForm"
-          ngNativeValidate
-        >
+      <div class="modal-body text-dark" style="max-height: 500px; overflow: scroll">
+        <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm"
+          [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="driverF.form.valid && onChangePassword()" novalidate
+          #driverF="ngForm" ngNativeValidate>
           <div class="row">
             <div class="col-lg-12">
-              <label class="control-label font-weight-bold text-lg-right pt-2"
-                >Password
+              <label class="control-label font-weight-bold text-lg-right pt-2">Password
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
               <div class="input-group">
-                <input
-                  id="pd"
-                  [(ngModel)]="driverPwdData.password"
-                  placeholder="eg.  $John@01"
-                  (change)="onChangeHideErrors('password')"
-                  name="password"
-                  #pwd="ngModel"
-                  required
+                <input id="pd" [(ngModel)]="driverPwdData.password" placeholder="eg.  $John@01"
+                  (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
                   [ngClass]="{ error: driverF.submitted && pwd.invalid }"
                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
-                  [type]="fieldTextType ? 'text' : 'password'"
-                  (input)="validatePassword($event.target.value)"
-                  class="form-control"
-                />
+                  [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
+                  class="form-control" />
                 <div class="input-group-append">
                   <span class="input-group-text eye">
-                    <i
-                      class="fa"
-                      [ngClass]="{
+                    <i class="fa" [ngClass]="{
                         'fa-eye-slash': !fieldTextType,
                         'fa-eye': fieldTextType
-                      }"
-                      (click)="toggleFieldTextType()"
-                    ></i>
+                      }" (click)="toggleFieldTextType()"></i>
                   </span>
                 </div>
               </div>
@@ -1532,99 +1150,69 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <p class="text-dark pt-2 mb-0">
-                        <span
-                          class="pr-1"
-                          [ngClass]="[
+                        <span class="pr-1" [ngClass]="[
                             passwordValidation.length ? 'green1' : 'red1'
-                          ]"
-                        >
-                          <i
-                            [ngClass]="[
+                          ]">
+                          <i [ngClass]="[
                               passwordValidation.length
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
-                            ]"
-                          >
-                          </i
-                        ></span>
+                            ]">
+                          </i></span>
                         8 characters minimum
                       </p>
                       <p class="text-dark pt-2 mb-0">
-                        <span
-                          class="pr-1"
-                          [ngClass]="[
+                        <span class="pr-1" [ngClass]="[
                             passwordValidation.number ? 'green1' : 'red1'
-                          ]"
-                        >
-                          <i
-                            [ngClass]="[
+                          ]">
+                          <i [ngClass]="[
                               passwordValidation.number
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
-                            ]"
-                          >
-                          </i
-                        ></span>
+                            ]">
+                          </i></span>
                         atleast 1 number
                       </p>
                     </div>
                     <div class="col-lg-12">
                       <p class="text-dark pt-2 mb-0">
-                        <span
-                          class="pr-1"
-                          [ngClass]="[
+                        <span class="pr-1" [ngClass]="[
                             passwordValidation.upperCase ? 'green1' : 'red1'
-                          ]"
-                        >
-                          <i
-                            [ngClass]="[
+                          ]">
+                          <i [ngClass]="[
                               passwordValidation.upperCase
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
-                            ]"
-                          >
-                          </i
-                        ></span>
+                            ]">
+                          </i></span>
                         atleast 1 uppercase
                       </p>
 
                       <p class="text-dark pt-2 mb-0">
-                        <span
-                          class="pr-1"
-                          [ngClass]="[
+                        <span class="pr-1" [ngClass]="[
                             passwordValidation.lowerCase ? 'green1' : 'red1'
-                          ]"
-                        >
-                          <i
-                            [ngClass]="[
+                          ]">
+                          <i [ngClass]="[
                               passwordValidation.lowerCase
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
-                            ]"
-                          >
-                          </i
-                        ></span>
+                            ]">
+                          </i></span>
                         atleast 1 lowercase
                       </p>
                     </div>
                     <div class="col-lg-12">
                       <p class="text-dark pt-2 mb-0">
-                        <span
-                          class="pr-1"
-                          [ngClass]="[
+                        <span class="pr-1" [ngClass]="[
                             passwordValidation.specialCharacters
                               ? 'green1'
                               : 'red1'
-                          ]"
-                        >
-                          <i
-                            [ngClass]="[
+                          ]">
+                          <i [ngClass]="[
                               passwordValidation.specialCharacters
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
-                            ]"
-                          ></i
-                        ></span>
+                            ]"></i></span>
                         atleast 1 special character(!@#$%^&*.-)
                       </p>
                     </div>
@@ -1633,40 +1221,25 @@
               </div>
             </div>
             <div class="col-lg-12">
-              <label class="control-label font-weight-bold text-lg-right pt-2"
-                >Confirm Password
+              <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
               <div class="input-group">
-                <input
-                  id="cnf"
-                  [(ngModel)]="driverPwdData.confirmPassword"
-                  name="confirmPassword"
-                  (change)="onChangeHideErrors('confirmPassword')"
-                  #cpwd="ngModel"
-                  required
+                <input id="cnf" [(ngModel)]="driverPwdData.confirmPassword" name="confirmPassword"
+                  (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
                   [ngClass]="{ error: driverF.submitted && cpwd.invalid }"
-                  [type]="cpwdfieldTextType ? 'text' : 'password'"
-                  placeholder="Confirm password"
-                  class="form-control"
-                />
+                  [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                  class="form-control" />
                 <div class="input-group-append">
                   <span class="input-group-text eye">
-                    <i
-                      class="fa"
-                      [ngClass]="{
+                    <i class="fa" [ngClass]="{
                         'fa-eye-slash': !cpwdfieldTextType,
                         'fa-eye': cpwdfieldTextType
-                      }"
-                      (click)="togglecpwdfieldTextType()"
-                    ></i>
+                      }" (click)="togglecpwdfieldTextType()"></i>
                   </span>
                 </div>
               </div>
-              <div
-                *ngIf="cpwd.invalid && driverF.submitted"
-                class="text-danger"
-              >
+              <div *ngIf="cpwd.invalid && driverF.submitted" class="text-danger">
                 <div *ngIf="cpwd.errors.required">
                   Confirm password is required.
                 </div>
@@ -1676,18 +1249,10 @@
           </div>
           <div class="row mt-3">
             <div class="col-lg-12 text-right">
-              <button
-                type="button"
-                class="cus-btn-padd btn btn-default mr-2"
-                (click)="pwdModalClose()"
-              >
+              <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">
                 Cancel
               </button>
-              <button
-                type="submit"
-                class="cus-btn-padd btn btn-success"
-                [disabled]="submitDisabled"
-              >
+              <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled">
                 Save
               </button>
             </div>
@@ -1697,3 +1262,126 @@
     </div>
   </div>
 </div>
+<p-dialog header="Update ELD Driver" [(visible)]="display" [style]="{ width: '450px' }" [modal]="true">
+  <div class="form-group row text-dark">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Name
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input type="text" class="form-control widstyle" [(ngModel)]="eldDriver.driverFstName " />
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Last Name
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input [(ngModel)]="eldDriver.driverLstName " type="text" class="form-control" />
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Username
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input type="text" class="form-control" [(ngModel)]="eldDriver.userName " />
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Password
+
+              </label>
+              <input type="text" class="form-control" />
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Confirmation
+
+              </label>
+              <input type="text" class="form-control" />
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Home Base
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select [clearable]="false" [(ngModel)]="eldDriver.homeBase" required class="form-control populate"
+                required>
+                <ng-option value="Home1">Home1</ng-option>
+                <ng-option value="New FL Office">New FL Office</ng-option>
+              </ng-select>
+
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Ruleset
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select name="brokerage.carrierID" placeholder="Select Carrier">
+                <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
+                  {{ data.value }}</ng-option>
+              </ng-select>
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Jurisdiction
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select [clearable]="false" [(ngModel)]="eldDriver.Jurisdiction" required class="form-control populate"
+                required>
+                <ng-option value="North">North</ng-option>
+                <ng-option value="South">South</ng-option>
+              </ng-select>
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">24-Period Starting Time
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select [clearable]="false" [(ngModel)]="eldDriver.startingTime" required class="form-control populate"
+                required>
+                <ng-option value="Midnight">Midnight</ng-option>
+              </ng-select>
+
+              <input type="checkbox" name="eldDriver.active" [(ngModel)]="eldDriver.active">
+              <label class="labelWidth"> Active </label><br>
+
+              <input type="checkbox" name="eldDriver.personalUse" [(ngModel)]="eldDriver.personalUse">
+              <label class="labelWidth"> Personal Use </label><br>
+
+              <input type="checkbox" name="eldDriver.yardMove" [(ngModel)]="eldDriver.yardMove">
+              <label class="labelWidth"> Yard Move </label><br>
+
+              <input type="checkbox" name="eldDriver.exemption" [(ngModel)]="eldDriver.exemption">
+              <label class="labelWidth"> Exemption </label><br>
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Units
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select [clearable]="false" [(ngModel)]="eldDriver.units" required class="form-control populate"
+                required>
+                <ng-option value="Km/Liters">Km/Liters</ng-option>
+                <ng-option value="Miles/Gallons">Miles/Gallons</ng-option>
+              </ng-select>
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">Registration State
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input type="text" class="form-control" />
+
+              <label class="control-label font-weight-bold text-lg-right pt-2">License Number
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input type="text" class="form-control" />
+
+              <input type="checkbox" name="eldDriver.wifi" [(ngModel)]="eldDriver.wifi">
+              <label class="labelWidth"> DVIR WiFi Only </label><br>
+
+              <input type="checkbox" name="eldDriver.allowUseExemption" [(ngModel)]="eldDriver.allowUseExemption">
+              <label class="labelWidth"> Allow to use Exemption </label><br>
+
+              <input type="checkbox" name="eldDriver.allowTakePhoto" [(ngModel)]="eldDriver.allowTakePhoto">
+              <label class="labelWidth"> Allow to take DVIR photo </label><br>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="text-right">
+    <button type="button" class="btn btn-default mr-2" (click)="display = false">
+      Close
+    </button>
+    <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
+      Save
+    </button>
+  </div>
+</p-dialog>
