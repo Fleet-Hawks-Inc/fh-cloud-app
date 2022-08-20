@@ -82,8 +82,8 @@
                              [routerLink]="['/manage', 'users', 'add']" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             icon="pi pi-filter-slash" (click)="clear(ut)"></button>
-                          <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
-                          <!--  icon="fas fa-regular fa-file-excel" (click)="generateCSVforUsers()" pTooltip="Excel"></button>-->
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="ut.exportCSV()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns">
@@ -132,8 +132,8 @@
                             {{ get(user, dataColumns.field)}}
                             </b>
                           </span>  
-                           <span *ngSwitchCase="'name'">
-                             {{ user.firstName | titlecase }}&nbsp;{{ user.lastName | titlecase}}
+                           <span *ngSwitchCase="'userFullName'">
+                         {{ get(user, dataColumns.field) | titlecase}}
                            </span>
                            <span *ngSwitchCase="'userType'">
                             {{ get(user, dataColumns.field) | titlecase}}
