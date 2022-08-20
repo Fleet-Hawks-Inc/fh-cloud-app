@@ -4,7 +4,7 @@
       <header class="page-header">
         <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{title}} </div>
-          <div class="col-md-8  col-lg-8 text-right"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']"
+          <div class="col-md-8  col-lg-8 text-right"> <a [routerLink]="['/dispatch', 'cross-border','aci-manifest']"
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACI eManifests</a> </div>
         </div>
       </header>
@@ -24,11 +24,7 @@
                           <div class="col-lg-4">
                             <input type="text" class="form-control" name="CCC" [(ngModel)]="CCC"
                               placeholder="Select CCC code" #Trip2="ngModel" required disabled />
-                            <!-- <ng-select name="CCC" [(ngModel)]="CCC" placeholder="Select CCC code" #Trip2="ngModel" required>
-                              <ng-option value="184S">184S</ng-option>
-                              <ng-option value="745B">745B</ng-option>
-                              <ng-option value="759H">759H</ng-option>
-                            </ng-select> -->
+
                             <div *ngIf="Trip2.invalid && (Trip2.dirty || Trip2.touched)" class="text-danger">
                               <div>
 
@@ -102,7 +98,7 @@
                         <input class="form-control" type="text" placeholder="yyyy/mm/dd" name="estimatedArrivalDate"
                           #Edate1="ngModel" required [(ngModel)]="estimatedArrivalDate" ngbDatepicker
                           #d6="ngbDatepicker" (change)="selectEstTime();onChangeHideErrors('estimatedArrivalDate')"
-                          [minDate]="getcurrentDate" (click)="d6.toggle()" />
+                          (click)="d6.toggle()" />
                         <div *ngIf="Edate1.invalid && (Edate1.dirty || Edate1.touched)" class="text-danger">
                           <div>
 
@@ -865,8 +861,7 @@
                                         [(ngModel)]="shipment.subLocation">
                                         <ng-option *ngFor="let subLocation of subLocationsList"
                                           [value]="subLocation.code">
-                                          Code: {{subLocation.code}}, Name:
-                                          {{subLocation.name}}</ng-option>
+                                          Code: {{subLocation.code}}, Name: {{subLocation.name}}</ng-option>
                                       </ng-select>
                                     </div>
                                     <div class="col-lg-10" *ngIf="shipment.shipmentType === 'CSA'">

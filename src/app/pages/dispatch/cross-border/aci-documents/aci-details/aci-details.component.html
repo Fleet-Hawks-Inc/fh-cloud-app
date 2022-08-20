@@ -32,7 +32,7 @@
                             <a class="dropdown-item text-1" href="javascript:;">Cancel Trip Only</a>
                         </div>
                     </div> -->
-                    <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i
+                    <a [routerLink]="['/dispatch', 'cross-border','aci-manifest']" class="btn btn-default btn-sm"><i
                             class="fas fa-list"></i> ACI Manifests</a>
                 </div>
             </header>
@@ -170,7 +170,7 @@
                                     <!-- <button type="button" data-toggle="modal" data-target="#statusModal" class="btn btn-sm btn-success">View All History</button> -->
                                 </div>
                             </div>
-                            <div class="card-body border scroll-table-class">
+                            <div class="card-body border">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
@@ -210,7 +210,7 @@
 
                 </div>
                 <!-- SHIPMENT DIV -->
-                <div class="row mt-3">
+                <div class="row mt-3" *ngIf="shipments.length > 0">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -369,8 +369,10 @@
                                             data-placement="top" style="cursor: pointer;"
                                             title="Click to see passenger details">
 
-                                            <td (click)="showPassengerDetails(passenger.passengerID)">
-                                                {{passenger.firstName}}{{passenger.lastName}}</td>
+                                            <td (click)="showPassengerDetails(passenger.passengerID)"
+                                                class="text-success">
+                                                <strong>{{passenger.firstName}} {{passenger.lastName}}</strong>
+                                            </td>
                                             <td (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
                                             <td (click)="showPassengerDetails(passenger.passengerID)">--</td>
                                             <td (click)="showPassengerDetails(passenger.passengerID)"><span
@@ -525,10 +527,10 @@
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Containers on ACI eManifest <b> {{tripNumber}}</b></h4>
-                                <div class=" pull-right">
+                                <!-- <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Container</a>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="card-body border">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0"
