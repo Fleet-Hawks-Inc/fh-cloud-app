@@ -2,7 +2,7 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr19 pl7">
-        <div class="row" style="padding-top:10px;">
+        <div class="row" style="padding-top: 10px">
           <div class="col-lg-3 col-md-3 pr-1">
             <div class="input-daterange input-group">
               <span class="input-group-prepend">
@@ -11,44 +11,119 @@
                 </span>
               </span>
 
-              <input [(ngModel)]="filter.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-              <span class="input-group-text border-left-0
-                    border-right-0 rounded-0">
+              <input
+                [(ngModel)]="filter.startDate"
+                name="fromDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="from.toggle()"
+                ngbDatepicker
+                #from="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
                 to
               </span>
-              <input [(ngModel)]="filter.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-
+              <input
+                [(ngModel)]="filter.endDate"
+                name="toDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="to.toggle()"
+                ngbDatepicker
+                #to="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
             </div>
           </div>
           <div class="col-md-2 col-lg-2">
-            <button type="button" class="btn btn-sm btn-success mr-3" (click)="searchFilter()">Search</button>
+            <button
+              type="button"
+              class="btn btn-sm btn-success mr-3"
+              (click)="searchFilter()"
+            >
+              Search
+            </button>
           </div>
         </div>
       </header>
-
-
-
-
 
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                  <p-table #dt [value]="accounts" [resizableColumns]="true" columnResizeMode="expand" sortField="accountClass" scrollDirection="both" sortMode="single" [scrollable]="true" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="600px" [columns]="selectedColumns" rowGroupMode="subheader" groupRowsBy="accountClass">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="accounts"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    sortField="accountClass"
+                    scrollDirection="both"
+                    sortMode="single"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    scrollHeight="600px"
+                    [columns]="selectedColumns"
+                    rowGroupMode="subheader"
+                    groupRowsBy="accountClass"
+                  >
                     <ng-template pTemplate="caption">
-                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
                         <div>
                           <h3 class="m-0">Balance Sheet</h3>
                         </div>
                         <div class="text-right">
                           <span>Showing {{ accounts.length }} entries </span>
                           &nbsp;
-                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
-                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
+                          <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="dt.exportCSV()"
+                            pTooltip="Excel"
+                          ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
                           </p-multiSelect>
                         </div>
                       </div>
@@ -66,24 +141,50 @@
 
                     <ng-template pTemplate="groupheader" let-customer>
                       <tr pRowGroupHeader>
-                        <td colspan="6" style="height: 40px;">
+                        <td
+                          colspan="6"
+                          class="bornt bornr bornb"
+                          style="height: 40px"
+                        >
                           <strong>
-                            <span class="col-lg-12 mt-3 text-center" style="font-size:20px">{{customer.accountClass | titlecase}}</span>
+                            <span
+                              class="mt-3 text-center text-dark text-4 font-weight-bold"
+                              >{{ customer.accountClass | titlecase }}</span
+                            >
                           </strong>
                         </td>
                       </tr>
                     </ng-template>
 
-
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn style="width: 16.65%">
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          style="width: 16.65%"
+                        >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
-                              <div class="flex justify-content-center align-items-center" alignFrozen="left" pFrozenColumn [frozen]="true">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
                                 {{ dataColumns.header }}
-                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
                                 </p-columnFilter>
                               </div>
                             </span>
@@ -91,8 +192,6 @@
                         </th>
                       </tr>
                     </ng-template>
-
-
 
                     <!--<ng-template pTemplate="groupfooter" let-customer>-->
                     <!--    <tr class="p-rowgroup-footer">-->
@@ -103,13 +202,21 @@
                     <!--    </tr>-->
                     <!--</ng-template>-->
 
-
-                    <ng-template pTemplate="body" let-driver let-columns="columns" let-rowIndex="rowIndex">
+                    <ng-template
+                      pTemplate="body"
+                      let-driver
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
                       <tr>
-                        <td *ngFor="let dataColumns of columns" style="width: 16.65%; height: 40px; cursor: pointer">
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          style="width: 16.65%; height: 40px; cursor: pointer"
+                        >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
-                              {{ get(driver, dataColumns.field) }}</span>
+                              {{ get(driver, dataColumns.field) }}</span
+                            >
                           </div>
                         </td>
                       </tr>

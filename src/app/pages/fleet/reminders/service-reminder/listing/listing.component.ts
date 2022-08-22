@@ -67,15 +67,16 @@ export class ListingComponent implements OnInit {
   allVehicles: any = [];
   users = [];
   loaded = false
-  
+   display: any;
   
   // columns of data table
    dataColumns = [
     { field: 'vehicleList', header: 'Vehicle', type: 'text' },
-    { field: 'status', header: '	Service Task', type: 'text' },
-    { field: 'nextDueDays', header: '	Next Due', type: 'text' },
+    { field: 'status', header: 'Service Task', type: 'text' },
+    { field: 'nextDueDays', header: 'Next Due', type: 'text' },
     { field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
     { field: 'subscribers', header: 'Subscribers', type: 'text' },
+    //{ field: 'remDetail', header: 'Service Task', type: 'text', display: 'none' },
   ];
   
   constructor(private apiService: ApiService, 
@@ -171,18 +172,15 @@ export class ListingComponent implements OnInit {
     }
   }
 
-  initDataTable() {
+  async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
-
           if (result.Items.length === 0) {
-
             this.dataMessage = Constants.NO_RECORDS_FOUND
             this.loaded = true;
           }
           if (result.Items.length > 0) {
-
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
             }
@@ -190,8 +188,22 @@ export class ListingComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.remindersData = this.remindersData.concat(result.Items)
-
             this.loaded = true;
+            for(let res of result.Items){
+            res.vehicleName = this.vehicleList[res.entityID];
+            if(res.status === 'dueSoon'){
+            res.serviceStatus = res.status
+            }else{
+            res.serviceStatus = res.status
+            }
+            res.serviceTasks = this.tasksList[res.tasks.taskID];
+            if(res.tasks.remindByUnit == 'time'){
+            res.resUnit = 'Every' + ' ' + res.tasks.time + ' ' + res.tasks.timeUnit + '(s)';
+            }else{
+            res.resUnit = 'Every' + ' ' + res.tasks.odometer + ' ' + 'miles';
+            }
+            res.remDetail = res.serviceStatus.toUpperCase().replace('undefined') + '\n' + res.serviceTasks + '\n' + res.resUnit;
+            }
           }
         });
     }

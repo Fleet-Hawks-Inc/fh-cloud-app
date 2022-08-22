@@ -20,7 +20,7 @@ export class ServiceDetailComponent implements OnInit {
   @ViewChild("logModal", { static: true })
   logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
-  noRecordMessage: string = Constants.NO_RECORDS_FOUND;
+  noRecordMessage: string = Constants.FETCHING_DATA;
   public logID;
   programs;
   logsData: any = {
@@ -125,8 +125,11 @@ export class ServiceDetailComponent implements OnInit {
       error: () => { },
       next: async (result: any) => {
         this.logsData = result.Items[0];
+        if(this.logsData.selectedIssues.length === 0 ){
+          this.noRecordMessage = Constants.NO_RECORDS_FOUND;
+        }
         this.fetchSelectedIssues(this.logsData.selectedIssues);
-
+       
         result = result.Items[0];
         this.vehicle = result.unitID;
         this.assetID = result.unitID;
@@ -172,7 +175,11 @@ export class ServiceDetailComponent implements OnInit {
               name: image.name
             }
           )
-      }
+
+        }
+        if (this.allServiceParts.length === 0 || this.allServiceTasks.length ===0 ) {
+          this.noRecordMessage = Constants.NO_RECORDS_FOUND;
+        }
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({

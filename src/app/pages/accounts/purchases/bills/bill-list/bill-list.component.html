@@ -163,7 +163,7 @@
                               <ng-template pTemplate>
                                 <a class="dropdown-item" href="javascript:;" [routerLink]="salesInvo.editUrl">Edit</a>
                                 <a class="dropdown-item" href="javascript:;"
-                                  (click)="voidBill(salesInvo, rowIndex)">Void</a>
+                                  (click)="op.hide();voidBill(salesInvo, rowIndex)">Void</a>
                               </ng-template>
                             </p-overlayPanel>
                           </div>

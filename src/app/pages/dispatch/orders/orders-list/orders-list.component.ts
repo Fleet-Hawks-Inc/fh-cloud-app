@@ -307,25 +307,20 @@ export class OrdersListComponent implements OnInit {
   async ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-      { width: "8%", field: "orderNumber", header: "Order#", type: "text" },
-      { width: "7%", field: "orderMode", header: "Type", type: "text" },
-      { width: "8%", field: "createdDate", header: "Date", type: "text" },
-      { width: "10%", field: "customerName", header: "Customer", type: "text" },
-      {
-        width: "9%",
-        field: "cusConfirmation",
-        header: "Confirmation",
-        type: "text",
-      },
+      {  field: "orderNumber", header: "Order#", type: "text" },
+      {  field: "orderMode", header: "Type", type: "text" },
+      {  field: "createdDate", header: "Date", type: "text" },
+      {  field: "customerName", header: "Customer", type: "text" },
+      { field: "cusConfirmation", header: "Confirmation",type: "text"},
       { field: "pickupLocData", header: "Pickup Location", display: "none" },
       { field: "dropLocData", header: " Drop Off Location", display: "none" },
       { field: "commodityData", header: "Commodity", display: "none" },
-      { width: "9%", field: "shipperName", header: "Shipper", type: "text" },
-      { width: "9%", field: "receiverName", header: "Receiver", type: "text" },
-      { width: "8%", field: "amount", header: "Amount", type: "text" },
-      { width: "7%", field: "invoiceData", header: "Invoice ", type: "text" },
-      { width: "7%", field: "paymentData", header: "Payment ", type: "text" },
-      { width: "9%", field: "newStatus", header: "Order Status", type: "text" },
+      {  field: "shipperName", header: "Shipper", type: "text" },
+      {  field: "receiverName", header: "Receiver", type: "text" },
+      {  field: "amount", header: "Amount", type: "text" },
+      {  field: "invoiceData", header: "Invoice ", type: "text" },
+      {  field: "paymentData", header: "Payment ", type: "text" },
+      {  field: "newStatus", header: "Order Status", type: "text" },
     ];
     this._selectedColumns = this.dataColumns;
 

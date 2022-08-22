@@ -1,16 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
 import { Table } from 'primeng/table';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services';
+import { OverlayPanel } from "primeng/overlaypanel";
 @Component({
   selector: 'app-sales-invoices-list',
   templateUrl: './sales-invoices-list.component.html',
   styleUrls: ['./sales-invoices-list.component.css']
 })
 export class SalesInvoicesListComponent implements OnInit {
-
+  @ViewChild("op") overlaypanel: OverlayPanel;
   isSearch: boolean = false;
   dataMessage = Constants.FETCHING_DATA;
 
@@ -37,14 +38,14 @@ export class SalesInvoicesListComponent implements OnInit {
     this.fetchSales();
     this.fetchCustomersByIDs();
     this.dataColumns = [
-      { width: '8%', field: 'txnDate', header: 'Date', type: "text" },
-      { width: '10%', field: 'sInvNo', header: 'Sales Invoice#', type: "text" },
-      { width: '10%', field: 'sRef', header: 'Reference#', type: "text" },
-      { width: '13%', field: 'customerID', header: 'Customer', type: "text" },
-      { width: '8%', field: 'dueDate', header: 'Due Date', type: "text" },
-      { width: '15%', field: 'total.finalTotal', header: 'Amount', type: "text" },
-      { width: '15%', field: 'payStatus', header: 'Payment Status', type: "text" },
-      { width: '15%', field: 'status', header: 'Status', type: "text" },
+      {field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'sInvNo', header: 'Sales Invoice#', type: "text" },
+      { field: 'sRef', header: 'Reference#', type: "text" },
+      { field: 'customerID', header: 'Customer', type: "text" },
+      {field: 'dueDate', header: 'Due Date', type: "text" },
+      { field: 'total.finalTotal', header: 'Amount', type: "text" },
+      { field: 'payStatus', header: 'Payment Status', type: "text" },
+      { field: 'status', header: 'Status', type: "text" },
     ];
 
 

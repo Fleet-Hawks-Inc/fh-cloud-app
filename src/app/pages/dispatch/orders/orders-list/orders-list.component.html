@@ -163,17 +163,14 @@
                   <p-table
                     #dt
                     [value]="orders"
-                    [resizableColumns]="true"
-                    columnResizeMode="expand"
-                    scrollDirection="both"
-                    [columns]="selectedColumns"
-                    [loading]="!loaded"
-                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [scrollable]="true"
-                    [loading]="!loaded"
-                    scrollHeight="100%"
                     dataKey="orderSK"
-                    responsiveLayout="scroll"
+                    [resizableColumns]="true" columnResizeMode="fit" 
+                    scrollDirection="both" 
+                    [columns]="selectedColumns" 
+                    [loading]="!loaded" 
+                    autoLayout="true"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+                    scrollHeight="100%"
                   >
                     <ng-template pTemplate="caption">
                       <div
@@ -228,7 +225,7 @@
                     <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th
-                          style="width: 3%"
+                        
                           alignFrozen="left"
                           pFrozenColumn
                           [frozen]="true"
@@ -237,7 +234,7 @@
                           *ngFor="let column of dataColumns"
                           [pSortableColumn]="column.field"
                           pResizableColumn
-                          [ngStyle]="{ width: column.width,'display': column.display }"
+                          [ngStyle]="{'display': column.display }"
                         >
                           <span [ngSwitch]="column.field">
                             <span *ngSwitchDefault>
@@ -350,7 +347,7 @@
                           </span>
                         </th>
                         <th
-                          style="width: 6%"
+                        
                           alignFrozen="right"
                           pFrozenColumn
                           [frozen]="true"
@@ -371,7 +368,7 @@
                           alignFrozen="left"
                           pFrozenColumn
                           [frozen]="true"
-                          style="width: 3%"
+                         
                         >
                           <button
                             type="button"
@@ -388,34 +385,25 @@
                         <td
                           (click)="directToDetail(order.orderID)"
                           class="font-weight-bold"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'orderNumber' }).width
-                          }"
+                          
                         >
                           {{ order.orderNumber }}
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'orderMode' }).width
-                          }"
-                        >
+                                                 >
                           {{ order.orderMode }}
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'createdDate' }).width
-                          }"
+                          
                         >
                           {{ order.createdDate | date: "yyyy/MM/dd" }}
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'customerName' })
-                              .width
-                          }"
+                          
+                        
                         >
                           <div style="white-space: pre-line">
                             {{ order.customerName }}
@@ -423,10 +411,8 @@
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'cusConfirmation' })
-                              .width
-                          }"
+                          
+                        
                         >
                           <div style="white-space: pre-line">
                             {{ order.cusConfirmation }}
@@ -435,9 +421,7 @@
 
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'shipperName' }).width
-                          }"
+                          
                         >
                           <div style="white-space: pre-line">
                             {{ order.shipperName ? order.shipperName : "-" }}
@@ -446,10 +430,8 @@
 
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'receiverName' })
-                              .width
-                          }"
+                          
+                        
                         >
                           <div style="white-space: pre-line">
                             {{ order.receiverName ? order.receiverName : "-" }}
@@ -458,18 +440,14 @@
 
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'amount' }).width
-                          }"
+                          
                         >
                           {{ order.amount }}
                           <br />
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'invoiceData' }).width
-                          }"
+                          
                         >
                           <span
                             class="badge badge-danger"
@@ -486,9 +464,7 @@
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'paymentData' }).width
-                          }"
+                          
                         >
                           <div class="badges">
                             <span
@@ -521,9 +497,7 @@
                         </td>
                         <td
                           (click)="directToDetail(order.orderID)"
-                          [ngStyle]="{
-                            width: find(columns, { field: 'newStatus' }).width
-                          }"
+                          
                         >
                           <div class="badges">
                             <span
@@ -602,7 +576,7 @@
                           </div>
                         </td>
                         <td
-                          style="width: 6%; overflow: inherit !important"
+                          style=" overflow: inherit !important"
                           pFrozenColumn
                           alignFrozen="right"
                           [frozen]="true"
@@ -718,10 +692,11 @@
 
                     <!-- Empty Template -->
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
+                      <td colspan="13" class="text-center">
+                        <br>
                         {{ dataMessage }}
-                        <br /><br />
-                      </div>
+                    
+                    <td>
                     </ng-template>
                     <!-- Summary Section with Load More button -->
 
@@ -752,8 +727,8 @@
 
                     <ng-template pTemplate="rowexpansion" let-order>
                       <tr>
-                        <td width="40%" class="p-0 custom-bg-light border-0">
-                          <div class="p-3">
+                        <td colspan="6"  class="p-0 custom-bg-light border-0">
+                          <div class="p-3" style="margin-left: 60px;">
                             <p-table
                               [value]="order.shippersReceiversInfo"
                               styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
@@ -831,8 +806,8 @@
                             </p-table>
                           </div>
                         </td>
-                        <td width="40%" class="p-0 custom-bg-light border-0">
-                          <div class="p-3">
+                        <td colspan="5"  class="p-0 custom-bg-light border-0">
+                          <div class="p-3" >
                             <p-table
                               [value]="order.shippersReceiversInfo"
                               styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
@@ -908,7 +883,7 @@
                             </p-table>
                           </div>
                         </td>
-                        <td width="20%" class="p-0 custom-bg-light border-0">
+                        <td colspan="5" class="p-0 custom-bg-light border-0">
                           <div class="p-3">
                             <p-table
                               [value]="order.shippersReceiversInfo"

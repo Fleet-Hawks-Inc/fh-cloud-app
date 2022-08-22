@@ -177,7 +177,7 @@ export class ProvinceMilesComponent implements OnInit {
     this.loaded = false;
   }
   searchFilter() {
-    if (this.vehicleIdentification !== '' || this.start != null && this.end != null) {
+    if (this.vehicleIdentification !== null || this.start != null && this.end != null) {
       this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if (this.vehicleId == '') {
         this.vehicleId = this.vehicleIdentification;
