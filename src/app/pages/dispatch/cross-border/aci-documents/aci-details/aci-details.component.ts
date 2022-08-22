@@ -165,9 +165,9 @@ export class AciDetailsComponent implements OnInit {
     // {
     //   label: 'Send Trip Only(Shipments already on file or empty)', icon: 'pi pi-exclamation-circle', command: () => { },
     // },
-    // {
-    //   label: 'Change Trip Only(Shipments will not be changed.If adding shipment,it must be on file)', icon: 'pi pi-exclamation-circle', command: () => { },
-    // },
+    {
+      label: 'Change Trip Only(Shipments will not be changed.If adding shipment,it must be on file)', icon: 'pi pi-exclamation-circle', command: () => { this.amendManifest(); },
+    },
     // {
     //   label: 'Amend Trip Only(Shipments will not be amended)', icon: 'pi pi-exclamation-circle', command: () => { },
     // },
@@ -189,7 +189,7 @@ export class AciDetailsComponent implements OnInit {
     this.fetchPackagingUnits();
     this.fetchShipmentType();
     this.fetchCanadianPorts();
-    this.fetchSublocationList();
+    this.fetchSubLocations();
     this.fetchReleaseOfficeList();
   }
 
@@ -207,7 +207,7 @@ export class AciDetailsComponent implements OnInit {
       }, {});
     });
   }
-  fetchSublocationList() {
+  fetchSubLocations() {
     this.httpClient.get('assets/ACIsubLocations.json').subscribe((data: any) => {
       this.subLocationObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
