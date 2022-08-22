@@ -55,7 +55,7 @@ export class DriverReportComponent implements OnInit {
     { field: 'locationCsv', header: 'Location', type: "text", display: "none" },
     { field: 'dateCsv', header: 'Date', type: "text", display: "none" },
     { field: 'orderNumber', header: 'Order', type: "text" },
-    { field: 'miles', header: 'Total Miles', type: "text" },
+    { field: 'csvmiles', header: 'Total Miles', type: "text" },
 
   ];
 
@@ -117,7 +117,7 @@ export class DriverReportComponent implements OnInit {
           res.locationCsv = ''
           res.date = [];
           res.dateCsv = '';
-
+          res.csvmiles=''
           res.drin = this.driverN
 
 
@@ -125,7 +125,7 @@ export class DriverReportComponent implements OnInit {
             // console.log("-===", element)
 
             res.miles += Number(element.miles)
-
+            res.csvmiles = res.miles.toFixed(2)
             res.location.push(element.type + ": " + element.location)
             res.date.push(element.type + ": " + element.date)
           }

@@ -619,19 +619,10 @@ export class DriverDetailComponent implements OnInit {
         delete this.driverDataUpdate.carrierID;
         delete this.driverDataUpdate.timeModified;
         if(type === 'licDocs'){
-        this.uploadLicence.splice(index, 1);
-        this.driverDataUpdate.licDocs.splice(index, 1);
-            this.deleteUploadedFile(name);
-            try {
-                const formData = new FormData();
-                formData.append('data', JSON.stringify(this.driverDataUpdate));
-                this.apiService.putData('drivers', formData, true).subscribe({
-                    complete: () => { this.fetchDriver(); }
-                });
-            } catch (error) {
-                console.error(error);
-            }
-        }
+           this.uploadLicence.splice(index, 1);
+           this.driverData.uploadLicence.splice(index, 1);
+           this.deleteUploadedFile(name);
+           }
         else if (type === 'doc') {
             this.assetsDocs[index].splice(docIndex, 1);
             this.driverDataUpdate.documentDetails[index].uploadedDocs.splice(docIndex, 1);

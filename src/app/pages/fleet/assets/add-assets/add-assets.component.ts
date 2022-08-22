@@ -16,7 +16,6 @@ import {
 import { from, Subject, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ModalService } from "../../../../services/modal.service";
-import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
@@ -27,8 +26,8 @@ import * as moment from "moment";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-
-
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 @Component({
   selector: "app-add-assets",
   templateUrl: "./add-assets.component.html",
@@ -143,6 +142,7 @@ export class AddAssetsComponent implements OnInit {
     },
     uploadedPhotos: [],
     uploadedDocs: [],
+    hosAssetID: 0
   };
 
   allAssets = [];
@@ -226,6 +226,7 @@ export class AddAssetsComponent implements OnInit {
       name: 'Semi-Monthly'
     },
   ];
+  assetObj = {}
 
   constructor(
     private apiService: ApiService,
@@ -234,7 +235,6 @@ export class AddAssetsComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private location: Location,
-    private toastr: ToastrService,
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
     private listService: ListService,
@@ -243,7 +243,9 @@ export class AddAssetsComponent implements OnInit {
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routerMgmtService: RouteManagementServiceService
+    private routerMgmtService: RouteManagementServiceService,
+    private eldService: ELDService,
+    private messageService: MessageService,
   ) {
 
     this.selectedFileNames = new Map<any, any>();
@@ -620,7 +622,7 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toastr.success("Asset added successfully.");
+        this.showAssetAddedM();
         this.dashboardUtilityService.refreshAssets = true;
         this.dashboardUtilityService.refreshAstCount = true;
         this.router.navigateByUrl(`/fleet/assets/list/${this.routerMgmtService.assetUpdated()}`);
@@ -785,6 +787,8 @@ export class AddAssetsComponent implements OnInit {
         this.existPDocs = result.purchaseDocs;
         this.existLDocs = result.loanDocs;
 
+        this.assetsData.hosAssetID = result.hosAssetId
+
         if (
           result.uploadedPhotos !== undefined &&
           result.uploadedPhotos.length > 0
@@ -912,6 +916,8 @@ export class AddAssetsComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       isImport: this.isImport,
+      hosAssetId: this.assetsData.hosAssetID
+      
     };
     data.assetDetails.year =
       data.assetDetails.ownerShip === "interchange"
@@ -955,6 +961,8 @@ export class AddAssetsComponent implements OnInit {
     }
     //append other fields
     formData.append("data", JSON.stringify(data));
+  
+ 
 
     this.apiService.putData("assets/", formData, true).subscribe({
       complete: () => { },
@@ -980,10 +988,13 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        if(!this.assetsData.hosAssetID){
+          this.cancel();
+        }
+        this.updateVehEld();
         this.hasSuccess = true;
-        this.toastr.success("Asset updated successfully.");
+        this.showUpdateSuccess();
         this.dashboardUtilityService.refreshAssets = true;
-        this.cancel();
         this.Success = "";
       },
     });
@@ -1114,7 +1125,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroupsList();
-        this.toastr.success("Group added successfully.");
+        this.showGroupAddedM();
         $("#addGroupModal").modal("hide");
         this.groupData[`groupName`] = "";
         this.groupData[`groupMembers`] = [];
@@ -1227,4 +1238,58 @@ export class AddAssetsComponent implements OnInit {
       this.groupsData = result;
     });
   }
+
+  showError(error: any) {
+    this.messageService.add({
+        severity: 'error', summary: 'Error',
+        detail: error.error.message
+    });
+}
+
+showSuccess() {
+    this.messageService.add({severity:'success',
+     summary: 'Success', detail: 'Asset updated successfully in ELD'});
+}
+
+showUpdateSuccess() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Asset updated successfully'});
+}
+
+showGroupAddedM(){
+  this.messageService.add({severity:'success',
+  summary: 'Success', detail: 'Group added successfully'});
+}
+showAssetAddedM(){
+  this.messageService.add({severity:'success',
+  summary: 'Success', detail: 'Asset added successfully'});
+}
+
+updateVehEld(){
+  if(this.assetsData.hosAssetID > 0){
+    this.assetObj = {
+       FhIdentifier: this.assetID,
+       AssetId : this.assetsData.hosAssetID,
+    
+       Number: this.assetsData.assetIdentification,
+       HOSHomeBaseId: '18',
+       VIN: this.assetsData.VIN,
+       Plate: this.assetsData.assetDetails.licencePlateNumber,
+       RegistrationState: this.assetsData.assetDetails.licenceStateCode,
+       Type: '1',
+       Active: '1'
+      }
+
+      this.eldService.postData("assets", {
+        Asset: this.assetObj
+      }).subscribe(result => {
+        this.showSuccess()
+        this.cancel();
+      }, error => {
+          console.log('error', error)
+          this.showError(error)
+      })
+  }
+}
+
 }

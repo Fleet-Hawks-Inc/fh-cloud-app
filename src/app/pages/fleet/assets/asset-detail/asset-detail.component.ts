@@ -5,7 +5,6 @@ import { ColumnMode, SelectionType } from "@swimlane/ngx-datatable";
 import * as moment from "moment";
 
 import { NgxSpinnerService } from "ngx-spinner";
-import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/manage/constants";
@@ -13,8 +12,8 @@ import { CountryStateCityService } from "src/app/services/country-state-city.ser
 import { environment } from "../../../../../environments/environment";
 import { ApiService } from "../../../../services";
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
-
-
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -139,6 +138,9 @@ export class AssetDetailComponent implements OnInit {
         isDefaultInspectionType: "",
         inspectionType: "",
     };
+    licStateCode = ''
+    hosAssetID = 0
+    assetObj = {}
     // Charts
     public chartOptions = {
         scaleShowVerticalLines: false,
@@ -224,13 +226,14 @@ export class AssetDetailComponent implements OnInit {
     sessionID: string;
 
     constructor(
-        private toastr: ToastrService,
         private domSanitizer: DomSanitizer,
         private apiService: ApiService,
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
         private countryStateCity: CountryStateCityService,
-        private routerMgmtService: RouteManagementServiceService
+        private routerMgmtService: RouteManagementServiceService,
+        private eldService: ELDService,
+        private messageService: MessageService,
     ) {
 
         this.sessionID = this.routerMgmtService.assetUpdateSessionID;
@@ -258,6 +261,7 @@ export class AssetDetailComponent implements OnInit {
             async (res: any) => {
                 if (res) {
                     let result = res.Items[0];
+                    this.hosAssetID = result.hosAssetId;
                     this.assetDataDetail = res.Items[0];
                     // if (!result.hasOwnProperty('devices')) {
                     //   result['devices'] = [];
@@ -295,6 +299,7 @@ export class AssetDetailComponent implements OnInit {
                                 result.assetDetails.licenceStateCode,
                                 result.assetDetails.licenceCountryCode
                             );
+                        this.licStateCode = result.assetDetails.licenceStateCode;
                     }
                     this.year = result.assetDetails.year;
                     this.manufacturer = result.assetDetails.manufacturer;
@@ -445,7 +450,7 @@ export class AssetDetailComponent implements OnInit {
         if (!this.assetData.devices.includes(this.devices)) {
             this.assetData.devices.push(this.devices);
         } else {
-            this.toastr.error(`Device already selected`);
+            this.showDeviceSelectedM();
         }
         this.fetchDevicesByID();
     }
@@ -476,9 +481,9 @@ export class AssetDetailComponent implements OnInit {
                 },
                 next: (res) => {
                     if (this.messageStatus) {
-                        this.toastr.success("Device added successfully");
+                       this.showDeviceAddedM();
                     } else {
-                        this.toastr.success("Device removed successfully");
+                       this.showDeviceRemoveM();
                     }
                     $("#attachDeviceModal").modal("hide");
                 },
@@ -554,19 +559,19 @@ export class AssetDetailComponent implements OnInit {
         this.apiService
             .deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`)
             .subscribe((result: any) => {
-             if(type == 'image'){
-             this.assetsImages = [];
-             this.uploadedDocs = result.Attributes.uploadedPhotos;
-             this.existingDocs = result.Attributes.uploadedPhotos;
-             result.Attributes.uploadedPhotos.map((x) => {
-             let obj= {
-                 name: x,
-                 path: `${this.Asseturl}/${result.carrierID}/${x}`,
-                         };
-                         this.assetsImages.push(obj);
-                     });
-             }
-              else if (type == "doc") {
+                if(type == 'image'){
+                    this.assetsImages = [];
+                    this.uploadedDocs = result.Attributes.uploadedPhotos;
+                    this.existingDocs = result.Attributes.uploadedPhotos;
+                    result.Attributes.uploadedPhotos.map((x) => {
+                        let obj= {
+                            name: x,
+                            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+                        };
+                        this.assetsImages.push(obj);
+                    });
+                }
+                else if (type == "doc") {
                     this.assetsDocs = [];
                     this.uploadedDocs = result.Attributes.uploadedDocs;
                     this.existingDocs = result.Attributes.uploadedDocs;
@@ -643,5 +648,60 @@ export class AssetDetailComponent implements OnInit {
             lng: parseFloat(cords[0]),
             lat: parseFloat(cords[1]),
         });
+    }
+
+    updateEldAssetD() {
+        if(this.hosAssetID !=0){
+            this.assetObj = {
+                FhIdentifier: this.assetID,
+                AssetId : 0,
+                Number: this.assetIdentification,
+                HOSHomeBaseId: '18',
+                VIN: this.VIN,
+                Plate: this.licencePlateNumber,
+                RegistrationState: this.licStateCode,
+                Type: '1',
+                Active: '1'
+    
+            }
+        }
+       
+        this.eldService.postData("assets", {
+            Asset: this.assetObj
+        }).subscribe(result => {
+            this.showSuccess();
+            this.fetchAsset();
+            return result
+        }, error => {
+            console.log('error', error)
+            this.showError(error)
+        })
+
+    }
+    showError(error: any) {
+        this.messageService.add({
+            severity: 'error', summary: 'Error',
+            detail: error.error.message
+        });
+    }
+
+    showSuccess() {
+        this.messageService.add({severity:'success',
+         summary: 'Success', detail: 'Asset added successfully in ELD'});
+    }
+
+    showDeviceAddedM(){
+        this.messageService.add({severity:'success',
+        summary: 'Success', detail: 'Device added successfully'});
+      }
+
+    showDeviceRemoveM(){
+        this.messageService.add({severity:'success',
+        summary: 'Success', detail: 'Device removed successfully'});
+    }
+
+    showDeviceSelectedM(){
+        this.messageService.add({severity: 'error',
+         summary: 'Error', detail: 'Device already selected'});
     }
 }

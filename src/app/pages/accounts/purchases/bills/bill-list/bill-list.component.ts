@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
 import { Table } from "primeng/table";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService } from "src/app/services";
+import { OverlayPanel } from "primeng/overlaypanel";
 
 @Component({
   selector: "app-bill-list",
@@ -11,6 +12,7 @@ import { AccountService, ApiService } from "src/app/services";
   styleUrls: ["./bill-list.component.css"],
 })
 export class BillListComponent implements OnInit {
+  @ViewChild("op") overlaypanel: OverlayPanel;
   dataMessage: string = Constants.FETCHING_DATA;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();

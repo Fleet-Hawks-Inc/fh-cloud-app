@@ -135,8 +135,8 @@
                                                             {{get(driver,dataColumns.field)}}
                                                         </span>
 
-                                                        <span *ngSwitchCase="'miles'">
-                                                            {{get(driver,dataColumns.field).toFixed(3)}}
+                                                        <span *ngSwitchCase="'csvmiles'">
+                                                            {{driver.miles | number : '1.2-2'}}
                                                         </span>
 
 

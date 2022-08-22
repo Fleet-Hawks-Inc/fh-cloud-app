@@ -329,23 +329,20 @@
                                 get(issue, dataColumns.field) | titlecase
                               }}</span>
                             </span>
-                            <span *ngSwitchCase="'vehicleasset'">
-                              <span *ngIf="issue.unitType === 'asset'">{{
-                                assetList[issue.unitID] | titlecase
-                              }}</span>
-                              <span *ngIf="issue.unitType === 'vehicle'">{{
-                                vehicleList[issue.unitID] | titlecase
-                              }}</span>
+                            <span *ngSwitchCase="'vehAstName'">
+                              {{
+                                get(issue, dataColumns.field) | titlecase
+                              }}
                             </span>
                             <span *ngSwitchCase="'reportedBy'">
-                              <span>{{
-                                usersList[issue.reportedBy] | titlecase
-                              }}</span>
+                            {{
+                                get(issue, dataColumns.field) | titlecase
+                              }}
                             </span>
                             <span *ngSwitchCase="'assignedTo'">
-                              <span>{{
-                                usersList[issue.assignedTo] | titlecase
-                              }}</span>
+                              {{
+                                get(issue, dataColumns.field) | titlecase
+                              }}
                             </span>
                             <span *ngSwitchCase="'currentStatus'">
                               <span class="badge badge-dark p-1">{{

@@ -60,7 +60,7 @@ export class UsersListComponent implements OnInit {
   dataColumns = 
   [
   { field: 'employeeID', header: 'Employee ID', type: 'text' },
-  { field: 'name', header: 'Name', type: 'text' },
+  { field: 'userFullName', header: 'Name', type: 'text' },
   { field: 'userLoginData.userName', header: 'Username', type: 'text' },
   { field: 'userType', header: 'UserType', type: 'text' },
   { field: 'userAccount.department', header: 'Department', type: 'text' },
@@ -230,6 +230,9 @@ export class UsersListComponent implements OnInit {
             this.users = this.users.concat(result.Items);
             this.filterUsers = this.users;
             this.loaded = true;
+            for(let res of result.Items){
+            res.userFullName = res.firstName + ' ' + res.lastName;
+            }
           }
         })
     }
