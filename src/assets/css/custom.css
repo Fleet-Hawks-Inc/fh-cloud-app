@@ -2739,6 +2739,28 @@ td.loadid a {
   border-bottom: solid 1px #dddddd;
 }
 
+/* border none */
+
+.bornall {
+  border: 0px !important;
+}
+
+.bornt {
+  border-top: 0px !important;
+}
+
+.bornr {
+  border-right: 0px !important;
+}
+
+.bornb {
+  border-bottom: 0px !important;
+}
+
+.bornl {
+  border-left: 0px !important;
+}
+
 /* border dashed */
 
 .bordtopdas {
