@@ -96,7 +96,7 @@
                       <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                       &nbsp;
                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                      <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="csvData()" pTooltip="Excel"></button>
+                      <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
                       <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                       </p-multiSelect>
@@ -130,9 +130,12 @@
                             {{ vehiclesList[reminder.entityID] }}
                           </span>
                         </span>
-                        <span *ngSwitchCase="'tasks.taskID'">
+                        <span *ngSwitchCase="'vehicleName'">
+                              {{ get(reminder, dataColumns.field) }}</span
+                            >
+                        <span *ngSwitchCase="'serviceTasks'">
                           <span class="text-capitalize">
-                            {{ tasksData[reminder.tasks.taskID] }}
+                            {{ get(reminder, dataColumns.field) }}
                           </span>
                         </span>
                         <span *ngSwitchCase="'createdDate'">
@@ -141,11 +144,13 @@
                         <span *ngSwitchCase="'subscribers'">
                           {{ reminder.subscribers }}
                         </span>
-
-                        <span *ngSwitchCase="'status'">
-                          <span class="text-warning font-weight-bold font-size-12 text-uppercase" *ngIf="reminder.status === 'dueSoon'">{{ reminder.status }}<br /></span>
-                          <span class="text-danger font-weight-bold font-size-12 text-uppercase" *ngIf="reminder.status === 'overdue'">{{ reminder.status }}<br /></span>
-                          <span class="font-size-12">
+                          <span *ngSwitchCase="'reStatus'">
+                             <span class="text-warning font-weight-bold font-size-12 text-uppercase" 
+                             *ngIf="reminder.status === 'dueSoon'">
+                               {{ reminder.status }}<br /></span>
+                                <span class="text-danger font-weight-bold font-size-12 text-uppercase" 
+                                *ngIf="reminder.status === 'overdue'">{{ reminder.status }}<br /></span>
+                              <span class="font-size-12">
                             <span *ngIf="reminder.tasks.remindByUnit == 'time'">Every
                               {{ reminder.tasks.time }}
                               {{ reminder.tasks.timeUnit }}(s)
@@ -155,7 +160,11 @@
                                   ">Every
                               {{ reminder.tasks.odometer }} miles[0]</span>
                           </span>
-                        </span>
+                              </span>
+                            
+                         <span *ngSwitchDefault>
+                              {{ get(reminder, dataColumns.field) }}</span
+                            >
                       </div>
                     </td>
                   </tr>

@@ -64,12 +64,13 @@ export class SremindersComponent implements OnInit {
   
   
   dataColumns = [
-        {  field: 'entityID', header: 'Vehicle', type: "text" },
-        {  field: 'tasks.taskID', header: 'Service Task', type: "text" },
+        {  field: 'vehicleName', header: 'Vehicle', type: "text" },
+        {  field: 'serviceTasks', header: 'Service Task', type: "text" },
         {  field: 'createdDate', header: 'Next Due', type: "text" },
         {  field: 'subscribers', header: 'Subscribers', type: "text" },
-        {  field: 'status', header: 'Renewal Status', type: "text" },
+        {  field: 'reStatus', header: 'Renewal Status', type: "text" },
     ];
+    tasksList: any;
   
   constructor(private apiService: ApiService, 
   private toastr: ToastrService,
@@ -113,7 +114,26 @@ export class SremindersComponent implements OnInit {
           this.allData = this.allData.concat(result.Items)
 
           this.loaded = true;
-        }
+  
+          for(let res of result.Items){
+            res.vehicleName = this.vehiclesList[res.entityID];
+            res.serviceTasks = [];
+             
+            if(res.status === "'dueSoon'" ){
+            res.serviceStatus = res.status
+            }
+            if(res.status === 'overdue'){
+            res.serviceStatus = res.status
+            }
+            if(res.tasks.remindByUnit == 'time'){
+            res.serviceStatus = 'Every' + ' ' + res.tasks.time + ' ' + res.tasks.timeUnit + '(s)';
+            }else{
+            res.serviceStatus = 'Every' + ' ' + res.tasks.odometer + ' ' + 'miles';
+            }
+            res.reStatus= res.status + " " + res.serviceStatus;
+            res.serviceTasks = this.tasksData[res.tasks.taskID];
+            }
+          }
       });
     }
   }
