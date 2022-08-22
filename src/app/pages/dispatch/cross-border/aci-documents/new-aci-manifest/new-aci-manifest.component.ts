@@ -25,7 +25,7 @@ declare var $: any;
 })
 export class NewAciManifestComponent implements OnInit {
   activeState: boolean[] = [true, false, false];
-  public manifestID;
+  public mID;
   title = 'Add ACI e-Manifest';
   modalTitle = 'Add';
   public searchTerm = new Subject<string>();
@@ -65,7 +65,7 @@ export class NewAciManifestComponent implements OnInit {
   amendmentReasonsList: any = [];
   amendTripReason = '';
   countriesList: any = [];
-  currentStatus: string;
+  status: string;
   getcurrentDate: any;
   birthDateMinLimit: any;
   CCC: string;
@@ -112,9 +112,16 @@ export class NewAciManifestComponent implements OnInit {
   containers = [];
   addedContainers = [];
   passengerDocStates: any = [];
+  addresses = [
+    {
+      shipAdrs: [],
+      consAdrs: []
+    }
+  ];
+  trips = [];
   shipments = [
     {
-      shipmentType: null,
+      shipmentType: 'PARS',
       loadedOn: {
         type: null,
         number: '',
@@ -222,6 +229,7 @@ export class NewAciManifestComponent implements OnInit {
   createdTime: '';
   amendManifest = false;
   errorFastCard = false;
+  orgTripNumber: string;
   constructor(
     private httpClient: HttpClient,
     private HereMap: HereMapService,
@@ -248,8 +256,8 @@ export class NewAciManifestComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
-    if (this.manifestID) {
+    this.mID = this.route.snapshot.params[`mID`];
+    if (this.mID) {
       this.title = 'Edit ACI e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACIEntry();
@@ -273,6 +281,12 @@ export class NewAciManifestComponent implements OnInit {
     await this.fetchCountries();
     this.fetchCarrier();
     this.fetchAssetType();
+    this.fetchTrips();
+    this.fetchJsonFiles();
+
+  }
+
+  fetchJsonFiles() {
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
       this.CANPorts = data;
     });
@@ -312,6 +326,7 @@ export class NewAciManifestComponent implements OnInit {
         this.countriesList = data;
       });
   }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -426,7 +441,7 @@ export class NewAciManifestComponent implements OnInit {
     });
   }
   fetchDrivers() {
-    this.apiService.getData('drivers').subscribe((result: any) => {
+    this.apiService.getData('drivers/get/all/active').subscribe((result: any) => {
       this.drivers = result.Items;
     });
   }
@@ -633,44 +648,52 @@ export class NewAciManifestComponent implements OnInit {
       }
     }
   }
+  async getAddressDetail(id) {
+    let result = await this.apiService
+      .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
+  }
+
   async userAddress(s, p, item, callType) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    if (callType === 'delivery') {
-      this.shipments[s].deliveryDestinations[p].address.userLocation = result.address.label;
-      this.shipments[s].deliveryDestinations[p].address.geoCords.lat = result.position.lat;
-      this.shipments[s].deliveryDestinations[p].address.geoCords.lng = result.position.lng;
-      this.shipments[s].deliveryDestinations[p].address.countryName = result.address.countryName;
-      this.shipments[s].deliveryDestinations[p].address.countryCode = result.address.countryCode;
-      this.shipments[s].deliveryDestinations[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      $('div').removeClass('show-search__result');
-      this.shipments[s].deliveryDestinations[p].address.stateName = result.address.state;
-      this.shipments[s].deliveryDestinations[p].address.stateCode = result.address.stateCode;
-      this.shipments[s].deliveryDestinations[p].address.cityName = result.address.city;
-      this.shipments[s].deliveryDestinations[p].address.postalCode = result.address.postalCode;
-      if (result.address.houseNumber === undefined) {
-        result.address.houseNumber = '';
-      }
-      if (result.address.street === undefined) {
-        result.address.street = '';
-      }
-    } else {
-      this.shipments[s].notifyParties[p].address.userLocation = result.address.label;
-      this.shipments[s].notifyParties[p].address.geoCords.lat = result.position.lat;
-      this.shipments[s].notifyParties[p].address.geoCords.lng = result.position.lng;
-      this.shipments[s].notifyParties[p].address.countryName = result.address.countryName;
-      this.shipments[s].notifyParties[p].address.countryCode = result.address.countryCode;
-      this.shipments[s].notifyParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      $('div').removeClass('show-search__result');
-      this.shipments[s].notifyParties[p].address.stateName = result.address.state;
-      this.shipments[s].notifyParties[p].address.stateCode = result.address.stateCode;
-      this.shipments[s].notifyParties[p].address.cityName = result.address.city;
-      this.shipments[s].notifyParties[p].address.postalCode = result.address.postalCode;
-      if (result.address.houseNumber === undefined) {
-        result.address.houseNumber = '';
-      }
-      if (result.address.street === undefined) {
-        result.address.street = '';
+    let result = await this.getAddressDetail(item.place_id);
+    if (result != undefined) {
+
+      if (callType === 'delivery') {
+        this.shipments[s].deliveryDestinations[p].address.userLocation = result.address.label;
+        this.shipments[s].deliveryDestinations[p].address.geoCords.lat = result.position.lat;
+        this.shipments[s].deliveryDestinations[p].address.geoCords.lng = result.position.lng;
+        this.shipments[s].deliveryDestinations[p].address.countryName = result.address.countryName;
+        this.shipments[s].deliveryDestinations[p].address.countryCode = result.address.countryCode;
+        this.shipments[s].deliveryDestinations[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+        $('div').removeClass('show-search__result');
+        this.shipments[s].deliveryDestinations[p].address.stateName = result.address.state;
+        this.shipments[s].deliveryDestinations[p].address.stateCode = result.address.stateCode;
+        this.shipments[s].deliveryDestinations[p].address.cityName = result.address.city;
+        this.shipments[s].deliveryDestinations[p].address.postalCode = result.address.postalCode;
+        if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+        }
+        if (result.address.street === undefined) {
+          result.address.street = '';
+        }
+      } else {
+        this.shipments[s].notifyParties[p].address.userLocation = result.address.label;
+        this.shipments[s].notifyParties[p].address.geoCords.lat = result.position.lat;
+        this.shipments[s].notifyParties[p].address.geoCords.lng = result.position.lng;
+        this.shipments[s].notifyParties[p].address.countryName = result.address.countryName;
+        this.shipments[s].notifyParties[p].address.countryCode = result.address.countryCode;
+        this.shipments[s].notifyParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+        $('div').removeClass('show-search__result');
+        this.shipments[s].notifyParties[p].address.stateName = result.address.state;
+        this.shipments[s].notifyParties[p].address.stateCode = result.address.stateCode;
+        this.shipments[s].notifyParties[p].address.cityName = result.address.city;
+        this.shipments[s].notifyParties[p].address.postalCode = result.address.postalCode;
+        if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+        }
+        if (result.address.street === undefined) {
+          result.address.street = '';
+        }
       }
     }
   }
@@ -760,12 +783,12 @@ export class NewAciManifestComponent implements OnInit {
   }
   addShipment() {
     this.shipments.push({
-      shipmentType: null,
+      shipmentType: 'PARS',
       loadedOn: {
         type: null,
         number: '',
       },
-      CCC: null,
+      CCC: this.CCC,
       cargoControlNumber: '',
       referenceOnlyShipment: false,
       portOfEntry: null,
@@ -813,55 +836,69 @@ export class NewAciManifestComponent implements OnInit {
         },
       ],
     });
+    this.addresses.push({
+      shipAdrs: [],
+      consAdrs: []
+    })
   }
   deleteShipment(i: number) {
     this.shipments.splice(i, 1);
   }
 
+  fetchTrips() {
+    this.apiService.getData("trips/get/manifests").subscribe((result: any) => {
+      this.trips = result.Items;
+    });
+  }
+
   addACIManifest() {
     const data = {
       CCC: this.CCC,
-      manifestType: this.manifestType,
+      type: this.manifestType,
       tripNumber: this.CCC + this.tripNumber,
-      portOfEntry: this.portOfEntry,
-      subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
-      estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
-      truck: this.truck,
-      trailers: this.trailers,
-      mainDriver: this.mainDriver,
-      coDrivers: this.coDrivers,
-      passengers: this.passengers,
-      containers: this.containers,
-      shipments: this.shipments,
-      currentStatus: 'Draft',
+      manifestInfo: {
+        portOfEntry: this.portOfEntry,
+        subLocation: this.subLocation,
+        estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
+
+        truck: this.truck,
+        trailers: this.trailers,
+        mainDriver: this.mainDriver,
+        coDrivers: this.coDrivers,
+        passengers: this.passengers,
+        containers: this.containers,
+        shipments: this.shipments,
+      },
+      currentStatus: 'DRAFT',
+      orgTripNumber: this.orgTripNumber
     };
-    for (let p = 0; p < data.passengers.length; p++) {
-      for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-        const element = data.passengers[p].travelDocuments[d];
+    for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+      for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+        const element = data.manifestInfo.passengers[p].travelDocuments[d];
         delete element.docStates;
       }
     }
-    for (let s = 0; s < data.shipments.length; s++) {
-      for (let p = 0; p < data.shipments[s].notifyParties.length; p++) {
-        const element = data.shipments[s].notifyParties[p].address;
+    for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+      for (let p = 0; p < data.manifestInfo.shipments[s].notifyParties.length; p++) {
+        const element = data.manifestInfo.shipments[s].notifyParties[p].address;
         delete element.notifyPartyStates;
         delete element.notifyPartyCities;
       }
     }
-    for (let s = 0; s < data.shipments.length; s++) {
-      for (let p = 0; p < data.shipments[s].deliveryDestinations.length; p++) {
-        const element = data.shipments[s].deliveryDestinations[p].address;
+    for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+      for (let p = 0; p < data.manifestInfo.shipments[s].deliveryDestinations.length; p++) {
+        const element = data.manifestInfo.shipments[s].deliveryDestinations[p].address;
         delete element.deliveryDestinationStates;
         delete element.deliveryDestinationCities;
       }
-      delete data.shipments[s].cityOfLoading.loadingCities;
-      delete data.shipments[s].cityOfLoading.loadingStates;
-      delete data.shipments[s].cityOfAcceptance.acceptanceCities;
-      delete data.shipments[s].cityOfAcceptance.acceptanceStates;
+      delete data.manifestInfo.shipments[s].cityOfLoading.loadingCities;
+      delete data.manifestInfo.shipments[s].cityOfLoading.loadingStates;
+      delete data.manifestInfo.shipments[s].cityOfAcceptance.acceptanceCities;
+      delete data.manifestInfo.shipments[s].cityOfAcceptance.acceptanceStates;
     }
-    this.apiService.postData('eManifests/addACIemanifest', data).subscribe({
+    this.apiService.postData('eManifests/add-aci', data).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -909,95 +946,108 @@ export class NewAciManifestComponent implements OnInit {
 
   fetchACIEntry() {
     this.apiService
-      .getData('eManifests/ACI/' + this.manifestID)
+      .getData('eManifests/ACI/' + this.mID)
       .subscribe(async (result: any) => {
-        result = result.Items[0];
-        this.timeCreated = result.timeCreated;
-        this.manifestID = this.manifestID;
-        this.manifestType = result.manifestType,
-          this.sendId = result.sendId;
-        this.CCC = result.CCC;
-        this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
-        this.portOfEntry = result.portOfEntry;
-        this.subLocation = result.subLocation;
-        this.estimatedArrivalDate = result.estimatedArrivalDate;
-        this.estimatedArrivalTime = result.estimatedArrivalTime;
-        this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
-        this.truck = result.truck;
-        this.mainDriver = result.mainDriver;
-        this.coDrivers = result.coDrivers;
-        this.trailers = result.trailers;
-        this.containers = result.containers;
-        this.passengers = result.passengers;
-        this.shipments = result.shipments;
-        this.currentStatus = result.currentStatus;
-        this.createdBy = result.createdBy;
-        this.modifiedBy = result.modifiedBy;
-        this.borderResponses = result.borderResponses;
-        this.createdDate = result.createdDate;
-        this.createdTime = result.createdTime;
-        await this.fetchNotifyPartyAddress(this.shipments);
-        await this.fetchDeliveryDestinationAddress(this.shipments);
-        await this.fetchLoadingStateCities(this.shipments);
-        await this.fetchAcceptanceStateCities(this.shipments);
-        await this.fetchPassengerDocStates(this.passengers);
-        this.fetchAssetType();
+        if (result && result.length > 0) {
+          result = result[0];
+          this.timeCreated = result.timeCreated;
+          this.mID = this.mID;
+          this.manifestType = result.type,
+            this.sendId = result.sendId;
+          this.CCC = result.CCC;
+          this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
+          this.portOfEntry = result.POE;
+          this.subLocation = result.manifestInfo.subLocation;
+          this.estimatedArrivalDate = result.arvDate;
+          this.estimatedArrivalTime = result.arvTime;
+          this.estimatedArrivalTimeZone = result.manifestInfo.estimatedArrivalTimeZone;
+          this.truck = result.manifestInfo.truck;
+          this.mainDriver = result.manifestInfo.mainDriver;
+          this.coDrivers = result.manifestInfo.coDrivers;
+          this.trailers = result.manifestInfo.trailers;
+          this.containers = result.manifestInfo.containers;
+          this.passengers = result.manifestInfo.passengers;
+          this.shipments = result.manifestInfo.shipments;
+          this.status = result.status;
+          this.createdBy = result.manifestInfo.createdBy;
+          this.modifiedBy = result.manifestInfo.modifiedBy;
+          this.borderResponses = result.borderResponses;
+
+          await this.fetchNotifyPartyAddress(this.shipments);
+          await this.fetchDeliveryDestinationAddress(this.shipments);
+          await this.fetchLoadingStateCities(this.shipments);
+          await this.fetchAcceptanceStateCities(this.shipments);
+          await this.fetchPassengerDocStates(this.passengers);
+          for (let i = 0; i < this.shipments.length; i++) {
+            const element = this.shipments[i];
+            if (element.shipperID) {
+              this.selectedCustomer('shipper', element.shipperID, i)
+            }
+            if (element.consigneeID) {
+              this.selectedCustomer('receiver', element.consigneeID, i)
+            }
+          }
+          this.fetchAssetType();
+          this.orgTripNumber = result.orgTripNumber;
+        }
       });
   }
   updateACIManifest() {
+
     const data = {
-      manifestID: this.manifestID,
-      manifestType: this.manifestType,
+      mID: this.mID,
+      type: this.manifestType,
       sendId: this.sendId,
       CCC: this.CCC,
       tripNumber: this.CCC + this.tripNumber,
-      portOfEntry: this.portOfEntry,
-      subLocation: this.subLocation,
+      manifestInfo: {
+        portOfEntry: this.portOfEntry,
+        subLocation: this.subLocation,
+        estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
+
+        truck: this.truck,
+        trailers: this.trailers,
+        mainDriver: this.mainDriver,
+        coDrivers: this.coDrivers,
+        passengers: this.passengers,
+        containers: this.containers,
+        shipments: this.shipments,
+      },
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
-      estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
-      truck: this.truck,
-      trailers: this.trailers,
-      mainDriver: this.mainDriver,
-      coDrivers: this.coDrivers,
-      passengers: this.passengers,
-      containers: this.containers,
-      shipments: this.shipments,
-      currentStatus: this.currentStatus,
+
+      currentStatus: this.status,
       timeCreated: this.timeCreated,
-      createdBy: this.createdBy,
-      modifiedBy: this.modifiedBy,
-      borderResponses: this.borderResponses,
-      createdDate: this.createdDate,
-      createdTime: this.createdTime,
+      orgTripNumber: this.orgTripNumber,
+
     };
-    for (let p = 0; p < data.passengers.length; p++) {
-      for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-        const element = data.passengers[p].travelDocuments[d];
+    for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+      for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+        const element = data.manifestInfo.passengers[p].travelDocuments[d];
         delete element.docStates;
       }
     }
-    for (let s = 0; s < data.shipments.length; s++) {
-      for (let p = 0; p < data.shipments[s].notifyParties.length; p++) {
-        const element = data.shipments[s].notifyParties[p].address;
+    for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+      for (let p = 0; p < data.manifestInfo.shipments[s].notifyParties.length; p++) {
+        const element = data.manifestInfo.shipments[s].notifyParties[p].address;
         delete element.notifyPartyStates;
         delete element.notifyPartyCities;
       }
     }
-    for (let s = 0; s < data.shipments.length; s++) {
-      for (let p = 0; p < data.shipments[s].deliveryDestinations.length; p++) {
-        const element = data.shipments[s].deliveryDestinations[p].address;
+    for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+      for (let p = 0; p < data.manifestInfo.shipments[s].deliveryDestinations.length; p++) {
+        const element = data.manifestInfo.shipments[s].deliveryDestinations[p].address;
         delete element.deliveryDestinationStates;
         delete element.deliveryDestinationCities;
       }
-      delete data.shipments[s].cityOfLoading.loadingCities;
-      delete data.shipments[s].cityOfLoading.loadingStates;
-      delete data.shipments[s].cityOfAcceptance.acceptanceCities;
-      delete data.shipments[s].cityOfAcceptance.acceptanceStates;
+      delete data.manifestInfo.shipments[s].cityOfLoading.loadingCities;
+      delete data.manifestInfo.shipments[s].cityOfLoading.loadingStates;
+      delete data.manifestInfo.shipments[s].cityOfAcceptance.acceptanceCities;
+      delete data.manifestInfo.shipments[s].cityOfAcceptance.acceptanceStates;
     }
     this.apiService
       .putData(
-        `eManifests/updateACImanifest/${this.amendManifest}?amendTripReason=${this.amendTripReason}`,
+        `eManifests/update-aci/${this.amendManifest}?amendTripReason=${this.amendTripReason}`,
         data
       )
       .subscribe({
@@ -1054,5 +1104,65 @@ export class NewAciManifestComponent implements OnInit {
       .removeClass('error')
       .next()
       .remove('label');
+  }
+
+  selectEstTime() {
+    this.shipments.forEach(elem => {
+      elem.estimatedArrivalDate = this.estimatedArrivalDate;
+      elem.estimatedArrivalTime = this.estimatedArrivalTime;
+      elem.estimatedArrivalTimeZone = this.estimatedArrivalTimeZone;
+    })
+  }
+
+  selectedCustomer(type: string, customerID: any, index: any) {
+    if (type === 'shipper') {
+      this.addresses[index]['shipAdrs'] = [];
+    }
+    if (type === 'receiver') {
+      this.addresses[index]['consAdrs'] = [];
+    }
+    if (customerID != '' && customerID != undefined && customerID != null) {
+      this.apiService
+        .getData(`contacts/detail/${customerID}`)
+        .subscribe((result: any) => {
+          if (result && result.Items.length > 0) {
+            if (result.Items[0].adrs && result.Items[0].adrs.length > 0) {
+              for (let i = 0; i < result.Items[0].adrs.length; i++) {
+                const element = result.Items[0].adrs[i];
+                if (element.cCode == 'US' || element.cCode == 'CA') {
+                  element["isChecked"] = false;
+                  if (type === 'shipper') {
+                    this.addresses[index]['shipAdrs'].push(element);
+                  }
+                  if (type === 'receiver') {
+                    this.addresses[index]['consAdrs'].push(element);
+                  }
+                }
+              }
+              if (type === 'shipper') {
+                this.addresses[index]['shipAdrs'][0].isChecked = true;
+              }
+              if (type === 'receiver') {
+                this.addresses[index]['consAdrs'][0].isChecked = true;
+              }
+            }
+            if (type === 'shipper' && this.addresses[index]['shipAdrs'].length > 0) {
+              this.shipments[index]['shipAdrsID'] = this.addresses[index]['shipAdrs'][0].addressID;
+            }
+            if (type === 'receiver' && this.addresses[index]['consAdrs'].length > 0) {
+              this.shipments[index]['conAdrsID'] = this.addresses[index]['consAdrs'][0].addressID;
+            }
+
+          }
+        });
+    }
+  }
+
+  getAddressID(type: string, value: boolean, i: number, id: string) {
+    if (value === true && type == 'shipper') {
+      this.shipments[i]['shipAdrsID'] = id;
+    } else {
+      this.shipments[i]['conAdrsID'] = id;
+    }
   }
 }
