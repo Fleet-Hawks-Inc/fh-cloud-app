@@ -55,13 +55,12 @@ export class SalesOrderListComponent implements OnInit {
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
   ngOnInit() {
-    this.fetchCustomersByIDs();
     this.fetchSales();
     this.dataColumns = [
       { field: 'txnDate', header: 'Date', type: "text" },
       { field: 'sOrNo', header: 'Sales Order#', type: "text" },
       { field: 'sRef', header: 'Reference#', type: "text" },
-      { field: 'cusInfo.customerID', header: 'Customer', type: "text" },
+      { field: 'customerName', header: 'Customer', type: "text" },
       { field: 'shipDate', header: 'Shipment Date', type: "text" },
       { field: 'total.finalTotal', header: 'Amount', type: "text" },
       { field: 'status', header: 'Status', type: "text" },
@@ -90,16 +89,6 @@ export class SalesOrderListComponent implements OnInit {
       this.allSales = res;
     });
   }
-
-  /*
-* Get all customers's IDs of names from api
-*/
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
-
 
   deleteSale(id: string) {
     if (confirm('Are you sure you want to delete?') === true) {

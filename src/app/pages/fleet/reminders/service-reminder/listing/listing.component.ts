@@ -71,12 +71,11 @@ export class ListingComponent implements OnInit {
   
   // columns of data table
    dataColumns = [
-    { field: 'vehicleList', header: 'Vehicle', type: 'text' },
-    { field: 'status', header: 'Service Task', type: 'text' },
-    { field: 'nextDueDays', header: 'Next Due', type: 'text' },
+    { field: 'vehicleName', header: 'Vehicle', type: 'text' },
+    { field: 'remDetail', header: 'Service Task', type: 'text' },
+    { field: 'nextDueInfo', header: 'Next Due', type: 'text' },
     { field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
     { field: 'subscribers', header: 'Subscribers', type: 'text' },
-    //{ field: 'remDetail', header: 'Service Task', type: 'text', display: 'none' },
   ];
   
   constructor(private apiService: ApiService, 
@@ -203,6 +202,19 @@ export class ListingComponent implements OnInit {
             res.resUnit = 'Every' + ' ' + res.tasks.odometer + ' ' + 'miles';
             }
             res.remDetail = res.serviceStatus.toUpperCase().replace('undefined') + '\n' + res.serviceTasks + '\n' + res.resUnit;
+           
+            if(res.tasks.remindByUnit === 'time'){
+            if(res.nextDueDays > 0){
+            res.nextDueInfo = res.nextDueDays + ' ' + 'Day(s) from now'
+            }
+            else if(res.nextDueDays === '0'){
+            res.nextDueInfo = 'Today'
+            }else if(res.nextDueDays < '0'){
+            res.nextDueInfo = Math.abs(res.nextDueDays) + ' ' + 'Days ago'
+            }
+            }else if(res.tasks.remindByUnit === 'odometer'){
+            res.nextDueInfo = res.nextDueMiles + ' ' + 'miles from now'
+            }
             }
           }
         });

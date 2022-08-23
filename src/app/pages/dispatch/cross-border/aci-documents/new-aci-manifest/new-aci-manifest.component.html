@@ -4,21 +4,17 @@
       <header class="page-header">
         <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{title}} </div>
-          <div class="col-md-8  col-lg-8 text-right"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']"
+          <div class="col-md-8  col-lg-8 text-right"> <a [routerLink]="['/dispatch', 'cross-border','manifests']"
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACI eManifests</a> </div>
         </div>
       </header>
-      <div class="row text-dark text-dark">
+      <div class="row text-dark text-capitalize">
         <div class="col">
           <section class="card">
             <div class="card-body">
               <form class="form-horizontal form-bordered" method="get" #aAci1="ngForm">
                 <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Start
-                      new ACI eManifest</label>
-                  </div>
+
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10">
@@ -28,11 +24,7 @@
                           <div class="col-lg-4">
                             <input type="text" class="form-control" name="CCC" [(ngModel)]="CCC"
                               placeholder="Select CCC code" #Trip2="ngModel" required disabled />
-                            <!-- <ng-select name="CCC" [(ngModel)]="CCC" placeholder="Select CCC code" #Trip2="ngModel" required>
-                              <ng-option value="184S">184S</ng-option>
-                              <ng-option value="745B">745B</ng-option>
-                              <ng-option value="759H">759H</ng-option>
-                            </ng-select> -->
+
                             <div *ngIf="Trip2.invalid && (Trip2.dirty || Trip2.touched)" class="text-danger">
                               <div>
 
@@ -44,17 +36,23 @@
                             </div>
                           </div>
                           <div class="col-lg-8 pl-0">
-                            <input type="text" class="form-control" name="tripNumber"
+                            <ng-select name="tripNumber" [clearable]="false" placeholder="Search by trip"
+                              [(ngModel)]="tripNumber" #TripNum1="ngModel">
+                              <ng-option *ngFor="let trip of trips" value="{{ trip.tripNo }}">
+                                {{ trip.tripNo }}
+                              </ng-option>
+                            </ng-select>
+                            <!-- <input type="text" class="form-control" name="tripNumber"
                               placeholder="8 or 25 digits , eg. TEST0001 " [(ngModel)]="tripNumber" #TripNum1="ngModel"
-                              required pattern="^[A-Z0-9]{4,21}$">
+                              required pattern="^[A-Z0-9]{4,21}$"> -->
                             <div *ngIf="TripNum1.invalid && (TripNum1.dirty || TripNum1.touched)" class="text-danger">
                               <div *ngIf="TripNum1.errors.required">
                                 Trip number is required.
                               </div>
-                              <div *ngIf="TripNum1.errors.pattern">
+                              <!-- <div *ngIf="TripNum1.errors.pattern">
                                 Trip number must be of 4-21 alphanumeric with no spaces or special characters and
                                 letters must be upper case.
-                              </div>
+                              </div> -->
                             </div>
                           </div>
                         </div>
@@ -99,8 +97,8 @@
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input class="form-control" type="text" placeholder="yyyy/mm/dd" name="estimatedArrivalDate"
                           #Edate1="ngModel" required [(ngModel)]="estimatedArrivalDate" ngbDatepicker
-                          #d6="ngbDatepicker" (change)="onChangeHideErrors('estimatedArrivalDate')"
-                          [minDate]="getcurrentDate" (click)="d6.toggle()" />
+                          #d6="ngbDatepicker" (change)="selectEstTime();onChangeHideErrors('estimatedArrivalDate')"
+                          (click)="d6.toggle()" />
                         <div *ngIf="Edate1.invalid && (Edate1.dirty || Edate1.touched)" class="text-danger">
                           <div>
 
@@ -117,8 +115,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime"
-                          (change)="onChangeHideErrors('estimatedArrivalTime')" placeholder="Select estimated time"
-                          #Etime1="ngModel" required>'
+                          (change)="selectEstTime();onChangeHideErrors('estimatedArrivalTime')"
+                          placeholder="Select estimated time" #Etime1="ngModel" required>'
                           <ng-option *ngFor="let time of timeList" [value]="time.value">
                             {{time.description}}</ng-option>
                         </ng-select>
@@ -137,8 +135,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2"> ETA Time Zone<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select name="estimatedArrivalTimeZone" [(ngModel)]="estimatedArrivalTimeZone"
-                          (change)="onChangeHideErrors('estimatedArrivalTimeZone')" placeholder="Select time zone"
-                          #Ezone="ngModel" required>
+                          (change)="selectEstTime();onChangeHideErrors('estimatedArrivalTimeZone')"
+                          placeholder="Select time zone" #Ezone="ngModel" required>
                           <ng-option value="PST">Pacific Standard Time</ng-option>
                           <ng-option value="AST">Atlantic Standard Time</ng-option>
                           <ng-option value="CST">Central Standard Time</ng-option>
@@ -188,7 +186,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Add Seal Numbers&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <div class="row">
-                          <div class="col-lg-3" *ngFor="let seal of truck.sealNumbers; let i=index;">
+                          <div class="col-lg-3 mb-2 pr-1" *ngFor="let seal of truck.sealNumbers; let i=index;">
                             <input type="text" class="form-control" placeholder="eg. 1,2,3 "
                               name="sealNumbers{{i}}.sealNumber" [(ngModel)]='seal.sealNumber' #A1seal="ngModel"
                               pattern="^[a-zA-Z0-9]{2,15}$">
@@ -222,7 +220,7 @@
                         <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select Driver"
                           (change)="onChangeHideErrors('mainDriver')" #A1driver="ngModel" required>
                           <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
-                            {{driver.firstName}}</ng-option>
+                            {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                         <div *ngIf="A1driver.invalid && (A1driver.dirty || A1driver.touched)" class="text-danger">
                           <div>
@@ -241,7 +239,7 @@
                           placeholder="Select Co-Driver">
                           <ng-container *ngFor="let driver of drivers">
                             <ng-option *ngIf="driver.driverID != mainDriver" [value]="driver.driverID">
-                              {{driver.firstName}}</ng-option>
+                              {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</ng-option>
                           </ng-container>
                         </ng-select>
                       </div>
@@ -772,19 +770,10 @@
                                       <!-- <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [attr.name]="'shipments['+s+'].cargoControlNumber'" [(ngModel)]="shipment.cargoControlNumber">   -->
                                       <div class="row">
                                         <div class="col-lg-4">
-                                          <!-- <ng-select [ngModelOptions]="{standalone: true}"
+                                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                             [attr.name]="'shipments['+s+'].CCC'" [(ngModel)]="shipment.CCC"
-                                            placeholder="Select CCC">
-                                            <ng-option *ngFor="let carrier of carriers" [value]="carrier.CCC">{{carrier.CCC}}
-                                            </ng-option>
-                                          </ng-select> -->
-                                          <ng-select [ngModelOptions]="{standalone: true}"
-                                            [attr.name]="'shipments['+s+'].CCC'" [(ngModel)]="shipment.CCC"
-                                            placeholder="Select CCC" #cargoC="ngModel" required>
-                                            <ng-option value="184S">184S</ng-option>
-                                            <ng-option value="745B">745B</ng-option>
-                                            <ng-option value="759H">759H</ng-option>
-                                          </ng-select>
+                                            placeholder="Select CCC" #cargoC="ngModel" required disabled />
+
                                           <div *ngIf="cargoC.invalid && (cargoC.dirty || cargoC.touched)"
                                             class="text-danger">
                                             <div>
@@ -872,8 +861,7 @@
                                         [(ngModel)]="shipment.subLocation">
                                         <ng-option *ngFor="let subLocation of subLocationsList"
                                           [value]="subLocation.code">
-                                          Code: {{subLocation.code}}, Name:
-                                          {{subLocation.name}}</ng-option>
+                                          Code: {{subLocation.code}}, Name: {{subLocation.name}}</ng-option>
                                       </ng-select>
                                     </div>
                                     <div class="col-lg-10" *ngIf="shipment.shipmentType === 'CSA'">
@@ -988,10 +976,11 @@
                                     </div>
                                     <div class="col-lg-10">
                                       <label class="control-label font-weight-bold text-lg-right pt-2">Assign
-                                        Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                      <ng-select placeholder="Select Consignor" [ngModelOptions]="{standalone: true}"
-                                        [attr.name]="'shipments['+s+'].shipperID'" [(ngModel)]="shipment.shipperID"
-                                        #A1consi="ngModel" required>
+                                        Shipper<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <ng-select placeholder="Select Shipper"
+                                        (change)="selectedCustomer('shipper', $event, s)"
+                                        [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
+                                        [(ngModel)]="shipment.shipperID" #A1consi="ngModel" required>
 
                                         <ng-option *ngFor="let shipper of shippers | async"
                                           value="{{shipper.contactID}}">
@@ -1002,10 +991,75 @@
                                         <div>
 
                                           <div *ngIf="A1consi.errors.required">
-                                            Consignor is required.
+                                            Shipper is required.
                                           </div>
                                         </div>
 
+                                      </div>
+                                      <div class="col-lg-12 mt-2 p-0" *ngIf="
+                                      addresses[s].shipAdrs.length > 0
+                                          ">
+                                        <div class="" style="border: 0.4px solid #e1e2e3">
+                                          <div class="row">
+                                            <div class="col-12">
+                                              <div class="pt-1 pb-1 pl-3 pr-3" style="background-color: #e1e2e3">
+                                                <h5 class="font-weight-bold">Details</h5>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="row pl-3 pr-3">
+                                            <div class="col-lg-12 pr-0">
+                                              <div style="
+                                                    max-height: 200px;
+                                                    overflow-y: auto;
+                                                    overflow-x: hidden
+                                                  " *ngFor="let address of addresses[s].shipAdrs">
+                                                <div class="row border-top mb-1 pt-2 pb-2 position-relative"
+                                                  [ngClass]="{ 'pl-4': addresses[s].shipAdrs.length > 1 }">
+                                                  <div class="col-12">
+                                                    <label class="control-label" *ngIf="address.manual"><span
+                                                        class="font-weight-bold">Address:</span>
+                                                      {{ address.add1 | titlecase }}
+                                                      {{ address.add2 | titlecase }}</label>
+                                                    <label class="control-label" *ngIf="!address.manual"><span
+                                                        class="font-weight-bold">Address:</span>
+                                                      {{ address.userLoc | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">Type:</span>
+                                                      {{ address.aType | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">City:</span>
+                                                      {{ address.ctyName | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">Province/State:</span>
+                                                      {{ address.sName | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">Country:</span>
+                                                      {{ address.cName | titlecase }}</label>
+                                                  </div>
+
+
+                                                  <input *ngIf="addresses[s].shipAdrs.length > 1" class="address-icon"
+                                                    type="radio" name="select" (change)="
+                                                        getAddressID('shipper',
+                                                          $event.target.checked,
+                                                          s,
+                                                          address.addressID
+                                                        )
+                                                      " [value]="address.addressID" [checked]="address.isChecked" />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
@@ -1015,8 +1069,10 @@
                                     </div>
                                     <div class="col-lg-10">
                                       <label class="control-label font-weight-bold text-lg-right pt-2">Assign
-                                        Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                      <ng-select placeholder="Select Consignee" [ngModelOptions]="{standalone: true}"
+                                        Receiver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                      <ng-select placeholder="Select Receiver"
+                                        (change)="selectedCustomer('receiver', $event, s)"
+                                        [ngModelOptions]="{standalone: true}"
                                         [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID"
                                         #A1consignee="ngModel" required>
                                         <ng-option *ngFor="let consignee of consignees | async"
@@ -1028,10 +1084,75 @@
                                         <div>
 
                                           <div *ngIf="A1consignee.errors.required">
-                                            Consignee is required.
+                                            Receiver is required.
                                           </div>
                                         </div>
 
+                                      </div>
+                                      <div class="col-lg-12 mt-2 p-0" *ngIf="
+                                      addresses[s].consAdrs.length > 0
+                                      ">
+                                        <div class="" style="border: 0.4px solid #e1e2e3">
+                                          <div class="row">
+                                            <div class="col-12">
+                                              <div class="pt-1 pb-1 pl-3 pr-3" style="background-color: #e1e2e3">
+                                                <h5 class="font-weight-bold">Details</h5>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="row pl-3 pr-3">
+                                            <div class="col-lg-12 pr-0">
+                                              <div style="
+                                                max-height: 200px;
+                                                overflow-y: auto;
+                                                overflow-x: hidden;
+                                              " *ngFor="let address of addresses[s].consAdrs">
+                                                <div class="row border-top mb-1 pt-2 pb-2 position-relative"
+                                                  [ngClass]="{ 'pl-4': addresses[s].consAdrs.length > 1 }">
+                                                  <div class="col-12">
+                                                    <label class="control-label" *ngIf="address.manual"><span
+                                                        class="font-weight-bold">Address:</span>
+                                                      {{ address.add1 | titlecase }}
+                                                      {{ address.add2 | titlecase }}</label>
+                                                    <label class="control-label" *ngIf="!address.manual"><span
+                                                        class="font-weight-bold">Address:</span>
+                                                      {{ address.userLoc | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">Type:</span>
+                                                      {{ address.aType | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">City:</span>
+                                                      {{ address.ctyName | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">Province/State:</span>
+                                                      {{ address.sName | titlecase }}</label>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="control-label"><span
+                                                        class="font-weight-bold">Country:</span>
+                                                      {{ address.cName | titlecase }}</label>
+                                                  </div>
+
+
+                                                  <input *ngIf="addresses[s].consAdrs.length > 1" class="address-icon"
+                                                    type="radio" name="select" (change)="
+                                                    getAddressID('receiver',
+                                                      $event.target.checked,
+                                                      s,
+                                                      address.addressID
+                                                    )
+                                                  " [value]="address.addressID" [checked]="address.isChecked" />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                     <div class="col-lg-2 mar-top-37">
@@ -1234,7 +1355,7 @@
                                           <ul class="p-0 m-0 text-left">
                                             <li *ngFor="let item of searchResults;">
                                               <a href="javascript:;"
-                                                (click)="userAddress(s, p, item,'delivery')">{{item.address.label}}</a>
+                                                (click)="userAddress(s, p, item,'delivery')">{{item.address}}</a>
                                             </li>
                                           </ul>
                                         </div>
@@ -1658,7 +1779,7 @@
                                       <label class="control-label font-weight-bold text-lg-right pt-2">Handling
                                         Instructions&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                      <textarea class="form-control" rows="3"
+                                      <textarea class="form-control h-auto" rows="3"
                                         placeholder="Enter commodity handling instructions"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.handlingInstructions'"
@@ -1817,7 +1938,7 @@
                                 <div class="row mr-1">
                                   <div class="col-lg-11">
                                     <div class="row">
-                                      <div class="col-lg-3" *ngFor="let seal of trailer.sealNumbers; let i=index;">
+                                      <div class="col-lg-3 pr-1" *ngFor="let seal of trailer.sealNumbers; let i=index;">
                                         <input type="text" class="form-control" placeholder="eg. 1,2,3"
                                           [ngModelOptions]="{standalone: true}"
                                           [attr.name]="'trailers['+t+'].sealNumbers['+i+'].seal'"
@@ -1853,7 +1974,7 @@
                             </tr>
                           </tbody>
                         </table>
-                        <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success ml-auto"
+                        <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success d-block ml-auto"
                           (click)="addTrailer()"><i class="fas fa-plus"></i> Add Asset</button>
                       </div>
                     </div>
@@ -1862,7 +1983,7 @@
 
                 </div>
                 <!-- Reason of amending -->
-                <div class="row">
+                <div class="row" *ngIf="amendManifest">
                   <div class="col-lg-11 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10">
@@ -1888,12 +2009,12 @@
                 <div class="form-group row">
                   <div class="col-lg-11 offset-lg-1">
                     <div class="row">
-                      <div class="col-lg-10">
+                      <div class="col-lg-10 text-right">
                         <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
-                        <button type="button" *ngIf="!manifestID" (click)="addACIManifest()"
-                          [disabled]="!aAci1.form.valid" class="btn btn-success">Save</button>
-                        <button type="button" *ngIf="manifestID" (click)="updateACIManifest()"
-                          [disabled]="!aAci1.form.valid" class="btn btn-success">Update</button>
+                        <button type="button" *ngIf="!mID" (click)="addACIManifest()" [disabled]="!aAci1.form.valid"
+                          class="btn btn-success">Save</button>
+                        <button type="button" *ngIf="mID" (click)="updateACIManifest()" [disabled]="!aAci1.form.valid"
+                          class="btn btn-success">Update</button>
                       </div>
                     </div>
                   </div>

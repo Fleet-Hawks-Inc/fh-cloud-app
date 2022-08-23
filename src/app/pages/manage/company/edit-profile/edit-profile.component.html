@@ -570,8 +570,10 @@
                                                 <div class="row align-items-top">
                                                     <div class="col-3 pr-0">
                                                         <input type="text" class="form-control"
-                                                            [(ngModel)]="account.prefix" #prefix="ngModel" required
-                                                            pattern="[a-zA-Z._^%$#!~@,-]+" [ngClass]="{
+                                                            [(ngModel)]="account.prefix"
+                                                            (input)="account.prefix = account.prefix.toUpperCase()"
+                                                            #prefix="ngModel" required pattern="[a-zA-Z._^%$#!~@,-]+"
+                                                            [ngClass]="{
                                 error: cForm.submitted && prefix.invalid
                               }" name="prefix_{{ i }}" />
                                                         <div *ngIf="prefix.invalid && cForm.submitted"

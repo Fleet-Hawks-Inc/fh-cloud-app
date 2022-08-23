@@ -182,7 +182,7 @@ export class EditProfileComponent implements OnInit {
       .subscribe(async (result: any) => {
         this.carriers = result.Items[0];
         this.carrierID = this.carriers.carrierID;
-        this.CCC = this.carriers.CCC;
+        this.CCC = this.carriers.CCC && this.carriers.CCC != 'NA' ? this.carriers.CCC : '';
         this.subCompIDs = this.carriers.subCompIDs ? this.carriers.subCompIDs : [];
         this.subCompInfo = this.carriers.subCompInfo ? this.carriers.subCompInfo : [];
         this.DBAName = this.carriers.DBAName;
@@ -673,7 +673,7 @@ export class EditProfileComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if (v === 'carrierName' || v === 'SCAC') {
+        if (v === 'carrierName' || v === 'SCAC' || v === 'CCC') {
           $('[name="' + v + '"]')
             .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
             .addClass('error');

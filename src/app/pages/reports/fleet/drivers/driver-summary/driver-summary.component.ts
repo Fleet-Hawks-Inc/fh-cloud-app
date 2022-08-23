@@ -47,7 +47,7 @@ export class DriverSummaryComponent implements OnInit {
     get = _.get;
     
      dataColumns = [
-        { field: 'firstName', header: 'Name', type: "text" },
+        { field: 'fullName', header: 'Name', type: "text" },
         { field: 'email', header: 'Email', type: "text" },
         { field: 'userName', header: 'User Name', type: "text" },
         { field: 'driverType', header: 'Driver Type', type: "text" },
@@ -117,8 +117,13 @@ export class DriverSummaryComponent implements OnInit {
             this.drivers = this.drivers.concat(result.data);
             this.loaded = true;
             this.isSearch = false;
+            
+            for(let res of result.data){
+                res.fullName = res.firstName + " " + res.middleName + " " + res.lastName;
+            }
         }
     }
+    
     onScroll = async (event: any) => {
         if (this.loaded) {
             this.fetchPagination();

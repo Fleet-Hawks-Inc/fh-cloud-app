@@ -178,6 +178,15 @@
                               icon="pi pi-filter-slash"
                               (click)="clear(dt)"
                             ></button>
+                            <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="dt.exportCSV()"
+                            pTooltip="Excel"
+                          ></button>
                             <p-multiSelect
                               [options]="dataColumns"
                               [(ngModel)]="selectedColumns"
@@ -247,11 +256,11 @@
                             style="cursor: pointer"
                           >
                             <div [ngSwitch]="dataColumns.field">
-                              <span *ngSwitchCase="'vehicleList'">
-                                {{ vehicleList[vehicle.entityID] }}
+                              <span *ngSwitchCase="'vehicleName'">
+                               {{ get(vehicle, dataColumns.field) | titlecase }}
                               </span>
 
-                              <span *ngSwitchCase="'status'">
+                              <span *ngSwitchCase="'remDetail'">
                                 <span
                                   class="text-warning font-weight-bold font-size-12 text-uppercase"
                                   *ngIf="vehicle.status === 'dueSoon'"
@@ -284,7 +293,7 @@
                                 </span>
                               </span>
 
-                              <span *ngSwitchCase="'nextDueDays'">
+                              <span *ngSwitchCase="'nextDueInfo'">
                                 <span
                                   *ngIf="vehicle.tasks.remindByUnit == 'time'"
                                 >
