@@ -139,7 +139,7 @@ export class VehicleRenewListComponent implements OnInit {
 
 
 
-  initDataTable(refresh?: boolean) {
+  initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
@@ -148,8 +148,7 @@ export class VehicleRenewListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND
             this.loaded = true;
           }
-          if (result.Items.length > 0) {
-
+            if (result.Items.length > 0) {
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
             }
@@ -157,11 +156,9 @@ export class VehicleRenewListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.remindersData = this.remindersData.concat(result.Items)
-
             this.loaded = true;
             for(let res of result.Items){
             res.vehicleNames = this.vehicleList[res.entityID];
-            
             if(res.status === 'dueSoon'){
             res.vehStatus = res.status;
             }else{
