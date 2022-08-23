@@ -4491,3 +4491,8 @@ ul.simple-post-list.settings-list li:last-child a {
   padding-top: 0.3rem !important;
   padding-bottom: 0.3rem !important;
 }
+
+.p-checkbox .p-checkbox-box {
+  border: 1px solid #4caf50 !important;
+  height: 21px !important;
+}
