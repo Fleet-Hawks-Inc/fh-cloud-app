@@ -1,0 +1,78 @@
+[
+	{
+		"code": 0,
+		"value": "USA_60H"
+	},
+    {
+        "code": 1,
+		"value": "USA_70H"
+    },
+    {
+        "code": 2,
+		"value": "CALIFORNIA_80H"
+    },
+    {
+        "code": 3,
+		"value": "OILFIELD_60H"
+    },
+    {
+        "code": 4,
+		"value": "OILFIELD_70H"
+    },
+    {
+        "code": 5,
+		"value": "CANADA_70H"
+    },
+    {
+        "code": 6,
+		"value": "CANADA_120H"
+    },
+    {
+        "code": 7,
+		"value": "TEXAS_70H"
+    },
+    {
+        "code": 8,
+		"value": "MEXICO"
+    },
+    {
+        "code": 9,
+		"value": "PASSENGER_60H"
+    },
+    {
+        "code": 10,
+		"value": "PASSENGER_70H"
+    },
+    {
+        "code": 11,
+		"value": "FLORIDA_70H"
+    },
+    {
+        "code": 12,
+		"value": "FLORIDA_80H"
+    },
+    {
+        "code": 13,
+		"value": "ASPHALT_60H"
+    },
+    {
+        "code": 14,
+		"value": "ASPHALT_70H"
+    },
+    {
+        "code": 15,
+		"value": "CALIFORNIA_TANKER_60H"
+    },
+    {
+        "code": 16,
+		"value": "TEXAS_OILFIELD_70H"
+    },
+    {
+        "code": 17,
+		"value": "ALASKA_70H"
+    },
+    {
+        "code": 18,
+		"value": "ALASKA_80H"
+    }
+]
