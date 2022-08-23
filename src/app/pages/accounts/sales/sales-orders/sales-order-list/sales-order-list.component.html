@@ -145,23 +145,26 @@
                               {{ salesOrd.txnDate | date: "yyyy/MM/dd" }}
                             </span>
 
-                            <span *ngSwitchCase="'Sales Order#'">
-                              {{ salesOrd[dataColumns.field] | titlecase }}
+                            <span *ngSwitchCase="'sOrNo'">
+                              {{ salesOrd[dataColumns.field] }}
                             </span>
 
                             <span *ngSwitchCase="'sRef'">
                               {{ salesOrd.sRef ? salesOrd.sRef : "-" }}
                             </span>
 
-                            <span *ngSwitchCase="'cusInfo.customerID'">
-                              {{ customersObjects[salesOrd.cusInfo.customerID] ?
-                              customersObjects[salesOrd.cusInfo.customerID] : "-" }}
+                            <span *ngSwitchCase="'customerName'">
+                              {{ salesOrd[dataColumns.field] }}
                             </span>
 
                             <span *ngSwitchCase="'shipDate'">
                               {{ salesOrd.shipDate | date: "yyyy/MM/dd" }}
                             </span>
 
+                            <span *ngSwitchCase="'total.finalTotal'">
+                              {{ salesOrd.total.finalTotal ? (salesOrd.total.finalTotal | number: "1.2-2") : "-"}}
+                              {{ salesOrd.currency }}
+                            </span>
 
                             <span *ngSwitchCase="'status'">
                               <span class="badge badge-dark p-1 text-uppercase">{{
@@ -169,12 +172,6 @@
                                 }}</span>
                               <span class="badge badge-success p-1 text-uppercase ml-1"
                                 *ngIf="salesOrd.status === 'sent'">Emailed</span>
-                            </span>
-
-
-                            <span *ngSwitchCase="'total.finalTotal'">
-                              {{ salesOrd.total.finalTotal ? (salesOrd.total.finalTotal | number: "1.2-2") : "-"}}
-                              {{ salesOrd.currency }}
                             </span>
 
                             <span *ngSwitchDefault>
@@ -185,8 +182,8 @@
                           [frozen]="true">
                           <div class="dropdown dropright">
                             <button [disabled]="salesOrd.status != 'open'" (click)="op.toggle($event)" pButton
-                              type="button" class="bg-transparent border-0" data-toggle="dropdown" aria-expanded="false"
-                              aria-haspopup="true" icon="fas fa-ellipsis-v" style="color: #000;"></button>
+                              type="button" id="dropdownMenuButton-{{ rowIndex }}" icon="fas fa-ellipsis-v"
+                              style="color: #000; background-color: transparent; border: transparent;"></button>
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
                               <ng-template pTemplate>
                                 <a *ngIf="salesOrd.status === 'open'"
@@ -235,3 +232,4 @@
       </section>
     </section>
   </div>
+</section>
