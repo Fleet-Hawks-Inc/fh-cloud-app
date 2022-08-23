@@ -191,9 +191,9 @@ export class ListingComponent implements OnInit {
             for(let res of result.Items){
             res.vehicleName = this.vehicleList[res.entityID];
             if(res.status === 'dueSoon'){
-            res.serviceStatus = res.status
+            res.serviceStatus = res.status;
             }else{
-            res.serviceStatus = res.status
+            res.serviceStatus = res.status;
             }
             res.serviceTasks = this.tasksList[res.tasks.taskID];
             if(res.tasks.remindByUnit == 'time'){
@@ -205,15 +205,15 @@ export class ListingComponent implements OnInit {
            
             if(res.tasks.remindByUnit === 'time'){
             if(res.nextDueDays > 0){
-            res.nextDueInfo = res.nextDueDays + ' ' + 'Day(s) from now'
+            res.nextDueInfo = res.nextDueDays + ' ' + 'Day(s) from now';
             }
             else if(res.nextDueDays === '0'){
-            res.nextDueInfo = 'Today'
+            res.nextDueInfo = 'Today';
             }else if(res.nextDueDays < '0'){
-            res.nextDueInfo = Math.abs(res.nextDueDays) + ' ' + 'Days ago'
+            res.nextDueInfo = Math.abs(res.nextDueDays) + ' ' + 'Days ago';
             }
             }else if(res.tasks.remindByUnit === 'odometer'){
-            res.nextDueInfo = res.nextDueMiles + ' ' + 'miles from now'
+            res.nextDueInfo = res.nextDueMiles + ' ' + 'miles from now';
             }
             }
           }
