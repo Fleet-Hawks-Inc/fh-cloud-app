@@ -89,10 +89,8 @@
                         <td *ngFor="let dataColumns of columns" style="height: 40px; cursor: pointer"
                           [routerLink]="driver.url">
                           <div [ngSwitch]="dataColumns.field">
-                            <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'firstName'">
-                              {{ driver.firstName }}
-                              {{ driver.middleName }}
-                              {{ driver.lastName }}
+                            <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'fullName'">
+                               {{ get(driver, dataColumns.field)| titlecase }}
                             </span>
                             <span *ngSwitchCase="'driverType'">
                               {{ driver[dataColumns.field] | titlecase }}

@@ -27,7 +27,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { NgSelectModule } from "@ng-select/ng-select";
 import { TooltipModule } from 'primeng/tooltip';
-
+import {ToastModule} from 'primeng/toast';
 /*
 const routes: Routes = [
   {
@@ -140,7 +140,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
-    ButtonModule
+    ButtonModule,
+    ToastModule,
   ],
   exports: [],
   providers: [unsavedChangesGuard,

@@ -45,8 +45,8 @@
                         <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
                         <ng-select name="tripNumber" [clearable]="false" placeholder="Search by trip"
                           [(ngModel)]="tripNumber" #TripNum="ngModel">
-                          <ng-option *ngFor="let trip of trips | keyvalue" value="{{ trip.value }}">
-                            {{ trip.value }}
+                          <ng-option *ngFor="let trip of trips" value="{{ trip.tripNo }}">
+                            {{ trip.tripNo }}
                           </ng-option>
                         </ng-select>
                         <!-- <input type="text" class="form-control" name="tripNumber" maxlength="21"
@@ -882,7 +882,7 @@
                                   <div class="row">
                                     <div class="col-lg-10">
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
-                                        Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        Shipper<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select (change)="selectedCustomer('shipper', $event, s)"
                                         [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
                                         [(ngModel)]="shipment.shipperID" #Aconsi="ngModel"
@@ -896,7 +896,7 @@
                                         <div>
 
                                           <div *ngIf="Aconsi.errors.required">
-                                            Consignor is required.
+                                            Shipper is required.
                                           </div>
                                         </div>
 
@@ -976,7 +976,7 @@
                                     <div class="col-lg-10">
 
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
-                                        Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        Receiver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select [ngModelOptions]="{standalone: true}"
                                         [attr.name]="'shipments['+s+'].receiverID'"
                                         (change)="selectedCustomer('receiver', $event, s)"
@@ -994,7 +994,7 @@
                                         <div>
 
                                           <div *ngIf="Aconsignee.errors.required">
-                                            Consignee is required.
+                                            Receiver is required.
                                           </div>
                                         </div>
 

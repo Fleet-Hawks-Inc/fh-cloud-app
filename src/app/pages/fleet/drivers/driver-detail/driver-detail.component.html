@@ -1304,11 +1304,11 @@
               </ng-select>
 
 
-              <label class="control-label font-weight-bold text-lg-right pt-2">Ruleset
+              <label class="control-label font-weight-bold text-lg-right pt-2" >Ruleset
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <ng-select name="brokerage.carrierID" placeholder="Select Carrier">
-                <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
+              <ng-select placeholder="Select Carrier" [(ngModel)] = "eldDriver.ruleSet">
+                <ng-option  *ngFor="let data of ab" [value]="data.code">
                   {{ data.value }}</ng-option>
               </ng-select>
 
@@ -1341,6 +1341,11 @@
               <input type="checkbox" name="eldDriver.exemption" [(ngModel)]="eldDriver.exemption">
               <label class="labelWidth"> Exemption </label><br>
 
+              <label class="control-label font-weight-bold text-lg-right pt-2" *ngIf = "eldDriver.exemption === true">Exemption Reason
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input *ngIf = "eldDriver.exemption === true" type="text" class="form-control" [(ngModel)]="eldDriver.exemptionReason " />
+
               <label class="control-label font-weight-bold text-lg-right pt-2">Units
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
@@ -1353,12 +1358,12 @@
               <label class="control-label font-weight-bold text-lg-right pt-2">Registration State
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" [(ngModel)] = "eldDriver.stateCode" />
 
               <label class="control-label font-weight-bold text-lg-right pt-2">License Number
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" [(ngModel)] = "CDL" />
 
               <input type="checkbox" name="eldDriver.wifi" [(ngModel)]="eldDriver.wifi">
               <label class="labelWidth"> DVIR WiFi Only </label><br>
@@ -1368,6 +1373,57 @@
 
               <input type="checkbox" name="eldDriver.allowTakePhoto" [(ngModel)]="eldDriver.allowTakePhoto">
               <label class="labelWidth"> Allow to take DVIR photo </label><br>
+
+              <label
+              class="control-label font-weight-bold text-lg-right pt-2"
+              >country
+              <span class="mandfield text-2 ml-1"
+                ><sup>*</sup></span
+              >
+            </label>
+            <ng-select
+              (change)="getLicStates($event)"
+              [(ngModel)]="eldDriver.issuedCountry"
+              placeholder="Select country"
+              name="eldDriver.issuedCountry"
+              class="form-control populate"
+              #conSlt="ngModel"
+              [ngClass]="{
+                error: driverF.submitted && conSlt.invalid
+              }"
+              required
+            >
+              <ng-option value="CA">Canada</ng-option>
+              <ng-option value="US">United States</ng-option>
+            </ng-select>
+
+            <label
+            class="control-label font-weight-bold text-lg-right pt-2"
+            >Issued Province/State
+            <span class="mandfield text-2 ml-1"
+              ><sup>*</sup></span
+            >
+          </label>
+          <ng-select
+            [(ngModel)]="eldDriver.issuedState"
+            name="eldDriver.issuedState"
+            placeholder="Select Province/State"
+            (change)="getLicenseStateName()"
+            required
+            #ipSlt="ngModel"
+            [ngClass]="{
+              error: driverF.submitted && ipSlt.invalid
+            }"
+          >
+            <ng-option
+              class="text-capitalize"
+              *ngFor="let state of states"
+              value="{{ state.stateCode }}"
+            >
+              {{ state.stateName }}</ng-option
+            >
+          </ng-select>
+
             </div>
           </div>
 

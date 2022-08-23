@@ -110,6 +110,8 @@ export class CountryStateCityService {
   * @returns
   */
   public GetStateNameFromCode = async (stateCode: string, countryCode: string): Promise<string> => {
+    console.log('stateCode=11=',stateCode)
+    console.log('countryCode==',countryCode)
     const response = await this.apiService.getData(`${this.getStateNameFromCode}/${stateCode}/${countryCode}`).toPromise();
     if (response) {
       return response.name;

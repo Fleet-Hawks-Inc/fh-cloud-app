@@ -63,8 +63,8 @@ export class ExpenseListComponent implements OnInit {
     {  field: 'year', header: 'Year', type: "text" },
     {  field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
     {  field: 'ownership', header: 'Ownership', type: "text" },
-    {  field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
-    {  field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    {  field: 'driverName', header: 'Driver Assigned', type: 'text' },
+    {  field: 'teamDname', header: 'Team Driver Assigned', type: 'text' },
     {  field: 'plateNumber', header: 'Plate Number', type: "text" },
     {  field: 'currentStatus', header: 'Status', type: 'text' },
   ];
@@ -170,6 +170,11 @@ export class ExpenseListComponent implements OnInit {
             this.vehicles = this.vehicles.concat(result.data)
 
             this.loaded = true;
+            
+            for(let res of result.data){
+              res.driverName = this.driversList[res.driverID] ? this.driversList[res.driverID] : "-" 
+              res.teamDname = this.driversList[res.teamDriverID] ? this.driversList[res.teamDriverID] : "-"
+            }
           }
         });
     }

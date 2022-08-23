@@ -36,6 +36,20 @@ export class EManifestsComponent implements OnInit {
     { width: '10%', field: 'status', header: 'Status' },
   ]
 
+  ACI_Options = [
+    { width: '6%', field: 'tripNumber', header: 'Trip#' },
+    { width: '8%', field: 'shipments', header: 'Shipment#' },
+    { width: '8%', field: 'shipTypes', header: 'Shipment Type' },
+    { width: '13%', field: 'arrDateTime', header: 'Est. Arrival Date & Time' },
+    { width: '15%', field: 'POE', header: 'Canada Port of Entry' },
+    { width: '15%', field: 'drivers', header: 'Drivers' },
+    { width: '8%', field: 'truck', header: 'Truck' },
+    { width: '10%', field: 'assets', header: 'Assets' },
+    { width: '10%', field: 'shippers', header: 'Consignor' },
+    { width: '10%', field: 'receivers', header: 'Consignee' },
+    { width: '10%', field: 'status', header: 'Status' },
+  ]
+
   activeDiv = 'ace';
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageACI: string = Constants.FETCHING_DATA;
@@ -113,6 +127,7 @@ export class EManifestsComponent implements OnInit {
   get = _.get;
   find = _.find;
   _selectedColumns: any[];
+  _selectedColumns1: any[];
 
   constructor(
     private apiService: ApiService,
@@ -132,7 +147,8 @@ export class EManifestsComponent implements OnInit {
     this.fetchDriversList();
     this.fetchContactsList();
 
-    this.initDataTable();
+    this.initACEData();
+    this.initACIData();
     this.fetchCanadianPorts();
     this.fetchaceShipmentType();
     this.fetchaciShipmentType();
@@ -140,16 +156,27 @@ export class EManifestsComponent implements OnInit {
     this.setToggleOptions()
   }
   setToggleOptions() {
-    this.selectedColumns = this.ACE_Options;
+    this.aceColumns = this.ACE_Options;
+    this.aciColumns = this.ACI_Options;
   }
 
-  @Input() get selectedColumns(): any[] {
+  @Input() get aceColumns(): any[] {
     return this._selectedColumns;
   }
 
-  set selectedColumns(val: any[]) {
+  set aceColumns(val: any[]) {
     //restore original order
     this._selectedColumns = this.ACE_Options.filter(col => val.includes(col));
+
+  }
+
+  @Input() get aciColumns(): any[] {
+    return this._selectedColumns1;
+  }
+
+  set aciColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns1 = this.ACI_Options.filter(col => val.includes(col));
 
   }
   fetchaceShipmentType() {
@@ -234,7 +261,7 @@ export class EManifestsComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-  initDataTable() {
+  initACEData() {
     this.spinner.show();
     this.apiService.getData('eManifests/fetch/ace-list?aceSearch=' + this.aceSearch + '&fromDate=' + this.fromDate + '&toDate=' + this.toDate + '&category=' + this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
@@ -316,7 +343,7 @@ export class EManifestsComponent implements OnInit {
         }
         this.ACEList = [];
         this.dataMessage = Constants.FETCHING_DATA;
-        this.initDataTable();
+        this.initACEData();
       }
     } else {
       return false;
@@ -337,14 +364,19 @@ export class EManifestsComponent implements OnInit {
       this.filterCategory = null;
 
       this.resetCountResult('ace');
-      this.initDataTable();
+      this.initACEData();
     } else {
       return false;
     }
   }
 
-  detailPage(id) {
-    this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
+  detailPage(type: string, id: string) {
+    if (type == 'ace') {
+      this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
+    }
+    if (type == 'aci') {
+      this.router.navigateByUrl(`/dispatch/cross-border/aci-details/${id}`)
+    }
   }
   deleteACEEntry(event: Event, mID: string) {
     try {
@@ -373,7 +405,7 @@ export class EManifestsComponent implements OnInit {
   async deleteACE(mID) {
     let result = await this.apiService.postData('eManifests/ace/delete', mID).toPromise();
     if (result) {
-      this.initDataTable();
+      this.initACEData();
     }
 
   }
@@ -382,44 +414,31 @@ export class EManifestsComponent implements OnInit {
 
   // ACI operations
 
-  initDataTableACI() {
+  initACIData() {
     this.spinner.show();
-    this.apiService.getData('eManifests/fetch/ACIrecords?aciSearch=' + this.aciSearch + '&fromDate=' + this.aciFromDate + '&toDate=' + this.aciToDate + '&category=' + this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
+    this.apiService.getData('eManifests/fetch/aci-list?aciSearch=' + this.aciSearch + '&fromDate=' + this.aciFromDate + '&toDate=' + this.aciToDate + '&category=' + this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
       .subscribe((result: any) => {
-        if (result.Items.length == 0) {
-          this.dataMessageACI = Constants.NO_RECORDS_FOUND;
+        if (result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.loaded = true;
         }
-        this.ACIList = result[`Items`];
-        if (this.aciSearch !== '' || this.aciFromDate != '' || this.aciToDate != '' || this.aciFilterCategory != null) {
-          this.aciStartPoint = 1;
-          this.aciEndPoint = this.totalACIRecords;
-        }
-
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
-          this.aciNext = false;
-          // for prev button
-          if (!this.aciPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.aciPrevEvauatedKeys.push(lastEvalKey);
+        if (result.length > 0) {
+          for (let i = 0; i < result.length; i++) {
+            const element = result[i];
+            element.arrDateTime = `${element.arvDate} ${element.arvTime}`;
+            element.drivers = element.drivers.toString().toUpperCase();
+            element.assets = element.assets.toString().toUpperCase();
+            element.shipments = element.shipments.toString().toUpperCase();
+            element.shipTypes = element.shipTypes.toString().toUpperCase();
+            element.shippers = element.shippers.toString().toUpperCase();
+            element.receivers = element.receivers.toString().toUpperCase();
+            element.status = element.status.replaceAll('_', ' ');
+            element.POE = `Code: ${element.POE}, Location: ${this.canadianPortsObjects[element.POE]}`;
           }
-          this.lastEvaluatedKeyACI = lastEvalKey;
-        } else {
-          this.aciNext = true;
-          this.lastEvaluatedKeyACI = '';
-          this.aciEndPoint = this.totalACIRecords;
+          this.ACIList = result;
+          this.loaded = true;
         }
 
-        if (this.totalACIRecords < this.aciEndPoint) {
-          this.aciEndPoint = this.totalACIRecords;
-        }
-
-        // disable prev btn
-        if (this.aciDraw > 0) {
-          this.aciPrev = false;
-        } else {
-          this.aciPrev = true;
-        }
-        this.spinner.hide();
       }, err => {
         this.spinner.hide();
       });
@@ -451,7 +470,7 @@ export class EManifestsComponent implements OnInit {
           this.aciSearch = this.aciSearch.toUpperCase();
         }
         this.ACIList = [];
-        this.initDataTableACI();
+        this.initACIData();
         this.dataMessageACI = Constants.FETCHING_DATA;
       }
     } else {
@@ -471,7 +490,7 @@ export class EManifestsComponent implements OnInit {
       this.aciSearch = '';
       this.aciFromDate = '';
       this.aciToDate = '';
-      this.initDataTableACI();
+      this.initACIData();
       this.resetCountResult('aci');
     } else {
       return false;
@@ -525,11 +544,11 @@ export class EManifestsComponent implements OnInit {
   nextResults(type) {
     if (type == 'ace') {
       this.aceDraw += 1;
-      this.initDataTable();
+      this.initACEData();
       this.getStartandEndVal('ace');
     } else {
       this.aceDraw += 1;
-      this.initDataTableACI;
+      this.initACIData;
       this.getStartandEndVal('aci');
     }
   }
@@ -539,12 +558,12 @@ export class EManifestsComponent implements OnInit {
     if (type == 'ace') {
       this.aceDraw -= 1;
       this.lastEvaluatedKey = this.acePrevEvauatedKeys[this.aceDraw];
-      this.initDataTable();
+      this.initACEData();
       this.getStartandEndVal('ace');
     } else {
       this.aciDraw -= 1;
       this.lastEvaluatedKeyACI = this.aciPrevEvauatedKeys[this.aciDraw];
-      this.initDataTableACI();
+      this.initACIData();
       this.getStartandEndVal('aci');
     }
   }
@@ -577,11 +596,19 @@ export class EManifestsComponent implements OnInit {
     }
   }
 
-  refreshData() {
+  refreshACE() {
     this.ACEList = [];
     this.lastEvaluatedKey = '';
     this.loaded = false;
     this.dataMessage = Constants.FETCHING_DATA;
-    this.initDataTable();
+    this.initACEData();
+  }
+
+  refreshACI() {
+    this.ACIList = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.initACIData();
   }
 }

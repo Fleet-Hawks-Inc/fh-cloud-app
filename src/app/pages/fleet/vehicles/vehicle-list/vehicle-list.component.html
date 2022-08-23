@@ -360,34 +360,10 @@
                               >
                             </span>
                             <span *ngSwitchCase="'driverName'">
-                              <span>
-                                <span
-                                  routerLink="/fleet/vehicles/detail/{{
-                                    vehicle.vehicleID
-                                  }}"
-                                  >{{
-                                    (driversList[vehicle.driverID]
-                                      ? driversList[vehicle.driverID]
-                                      : "-"
-                                    ) | titlecase
-                                  }}</span
-                                >
-                              </span>
+                              {{get(vehicle, dataColumns.field) | titlecase}}
                             </span>
                             <span *ngSwitchCase="'teamDriverName'">
-                              <span>
-                                <span
-                                  routerLink="/fleet/vehicles/detail/{{
-                                    vehicle.vehicleID
-                                  }}"
-                                  >{{
-                                    (driversList[vehicle.teamDriverID]
-                                      ? driversList[vehicle.teamDriverID]
-                                      : "-"
-                                    ) | titlecase
-                                  }}
-                                </span>
-                              </span>
+                              {{get(vehicle, dataColumns.field) | titlecase}}
                             </span>
                             <span *ngSwitchCase="'currentStatus'">
                               <span
@@ -395,9 +371,7 @@
                                 routerLink="/fleet/vehicles/detail/{{
                                   vehicle.vehicleID
                                 }}"
-                                >{{
-                                  get(vehicle, dataColumns.field) | titlecase
-                                }}</span
+                                >{{get(vehicle, dataColumns.field) | titlecase}}</span
                               >
                             </span>
 

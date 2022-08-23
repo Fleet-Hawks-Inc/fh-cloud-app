@@ -655,8 +655,8 @@ export class DriverDetailComponent implements OnInit {
         delete this.driverDataUpdate.carrierID;
         delete this.driverDataUpdate.timeModified;
         if (type === 'licDocs') {
-            this.uploadLicence.splice(index, 1);
-            this.driverDataUpdate.licDocs.splice(index, 1);
+        this.uploadLicence.splice(index, 1);
+        this.driverDataUpdate.licDocs.splice(index, 1);
             this.deleteUploadedFile(name);
             try {
                 const formData = new FormData();

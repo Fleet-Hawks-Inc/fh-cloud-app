@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
 import * as moment from 'moment';
-import { ToastrService } from "ngx-toastr";
 import { from, Subject } from 'rxjs';
 import {
   map
@@ -16,7 +15,8 @@ import { CountryStateCityService } from "src/app/services/country-state-city.ser
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { ApiService, DashboardUtilityService, ListService } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
-
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: "app-add-vehicle",
@@ -296,11 +296,12 @@ export class AddVehicleComponent implements OnInit {
   editDisabled = false;
   currentYear = '';
   groupsData: any = [];
+  hosVehicleId = 0
+  vehicleObj = {}
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
     private location: Location,
-    private toastr: ToastrService,
     private router: Router,
     private httpClient: HttpClient,
     private listService: ListService,
@@ -309,7 +310,9 @@ export class AddVehicleComponent implements OnInit {
     private dashboardUtilityService: DashboardUtilityService,
     private routerMgmtService: RouteManagementServiceService,
     private modalService: NgbModal,
-    private modalServiceOwn: ModalService
+    private modalServiceOwn: ModalService,
+    private eldService: ELDService,
+    private messageService: MessageService,
   ) {
 
 
@@ -764,7 +767,7 @@ export class AddVehicleComponent implements OnInit {
             this.response = res;
             this.Success = "";
             this.submitDisabled = false;
-            this.toastr.success("Vehicle Added Successfully");
+            this.showVehAddMessage();
             this.router.navigateByUrl("/fleet/vehicles/list");
             this.dashboardUtilityService.refreshVehicles = true;
             this.dashboardUtilityService.refreshVehCount = true;
@@ -1170,6 +1173,10 @@ export class AddVehicleComponent implements OnInit {
     }
     this.timeCreated = result.timeCreated;
     this.isImport = result.isImport;
+    // if(this.hosVehicleId >0){
+      this.hosVehicleId = result.hosVehicleId
+    // }
+
 
     $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
     $("#hardAccelrationParametersValue").html(
@@ -1358,7 +1365,9 @@ export class AddVehicleComponent implements OnInit {
       loanDocs: this.existLDocs,
       activeTab: this.activeTab,
       deviceInfo: this.deviceInfo,
-      isImport: this.isImport
+      isImport: this.isImport,
+      hosVehicleId:this.hosVehicleId
+      
     };
     // create form data instance
     const formData = new FormData();
@@ -1385,41 +1394,47 @@ export class AddVehicleComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(data));
+  
 
     try {
-      return await new Promise((resolve, reject) => {
-        this.apiService.putData("vehicles", formData, true).subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  //val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                  if (err) return reject(err);
-                  this.submitDisabled = false;
-                },
-                error: () => {
-                  this.submitDisabled = false;
-                },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            this.submitDisabled = false;
-            this.response = res;
-            this.Success = "";
-            this.toastr.success("Vehicle Updated successfully");
-            this.dashboardUtilityService.refreshVehicles = true;
-            this.cancel();
-          },
+        return await new Promise((resolve, reject) => {
+          this.apiService.putData("vehicles", formData, true).subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                    //val.message = val.message.replace(/".*"/, 'This Field');
+                    this.errors[val.context.label] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                    if (err) return reject(err);
+                    this.submitDisabled = false;
+                  },
+                  error: () => {
+                    this.submitDisabled = false;
+                  },
+                  next: () => { },
+                });
+            },
+            next: (res) => {
+              this.submitDisabled = false;
+              this.response = res;
+              if(!this.hosVehicleId){
+                this.cancel();
+              }
+              this.updateVehEld()
+              this.Success = "";
+             this.showUpdateSuccess();
+              this.dashboardUtilityService.refreshVehicles = true;
+             
+            },
+          });
         });
-      });
+     
     } catch (error) {
       this.submitDisabled = false;
     }
@@ -1501,7 +1516,7 @@ export class AddVehicleComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroupsList();
-        this.toastr.success("Group added successfully");
+        this.showGrpAddMessage();
         $("#addGroupModal").modal("hide");
         this.fetchGroupsList();
       },
@@ -1634,4 +1649,60 @@ export class AddVehicleComponent implements OnInit {
 
     });
   }
+
+  showError(error: any) {
+    this.messageService.add({
+        severity: 'error', summary: 'Error',
+        detail: error.error.message
+    });
+}
+
+showSuccess() {
+    this.messageService.add({severity:'success',
+     summary: 'Success', detail: 'Vehicle updated successfully in ELD'});
+}
+
+showUpdateSuccess() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Vehicle updated successfully'});
+}
+
+showVehAddMessage() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Vehicle Added Successfully'});
+}
+
+showGrpAddMessage() {
+  this.messageService.add({severity:'success',
+   summary: 'Success', detail: 'Group Added Successfully'});
+}
+
+updateVehEld(){
+  if(this.hosVehicleId >0){
+    this.vehicleObj = {
+       FhIdentifier: this.vehicleID,
+       AssetId : this.hosVehicleId,
+       Number: this.vehicleIdentification,
+       HOSHomeBaseId: '18',
+       VIN: this.VIN,
+       Plate: this.plateNumber,
+       RegistrationState: this.stateCode,
+       Type: '0',
+       Active: '1'
+
+   }
+
+   this.eldService.postData("assets", {
+     Asset: this.vehicleObj
+   }).subscribe(
+     result => {
+       this.showSuccess()
+       this.cancel();
+
+     },
+     error => {
+         this.showError(error)
+     });
+ }
+}
 }

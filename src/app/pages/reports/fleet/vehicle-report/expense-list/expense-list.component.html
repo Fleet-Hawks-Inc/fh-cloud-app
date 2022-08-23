@@ -127,24 +127,14 @@
                         <span *ngSwitchCase="'vehicleIdentification'">
                           <span class="font-weight-bold line-height-lg text-capitalize">{{ vehicle.vehicleIdentification }}</span>
                         </span>
-                        <span *ngSwitchCase="'driverList.teamDriverID'">
+                        <span *ngSwitchCase="'teamDname'">
                           <span>
-                            <span>{{
-                                  (driversList[vehicle.teamDriverID]
-                                    ? driversList[vehicle.teamDriverID]
-                                    : "-"
-                                  ) | titlecase
-                                }}</span>
+                              {{ get(vehicle, dataColumns.field) | titlecase}}
                           </span>
                         </span>
-                        <span *ngSwitchCase="'driverList.driverID'">
+                        <span *ngSwitchCase="'driverName'">
                           <span>
-                            <span>{{
-                                  (driversList[vehicle.driverID]
-                                    ? driversList[vehicle.driverID]
-                                    : "-"
-                                  ) | titlecase
-                                }}</span>
+                             {{ get(vehicle, dataColumns.field) | titlecase}}
                           </span>
                         </span>
                         <span *ngSwitchCase="'lifeCycle.startDate'">

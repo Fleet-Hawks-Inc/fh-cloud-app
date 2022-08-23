@@ -144,24 +144,14 @@
                           <span>
                             {{ get(vehicle, dataColumns.field) }}</span>
                         </span>
-                        <span *ngSwitchCase="'driverList.teamDriverID'">
+                        <span *ngSwitchCase="'teamDname'">
                           <span>
-                            <span>{{
-                                  (driversList[vehicle.teamDriverID]
-                                    ? driversList[vehicle.teamDriverID]
-                                    : "-"
-                                  ) | titlecase
-                                }}</span>
+                             {{ get(vehicle, dataColumns.field) | titlecase }}
                           </span>
                         </span>
-                        <span *ngSwitchCase="'driverList.driverID'">
+                        <span *ngSwitchCase="'driverName'">
                           <span>
-                            <span>{{
-                                  (driversList[vehicle.driverID]
-                                    ? driversList[vehicle.driverID]
-                                    : "-"
-                                  ) | titlecase
-                                }}</span>
+                              {{ get(vehicle, dataColumns.field) | titlecase }}
                           </span>
                         </span>
                         <span *ngSwitchCase="'annualSafetyDate'">

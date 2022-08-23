@@ -36,13 +36,13 @@ export class CreditNotesListComponent implements OnInit {
     this.fetchCredits();
     this.fetchCustomers();
     this.dataColumns = [
-      { width: '10%', field: 'txnDate', header: 'Date', type: "text" },
-      { width: '15%', field: 'cCrNo', header: 'Customer Credit#', type: "text" },
-      { width: '10%', field: 'crRef', header: 'Reference#', type: "text" },
-      { width: '15%', field: 'customerID', header: 'Customer', type: "text" },
-      { width: '15%', field: 'totalAmt', header: 'Credit Amount', type: "text" },
-      { width: '15%', field: 'balance', header: 'Balance Amount', type: "text" },
-      { width: '14%', field: 'status', header: 'Status', type: "text" },
+      { field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'cCrNo', header: 'Customer Credit#', type: "text" },
+      { field: 'crRef', header: 'Reference#', type: "text" },
+      { field: 'customerID', header: 'Customer', type: "text" },
+      { field: 'totalAmt', header: 'Credit Amount', type: "text" },
+      { field: 'balance', header: 'Balance Amount', type: "text" },
+      { field: 'status', header: 'Status', type: "text" },
     ];
 
 
