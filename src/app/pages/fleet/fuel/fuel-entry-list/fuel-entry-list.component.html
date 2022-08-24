@@ -5,22 +5,10 @@
         <form class="form-horizontal" method="get" name="form" id="form_">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2">
-              <ng-select
-                [(ngModel)]="unitID"
-                name="unitID"
-                style="width: 100%"
-                placeholder="Search by Unit"
-              >
-                <ng-option
-                  *ngFor="let data of allVehicles"
-                  [value]="data.vehicleID"
-                  >{{ data.vehicleIdentification }}
+              <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%" placeholder="Search by Unit">
+                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{ data.vehicleIdentification }}
                 </ng-option>
-                <ng-option
-                  *ngFor="let data of allAssets"
-                  [value]="data.assetID"
-                  >{{ data.assetIdentification }}</ng-option
-                >
+                <ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{ data.assetIdentification }}</ng-option>
               </ng-select>
             </div>
             <!-- <div class="col-md-2 col-lg-2 pr-0 pl-2">
@@ -39,121 +27,55 @@
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input
-                  [(ngModel)]="fromDate"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0"
-                >
+                <input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
                 </span>
-                <input
-                  [(ngModel)]="toDate"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
+                <input [(ngModel)]="toDate" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
               </div>
             </div>
             <div class="col-md-2 col-lg-2 pl-0">
-              <button
-                type="submit"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-3"
-              >
+              <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <button
-                type="button"
-                (click)="resetFilter()"
-                class="btn btn-sm btn-success"
-              >
+              <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">
                 Reset
               </button>
             </div>
             <div class="col-md-5 text-right pr-1 page-buttons">
               <div class="btn-group flex-wrap" *ngIf="!environment">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   Actions<span class="caret"></span>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  "
-                >
+                  ">
                   <a class="dropdown-item text-1" href="">Import</a>
                   <a class="dropdown-item text-1" href="">Export</a>
                 </div>
               </div>
 
               <div ngbDropdown class="d-inline-block">
-                <button
-                  class="btn btn-success btn-sm mr-3"
-                  id="fSur"
-                  data-toggle="modal"
-                  data-target="#fSurcharge"
-                >
+                <button class="btn btn-success btn-sm mr-3" id="fSur" data-toggle="modal" data-target="#fSurcharge">
                   Fuel Surcharge
                 </button>
-                <button
-                  class="btn btn-success"
-                  id="dropdownBasic1"
-                  ngbDropdownToggle
-                >
+                <button class="btn btn-success" id="dropdownBasic1" ngbDropdownToggle>
                   Import
                 </button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                  <button
-                    ngbDropdownItem
-                    data-toggle="modal"
-                    data-target="#bvdModal"
-                  >
+                  <button ngbDropdownItem data-toggle="modal" data-target="#bvdModal">
                     BVD Report
                   </button>
-                  <button
-                    ngbDropdownItem
-                    data-toggle="modal"
-                    data-target="#petroModal"
-                  >
+                  <button ngbDropdownItem data-toggle="modal" data-target="#petroModal">
                     Petro Report
                   </button>
                 </div>
               </div>
-              <a
-                routerLink="/fleet/fuel/add"
-                class="btn btn-success btn-sm ml-3"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Fuel Entry</a
-              >
+              <a routerLink="/fleet/fuel/add" class="btn btn-success btn-sm ml-3" style="color: white"><i class="fas fa-plus"></i> Add Fuel Entry</a>
             </div>
           </div>
         </form>
@@ -163,245 +85,86 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div
-                  class="col-lg-12"
-                  style="height: calc(100vh - 149px); overflow-y: scroll"
-                >
-                  <p-table
-                    #dt
-                    [value]="fuelList"
-                    [resizableColumns]="true"
-                    columnResizeMode="fit"
-                    autoLayout="true"
-                    scrollDirection="both"
-                    [loading]="!loaded"
-                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    scrollHeight="100%"
-                  >
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="fuelList" [resizableColumns]="true" columnResizeMode="fit" autoLayout="true" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%">
                     <!-- Caption template of data table -->
                     <ng-template pTemplate="caption">
-                      <div
-                        class="p-d-flex d-flex justify-content-between align-items-center"
-                      >
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
                         <div>
                           <h3 class="m-0">Fuel List</h3>
                         </div>
 
                         <div class="text-right">
-                          <span
-                            >Showing
+                          <span>Showing
                             {{
                               dt.filteredValue
                                 ? dt.filteredValue.length
                                 : dt.totalRecords
                             }}
-                            of {{ dt.totalRecords }} Entries.</span
-                          >
+                            of {{ dt.totalRecords }} Entries.</span>
                           &nbsp;
-                          <button
-                            type="button"
-                            pButton
-                            (click)="refreshData()"
-                            pTooltip="Refresh"
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-sync"
-                          ></button>
-                          <button
-                            type="button"
-                            pButton
-                            pTooltip="Add"
-                            routerLink="/fleet/fuel/add"
-                            class="p-button-outlined mr-2"
-                            icon="pi pi-plus"
-                          ></button>
-                          <button
-                            pButton
-                            pRipple
-                            pTooltip="Clear Filter"
-                            class="p-button-outlined mr-2"
-                            (click)="clear(dt)"
-                            icon="pi pi-filter-slash"
-                          ></button>
-
-                          <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                      icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
-
-                          <!-- <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"> -->
-                          <!-- </p-multiSelect> -->
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/fleet/fuel/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
+                          </p-multiSelect>
                         </div>
                       </div>
                     </ng-template>
-                    <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th
-                          *ngFor="let column of dataColumns"
-                          [pSortableColumn]="column.field"
-                          pResizableColumn
-                        >
-                          <span>
-                            <div
-                              class="flex justify-content-center align-items-center"
-                              alignFrozen="right"
-                              pFrozenColumn
-                              [frozen]="true"
-                            >
-                              {{ column.header }}
-                              <p-sortIcon [field]="column.field"></p-sortIcon>
-                              <p-columnFilter
-                                [type]="column.type"
-                                [field]="column.field"
-                                matchMode="contains"
-                                [showMatchModes]="false"
-                                [showOperator]="false"
-                                [showAddButton]="false"
-                                display="menu"
-                              >
-                              </p-columnFilter>
-                            </div>
-                          </span>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
                         </th>
-
-                        <!-- <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Date Time</th> -->
-                        <th
-                          style="width: 100px"
-                          alignFrozen="right"
-                          pFrozenColumn
-                          [frozen]="true"
-                        >
+                        <th style="width: 100px" alignFrozen="right" pFrozenColumn [frozen]="true">
                           Actions
                         </th>
                       </tr>
                     </ng-template>
-
-                    <!-- Body Template of Data Table -->
-                    <ng-template
-                      pTemplate="body"
-                      let-fuel
-                      let-columns="columns"
-                      let-rowIndex="rowIndex"
-                    >
+                    <ng-template pTemplate="body" let-fuel let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
+                        <td *ngFor="let dataColumns of columns" style="cursor: pointer" routerLink="/fleet/fuel/detail/{{
                               fuel.data.fuelID
-                            }}"
-                            >{{ fuel.dateTime }}</span
-                          >
-                        </td>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{
-                              fuel.data.cardNo ? fuel.data.cardNo : "-"
-                            }}</span
-                          >
-                        </td>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            class="font-weight-bold"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{
+                            }}">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'dateTime'">
+                              {{ get(fuel, dataColumns.field) }}
+                            </span>
+                            <span *ngSwitchCase="'unitID'">
+                              {{
                               (vehicleList[fuel.unitID]
                                 ? vehicleList[fuel.unitID]
                                 : ""
                               ) | titlecase
                             }}
-                            {{
+                              {{
                               (assetList[fuel.unitID]
                                 ? assetList[fuel.unitID]
                                 : ""
                               ) | titlecase
-                            }}</span
-                          >
+                            }}
+                            </span>
+                            <span *ngSwitchDefault>
+                              {{ get(fuel, dataColumns.field) }}
+                            </span>
+                          </div>
                         </td>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{
-                              (fuel.data.useType ? fuel.data.useType : "-")
-                                | titlecase
-                            }}</span
-                          >
-                        </td>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{ fuel.data.type }}</span
-                          >
-                        </td>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{ fuel.data.amt }}</span
-                          >
-                        </td>
-                        <td style="width: 10%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{ fuel.data.site ? fuel.data.site : "-" }}</span
-                          >
-                        </td>
-                        <td style="width: 12%">
-                          <span
-                            style="cursor: pointer"
-                            routerLink="/fleet/fuel/detail/{{
-                              fuel.data.fuelID
-                            }}"
-                            >{{ fuel.data.city }},{{ fuel.data.state }},{{
-                              fuel.data.country
-                            }}</span
-                          >
-                        </td>
-                        <td
-                          style="text-align: center; width: 100px"
-                          pFrozenColumn
-                          alignFrozen="right"
-                          [frozen]="true"
-                        >
-                          <button
-                            id="btnEdit"
-                            pButton
-                            routerLink="/fleet/fuel/edit/{{ fuel.data.fuelID }}"
-                            type="button"
-                            icon="fas fa-user-pen"
-                            class="p-button-rounded p-button-text"
-                            [disabled]="fuel.fuelProvider === 'WEX'"
-                          ></button>
-                          <button
-                            (click)="deleteFuelEntry(fuel.data.fuelID)"
-                            id="btnDelete"
-                            pButton
-                            type="button"
-                            icon="fas fa-user-slash"
-                            class="p-button-rounded p-button-danger p-button-text"
-                            [disabled]="fuel.fuelProvider === 'WEX'"
-                          ></button>
+                        <td style="text-align: center; width: 100px" pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <button id="btnEdit" pButton routerLink="/fleet/fuel/edit/{{ fuel.data.fuelID }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text" [disabled]="fuel.fuelProvider === 'WEX'"></button>
+                          <button (click)="deleteFuelEntry(fuel.data.fuelID)" id="btnDelete" pButton type="button" icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text" [disabled]="fuel.fuelProvider === 'WEX'"></button>
                         </td>
                       </tr>
                     </ng-template>
-                    <!-- Empty Template -->
-
                     <ng-template pTemplate="emptymessage" let-columns>
                       <tr>
                         <td colspan="9" class="text-center">
@@ -411,35 +174,17 @@
                         </td>
                       </tr>
                     </ng-template>
-                    <!-- Summary Section with Load More button -->
-
                     <ng-template pTemplate="summary" let-columns>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="
                           lastEvaluatedKey !== 'end' && fuelList.length !== 0
-                        "
-                      >
-                        <button
-                          type="button "
-                          (click)="onScroll($event)"
-                          class="btn btn-success btn-sm text-light"
-                        >
+                        ">
+                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
 
                         <br /><br />
                       </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastEvaluatedKey !== 'end'"
-                      >
-                        Total Records: {{ fuelList.length }}
-                      </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastEvaluatedKey === 'end'"
-                      >
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
                         Total Records: {{ fuelList.length }}
                       </div>
                     </ng-template>
@@ -549,58 +294,29 @@
   </div>
 </section>
 
-<div
-  class="modal fade"
-  id="bvdModal"
-  tabindex="-1"
-  role="dialog"
-  area-labelledby="bvdModal"
-  aria-hidden="true"
-  data-keyboard="false"
-  data-backdrop="static"
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="width: 600px"
-  >
+<div class="modal fade" id="bvdModal" tabindex="-1" role="dialog" area-labelledby="bvdModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 600px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">BVD Report Upload</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
           </i>
         </button>
       </div>
       <div class="modal-body text-dark">
         <div class="col-log-10" style="margin-left: 10px">
-          <span style="font-size: 20px"
-            >Please upload the BVD report in CSV fromat.</span
-          >
+          <span style="font-size: 20px">Please upload the BVD report in CSV fromat.</span>
         </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group col-lg-12 mb-3">
-              <label
-                class="control-label font-weight-bold labelmt text-3 text-dark"
-                >Choose File
+              <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input
-                (change)="selectDoc($event)"
-                name=""
-                id="uploadedDocs"
-                type="file"
-                class="form-control-file"
-              />
+              <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file" class="form-control-file" />
               <span style="font-size: 12px">
-                *Only .csv is accepted. The maximum file size can be 15MB.</span
-              >
+                *Only .csv is accepted. The maximum file size can be 15MB.</span>
               <!-- <div *ngIf="newDoc" class="border my-2 p-2">
                 <h4 class="mt-0">Uploaded Document</h4>
                 <a href="{{newDoc}}" target="_blank">Document</a>
@@ -611,24 +327,11 @@
               <span class="text-danger">{{ error.message }}</span>
             </div>
             <div style="text-align: right">
-              <button
-                *ngIf="!reviewing"
-                class="btn btn-success"
-                (click)="postDocument()"
-              >
+              <button *ngIf="!reviewing" class="btn btn-success" (click)="postDocument()">
                 Submit
               </button>
-              <button
-                *ngIf="reviewing"
-                class="btn btn-dark"
-                type="button"
-                disabled
-              >
-                <span
-                  class="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
+              <button *ngIf="reviewing" class="btn btn-dark" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Reviewing...
               </button>
             </div>
@@ -638,58 +341,29 @@
     </div>
   </div>
 </div>
-<div
-  class="modal fade"
-  id="petroModal"
-  tabindex="-1"
-  role="dialog"
-  area-labelledby="petroModal"
-  aria-hidden="true"
-  data-keyboard="false"
-  data-backdrop="static"
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="width: 600px"
-  >
+<div class="modal fade" id="petroModal" tabindex="-1" role="dialog" area-labelledby="petroModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 600px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Petro Canada Report Upload</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
           </i>
         </button>
       </div>
       <div class="modal-body text-dark">
         <div class="col-log-10" style="margin-left: 10px">
-          <span style="font-size: 20px"
-            >Please upload the Petro report in CSV fromat.</span
-          >
+          <span style="font-size: 20px">Please upload the Petro report in CSV fromat.</span>
         </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group col-lg-12 mb-3">
-              <label
-                class="control-label font-weight-bold labelmt text-3 text-dark"
-                >Choose File
+              <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input
-                (change)="selectDoc($event)"
-                name=""
-                id="petroDocs"
-                type="file"
-                class="form-control-file"
-              />
+              <input (change)="selectDoc($event)" name="" id="petroDocs" type="file" class="form-control-file" />
               <span style="font-size: 12px">
-                *Only .csv is accepted. The maximum file size can be 15MB.</span
-              >
+                *Only .csv is accepted. The maximum file size can be 15MB.</span>
               <!-- <div *ngIf="newDoc" class="border my-2 p-2">
                 <h4 class="mt-0">Uploaded Document</h4>
                 <a href="{{newDoc}}" target="_blank">Document</a>
@@ -700,24 +374,11 @@
               <span class="text-danger">{{ error.message }}</span>
             </div>
             <div style="text-align: right">
-              <button
-                *ngIf="!reviewing"
-                class="btn btn-success"
-                (click)="postPetroDoc()"
-              >
+              <button *ngIf="!reviewing" class="btn btn-success" (click)="postPetroDoc()">
                 Submit
               </button>
-              <button
-                *ngIf="reviewing"
-                class="btn btn-dark"
-                type="button"
-                disabled
-              >
-                <span
-                  class="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
+              <button *ngIf="reviewing" class="btn btn-dark" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Reviewing...
               </button>
             </div>
@@ -727,30 +388,12 @@
     </div>
   </div>
 </div>
-<div
-  class="modal"
-  id="fSurcharge"
-  tabindex="-2"
-  role="dialog"
-  area-labelledby="fSurcharge"
-  aria-hidden="true"
-  data-keyboard="false"
-  data-backdrop="static"
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="width: 1000px"
-  >
+<div class="modal" id="fSurcharge" tabindex="-2" role="dialog" area-labelledby="fSurcharge" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 1000px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Fuel Surcharge</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
           </i>
         </button>
@@ -758,33 +401,12 @@
       <div class="modal-body text-dark">
         <div class="row">
           <div class="col-lg-12">
-            <p-table
-              #dt
-              [value]="fuelSurcharge"
-              [resizableColumns]="true"
-              columnResizeMode="fit"
-              scrollDirection="both"
-              autoLayout="true"
-              [columns]="fsColumns"
-              [loading]="!fsLoaded"
-              styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-              scrollHeight="100%"
-              responsiveLayout="scroll"
-            >
+            <p-table #dt [value]="fuelSurcharge" [resizableColumns]="true" columnResizeMode="fit" scrollDirection="both" autoLayout="true" [columns]="fsColumns" [loading]="!fsLoaded" styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%" responsiveLayout="scroll">
               <ng-template pTemplate="header" let-columns>
                 <tr>
-                  <th
-                    *ngFor="let column of fsColumns"
-                    [pSortableColumn]="column.field"
-                    pResizableColumn
-                  >
+                  <th *ngFor="let column of fsColumns" [pSortableColumn]="column.field" pResizableColumn>
                     <span>
-                      <div
-                        class="flex justify-content-center align-items-center"
-                        alignFrozen="right"
-                        pFrozenColumn
-                        [frozen]="true"
-                      >
+                      <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
                         {{ column.header }}
                         <p-sortIcon [field]="column.field"> </p-sortIcon>
                         <!-- <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
@@ -793,23 +415,12 @@
                       </div>
                     </span>
                   </th>
-                  <th
-                    style="width: 20%"
-                    alignFrozen="right"
-                    pFrozenColumn
-                    [frozen]="true"
-                  >
+                  <th style="width: 20%" alignFrozen="right" pFrozenColumn [frozen]="true">
                     Actions
                   </th>
                 </tr>
               </ng-template>
-              <ng-template
-                pTemplate="body"
-                let-fs
-                let-columns="columns"
-                let-rowIndex="rowIndex"
-                let-expanded="expanded"
-              >
+              <ng-template pTemplate="body" let-fs let-columns="columns" let-rowIndex="rowIndex" let-expanded="expanded">
                 <tr style="cursor: pointer">
                   <td style="width: 20%">
                     {{ fs.from }}
@@ -823,16 +434,10 @@
                   <td style="width: 20%">
                     {{ fs.tl }}
                   </td>
-                  <td
-                    style="text-align: center; width: 20%"
-                    pFrozenColumn
-                    alignFrozen="right"
-                  >
+                  <td style="text-align: center; width: 20%" pFrozenColumn alignFrozen="right">
                     <div class="dropdown dropright">
                       <a class="m-1" (click)="editSurcharge(fs)">Edit</a>
-                      <a class="m-1" (click)="deleteSurcharge(fs)" class="m-2"
-                        >Delete</a
-                      >
+                      <a class="m-1" (click)="deleteSurcharge(fs)" class="m-2">Delete</a>
                       <!-- <button
                       class="bg-transparent border-0"
                       type="button"
@@ -853,26 +458,16 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="summary" let-columns>
-                <div
-                  class="col-lg-12 mt-3 text-center"
-                  *ngIf="
+                <div class="col-lg-12 mt-3 text-center" *ngIf="
                     fsLastEvaluatedKey !== 'end' && fuelSurcharge.length !== 0
-                  "
-                >
-                  <button
-                    type="button "
-                    (click)="onFsScroll($event)"
-                    class="btn btn-success btn-sm text-light"
-                  >
+                  ">
+                  <button type="button " (click)="onFsScroll($event)" class="btn btn-success btn-sm text-light">
                     Load More..
                   </button>
 
                   <br /><br />
                 </div>
-                <div
-                  class="col-lg-12 mt-3 text-center"
-                  *ngIf="fsLastEvaluatedKey === 'end'"
-                >
+                <div class="col-lg-12 mt-3 text-center" *ngIf="fsLastEvaluatedKey === 'end'">
                   Total Records: {{ fuelSurcharge.length }}
                 </div>
               </ng-template>
@@ -895,90 +490,37 @@
             <div class="col-lg-12 pl-0 d-flex mt-2">
               <div>
                 <label for="date">From</label>
-                <input
-                  type="date"
-                  class="form-control mr-2"
-                  name="from"
-                  [(ngModel)]="fSurcharge.from"
-                  [ngModelOptions]="{ standalone: true }"
-                  #date="ngModel"
-                  placeholder="Date"
-                  required
-                />
+                <input type="date" class="form-control mr-2" name="from" [(ngModel)]="fSurcharge.from" [ngModelOptions]="{ standalone: true }" #date="ngModel" placeholder="Date" required />
               </div>
               <div>
                 <label for="to">To</label>
-                <input
-                  type="date"
-                  class="form-control mr-2"
-                  name="to"
-                  [(ngModel)]="fSurcharge.to"
-                  [ngModelOptions]="{ standalone: true }"
-                  #date="ngModel"
-                  placeholder="Date"
-                  required
-                />
+                <input type="date" class="form-control mr-2" name="to" [(ngModel)]="fSurcharge.to" [ngModelOptions]="{ standalone: true }" #date="ngModel" placeholder="Date" required />
               </div>
               <div>
                 <label for="ltl">LTL</label>
-                <input
-                  type="text"
-                  class="form-control mr-2"
-                  name="ltl"
-                  [(ngModel)]="fSurcharge.ltl"
-                  [ngModelOptions]="{ standalone: true }"
-                  #ltl="ngModel"
-                  placeholder="LTL %"
-                />
+                <input type="text" class="form-control mr-2" name="ltl" [(ngModel)]="fSurcharge.ltl" [ngModelOptions]="{ standalone: true }" #ltl="ngModel" placeholder="LTL %" />
               </div>
               <div>
                 <label for="ftl">FTL</label>
-                <input
-                  type="text"
-                  class="form-control mr-2"
-                  name="ftl"
-                  [(ngModel)]="fSurcharge.tl"
-                  [ngModelOptions]="{ standalone: true }"
-                  #tl="ngModel"
-                  required
-                  placeholder="TL %"
-                />
+                <input type="text" class="form-control mr-2" name="ftl" [(ngModel)]="fSurcharge.tl" [ngModelOptions]="{ standalone: true }" #tl="ngModel" required placeholder="TL %" />
               </div>
               <div class="mt-auto">
-                <button
-                  *ngIf="!fsUpdate"
-                  type="button"
-                  class="btn btn-sm btn-success ml-1"
-                  (click)="postSurcharge()"
-                >
+                <button *ngIf="!fsUpdate" type="button" class="btn btn-sm btn-success ml-1" (click)="postSurcharge()">
                   Save
                 </button>
-                <button
-                  *ngIf="fsUpdate"
-                  type="button"
-                  class="btn btn-sm btn-success ml-1"
-                  (click)="updateSurcharge()"
-                >
+                <button *ngIf="fsUpdate" type="button" class="btn btn-sm btn-success ml-1" (click)="updateSurcharge()">
                   Update
                 </button>
 
-                <button
-                  type="button"
-                  data-dismiss="modal"
-                  class="btn btn-sm btn-success ml-1"
-                  (click)="cancel()"
-                >
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-success ml-1" (click)="cancel()">
                   Cancel
                 </button>
               </div>
-              <div
-                *ngIf="
+              <div *ngIf="
                   surchargeDisabled &&
                   date.invalid &&
                   (date.dirty || date.touched)
-                "
-                class="text-danger"
-              >
+                " class="text-danger">
                 <div>
                   <div *ngIf="date.errors.required">Date is required</div>
                 </div>
