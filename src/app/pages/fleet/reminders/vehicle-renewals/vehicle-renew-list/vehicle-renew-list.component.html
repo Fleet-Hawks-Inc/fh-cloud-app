@@ -191,7 +191,15 @@
                               (click)="clear(dt)"
                             ></button>
                             
-                            
+                            <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="dt.exportCSV()"
+                            pTooltip="Excel"
+                          ></button>
                             <p-multiSelect
                               [options]="dataColumns"
                               [(ngModel)]="selectedColumns"
@@ -263,11 +271,12 @@
                             style="cursor: pointer"
                           >
                             <div [ngSwitch]="dataColumns.field">
-                              <span *ngSwitchCase="'entityID'">
-                                {{ vehicleList[vehicle.entityID] }}
+                              <span *ngSwitchCase="'vehicleNames'">
+                                <!--{{ vehicleList[vehicle.entityID] }}-->
+                                 {{ get(vehicle, dataColumns.field) }}
                               </span>
 
-                              <span *ngSwitchCase="'status'">
+                              <span *ngSwitchCase="'vehDetails'">
                                 <span
                                   class="text-warning font-weight-bold font-size-12 text-uppercase"
                                   *ngIf="vehicle.status === 'dueSoon'"
@@ -288,7 +297,7 @@
                                 {{ vehicle.tasks.dueDate | date: "yyyy/MM/dd" }}
                               </span>
 
-                              <span *ngSwitchCase="'tasks.time'">
+                              <span *ngSwitchCase="'taskTime'">
                                 <span>
                                   {{ vehicle.tasks.time }}
                                   {{ vehicle.tasks.timeUnit }}(s) Before

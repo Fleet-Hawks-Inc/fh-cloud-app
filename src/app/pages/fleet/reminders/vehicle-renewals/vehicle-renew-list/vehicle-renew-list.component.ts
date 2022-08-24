@@ -65,10 +65,10 @@ export class VehicleRenewListComponent implements OnInit {
   
   // columns of data table
    dataColumns = [
-    { field: 'entityID', header: 'Vehicle', type: 'text' },
-    { field: 'status', header: 'Vehicle Renewal Type', type: 'text' },
+    { field: 'vehicleNames', header: 'Vehicle', type: 'text' },
+    { field: 'vehDetails', header: 'Vehicle Renewal Type', type: 'text' },
     { field: 'tasks.dueDate', header: 'Due Date', type: 'text' },
-    { field: 'tasks.time', header: 'Send Reminder', type: 'text' },
+    { field: 'taskTime', header: 'Send Reminder', type: 'text' },
     { field: 'subscribers', header: 'Subscribers', type: 'text' },
   ];
 
@@ -80,13 +80,11 @@ export class VehicleRenewListComponent implements OnInit {
   this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.initDataTable();
-    // this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
     this.setToggleOptions();
-    // this.fetchUsers();
   }
 
    setToggleOptions() {
@@ -110,7 +108,7 @@ export class VehicleRenewListComponent implements OnInit {
     });
   }
 
-  fetchVehicleList() {
+   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
     });
@@ -150,8 +148,7 @@ export class VehicleRenewListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND
             this.loaded = true;
           }
-          if (result.Items.length > 0) {
-
+            if (result.Items.length > 0) {
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
             }
@@ -159,8 +156,19 @@ export class VehicleRenewListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.remindersData = this.remindersData.concat(result.Items)
-
             this.loaded = true;
+            for(let res of result.Items){
+            res.vehicleNames = this.vehicleList[res.entityID];
+            if(res.status === 'dueSoon'){
+            res.vehStatus = res.status;
+            }else{
+            res.vehStatus = res.status;
+            }
+            res.vehTasks = this.tasksList[res.tasks.taskID];
+            res.vehDetails = res.vehStatus.toUpperCase().replace('undefined') + '\n' + res.vehTasks;
+            res.tTime = res.tasks.time
+            res.taskTime = res.tTime + ' ' + res.tasks.timeUnit + ' ' + '(s)' + ' ' + 'Before'
+            } 
           }
         });
     }
