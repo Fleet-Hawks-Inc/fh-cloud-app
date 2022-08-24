@@ -1340,7 +1340,6 @@ export class AddSettlementComponent implements OnInit {
   }
 
   setArray(element) {
-    console.log('element', element)
     if (!this.settlementData.tripIds.includes(element.tripID)) {
       this.settlementData.tripIds.push(element.tripID);
 
