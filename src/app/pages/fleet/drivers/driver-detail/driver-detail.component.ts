@@ -893,15 +893,15 @@ export class DriverDetailComponent implements OnInit {
         }
 
         console.log('this.driverObj--0--', this.driverObj)
-        // this.eldService.postData("drivers", {
-        //     Driver: this.driverObj
-        // }).subscribe(result => {
-        //     this.showSuccess();
-        //     return result
-        // }, error => {
-        //     console.log('error', error)
-        //     this.showError(error)
-        // })
+        this.eldService.postData("drivers", {
+            Driver: this.driverObj
+        }).subscribe(result => {
+            this.showSuccess();
+            return result
+        }, error => {
+            console.log('error', error)
+            this.showError(error)
+        })
     }
 
     showError(error: any) {
