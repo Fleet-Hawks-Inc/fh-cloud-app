@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
-            <button type="button" class="btn btn-sm btn-success mr-3" (click)="showEldModel()"> Update ELD
+            <button  *ngIf = "!HosDriverId" type="button" class="btn btn-sm btn-success mr-3" (click)="showEldModel()"> Enable ELD
               Driver</button>
             <a
               class="text-uppercase btn btn-sm btn-dark mr-2"
@@ -1721,7 +1721,7 @@
           <label class="control-label font-weight-bold text-lg-right pt-2">Password
 
           </label>
-          <input type="text" class="form-control" />
+          <input type="text" class="form-control" [(ngModel)] = "eldDriver.password"/>
 
           <label class="control-label font-weight-bold text-lg-right pt-2">Confirmation
 
@@ -1731,10 +1731,11 @@
           <label class="control-label font-weight-bold text-lg-right pt-2">Home Base
             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
           </label>
-          <ng-select [clearable]="false" [(ngModel)]="eldDriver.homeBase" required class="form-control populate"
+          <ng-select [clearable]="false" placeholder="Select Ruleset" [(ngModel)] = "eldDriver.homeBaseName"
+          required class="form-control populate"
             required>
-            <ng-option value="Home1">Home1</ng-option>
-            <ng-option value="New FL Office">New FL Office</ng-option>
+            <ng-option  *ngFor="let data of homeBaseData.data" [value]="data.HOSHomeBaseId">
+              {{ data.Name }}</ng-option>
           </ng-select>
 
 
@@ -1753,8 +1754,9 @@
           </label>
           <ng-select [clearable]="false" [(ngModel)]="eldDriver.Jurisdiction" required class="form-control populate"
             required>
-            <ng-option value="North">North</ng-option>
-            <ng-option value="South">South</ng-option>
+            <ng-option value="Canada North">Canada North</ng-option>
+            <ng-option value="Canada South">Canada South</ng-option>
+            <ng-option value="USA">USA</ng-option>
           </ng-select>
 
           <label class="control-label font-weight-bold text-lg-right pt-2">24-Period Starting Time

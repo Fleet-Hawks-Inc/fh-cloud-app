@@ -221,9 +221,13 @@ export class DriverDetailComponent implements OnInit {
         issuedCountry: null,
         cntryName: '',
         stateName: "",
-        formStateCode: ''
+        formStateCode: '',
+        password: '',
+        confirmPassword: '',
+        homeBaseName: ''
     
     }
+    homeBaseData = []
     driverErr = ''
     finalState = ''
     formStateName:any
@@ -243,6 +247,7 @@ export class DriverDetailComponent implements OnInit {
     stateCode = null;
     states: any = [];
     countryCode = null;
+    HosDriverId: number
     constructor(
         private hereMap: HereMapService,
         private apiService: ApiService,
@@ -437,6 +442,8 @@ export class DriverDetailComponent implements OnInit {
             .subscribe(async (result: any) => {
                 if (result) {
                     this.driverData = await result[`Items`][0];
+                    this.HosDriverId = this.driverData.HosDriverId
+                    console.log(' this.HosDriverId', this.HosDriverId)
                     this.userName = this.driverData.userName;
                     this.driverDataUpdate = await result[`Items`][0];
                     if (this.driverData.hosDetails.homeTerminal != '') {
@@ -746,46 +753,41 @@ export class DriverDetailComponent implements OnInit {
 
     showEldModel() {
         this.getRuleSetData()
+        this.getHomeBaseData()
         this.eldDriver.driverId = this.driverID;
-
+        this.eldDriver.driverFstName = `${this.driverData.firstName} `;
         this.eldDriver.driverLstName = this.driverData.lastName;
-        if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
-            this.eldDriver.driverFstName = `${this.driverData.firstName} ${this.driverData.middleName}`;
-        } else {
-            this.eldDriver.driverFstName = `${this.driverData.firstName} `;
-        }
         this.eldDriver.userName = this.userName;
-
         this.display = true;
     }
 
   async   submitClick() {
     if(this.eldDriver.driverFstName  === '' || this.eldDriver.driverLstName === '' || this.eldDriver.userName === '' 
     || this.eldDriver.ruleSet  === null || this.eldDriver.Jurisdiction === null || this.eldDriver.startingTime === null 
-    || this.eldDriver.units  === null  ){
+    || this.eldDriver.units  === null  || this.eldDriver.password  === ''  || this.eldDriver.homeBaseName === ''){
         this.driverErr = "Please fill the required fields";
-
-        // this.eldDriver.licStateCode === '' 
-        // this.eldDriver.homeBase === null
-        // exemptionReason
         return false;
     }else {
         this.driverErr = "";
       }
-      if(!this.eldDriver.licStateCode  && this.eldDriver.issuedCountry  === null || this.eldDriver.issuedState  === null ){
-        this.driverErr = "Please fill the required fields";
+      if(!this.eldDriver.licStateCode){
+        if(this.eldDriver.issuedCountry  === null || this.eldDriver.issuedState  === null ){
+            this.driverErr = "Please fill the required fields";
+          }
       }
+      
       if(this.driverData.licenceDetails.issuedState != ''){
         if(this.eldDriver.licStateCode === ''  ){
             this.driverErr = "Please fill the required fields";
           }
       }
     
-    if(this.eldDriver.exemption === true){
+    if(this.eldDriver.exemption == true){
         if( this.eldDriver.exemptionReason === ''  ){
             this.driverErr = "Please fill the required fields";
         }
     }
+    
     
         if (this.eldDriver.startingTime == 'Midnight') {
             this.startTimeCode = 0
@@ -793,7 +795,6 @@ export class DriverDetailComponent implements OnInit {
         if (this.eldDriver.units == 'Km/Liters') {
             this.fuelCode = 2
         }
-        // else if (this.eldDriver.units == 'Miles/Gallons') {}
         else {
             this.fuelCode = 1
         }
@@ -849,10 +850,13 @@ export class DriverDetailComponent implements OnInit {
             this.takePhoto = 0
         }
 
-        if (this.eldDriver.Jurisdiction == 'North') {
+        if (this.eldDriver.Jurisdiction == 'Canada North') {
             this.jurisdictionC = 2
         }
-        else {
+        else if (this.eldDriver.Jurisdiction == 'USA'){
+            this.jurisdictionC = 3
+        } 
+        else{
             this.jurisdictionC = 1
         }
 
@@ -866,13 +870,19 @@ export class DriverDetailComponent implements OnInit {
         else{
             this.finalState = this.eldDriver.licStateCode
         }
-        this.driverObj = {
+        let driverIdDigit = this.driverID.match(/(\d+)/g)
+        let digits = parseInt(driverIdDigit.join(''))
 
+        if(this.HosDriverId !=0){
+        this.driverObj = {
+            HOSDriverId :  0,
+            FhIdentifier: this.driverID,
+            ExternalDriverId: digits,
             Name: this.eldDriver.driverFstName,
             LastName: this.eldDriver.driverLstName,
             HOSUserName: this.eldDriver.userName,
-            // HOSPassword:,
-          
+            HOSPassword:this.eldDriver.password,
+            HOSHomeBaseId: this.eldDriver.homeBaseName,
             IsActive: this.active,
             HOSRuleSetId: this.eldDriver.ruleSet,
             PersonalUse: this.persnlUse,
@@ -881,27 +891,32 @@ export class DriverDetailComponent implements OnInit {
             LicenseState:this.finalState,
             LicenseNumber: this.CDL,
             Wifi: this.wifi,
-            // DistanceUnitCode: this.fuelCode,
+            DistanceUnitCode: this.fuelCode,
             FuelUnitCode: this.fuelCode,
             Starting24HTime: this.startTimeCode,
             AllowDriverExemptionSelection: this.useExemp,
             JurisdictionCode: this.jurisdictionC,
-            ExemptionReason: this.eldDriver.exemptionReason,
+      
             // HOSHomeBaseId:,
             TakeDVIRPhotoEnabled: this.takePhoto,
 
         }
+        if(this.eldDriver.exemptionReason){
+            this.driverObj['ExemptionReason'] = `${this.eldDriver.exemptionReason}`
+            console.log('this.driverObj===',this.driverObj)
+        }
 
         console.log('this.driverObj--0--', this.driverObj)
-        this.eldService.postData("drivers", {
-            Driver: this.driverObj
-        }).subscribe(result => {
-            this.showSuccess();
-            return result
-        }, error => {
-            console.log('error', error)
-            this.showError(error)
-        })
+        // this.eldService.postData("drivers", {
+        //     HOSDriver: this.driverObj
+        // }).subscribe(result => {
+        //     this.showSuccess();
+        //     // return result
+        // }, error => {
+        //     console.log('error', error)
+        //     this.showError(error)
+        // })
+    }
     }
 
     showError(error: any) {
@@ -914,7 +929,7 @@ export class DriverDetailComponent implements OnInit {
     showSuccess() {
         this.messageService.add({
             severity: 'success',
-            summary: 'Success', detail: 'driver added successfully in ELD'
+            summary: 'Success', detail: 'Driver added successfully in ELD'
         });
 
 
@@ -948,5 +963,20 @@ export class DriverDetailComponent implements OnInit {
             );
         }
       }
+
+      getHomeBaseData() {
+        this.eldService.getData('home-bases').subscribe((data) => {
+            this.homeBaseData = data;
+        console.log('this.homeBaseData',this.homeBaseData)
+          });
+      }
+
+      getAllDriver() {
+        this.eldService.getData('drivers').subscribe((data) => {
+           
+        console.log('data',data)
+          });
+      }
+
     
 }
