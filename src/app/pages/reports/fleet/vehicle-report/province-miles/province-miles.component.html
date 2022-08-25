@@ -102,6 +102,7 @@
                       &nbsp;
                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                      <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                       <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                       </p-multiSelect>
                     </div>
@@ -110,7 +111,7 @@
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
-                    <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn [ngStyle]="{ width: dataColumns.width }">
+                    <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn [ngStyle]="{ width: dataColumns.width, 'display': dataColumns.display }">
                       <div [ngSwitch]="dataColumns.field">
                         <span *ngSwitchDefault>
                           <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
@@ -134,7 +135,7 @@
                                  : 'pi pi-chevron-right'
                                   "></button>
                     </td>
-                    <td *ngFor="let dataColumns of columns" style="height:40px; cursor: pointer">
+                    <td *ngFor="let dataColumns of columns" [ngStyle]="{'display': dataColumns.display}"style="height:40px; cursor: pointer">
                       <div [ngSwitch]="dataColumns.field">
                         <span *ngSwitchCase="'vehicle'">
                           <b>
@@ -159,7 +160,7 @@
                             </span>
                           </span>
                         </span>
-                        <span *ngSwitchCase="'caMiles'">
+                        <span *ngSwitchCase="'canMiles'">
                           {{ vehicle.canMiles | number: "1.2-2" }}
                         </span>
 
@@ -170,7 +171,7 @@
                         <span *ngSwitchCase="'newStatus'" class="badge badge-dark p-1 text-capitalize">
                           {{ vehicle.newStatus }}</span>
 
-                        <span *ngSwitchCase="'uMiles'">
+                        <span *ngSwitchCase="'usMiles'">
                           {{ vehicle.usMiles | number: "1.2-2" }} <br />
                         </span>
 
