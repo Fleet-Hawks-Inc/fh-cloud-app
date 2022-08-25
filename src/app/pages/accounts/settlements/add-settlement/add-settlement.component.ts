@@ -68,6 +68,7 @@ export class AddSettlementComponent implements OnInit {
   settlementData = {
     type: null,
     entityId: null,
+    entityName: null,
     setNo: "",
     txnDate: moment().format("YYYY-MM-DD"),
     fromDate: null,
@@ -380,6 +381,11 @@ export class AddSettlementComponent implements OnInit {
             }
           }
           this.fixedPayOnScroll();
+          if (this.driverDetail.middleName != undefined && this.driverDetail.middleName != '') {
+            this.settlementData.entityName = `${this.driverDetail.firstName} ${this.driverDetail.middleName} ${this.driverDetail.lastName}`;
+          } else {
+            this.settlementData.entityName = `${this.driverDetail.firstName} ${this.driverDetail.lastName}`;
+          }
         });
     }
   }
@@ -1350,6 +1356,7 @@ export class AddSettlementComponent implements OnInit {
       }
       let obj = {
         id: element.tripID,
+        tripNo: element.tripNo,
         splitIDs: [],
         plan: [],
         amount: tripAmount,
@@ -1734,7 +1741,7 @@ export class AddSettlementComponent implements OnInit {
       .getData(`settlement/detail/${this.settlementID}`)
       .subscribe((result: any) => {
         this.settlementData = result[0];
-        if(!this.settlementData.other) {
+        if (!this.settlementData.other) {
           this.settlementData.other = {
             addition: [],
             deduction: [],
@@ -3253,7 +3260,7 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData.other.addTotal = 0;
     for (let i = 0; i < this.settlementData.other.addition.length; i++) {
       const element = this.settlementData.other.addition[i];
-      this.settlementData.other.addTotal  += Number(element.amount);
+      this.settlementData.other.addTotal += Number(element.amount);
     }
     this.calculateFinalTotal();
   }
@@ -3262,7 +3269,7 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData.other.dedTotal = 0;
     for (let i = 0; i < this.settlementData.other.deduction.length; i++) {
       const element = this.settlementData.other.deduction[i];
-      this.settlementData.other.dedTotal  += Number(element.amount);
+      this.settlementData.other.dedTotal += Number(element.amount);
     }
     this.calculateFinalTotal();
   }
