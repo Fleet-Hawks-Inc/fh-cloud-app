@@ -27,7 +27,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { OverlayPanelModule } from "primeng/overlaypanel";
-
+import { MultiSelectModule } from 'primeng/multiselect';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -127,6 +127,7 @@ const routes: Routes = [
     TableModule,
     MenuModule,
     ButtonModule,
+    MultiSelectModule,
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,

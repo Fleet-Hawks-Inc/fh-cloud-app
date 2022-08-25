@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit,Input, ElementRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -89,11 +89,12 @@ export class FuelEntryListComponent implements OnInit {
   pageLimit = 10;
   loaded = false;
   _selectedColumns: any[];
+   get = _.get;
   fsUpdate: any = false;
   dataColumns = [
-    { field: "data.date", header: "Date Time", type: "date" },
+    { field: "dateTime", header: "Date Time", type: "date" },
     { field: "data.cardNo", header: "Fuel Card #", type: "text" },
-    { field: "data.unitNo", header: "Unit #", type: "text" },
+    { field: "unitID", header: "Unit #", type: "text" },
     { field: "data.useType", header: "Use Type", type: "text" },
     { field: "data.type", header: " Type", type: "text" },
     { field: "data.amt", header: "Fuel Amount", type: "text" },
@@ -136,6 +137,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchAllVehicles();
 
     this.fetchWexCategories();
+    this.setToggleOptions();
     this.initDataTable();
     this.initFuelSurcharge();
     $(document).ready(() => {
@@ -146,6 +148,22 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
+
+
+    setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+    }
+
 
   onFuelSelect(event) {
     let value = event.selected[0];
