@@ -45,14 +45,12 @@ export class ExpenseListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchTrips();
     this.fetchExpenses();
-    this.fetchVendors();
     this.dataColumns = [
       { field: 'txnDate', header: 'Date', type: "text" },
       { field: 'categoryName', header: 'Expense Type', type: "text" },
-      { field: 'vendorID', header: 'Vendor', type: "text" },
-      { field: 'tripID', header: 'Trip & Unit#', type: "text" },
+      { field: 'vendorN', header: 'Vendor', type: "text" },
+      { field: 'tripN', header: 'Trip & Unit#', type: "text" },
       { field: 'recurring.interval', header: 'Recurring', type: "text" },
       { field: 'finalTotal', header: 'Amount', type: "text" },
       { field: 'newStatus', header: 'Status', type: "text" },
@@ -74,12 +72,6 @@ export class ExpenseListComponent implements OnInit {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
-  }
-
-  fetchTrips() {
-    this.apiService.getData("common/trips/get/list").subscribe((result: any) => {
-      this.trips = result;
-    });
   }
 
   fetchExpenses(refresh?: boolean) {
@@ -125,14 +117,6 @@ export class ExpenseListComponent implements OnInit {
           }
         });
     }
-  }
-
-  fetchVendors() {
-    this.apiService
-      .getData(`contacts/get/list/vendor`)
-      .subscribe((result: any) => {
-        this.vendors = result;
-      });
   }
 
   deleteExpense(expenseID) {

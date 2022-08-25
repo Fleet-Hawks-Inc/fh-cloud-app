@@ -189,21 +189,13 @@
                               {{ exptran[dataColumns.field] }}
                             </span>
 
-                            <span *ngSwitchCase="'vendorID'">
-                              {{
-                              vendors[exptran.vendorID]
-                              ? vendors[exptran.vendorID]
-                              : "-"
-                              }}
+                            <span *ngSwitchCase="'vendorN'">
+                              {{ exptran[dataColumns.field] }}
                             </span>
 
-                            <span *ngSwitchCase="'tripID'">
+                            <span *ngSwitchCase="'tripN'">
                               <strong>Trip No:</strong>
-                              {{
-                              trips[exptran.tripID]
-                              ? trips[exptran.tripID]
-                              : "-"
-                              }}<br />
+                              {{trips[exptran.tripN]}}<br />
                               <span *ngIf="exptran.unitType === 'vehicle'"><strong>Vehicle: </strong>
                                 {{
                                 exptran.vehicleName}}</span>
