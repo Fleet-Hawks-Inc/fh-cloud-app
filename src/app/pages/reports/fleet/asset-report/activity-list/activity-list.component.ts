@@ -102,7 +102,8 @@ export class ActivityListComponent implements OnInit {
 
   ngOnInit(): void {
     this.onboard.checkInspectionForms();
-    this.fetchAssetsCount();
+    // this.fetchAssetsCount();
+    this.initDataTable();
     this.fetchContacts();
     this.setToggleOptions()
   }
@@ -149,19 +150,19 @@ export class ActivityListComponent implements OnInit {
     });
   }
 
-  fetchAssetsCount() {
-    this.apiService.getData('assets/get/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.assetID !== '' || this.assetType != null) {
-          this.assetEndPoint = this.totalRecords;
-        }
-        this.initDataTable();
-      },
-    });
-  }
+  // fetchAssetsCount() {
+  //   this.apiService.getData('assets/get/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       this.totalRecords = result.Count;
+  //       if (this.assetID !== '' || this.assetType != null) {
+  //         this.assetEndPoint = this.totalRecords;
+  //       }
+  //       this.initDataTable();
+  //     },
+  //   });
+  // }
 
 
   onScroll() {
@@ -220,7 +221,8 @@ export class ActivityListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.allData = [];
       this.suggestedAssets = [];
-      this.fetchAssetsCount();
+      // this.fetchAssetsCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -236,7 +238,8 @@ export class ActivityListComponent implements OnInit {
       this.suggestedAssets = [];
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchAssetsCount();
+      // this.fetchAssetsCount();
+      this.initDataTable();
     } else {
       return false;
     }
