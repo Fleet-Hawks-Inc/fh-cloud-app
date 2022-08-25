@@ -39,12 +39,11 @@ export class IncomeListComponent implements OnInit {
   ngOnInit() {
     this.fetchAccounts();
     // this.fetchCustomers();
-    this.fetchIncomeCategories();
     // this.fetchInvoices();
     this.dataColumns = [
 
       { field: 'paymentModeDate', header: 'Income Date', type: "text" },
-      { field: 'categoryID', header: 'Income Category', type: "text" },
+      { field: 'IncomeName', header: 'Income Category', type: "text" },
       { field: 'paymentMode', header: 'Payment Mode', type: "text" },
       { field: 'recAmount', header: 'Amount', type: "text" },
 
@@ -129,13 +128,6 @@ export class IncomeListComponent implements OnInit {
           }
         });
     }
-  }
-
-  fetchIncomeCategories() {
-    this.accountService.getData(`income/categories/list`)
-      .subscribe((result: any) => {
-        this.categories = result;
-      });
   }
 
   fetchInvoices() {
