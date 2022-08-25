@@ -222,6 +222,7 @@ export class ActivityListComponent implements OnInit {
       this.allData = [];
       this.suggestedAssets = [];
       // this.fetchAssetsCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -238,6 +239,7 @@ export class ActivityListComponent implements OnInit {
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       // this.fetchAssetsCount();
+      this.initDataTable();
     } else {
       return false;
     }
