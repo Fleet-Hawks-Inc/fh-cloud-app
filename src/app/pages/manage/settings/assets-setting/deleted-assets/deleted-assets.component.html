@@ -248,13 +248,13 @@
                                     <span class="font-weight-bold line-height-lg text-capitalize">{{ asset.assetIdentification }}</span>
                                   </span>
 
-                                
 
-                                  <span *ngSwitchCase="'assetType'">
+
+                                  <span *ngSwitchCase="'aType'">
                                     <span>
                                       {{
-                              (asset.assetType
-                                ? asset.assetType.replace("_", " ")
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
                                 : "-"
                               ) | titlecase
                             }}
@@ -270,8 +270,8 @@
                               ) | titlecase
                             }}</span>
                                   </span>
-                                  
-                                        <span *ngSwitchCase="'comName'">
+
+                                  <span *ngSwitchCase="''">
                                     <span>
                                       {{
                               (get(asset, dataColumns.field)
@@ -323,7 +323,7 @@
                               }}
                                   </span>
                                   <span *ngSwitchDefault>
-                                  {{ get(asset, dataColumns.field) }}</span>
+                                    {{ get(asset, dataColumns.field) }}</span>
 
                                 </div>
                               </td>
