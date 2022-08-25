@@ -3,6 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
+import * as html2pdf from "html2pdf.js";
+declare var $: any;
 
 @Component({
   selector: "app-purchase-order-detail",
@@ -28,6 +30,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
   vendorName: "";
   emailDisabled = false;
   documents: any = [];
+  vendorDets: any = {}
 
   constructor(
     private accountService: AccountService,
@@ -102,6 +105,10 @@ export class PurchaseOrderDetailComponent implements OnInit {
       .toPromise();
     if (result.Items.length > 0) {
       this.vendorName = result.Items[0].cName;
+      this.vendorDets = {
+        email: result.Items[0].workEmail,
+        phone: result.Items[0].workPhone
+      }
     }
   }
 
@@ -116,5 +123,25 @@ export class PurchaseOrderDetailComponent implements OnInit {
     } else {
       this.toaster.error("Something went wrong.");
     }
+  }
+
+  showDetailModel() {
+    $("#purDetailModel").modal("show");
+  }
+
+  async generatePaymentPDF() {
+    let data = document.getElementById("purSce");
+    
+    html2pdf(data, {
+      margin: [0.5, 0, 0.5, 0],
+      pagebreak: { mode: "avoid-all", before: 'purSce' },
+      filename: `PUR-${this.orderNo}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2, logging: true, allowTaint: true,
+        useCORS: true, dpi: 192, letterRendering: true
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
   }
 }
