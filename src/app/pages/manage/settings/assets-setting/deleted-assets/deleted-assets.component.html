@@ -270,6 +270,16 @@
                               ) | titlecase
                             }}</span>
                                   </span>
+                                  
+                                        <span *ngSwitchCase="'comName'">
+                                    <span>
+                                      {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span>
+                                  </span>
 
                                   <span *ngSwitchCase="'assetDetails.model'">
                                     <span>

@@ -241,7 +241,12 @@
                                                                         {{ get(customer, dataColumns.field) | titlecase
                                                                         }}
                                                                     </span>
-                                                                  
+                                                                     <span *ngSwitchCase="'workEmail'">
+                                                                       {{(get(customer, dataColumns.field) ? get(customer, dataColumns.field): "-") | titlecase}}
+                                                                    </span>
+                                                                    <span *ngSwitchCase="'workPhone'">
+                                                                       {{(get(customer, dataColumns.field) ? get(customer, dataColumns.field): "-") | titlecase}}
+                                                                    </span>
                                                                     <span *ngSwitchCase="'address'">
                                                                         {{ get(customer, dataColumns.field) | titlecase
                                                                         }}
