@@ -128,9 +128,9 @@ export class DetailreportComponent implements OnInit {
       { width: '10%', field: 'createdDate', header: 'Date', type: "text" },
       { width: '10%', field: 'customers', header: 'Customer', type: 'text' },
       { width: '10%', field: 'cusConfirmation', header: 'Confirmation', type: 'text' },
-      { width: '10%', field: 'vehicles', header: 'Vehicles', type: 'text' },
-      { width: '10%', field: 'tripData.assetIDs', header: 'Assets', type: 'text' },
-      { width: '10%', field: 'drivers', header: 'Drivers', type: 'text' },
+      { width: '10%', field: 'vehicle', header: 'Vehicles', type: 'text' },
+      { width: '10%', field: 'asset', header: 'Assets', type: 'text' },
+      { width: '10%', field: 'driver', header: 'Drivers', type: 'text' },
       { width: '10%', field:'cusPOs', header: 'Customer PO', type: 'text' },
       { width: '10%', field: 'milesInfo.totalMiles', header: 'Miles', type: 'text' },
       { width: '10%', field: 'totalAmount', header: 'Amount', type: 'text' },
@@ -259,6 +259,38 @@ export class DetailreportComponent implements OnInit {
         }
         this.records = this.records.concat(result.Items);
         this.loaded = true;
+        
+        for(let res of result.Items){
+          res.asset = [];
+          res.vehicle = [];
+          res.driver= [];
+          if(res.tripData && res.tripData.assetIDs){
+            if(res.tripData.assetIDs.length > 0) {
+              for(let assetID of res.tripData.assetIDs ) {
+                res.asset= this.assets[assetID]
+              }
+            }
+          }
+          
+          if(res.tripData && res.tripData.vehicleIDs){
+            if(res.tripData.vehicleIDs.length > 0) {
+              for(let vehicleID of res.tripData.vehicleIDs ) {
+                res.vehicle= this.vehicles[vehicleID]
+              }
+            }
+          }
+          
+           if(res.tripData && res.tripData.driverIDs){
+            if(res.tripData.driverIDs.length > 0) {
+              for(let driverID of res.tripData.driverIDs ) {
+                console.log('driver',driverID);
+                res.driver= this.drivers[driverID]
+                console.log('driver',res.driver);
+              }
+            }
+          }
+          
+        }
       }
     }
   }
