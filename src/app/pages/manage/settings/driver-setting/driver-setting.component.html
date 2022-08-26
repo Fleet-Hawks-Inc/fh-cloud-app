@@ -277,11 +277,9 @@
                           <tr>
                             <td *ngFor="let dataColumns of columns" style="height: 40px; cursor: pointer">
                               <div [ngSwitch]="dataColumns.field">
-                                <span *ngSwitchCase="'firstName'">
+                                <span *ngSwitchCase="'driverFullName'">
                                   <span class="font-weight-bold line-height-lg text-capitalize">
-                                    {{ driver.firstName | titlecase}}
-                                    {{ driver.middleName }}
-                                    {{ driver.lastName }}
+                                  {{ driver[dataColumns.field] | titlecase }}
                                   </span>
                                 </span>
                                 <span *ngSwitchCase="'driverType'">
