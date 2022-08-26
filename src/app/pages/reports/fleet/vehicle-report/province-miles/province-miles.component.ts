@@ -54,8 +54,14 @@ export class ProvinceMilesComponent implements OnInit {
         { field: 'vehicle', header: 'Vehicle', type: "text" },
         { field: 'tripNo', header: 'Trip', type: "text" },
         { field: 'orderName', header: 'Order', type: "text" },
-        { field: 'uMiles', header: 'US Province Miles', type: "text" },
-        { field: 'caMiles', header: 'Canada Province Miles', type: "text" },
+        {  field: 'locationCsv', header: 'Location', type: "text", display:"none" },
+        {  field: 'dateCsv', header: 'Date', type: "text", display:"none" },
+        {  field: 'usStateCsv', header: 'Province (US)', type: 'text',display:"none"  },
+        {  field: 'usStateMilesCsv', header: 'US Total Miles', type: 'text',display:"none" },
+        {  field: 'canStateCsv', header: 'Province (Canada)', type: 'text',display:"none" },
+        {  field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display:"none"},
+        { field: 'usMiles', header: 'US Province Miles', type: "text" },
+        { field: 'canMiles', header: 'Canada Province Miles', type: "text" },
         { field: 'miles', header: 'Trip Miles', type: "text" },
         { field: 'newStatus', header: 'Trip Status', type: "text" },
     ];
@@ -117,18 +123,18 @@ export class ProvinceMilesComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-        for (let element of result.Items) {
-          element.newStatus = element.tripStatus;
+        for (let veh of result.Items) {
+          veh.newStatus = veh.tripStatus;
 
-          let dataa = element
-          element.miles = 0
-          if(element.stlLink === true) {
-            element.newStatus = "settled";
+          let dataa = veh
+          veh.miles = 0
+          if(veh.stlLink === true) {
+            veh.newStatus = "settled";
          
           }
           else {
-            if (element.recall === true) {
-              element.newStatus = `${element.tripStatus} (R)`;
+            if (veh.recall === true) {
+              veh.newStatus = `${veh.tripStatus} (R)`;
             }
           }
           // if (element.recall === true) {
@@ -139,12 +145,52 @@ export class ProvinceMilesComponent implements OnInit {
           //     element.newStatus = "settled";
           //   }
           // }
-          for (let element1 of dataa.tripPlanning) {
-            element.miles += Number(element1.miles);
+          
+          for (let element of dataa.tripPlanning) {
+            veh.miles += Number(element.miles);
           }
-
-
         }
+        
+        for (let i = 0; i < result.Items.length; i++) {
+        const veh: any = result.Items[i];
+        veh.miles = 0
+        veh.vehNm = ''
+        veh.location = []
+        veh.locationCsv = ''
+        veh.date = [];
+        veh.dateCsv = '';
+        veh.usState = []
+        veh.usStateCsv = ''
+        veh.usStateMiles = []
+        veh.usStateMilesCsv = ''
+        veh.canState = []
+        veh.canStateCsv = ''
+        veh.canStateMiles = []
+        veh.canStateMilesCsv = ''
+       
+          for (let element of veh.tripPlanning) {
+          veh.miles += Number(element.miles);
+          veh.location.push(element.type + ': ' + element.location)
+          veh.date.push(element.type + ': ' + element.date)
+        }
+        
+         veh.locationCsv = veh.location.join('\r\n')
+        veh.dateCsv = veh.date.join('\r\n')
+        for (let data of veh.provinceData) {
+          for (let provUS of data.usProvince) {  
+             veh.usState.push(provUS.StCntry)
+            veh.usStateMiles.push(provUS.Total)
+          } 
+           veh.usStateCsv = veh.usState.join('\r\n')
+          veh.usStateMilesCsv = veh.usStateMiles.join('\r\n')
+          for (let canProv of data.canProvince) {
+             veh.canState.push(canProv.StCntry)
+            veh.canStateMiles.push(canProv.Total)
+          }
+          veh.canStateCsv = veh.canState.join('\r\n')
+          veh.canStateMilesCsv = veh.canStateMiles.join('\r\n')
+           }
+          }
 
         //To filter according stateCode
 

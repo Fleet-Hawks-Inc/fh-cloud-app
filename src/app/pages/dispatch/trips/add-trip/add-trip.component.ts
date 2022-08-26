@@ -1470,9 +1470,8 @@ export class AddTripComponent implements OnInit {
       this.expiredErrors = result;
       this.isExpDisplay = true;
     } else {
-      this.saveAssetModalData('');
+      this.saveAssetModalData(type);
     }
-
   }
 
   assignUnits(type) {
