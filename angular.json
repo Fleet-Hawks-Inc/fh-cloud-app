@@ -8,7 +8,11 @@
     "projects": {
         "fleethawks-dashboard": {
             "projectType": "application",
-            "schematics": {},
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
             "root": "",
             "sourceRoot": "src",
             "prefix": "app",
@@ -34,60 +38,36 @@
                         "optimization": false,
                         "namedChunks": false,
                         "styles": [
-                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-                            "src/assets/css/jquerytable.css",
-                            "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
-                            "node_modules/ngx-toastr/toastr.css",
                             "node_modules/jstree/dist/themes/default/style.min.css",
-                            "node_modules/slick-carousel/slick/slick.scss",
-                            "node_modules/slick-carousel/slick/slick-theme.scss",
                             "node_modules/select2/dist/css/select2.min.css",
                             "node_modules/@swimlane/ngx-datatable/index.css",
                             "node_modules/@swimlane/ngx-datatable/themes/material.css",
                             "node_modules/@swimlane/ngx-datatable/assets/icons.css",
                             "node_modules/primeicons/primeicons.css",
                             "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-                            "src/styles.css",
                             "src/assets/vendor/animate/animate.css",
                             "src/assets/vendor/jquery-ui/jquery-ui.css",
                             "src/assets/vendor/jquery-ui/jquery-ui.theme.css",
                             "src/assets/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css",
-                            "src/assets/vendor/bootstrap/css/bootstrap.min.css",
-                            "src/assets/css/theme.css",
-                            "src/assets/css/skins/default.css",
-                            "src/assets/css/custom.css",
-                            "src/assets/css/custom1.css",
-                            "src/assets/css/custom2.css",
-                            "src/assets/css/login.css"
+                            "src/assets/vendor/bootstrap/css/bootstrap.min.css"
                         ],
                         "scripts": [
-                            "src/assets/vendor/jquery/jquery.js",
-                            "src/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js",
                             "node_modules/jszip/dist/jszip.js",
                             "src/assets/vendor/modernizr/modernizr.min.js",
-                            "src/assets/vendor/popper/umd/popper.min.js",
                             "src/assets/vendor/bootstrap/js/bootstrap.js",
                             "src/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js",
                             "src/assets/vendor/common/common.js",
                             "src/assets/vendor/jquery-placeholder/jquery.placeholder.js",
-                            "src/assets/js/theme.js",
-                            "node_modules/jstree/dist/jstree.min.js",
-                            "src/assets/vendor/nanoscroller/nanoscroller.js",
-                            "src/assets/js/custom.js",
-                            "src/assets/js/theme.init.js",
-                            "src/assets/js/examples/examples.dashboard.js",
-                            "node_modules/chart.js/dist/Chart.bundle.min.js",
-                            "node_modules/slick-carousel/slick/slick.min.js",
-                            "src/assets/js/jquery.validate.min.js",
-                            "node_modules/select2/dist/js/select2.min.js"
                         ]
                     },
                     "configurations": {
                         "production": {
-                            "fileReplacements": [{
-                                "replace": "src/environments/environment.ts",
-                                "with": "src/environments/environment.prod.ts"
-                            }],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
                             "aot": true,
                             "optimization": {
                                 "scripts": true,
@@ -102,7 +82,8 @@
                             "namedChunks": false,
                             "extractLicenses": true,
                             "buildOptimizer": true,
-                            "budgets": [{
+                            "budgets": [
+                                {
                                     "type": "initial",
                                     "maximumWarning": "22mb",
                                     "maximumError": "22mb"
@@ -115,10 +96,12 @@
                             ]
                         },
                         "preprod": {
-                            "fileReplacements": [{
-                                "replace": "src/environments/environment.ts",
-                                "with": "src/environments/environment.preprod.ts"
-                            }],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.preprod.ts"
+                                }
+                            ],
                             "aot": true,
                             "optimization": {
                                 "scripts": true,
@@ -133,7 +116,8 @@
                             "namedChunks": false,
                             "extractLicenses": true,
                             "buildOptimizer": true,
-                            "budgets": [{
+                            "budgets": [
+                                {
                                     "type": "initial",
                                     "maximumWarning": "22mb",
                                     "maximumError": "22mb"
@@ -146,10 +130,12 @@
                             ]
                         },
                         "dev": {
-                            "fileReplacements": [{
-                                "replace": "src/environments/environment.ts",
-                                "with": "src/environments/environment.dev.ts"
-                            }],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.dev.ts"
+                                }
+                            ],
                             "aot": true,
                             "optimization": {
                                 "scripts": true,
@@ -164,7 +150,8 @@
                             "namedChunks": false,
                             "extractLicenses": true,
                             "buildOptimizer": true,
-                            "budgets": [{
+                            "budgets": [
+                                {
                                     "type": "initial",
                                     "maximumWarning": "22mb",
                                     "maximumError": "22mb"
