@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { Auth } from "aws-amplify";
 import { EMPTY, from } from "rxjs";
-import { switchMap } from "rxjs/internal/operators";
+import { switchMap } from "rxjs";
 @Injectable({
   providedIn: "root",
 })

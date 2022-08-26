@@ -1,30 +1,30 @@
-import { Component, OnInit, ViewChild, Input  } from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
+import { ApiService } from "../../../../../services/api.service";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 declare var $: any;
-import { Table } from 'primeng/table';
-import * as moment from 'moment';
-import * as _ from 'lodash';
-import Constants from '../../../constants';
-import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
-import { NgxSpinnerService } from 'ngx-spinner';
-import { environment } from '../../../../../../environments/environment';
-import { ListService } from '../../../../../services';
+import { Table } from "primeng/table";
+import * as moment from "moment";
+import * as _ from "lodash";
+import Constants from "../../../constants";
+
+import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from "../../../../../../environments/environment";
+import { ListService } from "../../../../../services";
 import { OverlayPanel } from "primeng/overlaypanel";
 
 @Component({
-  selector: 'app-list-contact-renew',
-  templateUrl: './list-contact-renew.component.html',
-  styleUrls: ['./list-contact-renew.component.css']
+  selector: "app-list-contact-renew",
+  templateUrl: "./list-contact-renew.component.html",
+  styleUrls: ["./list-contact-renew.component.css"],
 })
 export class ListContactRenewComponent implements OnInit {
-  @ViewChild('dt') table: Table;
-  @ViewChild('rm') overlaypanel: OverlayPanel;
+  @ViewChild("dt") table: Table;
+  @ViewChild("rm") overlaypanel: OverlayPanel;
   get = _.get;
   _selectedColumns: any[];
-  
+
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData: any = [];
@@ -34,25 +34,26 @@ export class ListContactRenewComponent implements OnInit {
   allRemindersData = [];
   subcribersArray = [];
   groups: any = {};
-  currentDate = moment().format('YYYY-MM-DD');
+  currentDate = moment().format("YYYY-MM-DD");
   sessionID: string;
   newData = [];
   filterStatus = null;
   usersList: any = {};
   contactID = null;
-  firstName = '';
+  firstName = "";
 
   searchServiceTask = null;
   suggestedContacts = [];
-  filterValue = "item.reminderTasks.reminderStatus == 'OVERDUE' || item.reminderTasks.reminderStatus == 'DUE SOON'";
+  filterValue =
+    "item.reminderTasks.reminderStatus == 'OVERDUE' || item.reminderTasks.reminderStatus == 'DUE SOON'";
   totalRecords = 20;
   pageLength = 10;
-  lastEvaluatedKey = '';
+  lastEvaluatedKey = "";
 
   contactRenewNext = false;
   contactRenewPrev = true;
   contactRenewDraw = 0;
-  contactRenewPrevEvauatedKeys = [''];
+  contactRenewPrevEvauatedKeys = [""];
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
   loading = false;
@@ -62,24 +63,26 @@ export class ListContactRenewComponent implements OnInit {
   employees = [];
   driversList: any = {};
   mergedList: any = {};
-  loaded = false
-  
-   dataColumns = [
-    { field: 'entityID', header: 'Contact', type: 'text' },
-    { field: 'status', header: 'Contact Renewal Type', type: 'text' },
-    { field: 'tasks.timeUnit', header: 'Send Reminder', type: 'text' },
-    { field: 'tasks.dueDate', header: 'Expiration Date', type: 'text' },
-    { field: 'subscribers', header: 'Subscribers', type: 'text' },
+  loaded = false;
+
+  dataColumns = [
+    { field: "entityID", header: "Contact", type: "text" },
+    { field: "status", header: "Contact Renewal Type", type: "text" },
+    { field: "tasks.timeUnit", header: "Send Reminder", type: "text" },
+    { field: "tasks.dueDate", header: "Expiration Date", type: "text" },
+    { field: "subscribers", header: "Subscribers", type: "text" },
   ];
-  
-  constructor(private apiService: ApiService,
+
+  constructor(
+    private apiService: ApiService,
     private listService: ListService,
-    private router: Router, 
+    private router: Router,
     private toastr: ToastrService,
     private routerMgmtService: RouteManagementServiceService,
-    private spinner: NgxSpinnerService) {
-      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
-    }
+    private spinner: NgxSpinnerService
+  ) {
+    this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+  }
 
   ngOnInit() {
     this.listService.fetchDrivers();
@@ -89,10 +92,12 @@ export class ListContactRenewComponent implements OnInit {
     this.initDataTable();
     this.fetchEmployees();
     this.setToggleOptions();
-    
+
     $(document).ready(() => {
       setTimeout(() => {
-        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+        $("#DataTables_Table_0_wrapper .dt-buttons")
+          .addClass("custom-dt-buttons")
+          .prependTo(".page-buttons");
       }, 1800);
     });
     let driverList = new Array<any>();
@@ -100,16 +105,14 @@ export class ListContactRenewComponent implements OnInit {
     this.drivers = driverList;
   }
   fetchEmployees() {
-    this.apiService.getData('contacts/employee/records').subscribe((res) => {
-
+    this.apiService.getData("contacts/employee/records").subscribe((res) => {
       this.employees = res.Items;
     });
   }
-  
+
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
   }
-  
 
   @Input() get selectedColumns(): any[] {
     return this._selectedColumns;
@@ -117,14 +120,14 @@ export class ListContactRenewComponent implements OnInit {
 
   set selectedColumns(val: any[]) {
     //restore original order
-    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    this._selectedColumns = this.dataColumns.filter((col) => val.includes(col));
   }
-  
+
   fetchEmployeeList() {
-    this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
+    this.apiService.getData("contacts/get/emp/list").subscribe((res) => {
       this.employeesList = res;
       if (res) {
-        this.apiService.getData('drivers/get/list').subscribe((result) => {
+        this.apiService.getData("drivers/get/list").subscribe((result) => {
           this.driversList = result;
           this.mergedList = { ...res, ...result }; // merge id lists to one
         });
@@ -143,9 +146,11 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list?type=contact').subscribe((result: any) => {
-      this.tasksList = result;
-    });
+    this.apiService
+      .getData("tasks/get/list?type=contact")
+      .subscribe((result: any) => {
+        this.tasksList = result;
+      });
   }
 
   setFilterStatus(val) {
@@ -153,45 +158,61 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   initDataTable() {
-    if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
+    if (this.lastEvaluatedKey !== "end") {
+      this.apiService
+        .getData(
+          "reminders/fetch/records?reminderIdentification=" +
+            this.contactID +
+            "&serviceTask=" +
+            this.searchServiceTask +
+            "&status=" +
+            this.filterStatus +
+            "&reminderType=contact" +
+            "&lastKey=" +
+            this.lastEvaluatedKey
+        )
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
-
-            this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.loaded = true;
           }
 
           if (result.Items.length > 0) {
-
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
-              let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+              this.lastEvaluatedKey = encodeURIComponent(
+                result.Items[result.Items.length - 1].reminderSK
+              );
+              let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(
+                /#/g,
+                "--"
+              );
               this.lastEvaluatedKey = lastEvalKey;
+            } else {
+              this.lastEvaluatedKey = "end";
             }
-
-            else {
-              this.lastEvaluatedKey = 'end'
-            }
-            this.remindersData = this.remindersData.concat(result.Items)
+            this.remindersData = this.remindersData.concat(result.Items);
 
             this.loaded = true;
           }
         });
     }
   }
-  onScroll = async(event: any) => {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
     this.loaded = false;
-  }
+  };
 
   searchFilter() {
-    if (this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+    if (
+      this.contactID != null ||
+      this.searchServiceTask != null ||
+      this.filterStatus !== null
+    ) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.lastEvaluatedKey = ''
+      this.lastEvaluatedKey = "";
       this.initDataTable();
     } else {
       return false;
@@ -199,12 +220,16 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+    if (
+      this.contactID != null ||
+      this.searchServiceTask != null ||
+      this.filterStatus !== null
+    ) {
       this.contactID = null;
-      this.firstName = '';
+      this.firstName = "";
       this.searchServiceTask = null;
       this.filterStatus = null;
-      this.lastEvaluatedKey = ''
+      this.lastEvaluatedKey = "";
       this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
       this.initDataTable();
@@ -214,47 +239,54 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   deleteRenewal(eventData) {
-    if (confirm('Are you sure you want to delete?') === true) {
+    if (confirm("Are you sure you want to delete?") === true) {
       // let record = {
       //   date: eventData.createdDate,
       //   time: eventData.createdTime,
       //   eventID: eventData.reminderID,
       //   type: eventData.type
       // }
-      this.apiService.deleteData(`reminders/delete/${eventData.reminderID}/${eventData.type}`).subscribe((result: any) => {
-        this.remindersData = [];
-        this.contactRenewDraw = 0;
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastEvaluatedKey = '';
-        this.initDataTable();
-        this.toastr.success('Contact Renewal Deleted Successfully!');
-      });
+      this.apiService
+        .deleteData(
+          `reminders/delete/${eventData.reminderID}/${eventData.type}`
+        )
+        .subscribe((result: any) => {
+          this.remindersData = [];
+          this.contactRenewDraw = 0;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastEvaluatedKey = "";
+          this.initDataTable();
+          this.toastr.success("Contact Renewal Deleted Successfully!");
+        });
     }
   }
 
   sendEmailNotification(value) {
-    if (value.status !== undefined && value.status !== '') {
-      this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?type=contact&status=${value.status}`).subscribe((result) => {
-        this.toastr.success('Email sent successfully');
-      });
+    if (value.status !== undefined && value.status !== "") {
+      this.apiService
+        .getData(
+          `reminders/send/email-notification/${value.reminderID}?type=contact&status=${value.status}`
+        )
+        .subscribe((result) => {
+          this.toastr.success("Email sent successfully");
+        });
     } else {
-      this.toastr.error('Contact renewal is upto date');
+      this.toastr.error("Contact renewal is upto date");
       return false;
     }
   }
 
-
   refreshData() {
     this.contactID = null;
-    this.firstName = '';
+    this.firstName = "";
     this.searchServiceTask = null;
     this.filterStatus = null;
-    this.lastEvaluatedKey = '';
+    this.lastEvaluatedKey = "";
     this.dataMessage = Constants.FETCHING_DATA;
     this.remindersData = [];
     this.initDataTable();
   }
-  
+
   clear(table: Table) {
     table.clear();
   }

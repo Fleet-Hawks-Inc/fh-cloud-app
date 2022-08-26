@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { alphaAsync, compare, numeric, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { Auth } from 'aws-amplify';
@@ -12,10 +12,10 @@ import { ApiService } from 'src/app/services';
   styleUrls: ['./subscription-onboard.component.css']
 })
 export class SubscriptionOnboardComponent implements OnInit {
-  userVerificationFormGroup: FormGroup;
+  userVerificationFormGroup: UntypedFormGroup;
   verificationInfo: VerificationInfo;
   userInfo: UserInfo;
-  userInfoFormGroup: FormGroup
+  userInfoFormGroup: UntypedFormGroup
   userNameExists: boolean = false;
   userErrorMessage: string;
   subCustomerID: string;

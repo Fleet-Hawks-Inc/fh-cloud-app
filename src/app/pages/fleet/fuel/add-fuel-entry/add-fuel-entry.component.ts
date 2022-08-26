@@ -2,11 +2,9 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import {
-  map,
-} from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { NgForm } from "@angular/forms";
-import { from, Subject, throwError } from 'rxjs';
+import { from, Subject, throwError } from "rxjs";
 import {
   NgbCalendar,
   NgbDateAdapter,
@@ -20,7 +18,7 @@ import { ListService } from "../../../../services";
 
 import { HttpClient } from "@angular/common/http";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 declare var $: any;
 
@@ -30,9 +28,8 @@ declare var $: any;
   styleUrls: ["./add-fuel-entry.component.css"],
 })
 export class AddFuelEntryComponent implements OnInit {
-  @ViewChild('fuelF') fuelF: NgForm;
+  @ViewChild("fuelF") fuelF: NgForm;
   takeUntil$ = new Subject();
-
 
   title = "Add Fuel Entry";
   Asseturl = this.apiService.AssetUrl;
@@ -57,7 +54,7 @@ export class AddFuelEntryComponent implements OnInit {
       ppu: "0",
       rPpu: "0",
       rAmt: "0",
-      rBeforeTax:"0",
+      rBeforeTax: "0",
       type: "",
       country: "",
       state: "",
@@ -75,7 +72,7 @@ export class AddFuelEntryComponent implements OnInit {
       excRate: "0",
     },
   };
-    isSubmitted = false;
+  isSubmitted = false;
   fetchedUnitID;
   fetcheduseType;
   date: NgbDateStruct;
@@ -117,7 +114,7 @@ export class AddFuelEntryComponent implements OnInit {
   Success = "";
   submitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
-  sessionID:string;
+  sessionID: string;
 
   constructor(
     private apiService: ApiService,
@@ -131,12 +128,8 @@ export class AddFuelEntryComponent implements OnInit {
     private modalServiceOwn: ModalService,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService,
-    private routeManagementService:RouteManagementServiceService
-
+    private routeManagementService: RouteManagementServiceService
   ) {
-  
-
-  
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -144,11 +137,9 @@ export class AddFuelEntryComponent implements OnInit {
       month: 12,
       day: date.getDate(),
     };
-    this.sessionID=this.routeManagementService.fuelUpdateSessionID;
+    this.sessionID = this.routeManagementService.fuelUpdateSessionID;
   }
-  
 
-  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -348,52 +339,53 @@ export class AddFuelEntryComponent implements OnInit {
   addFuelEntry() {
     this.hideErrors();
     this.submitDisabled = true;
-    if(Number(this.fuelData.data.ppu)&& Number(this.fuelData.data.ppu)>0){
-    if (this.fuelData.data.useType == "def") {
-      this.fuelData.data.type = "DEF";
-    }
-    this.fuelData.timeCreated = new Date(
-      `${this.fuelData.date}T${this.fuelData.time}`
-    ).getTime();
-    // append other fields
-    
-    this.apiService.postData("fuelEntries", this.fuelData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.submitDisabled = false;
-        this.response = res;
-        this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
+    if (Number(this.fuelData.data.ppu) && Number(this.fuelData.data.ppu) > 0) {
+      if (this.fuelData.data.useType == "def") {
+        this.fuelData.data.type = "DEF";
+      }
+      this.fuelData.timeCreated = new Date(
+        `${this.fuelData.date}T${this.fuelData.time}`
+      ).getTime();
+      // append other fields
+
+      this.apiService.postData("fuelEntries", this.fuelData).subscribe({
+        complete: () => {},
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.submitDisabled = false;
+                // this.throwErrors();
+              },
+              error: () => {
+                this.submitDisabled = false;
+              },
+              next: () => {},
+            });
+        },
+        next: (res) => {
+          this.submitDisabled = false;
+          this.response = res;
+          this.modalServiceOwn.triggerRedirect.next(true);
+
           this.takeUntil$.complete();
-                    this.isSubmitted = true;
-        this.toaster.success("Fuel Entry Added Successfully.");
-        this.location.back();
-      },
-    });
-  }
-  else{
-    this.toaster.error(`Price Per ${this.fuelData.data.uom} must be greater than 0`)
-    this.submitDisabled=false
-  }
+          this.isSubmitted = true;
+          this.toaster.success("Fuel Entry Added Successfully.");
+          this.location.back();
+        },
+      });
+    } else {
+      this.toaster.error(
+        `Price Per ${this.fuelData.data.uom} must be greater than 0`
+      );
+      this.submitDisabled = false;
+    }
   }
 
   throwErrors() {
@@ -401,12 +393,12 @@ export class AddFuelEntryComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -460,13 +452,13 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.type = result.data.type;
     this.fuelData.data.rPpu = result.data.rPpu;
     this.fuelData.data.rAmt = result.data.rAmt;
-    this.fuelData.data.rBeforeTax=result.data.rBeforeTax
+    this.fuelData.data.rBeforeTax = result.data.rBeforeTax;
     this.fuelData.driverID = result.driverID;
     this.fuelData.data.cardNo = result.data.cardNo;
     this.fuelData.transID = result.transID;
     this.fuelData.data.country = result.data.country;
     this.fuelData.data.state = result.data.state;
-    this.fuelData.data.site=result.data.site;
+    this.fuelData.data.site = result.data.site;
     this.fuelData.data.city = result.data.city;
     this.fuelData.data.odometer = result.data.odometer;
     this.existingPhotos = result.data.uploadedPhotos;
@@ -484,7 +476,7 @@ export class AddFuelEntryComponent implements OnInit {
       `${this.fuelData.date}T${this.fuelData.time}`
     ).getTime();
     this.apiService.putData("fuelEntries", this.fuelData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -501,18 +493,18 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        
+
         this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-                    this.isSubmitted = true;
-                    
+
+        this.takeUntil$.complete();
+        this.isSubmitted = true;
+
         this.toaster.success("Fuel Entry Updated successfully");
         this.cancel();
       },

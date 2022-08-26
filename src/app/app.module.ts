@@ -77,6 +77,7 @@ import { ToastModule } from "primeng/toast";
 import { TrackingModule } from "./pages/tracking/tracking.module";
 import { ToastMessagesComponent } from "./toast-messages/toast-messages.component";
 import { CheckboxModule } from "primeng/checkbox";
+import { AppLayoutModule } from "./layout/app.layout.module";
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -141,6 +142,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     CardModule,
     InputTextModule,
     CheckboxModule,
+    AppLayoutModule,
   ],
   providers: [
     HttpInterceptorProviders,

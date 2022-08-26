@@ -6,11 +6,11 @@ export const environment = {
   production: false,
   isFeatureEnabled: true,
 
-  BaseUrl: "http://localhost:3000/api/v1/",
+  //BaseUrl: "http://localhost:3000/api/v1/",
   AccountServiceUrl: "http://localhost:4002/api/v1/",
   SafetyServiceUrl: "http://localhost:4000/api/v1/",
   EldServiceUrl: "http://localhost:5001/api/v1/",
-  // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+  BaseUrl: "https://fleetservice.ap-south-1.fleethawks.com/api/v1/",
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
 
@@ -83,7 +83,7 @@ export const environment = {
     "1y62eyclUWKj6HSREEfZbHXjvRc",
     "29b6OwULJ0ukir4uFF7TTLm4Tof",
     "21zpEs5A3MWtK9LeFEkOcsc5Szc",
-    "1y2cYywr5iGFdHH8uqTVIa96ayS"
+    "1y2cYywr5iGFdHH8uqTVIa96ayS",
   ],
 };
 

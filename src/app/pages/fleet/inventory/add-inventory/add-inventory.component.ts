@@ -1,11 +1,11 @@
-import { Component,OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ApiService, ListService } from '../../../../services';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ApiService, ListService } from "../../../../services";
+import { Router, ActivatedRoute } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { from, Subject, throwError } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
+import { from, Subject, throwError } from "rxjs";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ToastrService } from "ngx-toastr";
 import { ModalService } from "../../../../services/modal.service";
 import {
   catchError,
@@ -13,59 +13,58 @@ import {
   distinctUntilChanged,
   map,
   switchMap,
-  takeUntil
+  takeUntil,
 } from "rxjs/operators";
-import { HttpClient } from '@angular/common/http';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { HttpClient } from "@angular/common/http";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 declare var $: any;
 
 @Component({
-  selector: 'app-add-inventory',
-  templateUrl: './add-inventory.component.html',
-  styleUrls: ['./add-inventory.component.css'],
+  selector: "app-add-inventory",
+  templateUrl: "./add-inventory.component.html",
+  styleUrls: ["./add-inventory.component.css"],
 })
-export class AddInventoryComponent implements OnInit, OnDestroy
-{
-  @ViewChild('inventoryF') inventoryF: NgForm;
+export class AddInventoryComponent implements OnInit, OnDestroy {
+  @ViewChild("inventoryF") inventoryF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   /**
    * form props
    */
-  pageTitle = '';
-  itemID = '';
-  requiredItem: '';
-  partNumber = '';
+  pageTitle = "";
+  itemID = "";
+  requiredItem: "";
+  partNumber = "";
   sessionID: string;
   cost = 0;
   tax = 0;
   totalCost = 0;
   costUnit = null;
   quantity = 0;
-  itemName = '';
-  description = '';
+  itemName = "";
+  description = "";
   category = null;
-  warehouseID = '';
-  docsError = '';
-  photoError = '';
+  warehouseID = "";
+  docsError = "";
+  photoError = "";
   costUnitType = null;
-  warrantyTime: '';
-  warrantyUnit: '';
-  aisle = '';
-  row = '';
-  bin = '';
+  warrantyTime: "";
+  warrantyUnit: "";
+  aisle = "";
+  row = "";
+  bin = "";
   warehouseVendorID = null;
-  trackingQuantity = '';
-  reorderPoint = '';
-  reorderQuality = '';
-  leadTime = '';
-  preferredVendorID = '';
-  days = '';
-  time = '';
-  notes = '';
+  trackingQuantity = "";
+  reorderPoint = "";
+  reorderQuality = "";
+  leadTime = "";
+  preferredVendorID = "";
+  days = "";
+  time = "";
+  notes = "";
   photos = [];
   documents = [];
   vendors: any = [];
@@ -79,40 +78,40 @@ export class AddInventoryComponent implements OnInit, OnDestroy
   /**
    * group props
    */
-  groupName = '';
-  groupDescription = '';
-  groupForm = '';
+  groupName = "";
+  groupDescription = "";
+  groupForm = "";
   hasGroupSuccess = false;
 
-  groupSuccess = '';
+  groupSuccess = "";
 
   /**
    * warehouse props
    */
-  warehouseName = '';
-  countryName = '';
-  countryCode = '';
-  stateName = '';
-  stateCode = '';
-  cityName = '';
-  zipCode = '';
-  address = '';
+  warehouseName = "";
+  countryName = "";
+  countryCode = "";
+  stateName = "";
+  stateCode = "";
+  cityName = "";
+  zipCode = "";
+  address = "";
   isSubmitted = false;
-  warehoseForm = '';
+  warehoseForm = "";
   hasWarehouseSuccess = false;
-  warehouseSuccess = '';
-  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  warehouseSuccess = "";
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   states = [];
   cities = [];
 
   errors = {};
   form;
-  response: any = '';
+  response: any = "";
   hasError = false;
   hasSuccess = false;
   submitDisabled = false;
-  Error = '';
-  Success = '';
+  Error = "";
+  Success = "";
   categories: any = [];
 
   constructor(
@@ -128,8 +127,8 @@ export class AddInventoryComponent implements OnInit, OnDestroy
     private countryStateCity: CountryStateCityService,
     private routerMgmtService: RouteManagementServiceService
   ) {
-      this.sessionID = this.routerMgmtService.maintainanceSessionID;
-      this.modalServiceOwn.triggerRedirect.next(false);
+    this.sessionID = this.routerMgmtService.maintainanceSessionID;
+    this.modalServiceOwn.triggerRedirect.next(false);
     this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
       if (v.url !== "undefined" || v.url !== "") {
         this.modalServiceOwn.setUrlToNavigate(v.url);
@@ -156,39 +155,38 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       this.pageTitle = `Add Inventory Part`;
       this.getRequiredInventory();
     }
-    this.disableButton()
+    this.disableButton();
   }
 
   canLeave(): boolean {
-     if (this.inventoryF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
+    if (this.inventoryF.dirty && !this.isSubmitted) {
+      if (!this.modalService.hasOpenModals()) {
+        let ngbModalOptions: NgbModalOptions = {
+          backdrop: "static",
+          keyboard: false,
+          size: "sm",
+        };
+        this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+      }
+      return false;
+    }
+    this.modalServiceOwn.triggerRedirect.next(true);
+
     this.takeUntil$.complete();
     return true;
   }
 
-
   /*
-  * Selecting files before uploading
-  */
+   * Selecting files before uploading
+   */
   selectDocuments(event, obj) {
     let files = [...event.target.files];
 
-    if (obj === 'uploadedDocs') {
+    if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
-       let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -197,46 +195,43 @@ export class AddInventoryComponent implements OnInit, OnDestroy
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedDocs.push(files[i])
-          } else {
-            this.docsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.uploadedDocs.push(files[i]);
+        } else {
+          this.docsError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
         }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-            let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
-        if (
-          ext == "jpg" ||
-          ext == "jpeg" ||
-          ext == "png"
-        ) {
-        this.uploadedPhotos.push(files[i])
-            } else {
-            this.photoError = 'Only .jpg, .jpeg and png files allowed.';
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (ext == "jpg" || ext == "jpeg" || ext == "png") {
+          this.uploadedPhotos.push(files[i]);
+        } else {
+          this.photoError = "Only .jpg, .jpeg and png files allowed.";
         }
       }
     }
   }
-  calculateAmount()
-  {
-     this.totalCost = (this.cost * this.quantity) + this.tax;
+  calculateAmount() {
+    this.totalCost = this.cost * this.quantity + this.tax;
   }
 
   getRequiredInventory() {
-    this.apiService.getData('items/required/' + this.requiredItem).subscribe((result: any) => {
-      result = result.Items[0];
-      this.partNumber = result.partNumber;
-      this.quantity = result.quantity;
-      this.itemName = result.itemName;
-      this.description = result.description;
-      this.preferredVendorID = result.preferredVendorID;
-
-    });
+    this.apiService
+      .getData("items/required/" + this.requiredItem)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        this.partNumber = result.partNumber;
+        this.quantity = result.quantity;
+        this.itemName = result.itemName;
+        this.description = result.description;
+        this.preferredVendorID = result.preferredVendorID;
+      });
   }
   getInventory() {
-    this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
+    this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
 
       this.partNumber = result.partNumber;
@@ -262,18 +257,21 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
-      this.warrantyTime = result.warrantyTime,
-        this.warrantyUnit = result.warrantyUnit,
-        this.existingPhotos = result.uploadedPhotos;
+      (this.warrantyTime = result.warrantyTime),
+        (this.warrantyUnit = result.warrantyUnit),
+        (this.existingPhotos = result.uploadedPhotos);
       this.existingDocs = result.uploadedDocs;
-      if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
-          this.inventoryImages = result.uploadedPics;
+      if (
+        result.uploadedPhotos !== undefined &&
+        result.uploadedPhotos.length > 0
+      ) {
+        this.inventoryImages = result.uploadedPics;
         // this.allImages = result.uploadedPhotos;
         //this.inventoryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
       }
 
       if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-         this.inventoryDocs = result.uploadDocument;
+        this.inventoryDocs = result.uploadDocument;
         // this.alldocs = result.uploadedDocs;
         //this.inventoryDocs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
       }
@@ -281,15 +279,16 @@ export class AddInventoryComponent implements OnInit, OnDestroy
   }
   /*Delete upload */
   delete(type: string, name: string, index: any) {
-    this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
-      this.getInventory();
-      if (type == 'doc') {
-        this.inventoryDocs.splice(index, 1);
-      } else {
-        this.inventoryImages.splice(index, 1);
-      }
-    });
-
+    this.apiService
+      .deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`)
+      .subscribe((result: any) => {
+        this.getInventory();
+        if (type == "doc") {
+          this.inventoryDocs.splice(index, 1);
+        } else {
+          this.inventoryImages.splice(index, 1);
+        }
+      });
   }
   ngOnInit() {
     this.listService.fetchVendors();
@@ -301,30 +300,39 @@ export class AddInventoryComponent implements OnInit, OnDestroy
   }
 
   fetchWarehouses() {
-    this.apiService.getData('items/get/warehouses').subscribe((result: any) => {
+    this.apiService.getData("items/get/warehouses").subscribe((result: any) => {
       this.warehouses = result.Items;
     });
   }
 
-
   async getStates(countryCode: any) {
-    this.stateCode = '';
-    this.cityName = '';
-    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.stateCode = "";
+    this.cityName = "";
+    this.states = await this.countryStateCity.GetStatesByCountryCode([
+      countryCode,
+    ]);
   }
   async getCities(countryCode: any, stateCode: any) {
-    this.cityName = '';
-    this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.cityName = "";
+    this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(
+      countryCode
+    );
+    this.stateName = await this.countryStateCity.GetStateNameFromCode(
+      stateCode,
+      countryCode
+    );
+    this.cities = await this.countryStateCity.GetCitiesByStateCodes(
+      countryCode,
+      stateCode
+    );
   }
 
   showWarehoseModal() {
-    $('#warehouseModal').modal('show');
+    $("#warehouseModal").modal("show");
   }
 
   showCategoryModal() {
-    $('#categoryModal').modal('show');
+    $("#categoryModal").modal("show");
   }
 
   fetchVendors() {
@@ -332,7 +340,6 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       this.vendors = result.Items;
     });
   }
-
 
   addInventory() {
     this.hasError = false;
@@ -347,10 +354,10 @@ export class AddInventoryComponent implements OnInit, OnDestroy
     const data = {
       partNumber: this.partNumber,
       cost: this.cost,
-      totalCost:this.totalCost,
+      totalCost: this.totalCost,
       costUnitType: this.costUnitType,
       costUnit: this.costUnit,
-      tax:this.tax,
+      tax: this.tax,
       quantity: this.quantity,
       itemName: this.itemName,
       description: this.description,
@@ -364,7 +371,7 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       time: this.time,
       notes: this.notes,
       warrantyTime: this.warrantyTime,
-      warrantyUnit: this.warrantyUnit
+      warrantyUnit: this.warrantyUnit,
     };
 
     // create form data instance
@@ -372,24 +379,24 @@ export class AddInventoryComponent implements OnInit, OnDestroy
 
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      formData.append("uploadedPhotos", this.uploadedPhotos[i]);
     }
 
     // append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
-      formData.append('uploadedDocs', this.uploadedDocs[j]);
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
     // append other fields
-    formData.append('data', JSON.stringify(data));
+    formData.append("data", JSON.stringify(data));
 
-    this.apiService.postData('items/add/item', formData, true).subscribe({
-      complete: () => { },
+    this.apiService.postData("items/add/item", formData, true).subscribe({
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.label] = val.message;
             })
           )
@@ -398,21 +405,23 @@ export class AddInventoryComponent implements OnInit, OnDestroy
               // this.throwErrors();
               this.hasError = true;
               this.submitDisabled = false;
-              this.Error = 'Please see the errors';
+              this.Error = "Please see the errors";
             },
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         if (res === true) {
-          this.toastr.error('Part number already exists,please edit the existing entry');
+          this.toastr.error(
+            "Part number already exists,please edit the existing entry"
+          );
         } else {
           this.response = res;
           this.hasSuccess = true;
-          this.partNumber = '';
+          this.partNumber = "";
 
           this.cost = 0;
           this.totalCost = 0;
@@ -420,35 +429,35 @@ export class AddInventoryComponent implements OnInit, OnDestroy
           this.costUnit = null;
           this.quantity = 0;
 
-          this.itemName = '';
-          this.description = '';
+          this.itemName = "";
+          this.description = "";
           this.category = null;
-          this.warehouseID = '';
-          this.aisle = '';
-          this.row = '';
-          this.bin = '';
-          this.warehouseVendorID = '';
-          this.trackingQuantity = '';
-          this.reorderPoint = '';
-          this.reorderQuality = '';
-          this.leadTime = '';
-          this.preferredVendorID = '';
-          this.days = '';
-          this.time = '';
-          this.notes = '';
-          this.warrantyTime = '',
-          this.warrantyUnit = ''
+          this.warehouseID = "";
+          this.aisle = "";
+          this.row = "";
+          this.bin = "";
+          this.warehouseVendorID = "";
+          this.trackingQuantity = "";
+          this.reorderPoint = "";
+          this.reorderQuality = "";
+          this.leadTime = "";
+          this.preferredVendorID = "";
+          this.days = "";
+          this.time = "";
+          this.notes = "";
+          (this.warrantyTime = ""), (this.warrantyUnit = "");
           this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
+
           this.takeUntil$.complete();
-          this.toastr.success('Inventory Added Successfully');
+          this.toastr.success("Inventory Added Successfully");
           this.isSubmitted = true;
-          this.router.navigateByUrl('/fleet/inventory/list/${this.routerMgmtService.inventoryUpdated()}');
+          this.router.navigateByUrl(
+            "/fleet/inventory/list/${this.routerMgmtService.inventoryUpdated()}"
+          );
           if (this.requiredItem) {
             this.deleteRequiredItem(this.requiredItem);
           }
         }
-
       },
     });
   }
@@ -456,30 +465,37 @@ export class AddInventoryComponent implements OnInit, OnDestroy
     // let record = {
     //   eventID: requiredItem
     // }
-    this.apiService.deleteData(`items/delete/required/item/${requiredItem}`).subscribe((result: any) => {
-      this.toastr.success('Required Inventory Item Deleted Successfully!');
-    });
+    this.apiService
+      .deleteData(`items/delete/required/item/${requiredItem}`)
+      .subscribe((result: any) => {
+        this.toastr.success("Required Inventory Item Deleted Successfully!");
+      });
   }
   throwErrors() {
-    from(Object.keys(this.errors))
-      .subscribe((v) => {
-        $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
-      });
+    from(Object.keys(this.errors)).subscribe((v) => {
+      $('[name="' + v + '"]')
+        .after(
+          '<label id="' +
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
+        )
+        .addClass("error");
+    });
   }
 
   hideErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
       $('[name="' + v + '"]')
-        .removeClass('error')
+        .removeClass("error")
         .next()
-        .remove('label');
+        .remove("label");
     });
     this.errors = {};
   }
-
-
 
   updateInventory() {
     this.hasError = false;
@@ -497,7 +513,7 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       cost: this.cost,
       costUnit: this.costUnit,
       tax: this.tax,
-      totalCost:this.totalCost,
+      totalCost: this.totalCost,
       costUnitType: this.costUnitType,
       quantity: this.quantity,
       itemName: this.itemName,
@@ -512,43 +528,45 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       warrantyTime: this.warrantyTime,
       warrantyUnit: this.warrantyUnit,
       uploadedPhotos: this.existingPhotos,
-      uploadedDocs: this.existingDocs
+      uploadedDocs: this.existingDocs,
     };
     // create form data instance
     const formData = new FormData();
 
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      formData.append("uploadedPhotos", this.uploadedPhotos[i]);
     }
     // append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
-      formData.append('uploadedDocs', this.uploadedDocs[j]);
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
     // append other fields
-    formData.append('data', JSON.stringify(data));
+    formData.append("data", JSON.stringify(data));
 
-    this.apiService.putData('items', formData, true).subscribe({
-      complete: () => { },
+    this.apiService.putData("items", formData, true).subscribe({
+      complete: () => {},
       error: (err) => {
         this.hasError = true;
         this.Error = err.error;
         this.submitDisabled = false;
       },
       next: (res) => {
-
         if (res === true) {
-          this.toastr.error('Part number already exists,please edit the existing entry');
+          this.toastr.error(
+            "Part number already exists,please edit the existing entry"
+          );
         } else {
-
           this.response = res;
-           this.isSubmitted = true;
+          this.isSubmitted = true;
           this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
+
           this.takeUntil$.complete();
-          this.toastr.success('Inventory Updated Successfully');
-          this.router.navigateByUrl('/fleet/inventory/list/${this.routerMgmtService.inventoryUpdated()}');
+          this.toastr.success("Inventory Updated Successfully");
+          this.router.navigateByUrl(
+            "/fleet/inventory/list/${this.routerMgmtService.inventoryUpdated()}"
+          );
         }
       },
     });
@@ -569,13 +587,13 @@ export class AddInventoryComponent implements OnInit, OnDestroy
       zipCode: this.zipCode,
       address: this.address,
     };
-    this.apiService.postData('items/add/warehouse', data).subscribe({
-      complete: () => { },
+    this.apiService.postData("items/add/warehouse", data).subscribe({
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.key] = val.message;
             })
           )
@@ -587,60 +605,69 @@ export class AddInventoryComponent implements OnInit, OnDestroy
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.hasWarehouseSuccess = true;
-        this.warehouseSuccess = 'Warehouse Added successfully';
-        this.warehouseName = '';
-        this.countryCode = '';
-        this.stateCode = '';
-        this.countryName = '';
-        this.stateName = '';
-        this.cityName = '';
-        this.zipCode = '';
-        this.address = '';
+        this.warehouseSuccess = "Warehouse Added successfully";
+        this.warehouseName = "";
+        this.countryCode = "";
+        this.stateCode = "";
+        this.countryName = "";
+        this.stateName = "";
+        this.cityName = "";
+        this.zipCode = "";
+        this.address = "";
         this.fetchWarehouses();
-        $('#warehouseModal').modal('hide');
-        
-        this.toastr.success('Warehouse Added successfully');
+        $("#warehouseModal").modal("hide");
+
+        this.toastr.success("Warehouse Added successfully");
       },
     });
   }
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
-    this.pdfSrc = '';
-    if (ext === 'doc' || ext === 'docx' || ext === 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    this.pdfSrc = "";
+    if (ext === "doc" || ext === "docx" || ext === "xlsx") {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
+        "https://docs.google.com/viewer?url=" + val + "&embedded=true"
+      );
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
   setSrcValue() {
-    this.pdfSrc = '';
+    this.pdfSrc = "";
   }
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
-    localStorage.setItem('isOpen', 'true');
+    localStorage.setItem("isOpen", "true");
     this.listService.changeButton(false);
   }
 
   ngOnDestroy(): void {
-    this.takeUntil$.next();
     this.takeUntil$.complete();
   }
 
-
-
   disableButton() {
-    if (this.partNumber == '' || this.costUnit == '' || this.costUnit == null || this.costUnitType == '' || this.costUnitType == null ||
-      this.category == '' || this.category == null
-      || this.warehouseID == '' || this.warehouseID == null || this.warehouseVendorID == '' || this.warehouseVendorID == null) {
+    if (
+      this.partNumber == "" ||
+      this.costUnit == "" ||
+      this.costUnit == null ||
+      this.costUnitType == "" ||
+      this.costUnitType == null ||
+      this.category == "" ||
+      this.category == null ||
+      this.warehouseID == "" ||
+      this.warehouseID == null ||
+      this.warehouseVendorID == "" ||
+      this.warehouseVendorID == null
+    ) {
       return true;
     } else {
       return false;
@@ -656,11 +683,12 @@ export class AddInventoryComponent implements OnInit, OnDestroy
   }
 
   fetchCategories() {
-    this.httpClient.get('assets/jsonFiles/inventory/category.json').subscribe((data: any) => {
-      data.forEach(element => {
-        this.categories.push(element)
+    this.httpClient
+      .get("assets/jsonFiles/inventory/category.json")
+      .subscribe((data: any) => {
+        data.forEach((element) => {
+          this.categories.push(element);
+        });
       });
-
-    });
   }
 }

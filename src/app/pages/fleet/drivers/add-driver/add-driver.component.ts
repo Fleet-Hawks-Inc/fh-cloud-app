@@ -9,7 +9,7 @@ import {
   NgbCalendar,
   NgbDateAdapter,
   NgbModal,
-  NgbModalOptions
+  NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { passwordStrength } from "check-password-strength";
@@ -23,7 +23,7 @@ import {
   distinctUntilChanged,
   map,
   switchMap,
-  takeUntil
+  takeUntil,
 } from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
@@ -31,12 +31,11 @@ import {
   ApiService,
   DashboardUtilityService,
   HereMapService,
-  ListService
+  ListService,
 } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-
+import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
 
 declare var $: any;
 @Component({
@@ -44,8 +43,7 @@ declare var $: any;
   templateUrl: "./add-driver.component.html",
   styleUrls: ["./add-driver.component.css"],
 })
-export class AddDriverComponent
-  implements OnInit, OnDestroy {
+export class AddDriverComponent implements OnInit, OnDestroy {
   @ViewChild("driverF") driverF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
@@ -55,13 +53,13 @@ export class AddDriverComponent
   hideNextBtn = true;
   hasBasic = false;
   hasDocs = false;
-  absDocsError = '';
+  absDocsError = "";
   hasLic = false;
   hasPay = false;
-  uploadPhotoError = '';
+  uploadPhotoError = "";
   check = false;
   hasHos = false;
-  uploadLicError = '';
+  uploadLicError = "";
   hasCrossBrdr = false;
   deletedUploads = [];
   addressField = -1;
@@ -76,7 +74,7 @@ export class AddDriverComponent
   manualAddress = false;
   nextTab: any;
   carrierID: any;
-  uploadDocsError = '';
+  uploadDocsError = "";
   statesObject: any;
   countriesObject: any;
   citiesObject: any;
@@ -198,9 +196,8 @@ export class AddDriverComponent
       relationship: "",
       phone: "",
     },
-    isImport: false
+    isImport: false,
   };
-
 
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -268,7 +265,7 @@ export class AddDriverComponent
   birthDateMaxLimit: any;
   futureDatesLimit: any;
   uploadedPhotos = [];
-  cdlResult = '';
+  cdlResult = "";
   licStates = [];
   uploadedDocs = [];
   uploadLicence = [];
@@ -312,9 +309,15 @@ export class AddDriverComponent
   pageType = "add";
   groupsData: any = [];
   sessionID: string;
-  paymentOptions = [{ name: "Pay Per Mile", value: "ppm" }, { name: "Percentage", value: "pp" }, { name: "Pay Per Hour", value: "pph" }, { name: "Pay Per Delivery", value: "ppd" }, { name: "Flat Rate", value: "pfr" }]
+  paymentOptions = [
+    { name: "Pay Per Mile", value: "ppm" },
+    { name: "Percentage", value: "pp" },
+    { name: "Pay Per Hour", value: "pph" },
+    { name: "Pay Per Delivery", value: "ppd" },
+    { name: "Flat Rate", value: "pfr" },
+  ];
 
-  paymentType = "ppm"
+  paymentType = "ppm";
 
   payPerMile = {
     pType: "ppm",
@@ -323,34 +326,34 @@ export class AddDriverComponent
     emptyMiles: null,
     emptyMilesTeam: null,
     loadedMilesTeam: null,
-    default: false
-  }
+    default: false,
+  };
   payPerHour = {
     pType: "pph",
     rate: null,
     currency: null,
     waitingPay: null,
     waitingHourAfter: null,
-    default: false
-  }
+    default: false,
+  };
   payPercentage = {
     pType: "pp",
     loadPayPercentage: null,
     loadPayPercentageOf: null,
-    default: false
-  }
+    default: false,
+  };
   payPerDelivery = {
     pType: "ppd",
     deliveryRate: null,
     currency: null,
-    default: false
-  }
+    default: false,
+  };
   payFlatRate = {
     pType: "pfr",
     flatRate: null,
     currency: null,
-    default: false
-  }
+    default: false,
+  };
   constructor(
     private apiService: ApiService,
     private httpClient: HttpClient,
@@ -405,7 +408,6 @@ export class AddDriverComponent
     }, 1500);
   }
 
-
   onChangeHideErrors(fieldname: any) {
     $('[name="' + fieldname + '"]')
       .removeClass("error")
@@ -429,7 +431,7 @@ export class AddDriverComponent
       this.pageTitle = "Add Driver";
     }
     // this.fetchGroups(); // fetch groups
-    this.docCountries = await this.dashboardUtilityService.fetchCountries();// fetch countries
+    this.docCountries = await this.dashboardUtilityService.fetchCountries(); // fetch countries
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
     this.fetchDocuments();
@@ -588,7 +590,6 @@ export class AddDriverComponent
     });
   }
 
-
   refreshGroupsData() {
     this.fetchGroupsList();
   }
@@ -675,7 +676,7 @@ export class AddDriverComponent
   async fetchDocStates(docs) {
     for (let d = 0; d < docs.length; d++) {
       let countryCode = this.driverData.documentDetails[d].issuingCountry;
-      if (countryCode! = null && countryCode != '') {
+      if ((countryCode! = null && countryCode != "")) {
         this.driverData.documentDetails[d].docStates =
           await this.countryStateCity.GetStatesByCountryCode([countryCode]);
       }
@@ -693,27 +694,28 @@ export class AddDriverComponent
   /*
    * Selecting files before uploading
    */
-  selectLicDoc(event, obj){
-  let files = [...event.target.files];
-  if(obj === 'uploadLicence'){
-  for(let i=0;i<files.length;i++){
-  let name = files[i].name.split('.');
-  let ext = name[name.length - 1].toLowerCase();
-  if(
-  ext == 'doc' ||
-  ext == 'docx' ||
-  ext == 'pdf' ||
-  ext == 'jpg' ||
-  ext == 'jpeg' ||
-  ext == 'png'
-  ){
-  this.uploadLicence.push(files[i]);
-  }else{
-  this.uploadLicError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+  selectLicDoc(event, obj) {
+    let files = [...event.target.files];
+    if (obj === "uploadLicence") {
+      for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.uploadLicence.push(files[i]);
+        } else {
+          this.uploadLicError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
+        }
+      }
+    }
   }
-  }
-  }
-  } 
   selectDocuments(event: any, i: number) {
     let files = [...event.target.files];
     if (i != null) {
@@ -731,7 +733,8 @@ export class AddDriverComponent
         ) {
           this.uploadedDocs[i] = files;
         } else {
-          this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.uploadDocsError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
         }
       }
     } else {
@@ -754,7 +757,8 @@ export class AddDriverComponent
         ) {
           this.abstractDocs = files;
         } else {
-          this.absDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.absDocsError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
         }
       }
     }
@@ -762,23 +766,19 @@ export class AddDriverComponent
 
   selectPhoto(event, name: any, type: string) {
     const files = [...event.target.files];
-    if (type === 'Add') {
+    if (type === "Add") {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-        let name = files[i].name.split('.');
+        let name = files[i].name.split(".");
         let ext = name[name.length - 1].toLowerCase();
-        if (
-          ext == 'jpg' ||
-          ext == 'jpeg' ||
-          ext == 'png'
-        ) {
+        if (ext == "jpg" || ext == "jpeg" || ext == "png") {
           this.check = true;
           this.uploadedPhotos.push(files[0]);
         } else {
           this.check = false;
-          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+          this.uploadPhotoError = "Only .jpg, .jpeg and png files allowed.";
         }
-        if (this.check = true) {
+        if ((this.check = true)) {
           const reader = new FileReader();
           this.showUploadedPicModal = true;
           reader.onload = (e: any) => {
@@ -794,14 +794,10 @@ export class AddDriverComponent
       for (let i = 0; i < files.length; i++) {
         let name = files[i].name.split(".");
         let ext = name[name.length - 1].toLowerCase();
-        if (
-          ext == "jpg" ||
-          ext == "jpeg" ||
-          ext == "png"
-        ) {
+        if (ext == "jpg" || ext == "jpeg" || ext == "png") {
           this.uploadedPhotos.push(files[0]);
         } else {
-          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+          this.uploadPhotoError = "Only .jpg, .jpeg and png files allowed.";
         }
         const reader = new FileReader();
         this.showUploadedPicModal = true;
@@ -846,7 +842,7 @@ export class AddDriverComponent
     // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -863,7 +859,7 @@ export class AddDriverComponent
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -959,24 +955,30 @@ export class AddDriverComponent
       this.hideErrors();
       switch (this.paymentType) {
         case "ppd":
-          this.payPerDelivery.default = true
+          this.payPerDelivery.default = true;
           break;
         case "pph":
-          this.payPerHour.default = true
+          this.payPerHour.default = true;
           break;
         case "pp":
-          this.payPercentage.default = true
+          this.payPercentage.default = true;
           break;
         case "ppm":
-          this.payPerMile.default = true
+          this.payPerMile.default = true;
           break;
         case "pfr":
-          this.payFlatRate.default = true
+          this.payFlatRate.default = true;
           break;
         default:
-          this.payPerMile.default = true
+          this.payPerMile.default = true;
       }
-      this.driverData.paymentOption = [this.payPerMile, this.payPerDelivery, this.payPerHour, this.payPercentage, this.payFlatRate]
+      this.driverData.paymentOption = [
+        this.payPerMile,
+        this.payPerDelivery,
+        this.payPerHour,
+        this.payPercentage,
+        this.payFlatRate,
+      ];
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
@@ -1018,15 +1020,15 @@ export class AddDriverComponent
         delete element.states;
         delete element.cities;
       }
-      
+
       // create form data instance
       const formData = new FormData();
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append("uploadedPhotos", this.uploadedPhotos[i]);
       }
-      for(let i=0;i<this.uploadLicence.length;i++){
-      formData.append('uploadLicence', this.uploadLicence[i]);
+      for (let i = 0; i < this.uploadLicence.length; i++) {
+        formData.append("uploadLicence", this.uploadLicence[i]);
       }
       // append docs if any
       for (let j = 0; j < this.uploadedDocs.length; j++) {
@@ -1049,7 +1051,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.postData("drivers", formData, true).subscribe({
-          complete: () => { },
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1068,7 +1070,7 @@ export class AddDriverComponent
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => { },
+                next: () => {},
               });
           },
           next: (res) => {
@@ -1077,7 +1079,9 @@ export class AddDriverComponent
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
             this.spinner.hide();
-            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
+            this.router.navigateByUrl(
+              `/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`
+            );
           },
         });
       } catch (error) {
@@ -1140,12 +1144,12 @@ export class AddDriverComponent
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+              v +
+              '-error" class="error" for="' +
+              v +
+              '">' +
+              this.errors[v] +
+              "</label>"
           )
           .addClass("error");
       }
@@ -1197,7 +1201,10 @@ export class AddDriverComponent
       .toPromise();
 
     result = result.Items[0];
-    if (result.licenceDetails.issuedCountry && result.licenceDetails.issuedCountry != '') {
+    if (
+      result.licenceDetails.issuedCountry &&
+      result.licenceDetails.issuedCountry != ""
+    ) {
       this.fetchLicStates(result.licenceDetails.issuedCountry);
     }
 
@@ -1223,7 +1230,6 @@ export class AddDriverComponent
       }
     }
     if (result.corporationType === "owner_operator") {
-
       this.listService.fetchOwnerOperators();
       let opList = new Array<any>();
       this.getValidOperators(opList);
@@ -1256,7 +1262,6 @@ export class AddDriverComponent
       ? null
       : result.startDate;
 
-
     this.driverData.terminationDate = _.isEmpty(result.terminationDate)
       ? null
       : result.terminationDate;
@@ -1268,7 +1273,10 @@ export class AddDriverComponent
       ? null
       : result.contractEnd;
 
-    if (result.licenceDetails.licenceExpiry && result.licenceDetails.licenceExpiry != '') {
+    if (
+      result.licenceDetails.licenceExpiry &&
+      result.licenceDetails.licenceExpiry != ""
+    ) {
       this.driverData.licenceDetails.licenceExpiry = _.isEmpty(
         result.licenceDetails.licenceExpiry
       )
@@ -1289,19 +1297,17 @@ export class AddDriverComponent
       this.driverProfileSrc = "";
       this.imageTitle = "Add";
     }
-    
+
     this.driverData[`abstractDocs`] = [];
     if (result.abstractDocs !== undefined && result.abstractDocs.length > 0) {
       this.driverData[`abstractDocs`] = result.abstractDocs;
       this.absDocs = result.docsAbs;
     }
-  
-  
-    if(result.uploadLicence !== undefined && result.uploadLicence.length > 0){
-    this.uploadLicDocs = result.licDocs
+
+    if (result.uploadLicence !== undefined && result.uploadLicence.length > 0) {
+      this.uploadLicDocs = result.licDocs;
     }
 
-    
     this.driverData.gender = result.gender;
     this.driverData.DOB = result.DOB;
     this.driverData.email = result.email;
@@ -1339,46 +1345,55 @@ export class AddDriverComponent
       )
         ? null
         : result.crossBorderDetails.fastExpiry;
-      this.driverData.crossBorderDetails.ACI_ID =
-        result.crossBorderDetails.ACI_ID ? result.crossBorderDetails.ACI_ID : '';
-      this.driverData.crossBorderDetails.ACE_ID =
-        result.crossBorderDetails.ACE_ID ? result.crossBorderDetails.ACE_ID : '';
-      this.driverData.crossBorderDetails.fast_ID =
-        result.crossBorderDetails.fast_ID ? result.crossBorderDetails.fast_ID : '';
-      this.driverData.crossBorderDetails.fastExpiry =
-        result.crossBorderDetails.fastExpiry ? result.crossBorderDetails.fastExpiry : null;
-      this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa ? result.crossBorderDetails.csa : false;
+      this.driverData.crossBorderDetails.ACI_ID = result.crossBorderDetails
+        .ACI_ID
+        ? result.crossBorderDetails.ACI_ID
+        : "";
+      this.driverData.crossBorderDetails.ACE_ID = result.crossBorderDetails
+        .ACE_ID
+        ? result.crossBorderDetails.ACE_ID
+        : "";
+      this.driverData.crossBorderDetails.fast_ID = result.crossBorderDetails
+        .fast_ID
+        ? result.crossBorderDetails.fast_ID
+        : "";
+      this.driverData.crossBorderDetails.fastExpiry = result.crossBorderDetails
+        .fastExpiry
+        ? result.crossBorderDetails.fastExpiry
+        : null;
+      this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa
+        ? result.crossBorderDetails.csa
+        : false;
     }
     if (result.paymentOption && result.paymentOption.length > 0) {
-      result.paymentOption.forEach(element => {
+      result.paymentOption.forEach((element) => {
         if (element.default) {
-          this.paymentType =
-            element.pType;
+          this.paymentType = element.pType;
         }
         if (element.pType == "pph") {
-          this.payPerHour.currency = element.currency
-          this.payPerHour.rate = element.rate
-          this.payPerHour.waitingHourAfter = element.waitingHourAfter
-          this.payPerHour.waitingPay = element.waitingPay
+          this.payPerHour.currency = element.currency;
+          this.payPerHour.rate = element.rate;
+          this.payPerHour.waitingHourAfter = element.waitingHourAfter;
+          this.payPerHour.waitingPay = element.waitingPay;
         }
         if (element.pType == "pfr") {
-          this.payFlatRate.flatRate = element.flatRate
-          this.payFlatRate.currency = element.currency
+          this.payFlatRate.flatRate = element.flatRate;
+          this.payFlatRate.currency = element.currency;
         }
         if (element.pType == "ppm") {
-          this.payPerMile.loadedMiles = element.loadedMiles
-          this.payPerMile.currency = element.currency
-          this.payPerMile.emptyMiles = element.emptyMiles
-          this.payPerMile.emptyMilesTeam = element.emptyMilesTeam
-          this.payPerMile.loadedMilesTeam = element.loadedMilesTeam
+          this.payPerMile.loadedMiles = element.loadedMiles;
+          this.payPerMile.currency = element.currency;
+          this.payPerMile.emptyMiles = element.emptyMiles;
+          this.payPerMile.emptyMilesTeam = element.emptyMilesTeam;
+          this.payPerMile.loadedMilesTeam = element.loadedMilesTeam;
         }
         if (element.pType == "pp") {
-          this.payPercentage.loadPayPercentage = element.loadPayPercentage
-          this.payPercentage.loadPayPercentageOf = element.loadPayPercentageOf
+          this.payPercentage.loadPayPercentage = element.loadPayPercentage;
+          this.payPercentage.loadPayPercentageOf = element.loadPayPercentageOf;
         }
         if (element.pType == "ppd") {
-          this.payPerDelivery.currency = element.currency
-          this.payPerDelivery.deliveryRate = element.deliveryRate
+          this.payPerDelivery.currency = element.currency;
+          this.payPerDelivery.deliveryRate = element.deliveryRate;
         }
       });
     }
@@ -1425,7 +1440,6 @@ export class AddDriverComponent
     }
     this.driverData[`timeCreated`] = result.timeCreated;
     this.driverData.isImport = result.isImport;
-
   }
 
   async onUpdateDriver() {
@@ -1433,29 +1447,35 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      this.payPerDelivery.default = false
-      this.payPerHour.default = false
-      this.payPerMile.default = false
-      this.payPercentage.default = false
-      this.payFlatRate.default = false
+      this.payPerDelivery.default = false;
+      this.payPerHour.default = false;
+      this.payPerMile.default = false;
+      this.payPercentage.default = false;
+      this.payFlatRate.default = false;
       switch (this.paymentType) {
         case "ppd":
-          this.payPerDelivery.default = true
+          this.payPerDelivery.default = true;
           break;
         case "pph":
-          this.payPerHour.default = true
+          this.payPerHour.default = true;
           break;
         case "pp":
-          this.payPercentage.default = true
+          this.payPercentage.default = true;
           break;
         case "ppm":
-          this.payPerMile.default = true
+          this.payPerMile.default = true;
           break;
         case "pfr":
-          this.payFlatRate.default = true
-          break
+          this.payFlatRate.default = true;
+          break;
       }
-      this.driverData.paymentOption = [this.payPerMile, this.payPerDelivery, this.payPerHour, this.payPercentage, this.payFlatRate]
+      this.driverData.paymentOption = [
+        this.payPerMile,
+        this.payPerDelivery,
+        this.payPerHour,
+        this.payPercentage,
+        this.payFlatRate,
+      ];
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1500,11 +1520,11 @@ export class AddDriverComponent
 
       // create form data instance
       const formData = new FormData();
-      
-       for(let i=0;i<this.uploadLicence.length;i++){
-      formData.append('uploadLicence', this.uploadLicence[i]);
+
+      for (let i = 0; i < this.uploadLicence.length; i++) {
+        formData.append("uploadLicence", this.uploadLicence[i]);
       }
-      
+
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append("uploadedPhotos", this.uploadedPhotos[i]);
@@ -1529,7 +1549,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.putData("drivers", formData, true).subscribe({
-          complete: () => { },
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1573,9 +1593,7 @@ export class AddDriverComponent
     }
   }
 
-  changePaymentModeForm(value) {
-
-  }
+  changePaymentModeForm(value) {}
   changeCurrency(currency: any) {
     // this.driverData.paymentDetails.loadedMilesUnit = currency;
     // this.driverData.paymentDetails.emptyMilesUnit = currency;
@@ -1595,7 +1613,6 @@ export class AddDriverComponent
   }
 
   ngOnDestroy(): void {
-    this.takeUntil$.next();
     this.takeUntil$.complete();
   }
 
@@ -1624,13 +1641,11 @@ export class AddDriverComponent
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(dIndex, 1);
       this.deletedUploads.push(name);
-    }
-    else if(type === 'licDocs'){
-    this.uploadLicDocs.splice(index, 1);
-    this.driverData.uploadLicence.splice(index, 1);
-    this.deletedUploads.push(name);
-    }
-    else if (type === "profile") {
+    } else if (type === "licDocs") {
+      this.uploadLicDocs.splice(index, 1);
+      this.driverData.uploadLicence.splice(index, 1);
+      this.deletedUploads.push(name);
+    } else if (type === "profile") {
       this.driverProfileSrc = "";
       this.uploadedPhotos = [];
       this.driverData.driverImage = "";
@@ -1673,8 +1688,8 @@ export class AddDriverComponent
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUserCarrier = localStorage.getItem('xfhCarrierId');
-    this.carrierID = localStorage.getItem('xfhCarrierId');
+    this.currentUserCarrier = localStorage.getItem("xfhCarrierId");
+    this.carrierID = localStorage.getItem("xfhCarrierId");
 
     if (this.currentUser.userType === "Cloud Admin") {
       let isCarrierID = localStorage.getItem("carrierID");
@@ -1817,8 +1832,7 @@ export class AddDriverComponent
           if (!this.cdlResult) {
             this.errors[`CDL_Number`] = "CDL already exists";
             this.submitDisabled = true;
-          }
-          else {
+          } else {
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
@@ -1832,7 +1846,7 @@ export class AddDriverComponent
 
   validateEmail() {
     this.hideVal();
-    if (this.driverData.email !== '') {
+    if (this.driverData.email !== "") {
       this.driverData.email = this.driverData.email.trim();
       this.apiService
         .getData(
@@ -1840,11 +1854,11 @@ export class AddDriverComponent
         )
         .subscribe((result: any) => {
           if (!result) {
-            this.errors[`email`] = 'Email already exists';
+            this.errors[`email`] = "Email already exists";
             this.submitDisabled = true;
             this.emailCheck = true;
           } else {
-            this.onChangeHideErrors('email');
+            this.onChangeHideErrors("email");
             delete this.errors[`email`];
           }
           this.throwErrors();
@@ -1861,8 +1875,10 @@ export class AddDriverComponent
   }
 
   fetchGroupsList() {
-    this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
-      this.groupsData = result;
-    });
+    this.apiService
+      .getData("groups/get/list/type?type=drivers")
+      .subscribe((result: any) => {
+        this.groupsData = result;
+      });
   }
 }

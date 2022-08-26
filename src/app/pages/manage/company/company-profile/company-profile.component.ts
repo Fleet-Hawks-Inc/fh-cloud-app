@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { Auth } from 'aws-amplify';
@@ -72,10 +72,10 @@ export class CompanyProfileComponent implements OnInit {
   oldPassError = '';
   showVerification: boolean = false;
 
-  userVerificationFormGroup: FormGroup;
+  userVerificationFormGroup: UntypedFormGroup;
   verificationInfo: VerificationInfo;
   userInfo: UserInfo;
-  userInfoFormGroup: FormGroup
+  userInfoFormGroup: UntypedFormGroup
   userErrorMessage: string;
   userNameExists = false;
   userNameExistsErr = '';

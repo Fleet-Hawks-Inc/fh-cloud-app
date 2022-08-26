@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { NG_VALIDATORS, Validator, ValidationErrors, FormGroup } from '@angular/forms';
+import { NG_VALIDATORS, Validator, ValidationErrors, UntypedFormGroup } from '@angular/forms';
 import { Input } from '@angular/core';
 
 @Directive({
@@ -9,12 +9,12 @@ import { Input } from '@angular/core';
 export class MustMatchDirective {
   @Input('mustMatch') mustMatch: string[] = [];
 
-  validate(formGroup: FormGroup): ValidationErrors {
+  validate(formGroup: UntypedFormGroup): ValidationErrors {
       return this.MustMatch(this.mustMatch[0], this.mustMatch[1])(formGroup);
   }
   constructor() { }
   MustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
+    return (formGroup: UntypedFormGroup) => {
         const control = formGroup.controls[controlName];
         const matchingControl = formGroup.controls[matchingControlName];
 

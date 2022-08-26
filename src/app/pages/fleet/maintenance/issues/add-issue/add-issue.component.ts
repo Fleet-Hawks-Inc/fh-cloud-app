@@ -13,9 +13,9 @@ import {
   distinctUntilChanged,
   map,
   switchMap,
-  takeUntil
-  } from "rxjs/operators";
-import { from, Subject, throwError } from 'rxjs';
+  takeUntil,
+} from "rxjs/operators";
+import { from, Subject, throwError } from "rxjs";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ModalService } from "../../../../../services/modal.service";
 import { NgForm } from "@angular/forms";
@@ -24,9 +24,8 @@ import { Location } from "@angular/common";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 declare var $: any;
 import * as moment from "moment";
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
-
 
 @Component({
   selector: "app-add-issue",
@@ -44,7 +43,7 @@ export class AddIssueComponent implements OnInit {
   /**
    * Issue Prop
    */
-clone = false;
+  clone = false;
   issueName = "";
   isSubmitted = false;
   unitID = null;
@@ -59,9 +58,9 @@ clone = false;
   fetchedUnitID;
   fetchedUnitType;
   vehicles = [];
-  uploadDocsError = '';
-  uploadPhotoError = '';
-  
+  uploadDocsError = "";
+  uploadPhotoError = "";
+
   assets = [];
   contacts = [];
   drivers = [];
@@ -79,7 +78,7 @@ clone = false;
   hasSuccess = false;
   submitDisabled = false;
   Error = "";
-      sessionID: string;
+  sessionID: string;
 
   errors = {};
   Success = "";
@@ -103,18 +102,14 @@ clone = false;
     private domSanitizer: DomSanitizer,
     private ngbCalendar: NgbCalendar,
     private modalService: NgbModal,
-     private modalServiceOwn: ModalService,
+    private modalServiceOwn: ModalService,
     private dateAdapter: NgbDateAdapter<string>,
     private routerMgmtService: RouteManagementServiceService
   ) {
-
-   
     this.selectedFileNames = new Map<any, any>();
     this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
-  
 
-  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -133,8 +128,7 @@ clone = false;
     await this.fetchAssets();
     this.route.queryParams.subscribe((params) => {
       this.cloneID = params.cloneID;
-      if (this.cloneID != undefined
-        && this.cloneID != "") {
+      if (this.cloneID != undefined && this.cloneID != "") {
         this.cloneIssue(this.cloneID);
       }
     });
@@ -168,9 +162,11 @@ clone = false;
   }
 
   fetchUsers() {
-    this.apiService.getData("common/users/fetch/records").subscribe((result: any) => {
-      this.users = result.Items;
-    });
+    this.apiService
+      .getData("common/users/fetch/records")
+      .subscribe((result: any) => {
+        this.users = result.Items;
+      });
   }
 
   getToday(): string {
@@ -206,9 +202,9 @@ clone = false;
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs,
     };
-    if(this.clone == true){
-      data.uploadedPhotos = this.existingPhotos
-      data.uploadedDocs = this.existingDocs
+    if (this.clone == true) {
+      data.uploadedPhotos = this.existingPhotos;
+      data.uploadedDocs = this.existingDocs;
     }
     // create form data instance
     const formData = new FormData();
@@ -227,7 +223,7 @@ clone = false;
     formData.append("data", JSON.stringify(data));
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -244,19 +240,21 @@ clone = false;
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
         this.modalServiceOwn.triggerRedirect.next(true);
-        this.takeUntil$.next();
+
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toaster.success("Issue Added successfully");
         this.router.navigateByUrl("/fleet/maintenance/issues/list");
-        this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
+        this.router.navigateByUrl(
+          "/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}"
+        );
         this.cancel();
       },
     });
@@ -267,12 +265,12 @@ clone = false;
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -297,8 +295,8 @@ clone = false;
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -307,24 +305,21 @@ clone = false;
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedDocs.push(files[i]);
+          this.uploadedDocs.push(files[i]);
         } else {
-            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.uploadDocsError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
         }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
-        if (
-          ext == "jpg" ||
-          ext == "jpeg" ||
-          ext == "png"
-        ) {
-        this.uploadedPhotos.push(files[i]);
-         } else {
-            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (ext == "jpg" || ext == "jpeg" || ext == "png") {
+          this.uploadedPhotos.push(files[i]);
+        } else {
+          this.uploadPhotoError = "Only .jpg, .jpeg and png files allowed.";
         }
       }
     }
@@ -426,39 +421,42 @@ clone = false;
     // append other fields
     formData.append("data", JSON.stringify(data));
 
-    this.apiService.putData(`issues/${this.issueID}`, formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-              this.submitDisabled = false;
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.submitDisabled = false;
-         this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
+    this.apiService
+      .putData(`issues/${this.issueID}`, formData, true)
+      .subscribe({
+        complete: () => {},
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                // this.throwErrors();
+                this.submitDisabled = false;
+              },
+              error: () => {
+                this.submitDisabled = false;
+              },
+              next: () => {},
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.submitDisabled = false;
+          this.modalServiceOwn.triggerRedirect.next(true);
           this.takeUntil$.complete();
           this.isSubmitted = true;
-        this.toaster.success("Issue Updated Successfully");
-        //this.router.navigateByUrl("/fleet/maintenance/issues/list");
-        this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
-      },
-    });
+          this.toaster.success("Issue Updated Successfully");
+          //this.router.navigateByUrl("/fleet/maintenance/issues/list");
+          this.router.navigateByUrl(
+            "/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}"
+          );
+        },
+      });
   }
 
   // delete uploaded images and documents
@@ -478,9 +476,9 @@ clone = false;
   }
 
   /*
-   * If We CliCk Clone Button Then It Fetch Issue details 
+   * If We CliCk Clone Button Then It Fetch Issue details
    */
-// let clone = false;
+  // let clone = false;
   async cloneIssue(id: any) {
     this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
       result = result[0];
@@ -490,8 +488,8 @@ clone = false;
       this.unitID = result.unitID;
       this.fetchedUnitID = result.unitID;
       this.fetchedUnitType = result.unitType;
-      this.unitType = result.unitType; 
-      this.currentStatus = 'OPEN';
+      this.unitType = result.unitType;
+      this.currentStatus = "OPEN";
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;
@@ -509,6 +507,6 @@ clone = false;
       if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
         this.issueDocs = result.uploadDocument;
       }
-    })
+    });
   }
 }

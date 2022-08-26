@@ -38,18 +38,9 @@
                         "optimization": false,
                         "namedChunks": false,
                         "styles": [
-                            "node_modules/jstree/dist/themes/default/style.min.css",
+                            "src/styles.scss",
                             "node_modules/select2/dist/css/select2.min.css",
                             "node_modules/@swimlane/ngx-datatable/index.css",
-                            "node_modules/@swimlane/ngx-datatable/themes/material.css",
-                            "node_modules/@swimlane/ngx-datatable/assets/icons.css",
-                            "node_modules/primeicons/primeicons.css",
-                            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-                            "src/assets/vendor/animate/animate.css",
-                            "src/assets/vendor/jquery-ui/jquery-ui.css",
-                            "src/assets/vendor/jquery-ui/jquery-ui.theme.css",
-                            "src/assets/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css",
-                            "src/assets/vendor/bootstrap/css/bootstrap.min.css"
                         ],
                         "scripts": [
                             "node_modules/jszip/dist/jszip.js",
@@ -57,7 +48,7 @@
                             "src/assets/vendor/bootstrap/js/bootstrap.js",
                             "src/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js",
                             "src/assets/vendor/common/common.js",
-                            "src/assets/vendor/jquery-placeholder/jquery.placeholder.js",
+                            "src/assets/vendor/jquery-placeholder/jquery.placeholder.js"
                         ]
                     },
                     "configurations": {

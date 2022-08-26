@@ -14,16 +14,16 @@ import { promise } from "protractor";
 import { NgForm } from "@angular/forms";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ModalService } from "../../../../../services/modal.service";
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
 import {
   catchError,
   debounceTime,
   distinctUntilChanged,
   map,
   switchMap,
-  takeUntil
+  takeUntil,
 } from "rxjs/operators";
-import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 declare var $: any;
 
 @Component({
@@ -32,7 +32,7 @@ declare var $: any;
   styleUrls: ["./add-service.component.css"],
 })
 export class AddServiceComponent implements OnInit {
-  @ViewChild('serviceaddF') serviceaddF: NgForm;
+  @ViewChild("serviceaddF") serviceaddF: NgForm;
   takeUntil$ = new Subject();
   logurl = this.apiService.AssetUrl;
   isSubmitted = false;
@@ -46,8 +46,8 @@ export class AddServiceComponent implements OnInit {
   reminders = [];
   issues: any;
   inventory = [];
-  uploadDocsError = '';
-  uploadPhotoError = '';
+  uploadDocsError = "";
+  uploadPhotoError = "";
   selectedTasks = [];
   selectedParts = [];
   sessionID: string;
@@ -99,7 +99,7 @@ export class AddServiceComponent implements OnInit {
       currency: "CAD",
     },
     charges: {
-      discountUnit: '%',
+      discountUnit: "%",
       discount: 0,
       taxes: [
         {
@@ -123,7 +123,6 @@ export class AddServiceComponent implements OnInit {
       ],
     },
     total: {
-
       subTotal: 0,
       taxes: 0,
       finalTotal: 0,
@@ -212,8 +211,6 @@ export class AddServiceComponent implements OnInit {
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
-
-
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -324,7 +321,7 @@ export class AddServiceComponent implements OnInit {
     formData.append("data", JSON.stringify(this.serviceData));
 
     this.apiService.postData("serviceLogs", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -343,19 +340,21 @@ export class AddServiceComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
         this.modalServiceOwn.triggerRedirect.next(true);
-        this.takeUntil$.next();
+
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log added successfully");
         //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
-        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
+        this.router.navigateByUrl(
+          "/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}"
+        );
         this.spinner.hide();
       },
     });
@@ -366,12 +365,12 @@ export class AddServiceComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -431,7 +430,6 @@ export class AddServiceComponent implements OnInit {
   async fetchVehicles() {
     let result: any = await this.apiService.getData("vehicles").toPromise();
     result.Items.forEach((element) => {
-
       if (element.isDeleted === 0) {
         this.vehicles.push(element);
       }
@@ -449,7 +447,6 @@ export class AddServiceComponent implements OnInit {
    */
   fetchVehicleByID(id) {
     this.apiService.getData(`vehicles/${id}`).subscribe((result: any) => {
-
       // this.serviceData['unitStatus'] = result.Items[0].currentStatus;
     });
   }
@@ -500,9 +497,11 @@ export class AddServiceComponent implements OnInit {
       });
   }
   fetchUsersList() {
-    this.apiService.getData("common/users/get/list").subscribe((result: any) => {
-      this.usersList = result;
-    });
+    this.apiService
+      .getData("common/users/get/list")
+      .subscribe((result: any) => {
+        this.usersList = result;
+      });
   }
   getResolvedIssues(id) {
     id = JSON.stringify(id);
@@ -576,8 +575,8 @@ export class AddServiceComponent implements OnInit {
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -586,24 +585,21 @@ export class AddServiceComponent implements OnInit {
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedDocs.push(files[i]);
-              } else {
-            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.uploadedDocs.push(files[i]);
+        } else {
+          this.uploadDocsError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
         }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
-        if (
-          ext == "jpg" ||
-          ext == "jpeg" ||
-          ext == "png"
-        ) {
-        this.uploadedPhotos.push(files[i]);
-         } else {
-            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (ext == "jpg" || ext == "jpeg" || ext == "png") {
+          this.uploadedPhotos.push(files[i]);
+        } else {
+          this.uploadPhotoError = "Only .jpg, .jpeg and png files allowed.";
         }
       }
     }
@@ -843,7 +839,7 @@ export class AddServiceComponent implements OnInit {
     let result: any = await this.apiService
       .getData("serviceLogs/" + this.logID)
       .toPromise();
-    // 
+    //
     // .subscribe(async (result: any) => {
     result = result.Items[0];
     this.serviceData["logID"] = this.logID;
@@ -957,9 +953,8 @@ export class AddServiceComponent implements OnInit {
     this.serviceData["timeCreated"] = result.timeCreated;
     if (result.exempt || result.total || result.charges || result.stateID) {
       this.serviceData.exempt = result.exempt;
-      this.serviceData.total = result.total,
-
-        this.serviceData.charges = result.charges
+      (this.serviceData.total = result.total),
+        (this.serviceData.charges = result.charges);
 
       this.serviceData.stateID = result.stateID;
     }
@@ -1011,7 +1006,7 @@ export class AddServiceComponent implements OnInit {
       exempt: this.serviceData.exempt,
       total: this.serviceData.total,
       charges: this.serviceData.charges,
-      stateID: this.serviceData.stateID
+      stateID: this.serviceData.stateID,
     };
     // create form data instance
     const formData = new FormData();
@@ -1027,10 +1022,10 @@ export class AddServiceComponent implements OnInit {
     }
 
     //append other fields
-    formData.append("data", JSON.stringify(data))
+    formData.append("data", JSON.stringify(data));
 
     this.apiService.putData("serviceLogs/", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1048,7 +1043,7 @@ export class AddServiceComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1056,12 +1051,14 @@ export class AddServiceComponent implements OnInit {
         this.submitDisabled = false;
         this.hasSuccess = true;
         this.modalServiceOwn.triggerRedirect.next(true);
-        this.takeUntil$.next();
+
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log Updated Successfully");
         //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
-        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
+        this.router.navigateByUrl(
+          "/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}"
+        );
       },
     });
   }
@@ -1145,7 +1142,7 @@ export class AddServiceComponent implements OnInit {
           "requiredItems/check/requestedItem/" + this.partData.partNumber
         )
         .subscribe({
-          complete: () => { },
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1159,8 +1156,8 @@ export class AddServiceComponent implements OnInit {
                   this.spinner.hide(); // loader hide
                   // this.throwErrors();
                 },
-                error: () => { },
-                next: () => { },
+                error: () => {},
+                next: () => {},
               });
           },
           next: (res) => {
@@ -1186,7 +1183,7 @@ export class AddServiceComponent implements OnInit {
     this.partData.quantity =
       parseInt(this.partData.quantity) + parseInt(this.existingItemQuantity);
     this.apiService.putData("requiredItems", this.partData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1200,8 +1197,8 @@ export class AddServiceComponent implements OnInit {
               this.spinner.hide(); // loader hide
               // this.throwErrors();
             },
-            error: () => { },
-            next: () => { },
+            error: () => {},
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1234,7 +1231,7 @@ export class AddServiceComponent implements OnInit {
     this.apiService
       .postData("items/requireditems/addExistingItem", this.partData)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -1248,8 +1245,8 @@ export class AddServiceComponent implements OnInit {
                 this.spinner.hide(); // loader hide
                 // this.throwErrors();
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {
@@ -1314,7 +1311,7 @@ export class AddServiceComponent implements OnInit {
     this.apiService
       .postData("items/requireditems/addExistingItem", data)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -1328,8 +1325,8 @@ export class AddServiceComponent implements OnInit {
                 // this.throwErrors();
                 this.hasError = true;
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {
@@ -1421,7 +1418,6 @@ export class AddServiceComponent implements OnInit {
 
   async selectProvince(stateID = undefined) {
     if (stateID != undefined) {
-
       let taxObj = {
         GST: "",
         HST: "",
@@ -1464,20 +1460,17 @@ export class AddServiceComponent implements OnInit {
 
   async calculateFinalTotal() {
     this.serviceData.total.subTotal =
-      Number(this.totalLabors) +
-      Number(this.totalPartsPrice)
+      Number(this.totalLabors) + Number(this.totalPartsPrice);
     this.allTax();
     this.serviceData.total.finalTotal =
       Number(this.serviceData.total.subTotal) +
       Number(this.serviceData.total.taxes);
   }
 
-
   async fetchStateTaxes() {
     let result = await this.apiService.getData("stateTaxes").toPromise();
     this.stateTaxes = result.Items;
   }
-
 
   taxcalculation(index) {
     this.serviceData.charges.taxes[index].amount =
@@ -1499,7 +1492,6 @@ export class AddServiceComponent implements OnInit {
 
   async selecteProvince(stateID = undefined) {
     if (stateID != undefined) {
-
       let taxObj = {
         GST: "",
         HST: "",
