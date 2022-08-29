@@ -90,7 +90,7 @@
                       <span>Showing {{dt.filteredValue ? dt.filteredValue.length : dt.totalRecords}} of {{dt.totalRecords}} Entries.</span>
                       &nbsp;
                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                      <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="csvData()" pTooltip="Excel"></button>
+                      <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
                       <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                       </p-multiSelect>
@@ -119,7 +119,7 @@
                   <tr>
                     <td *ngFor="let dataColumns of columns" style="height: 50px; cursor: pointer">
                       <div [ngSwitch]="dataColumns.field">
-                        <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'entityID'">
+                        <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'driverName'">
                           <span class="text-capitalize">
                             {{ vehiclesList[renewals.entityID] }}
                           </span>
@@ -137,7 +137,7 @@
                           {{ renewals.tasks.dueDate | date: "yyyy/MM/dd" }}
                         </span>
 
-                        <span *ngSwitchCase="'tasks.timeUnit'">
+                        <span *ngSwitchCase="'unitTime'">
                           {{ renewals.tasks.time }}
                           {{ renewals.tasks.timeUnit }}(s) Before
                         </span>

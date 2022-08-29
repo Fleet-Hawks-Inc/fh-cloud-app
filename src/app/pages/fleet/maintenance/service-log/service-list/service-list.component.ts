@@ -106,7 +106,6 @@ export class ServiceListComponent implements OnInit {
     this.fetchTasks();
     this.setToggleOptions();
     this.fetchAllVehiclesIDs();
-    this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
   }
@@ -148,14 +147,6 @@ export class ServiceListComponent implements OnInit {
       this.vehiclesObject = result.Items;
 
     });
-  }
-
-  fetchAllVendorsIDs() {
-    this.apiService
-      .getData("contacts/get/list/vendor")
-      .subscribe((result: any) => {
-        this.vendorsObject = result;
-      });
   }
 
   fetchAllIssuesIDs() {

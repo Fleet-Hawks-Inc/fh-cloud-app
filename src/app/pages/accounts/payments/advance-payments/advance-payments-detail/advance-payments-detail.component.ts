@@ -23,6 +23,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     advType: null,
     paymentTo: null,
     entityId: null,
+    entityName: '',
     amount: "",
     currency: null,
     payMode: null,
@@ -54,9 +55,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   downloadDisabled = true;
   subscription: Subscription;
   constructor(
-    private apiService: ApiService,
     private accountService: AccountService,
-    private toaster: ToastrService,
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private listService: ListService
@@ -64,7 +63,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
-      if(res == 'advance') {
+      if (res == 'advance') {
         this.fetchPay();
       }
     })
@@ -112,41 +111,10 @@ export class AdvancePaymentsDetailComponent implements OnInit {
         }
 
         this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
-
+        this.entityName = this.paymentData.entityName;
         this.changePaymentMode(this.paymentData.payMode);
-        if (this.paymentData.paymentTo === "driver") {
-          this.fetchDriverDetail(this.paymentData.entityId);
-        } else if (this.paymentData.paymentTo === "employee") {
-          this.fetchEmployee(this.paymentData.entityId);
-        } else {
-          this.fetchContact(this.paymentData.entityId);
-        }
+
         this.fetchAcounts(this.paymentData.accountID);
-      });
-  }
-
-  fetchDriverDetail(driverID) {
-    this.apiService.getData(`drivers/${driverID}`).subscribe((result: any) => {
-      if(result.Items[0].middleName) {
-        this.entityName = `${result.Items[0].firstName} ${result.Items[0].middleName} ${result.Items[0].lastName} `;
-      } else {
-        this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
-      }
-    });
-  }
-
-  fetchContact(contactID) {
-    this.apiService
-      .getData(`contacts/detail/${contactID}`)
-      .subscribe((result: any) => {
-        this.entityName = result.Items[0].cName;
-      });
-  }
-  fetchEmployee(contactID) {
-    this.apiService
-      .getData(`contacts/detail/${contactID}`)
-      .subscribe((result: any) => {
-        this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
       });
   }
 

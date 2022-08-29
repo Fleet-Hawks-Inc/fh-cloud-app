@@ -139,6 +139,10 @@ export class DeletedVehiclesComponent implements OnInit {
         }
         this.vehicles = this.vehicles.concat(result.Items);
         this.loaded = true;
+        for(let res of result.Items){
+        res.driverName = this.driversList[res.driverID] ? this.driversList[res.driverID] : '-';
+        res.teamDriverName = this.driversList[res.teamDriverID] ? this.driversList[res.teamDriverID]: '-';
+        }
       }
     }
   }

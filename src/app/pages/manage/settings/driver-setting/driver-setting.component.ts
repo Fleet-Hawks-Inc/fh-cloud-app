@@ -31,7 +31,7 @@ export class DriverSettingComponent implements OnInit {
    get = _.get;
    
    dataColumns = [
-        {  field: 'firstName', header: 'Name', type: "text" },
+        {  field: 'driverFullName', header: 'Name', type: "text" },
         {  field: 'email', header: 'Email', type: "text" },
         {  field: 'phone', header: 'Phone', type: "text" },
         {  field: 'driverType', header: 'Driver Type', type: "text" },
@@ -116,6 +116,9 @@ export class DriverSettingComponent implements OnInit {
                 }
                 this.drivers = this.drivers.concat(result.Items);
                 this.loaded = true;
+                for(let res of result.Items){
+                res.driverFullName = res.firstName + ' ' + res.middleName + ' ' + res.lastName
+                }
             }
         }
     }

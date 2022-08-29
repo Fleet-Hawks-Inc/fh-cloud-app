@@ -39,7 +39,7 @@ export class DeletedAssetsComponent implements OnInit {
    dataColumns = [
     { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
     { field: 'VIN', header: 'VIN', type: "text" },
-    { field: 'assetType', header: 'Asset Type', type: "text" },
+    { field: 'aType', header: 'Asset Type', type: "text" },
     { field: 'assetDetails.manufacturer', header: 'Make', type: "text" },
     { field: 'assetDetails.licencePlateNumber', header: 'Licence Plate Number', type: "text" },
     { field: 'assetDetails.year', header: 'Year', type: "text" },
@@ -116,6 +116,7 @@ export class DeletedAssetsComponent implements OnInit {
                 this.loaded = true;
                 
                 for(let res of result.Items){
+                    res.aType = res.assetType.split('_').join(' ');
                     if(res.assetDetails.ownerShip === 'rented') {
                       res.comName = res.assetDetails.ownCname ? res.assetDetails.ownCname : "-" 
                     }
