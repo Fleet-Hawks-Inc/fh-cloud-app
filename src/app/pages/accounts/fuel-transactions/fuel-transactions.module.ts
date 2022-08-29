@@ -37,10 +37,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -71,11 +71,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 }
 
-const routes: Routes = [  
+const routes: Routes = [
   {
-    path: "list",
+    path: "list/:sessionID",
     component: FuelTransactionsComponent,
-    data: { title: "Fuel transactions" },
+    data: { title: "Fuel transactions", reuseRoute: true },
   }
 ];
 
