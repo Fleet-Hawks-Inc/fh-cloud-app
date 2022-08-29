@@ -8,36 +8,20 @@
               Sales Order# - {{ sOrNo }}
               <span class="badge badge-dark p-1 text-uppercase">{{
                 status
-              }}</span>
-              <span
-                class="badge badge-success p-1 text-uppercase ml-1"
-                *ngIf="status === 'sent'"
-                >Emailed</span
-              >
+                }}</span>
+              <span class="badge badge-success p-1 text-uppercase ml-1" *ngIf="status === 'sent'">Emailed</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button
-              type="button"
-              class="btn btn-success btn-sm mr-2"
-              (click)="sendConfirmationEmail()"
-              [disabled]="emailDisabled || status == 'invoiced'"
-            >
+            <button type="button" class="btn btn-success btn-sm mr-2" (click)="sendConfirmationEmail()"
+              [disabled]="emailDisabled || status == 'invoiced'">
               Send Email To Customer
             </button>
-            <button
-              type="button"
-              *ngIf="isPDF"
-              class="btn btn-success btn-sm mr-2"
-              (click)="openModal()"
-            >
+            <button type="button" *ngIf="isPDF" class="btn btn-success btn-sm mr-2" (click)="openModal()">
               PDF
             </button>
-            <a
-              routerLink="/accounts/sales/orders/list"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> All Sales Orders</a
-            >
+            <a routerLink="/accounts/sales/orders/list/{{sessionID}}" class="btn btn-sm btn-default"><i
+                class="fas fa-list"></i> All Sales Orders</a>
           </div>
         </div>
       </header>
@@ -63,9 +47,7 @@
                       <div class="text-center p-4 bg-white">
                         <i class="fa fa-user text-7"></i>
                         <br />
-                        <p
-                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
-                        >
+                        <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
                           {{ customerName ? customerName : "-" }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
@@ -79,7 +61,7 @@
                         <p class="mb-0 text-5 font-weight-bold text-dark">
                           {{ currency }}
                           {{
-                            finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
                           }}
                         </p>
                         <p class="mb-0">AMOUNT</p>
@@ -102,23 +84,17 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Shipment Date
                             </td>
                             <td width="60%">
                               {{
-                                shipDate ? (shipDate | date: "yyyy/MM/dd") : "-"
+                              shipDate ? (shipDate | date: "yyyy/MM/dd") : "-"
                               }}
                             </td>
                           </tr>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Reference#
                             </td>
                             <td width="60%">{{ sRef ? sRef : "-" }}</td>
@@ -134,10 +110,7 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Sales Person
                             </td>
                             <td width="60%">
@@ -145,10 +118,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Remarks
                             </td>
                             <td width="60%">{{ remarks ? remarks : "-" }}</td>
@@ -162,9 +132,7 @@
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col-lg-6">
-                      <table
-                        class="table table-bordered table-hover table-striped"
-                      >
+                      <table class="table table-bordered table-hover table-striped">
                         <thead>
                           <tr>
                             <th>Commodity</th>
@@ -187,9 +155,9 @@
                             <td>{{ item.desc ? item.desc : "-" }}</td>
                             <td>
                               {{
-                                item.amount
-                                  ? (item.amount | number: "1.2-2")
-                                  : "-"
+                              item.amount
+                              ? (item.amount | number: "1.2-2")
+                              : "-"
                               }}
                               {{ currency }}
                             </td>
@@ -218,25 +186,14 @@
                             <td>{{ d + 1 }}</td>
                             <td>{{ doc.displayName }}</td>
                             <td>
-                              <a
-                                class="image-popup-no-margins"
-                                href="{{ doc.docPath }}"
-                                target="_blank"
-                              >
-                                <img
-                                  class="img-fluid img_thumbnail"
-                                  src="{{ doc.imgPath }}"
-                                />
+                              <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
+                                <img class="img-fluid img_thumbnail" src="{{ doc.imgPath }}" />
                               </a>
                             </td>
                             <td class="cursorpoint">
-                              <a
-                                href="javascript:;"
-                                (click)="deleteDocument(doc.displayName, d)"
-                                class="modal-with-form"
-                              >
-                                <em class="fas fa-times text-danger"></em
-                              ></a>
+                              <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)"
+                                class="modal-with-form">
+                                <em class="fas fa-times text-danger"></em></a>
                             </td>
                           </tr>
                         </tbody>
@@ -263,13 +220,7 @@
 
   <div class="modal-content">
     <div class="modal-body text-dark" id="print_sale">
-      <table
-        width="100%"
-        border="0"
-        align="center"
-        cellpadding="0"
-        cellspacing="0"
-      >
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
             <td>
@@ -280,18 +231,12 @@
           </tr>
           <tr>
             <td valign="top">
-              <p
-                class="text-dark"
-                style="font-size: 13px; margin-bottom: 5px; margin-top: 5px"
-              >
+              <p class="text-dark" style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
                 <strong>Sales Order #:</strong> {{ sOrNo }}
               </p>
             </td>
             <td valign="top" align="right">
-              <p
-                class="text-dark"
-                style="font-size: 13px; margin-bottom: 5px; margin-top: 5px"
-              >
+              <p class="text-dark" style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
                 <strong>Sales Order Date:</strong>
                 {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
               </p>
@@ -335,11 +280,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <table
-                class="w100 text-dark table-bordered"
-                cellspacing="0"
-                cellpadding="0"
-              >
+              <table class="w100 text-dark table-bordered" cellspacing="0" cellpadding="0">
                 <tbody>
                   <tr>
                     <td width="15%" class="pl-3 font-weight-bold pt-1 pb-1">
@@ -406,17 +347,10 @@
 
           <tr>
             <td colspan="2">
-              <table
-                class="w100 text-dark table-bordered"
-                cellspacing="0"
-                cellpadding="0"
-              >
+              <table class="w100 text-dark table-bordered" cellspacing="0" cellpadding="0">
                 <thead>
                   <tr>
-                    <td
-                      width="15%"
-                      class="pl-3 font-weight-bold pt-1 pb-1 bbw-1px"
-                    >
+                    <td width="15%" class="pl-3 font-weight-bold pt-1 pb-1 bbw-1px">
                       <p class="m-0 text-dark" style="font-weight: 600">
                         Commodity
                       </p>
@@ -434,9 +368,7 @@
                         Description
                       </p>
                     </td>
-                    <td
-                      class="pl-3 font-weight-bold pt-1 pr-3 text-right bbw-1px"
-                    >
+                    <td class="pl-3 font-weight-bold pt-1 pr-3 text-right bbw-1px">
                       <p class="m-0 text-dark" style="font-weight: 600">
                         Amount
                       </p>
@@ -474,12 +406,10 @@
                     <td class="border-0 text-right" colspan="5">
                       <p class="text-5 text-dark">
                         Total Amount:
-                        <span class="text-5 font-weight-bold"
-                          >{{ currency }}
+                        <span class="text-5 font-weight-bold">{{ currency }}
                           {{
-                            finalTotal ? (finalTotal | number: "1.2-2") : "0"
-                          }}</span
-                        >
+                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                          }}</span>
                       </p>
                     </td>
                   </tr>
@@ -497,11 +427,7 @@
                       <h2 class="mb-0 text-dark text-4 font-weight-normal">
                         Powered By
                       </h2>
-                      <img
-                        src="../../../../../../assets/img/logo.png"
-                        width="207"
-                        height="28"
-                      />
+                      <img src="../../../../../../assets/img/logo.png" width="207" height="28" />
                     </td>
                   </tr>
                 </tbody>
@@ -515,11 +441,7 @@
       </table>
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        (click)="modal.dismiss('Cross click')"
-        class="btn btn-default"
-      >
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
         Cancel
       </button>
       <button (click)="generatePDF()" class="btn btn-success ml-2">
