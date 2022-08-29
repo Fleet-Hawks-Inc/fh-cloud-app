@@ -58,7 +58,7 @@ export class VehicleRenewalsComponent implements OnInit {
   find = _.find;
   
    dataColumns = [
-        {  field: 'entityID', header: 'Vehicle', type: "text" },
+        {  field: 'unitName', header: 'Vehicle', type: "text" },
         {  field: 'status', header: 'Vehicle Renewal Type', type: "text" },
         {  field: 'tasks.dueDate', header: 'Due Date', type: "text" },
         {  field: 'unitTime', header: 'Send Reminder', type: "text" },
