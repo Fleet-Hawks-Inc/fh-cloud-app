@@ -126,9 +126,8 @@
                               {{ creditN.crRef ? creditN.crRef : "-" }}
                             </span>
 
-                            <span *ngSwitchCase="'customerID'">
-                              {{ customers[creditN.customerID] ?
-                              customers[creditN.customerID] : "-" }}
+                            <span *ngSwitchCase="'customerName'">
+                              {{ creditN[dataColumns.field] | titlecase }}
                             </span>
 
                             <span *ngSwitchCase="'totalAmt'">

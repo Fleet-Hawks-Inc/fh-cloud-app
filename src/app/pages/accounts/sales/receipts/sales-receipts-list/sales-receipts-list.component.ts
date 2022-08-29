@@ -35,12 +35,11 @@ export class SalesReceiptsListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchReceipts();
-    this.fetchCustomersByIDs();
     this.fetchInvoicesByID();
     this.dataColumns = [
       { field: 'txnDate', header: 'Date', type: "text" },
       { field: 'sRPTNo', header: 'Payment#', type: "text" },
-      { field: 'customerID', header: 'Customer', type: "text" },
+      { field: 'customerName', header: 'Customer', type: "text" },
       { field: 'payRef', header: 'Reference#', type: "text" },
       { field: 'invoiceIds', header: 'Invoice#', type: "text" },
       { field: 'payMode', header: 'Payment Mode', type: "text" },
@@ -66,12 +65,6 @@ export class SalesReceiptsListComponent implements OnInit {
   /*
 * Get all customers's IDs of names from api
 */
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
-
   fetchInvoicesByID() {
     this.accountService.getData('sales-invoice/get/list').subscribe((result: any) => {
       this.invoicesList = result;

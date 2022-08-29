@@ -45,17 +45,12 @@ export class ExpenseListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchVehicles();
-    this.fetchTrips();
-    this.fetchAssets();
     this.fetchExpenses();
-    this.fetchVendors();
-    this.fetchExpenseCategories();
     this.dataColumns = [
       { field: 'txnDate', header: 'Date', type: "text" },
-      { field: 'categoryID', header: 'Expense Type', type: "text" },
-      { field: 'vendorID', header: 'Vendor', type: "text" },
-      { field: 'tripID', header: 'Trip & Unit#', type: "text" },
+      { field: 'categoryName', header: 'Expense Type', type: "text" },
+      { field: 'vendorN', header: 'Vendor', type: "text" },
+      { field: 'tripN', header: 'Trip & Unit#', type: "text" },
       { field: 'recurring.interval', header: 'Recurring', type: "text" },
       { field: 'finalTotal', header: 'Amount', type: "text" },
       { field: 'newStatus', header: 'Status', type: "text" },
@@ -77,24 +72,6 @@ export class ExpenseListComponent implements OnInit {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
-  }
-
-  fetchVehicles() {
-    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-      this.vehicles = result;
-    });
-  }
-
-  fetchTrips() {
-    this.apiService.getData("common/trips/get/list").subscribe((result: any) => {
-      this.trips = result;
-    });
-  }
-
-  fetchAssets() {
-    this.apiService.getData("assets/get/list").subscribe((result: any) => {
-      this.assets = result;
-    });
   }
 
   fetchExpenses(refresh?: boolean) {
@@ -142,14 +119,6 @@ export class ExpenseListComponent implements OnInit {
     }
   }
 
-  fetchVendors() {
-    this.apiService
-      .getData(`contacts/get/list/vendor`)
-      .subscribe((result: any) => {
-        this.vendors = result;
-      });
-  }
-
   deleteExpense(expenseID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.accountService
@@ -164,14 +133,6 @@ export class ExpenseListComponent implements OnInit {
           }
         });
     }
-  }
-
-  fetchExpenseCategories() {
-    this.accountService
-      .getData(`expense/categories/list`)
-      .subscribe((result: any) => {
-        this.categories = result;
-      });
   }
 
   searchFilter() {

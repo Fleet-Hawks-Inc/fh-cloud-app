@@ -185,38 +185,22 @@
                               {{ exptran[dataColumns.field] }}
                             </span>
 
-                            <span *ngSwitchCase="'categoryID'">
-                              {{
-                              categories[exptran.categoryID]
-                              ? categories[exptran.categoryID]
-                              : "-"
-                              }}
+                            <span *ngSwitchCase="'categoryName'">
+                              {{ exptran[dataColumns.field] }}
                             </span>
 
-                            <span *ngSwitchCase="'vendorID'">
-                              {{
-                              vendors[exptran.vendorID]
-                              ? vendors[exptran.vendorID]
-                              : "-"
-                              }}
+                            <span *ngSwitchCase="'vendorN'">
+                              {{ exptran[dataColumns.field] }}
                             </span>
 
-                            <span *ngSwitchCase="'tripID'">
+                            <span *ngSwitchCase="'tripN'">
                               <strong>Trip No:</strong>
-                              {{
-                              trips[exptran.tripID]
-                              ? trips[exptran.tripID]
-                              : "-"
-                              }}<br />
+                              {{trips[exptran.tripN]}}<br />
                               <span *ngIf="exptran.unitType === 'vehicle'"><strong>Vehicle: </strong>
                                 {{
-                                exptran.unitID
-                                ? vehicles[exptran.unitID]
-                                : "NA"
-                                }}</span>
+                                exptran.vehicleName}}</span>
                               <span *ngIf="exptran.unitType === 'asset'"><strong>Asset: </strong>{{
-                                exptran.unitID ? assets[exptran.unitID] : "NA"
-                                }}</span>
+                                exptran.assetN }}</span>
                             </span>
 
                             <span *ngSwitchCase="'recurring'">

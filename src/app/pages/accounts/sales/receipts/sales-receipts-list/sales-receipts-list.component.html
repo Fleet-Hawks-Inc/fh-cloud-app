@@ -117,8 +117,8 @@
                               {{ salesRec[dataColumns.field] | titlecase }}
                             </span>
 
-                            <span *ngSwitchCase="'customerID'">
-                              {{ customersObjects[salesRec.customerID] ? customersObjects[salesRec.customerID] : "-" }}
+                            <span *ngSwitchCase="'customerName'">
+                              {{ salesRec[dataColumns.field] | titlecase }}
                             </span>
 
                             <span *ngSwitchCase="'payRef'">

@@ -114,12 +114,8 @@
                               {{ get(inctra, dataColumns.field) | titlecase }}
                             </span>
 
-                            <span *ngSwitchCase="'categoryID'">
-                              {{
-                              categories[inctra.categoryID]
-                              ? categories[inctra.categoryID]
-                              : "-"
-                              }}
+                            <span *ngSwitchCase="'IncomeName'">
+                              {{ inctra[dataColumns.field] | titlecase }}
                             </span>
 
                             <span *ngSwitchCase="'Payment Mode'">

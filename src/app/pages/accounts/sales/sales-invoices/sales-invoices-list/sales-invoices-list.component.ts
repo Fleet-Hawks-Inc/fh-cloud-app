@@ -36,13 +36,12 @@ export class SalesInvoicesListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSales();
-    this.fetchCustomersByIDs();
     this.dataColumns = [
-      {field: 'txnDate', header: 'Date', type: "text" },
+      { field: 'txnDate', header: 'Date', type: "text" },
       { field: 'sInvNo', header: 'Sales Invoice#', type: "text" },
       { field: 'sRef', header: 'Reference#', type: "text" },
-      { field: 'customerID', header: 'Customer', type: "text" },
-      {field: 'dueDate', header: 'Due Date', type: "text" },
+      { field: 'customerName', header: 'Customer', type: "text" },
+      { field: 'dueDate', header: 'Due Date', type: "text" },
       { field: 'total.finalTotal', header: 'Amount', type: "text" },
       { field: 'payStatus', header: 'Payment Status', type: "text" },
       { field: 'status', header: 'Status', type: "text" },
@@ -69,12 +68,6 @@ export class SalesInvoicesListComponent implements OnInit {
   /*
 * Get all customers's IDs of names from api
 */
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
-
   voidOrderInvoice(i: any, saleID: string) {
     if (confirm("Are you sure you want to void?") === true) {
       this.accountService

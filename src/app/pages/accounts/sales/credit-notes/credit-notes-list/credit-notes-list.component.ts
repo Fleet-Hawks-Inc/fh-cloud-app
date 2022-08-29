@@ -34,12 +34,11 @@ export class CreditNotesListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCredits();
-    this.fetchCustomers();
     this.dataColumns = [
       { field: 'txnDate', header: 'Date', type: "text" },
       { field: 'cCrNo', header: 'Customer Credit#', type: "text" },
       { field: 'crRef', header: 'Reference#', type: "text" },
-      { field: 'customerID', header: 'Customer', type: "text" },
+      { field: 'customerName', header: 'Customer', type: "text" },
       { field: 'totalAmt', header: 'Credit Amount', type: "text" },
       { field: 'balance', header: 'Balance Amount', type: "text" },
       { field: 'status', header: 'Status', type: "text" },
@@ -59,14 +58,6 @@ export class CreditNotesListComponent implements OnInit {
   set selectedColumns(val: any[]) {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-  }
-
-  fetchCustomers() {
-    this.apiService
-      .getData(`contacts/get/list`)
-      .subscribe((result: any) => {
-        this.customers = result;
-      });
   }
 
   async fetchCredits(refresh?: boolean) {

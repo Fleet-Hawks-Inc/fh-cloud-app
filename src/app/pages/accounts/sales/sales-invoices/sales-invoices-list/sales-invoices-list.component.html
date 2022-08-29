@@ -124,9 +124,8 @@
                               {{ salesInvo.sRef ? salesInvo.sRef : "-" }}
                             </span>
 
-                            <span *ngSwitchCase="'customerID'">
-                              {{ customersObjects[salesInvo.customerID] ?
-                              customersObjects[salesInvo.customerID] : "-" }}
+                            <span *ngSwitchCase="'customerName'">
+                              {{ salesInvo[dataColumns.field] | titlecase }}
                             </span>
 
                             <span *ngSwitchCase="'shipDate'">
