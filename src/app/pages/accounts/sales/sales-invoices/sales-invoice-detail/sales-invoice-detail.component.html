@@ -8,45 +8,24 @@
               Sales Invoice# - {{ sInvNo }}
               <span class="badge badge-danger p-1" *ngIf="isInvDue">{{
                 status
-              }}</span>
-              <span
-                class="badge badge-dark p-1 text-uppercase"
-                *ngIf="!isInvDue"
-              >
+                }}</span>
+              <span class="badge badge-dark p-1 text-uppercase" *ngIf="!isInvDue">
                 <span *ngIf="status === 'open'">Open</span>
-                <span *ngIf="status === 'partially_deducted'"
-                  >Partially Received</span
-                >
+                <span *ngIf="status === 'partially_deducted'">Partially Received</span>
               </span>
-              <span
-                class="badge badge-success p-1 text-uppercase ml-1"
-                *ngIf="status === 'sent'"
-                >Emailed</span
-              >
+              <span class="badge badge-success p-1 text-uppercase ml-1" *ngIf="status === 'sent'">Emailed</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button
-              type="button"
-              class="btn btn-success btn-sm mr-2"
-              (click)="sendConfirmationEmail()"
-              [disabled]="emailDisabled || status == 'invoiced'"
-            >
+            <button type="button" class="btn btn-success btn-sm mr-2" (click)="sendConfirmationEmail()"
+              [disabled]="emailDisabled || status == 'invoiced'">
               Send Email To Customer
             </button>
-            <button
-              type="button"
-              *ngIf="isPDF"
-              class="btn btn-success btn-sm mr-2"
-              (click)="openModal()"
-            >
+            <button type="button" *ngIf="isPDF" class="btn btn-success btn-sm mr-2" (click)="openModal()">
               PDF
             </button>
-            <a
-              routerLink="/accounts/sales/invoices/list"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> All Sales Invoices</a
-            >
+            <a routerLink="/accounts/sales/invoices/list/{{sessionID}}" class="btn btn-sm btn-default"><i
+                class="fas fa-list"></i> All Sales Invoices</a>
           </div>
         </div>
       </header>
@@ -72,9 +51,7 @@
                       <div class="text-center p-4 bg-white">
                         <i class="fa fa-user text-7"></i>
                         <br />
-                        <p
-                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
-                        >
+                        <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
                           {{ cName ? cName : "-" }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
@@ -108,10 +85,7 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Due Date
                             </td>
                             <td width="60%">
@@ -166,15 +140,9 @@
                               <span *ngIf="paymentTerm === '15'">15 Days</span>
                               <span *ngIf="paymentTerm === '30'">30 Days</span>
                               <span *ngIf="paymentTerm === '45'">45 Days</span>
-                              <span *ngIf="paymentTerm === 'dueReceipt'"
-                                >Due on receipt</span
-                              >
-                              <span *ngIf="paymentTerm === 'dueEnd'"
-                                >Due end of the month</span
-                              >
-                              <span *ngIf="paymentTerm === 'custom'"
-                                >Custom</span
-                              >
+                              <span *ngIf="paymentTerm === 'dueReceipt'">Due on receipt</span>
+                              <span *ngIf="paymentTerm === 'dueEnd'">Due end of the month</span>
+                              <span *ngIf="paymentTerm === 'custom'">Custom</span>
                             </td>
                           </tr>
                           <!-- <tr>
@@ -182,30 +150,22 @@
                                     <td width="60%">50 CAD</td>
                                  </tr> -->
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Taxes
                             </td>
                             <td width="60%">
-                              <span
-                                *ngFor="
+                              <span *ngFor="
                                   let data of taxes;
                                   let j = index;
                                   last as isLast
-                                "
-                              >
+                                ">
                                 {{ data.name ? data.name : "" }} {{ data.tax }}%
                                 <span *ngIf="!isLast">,</span>
                               </span>
                             </td>
                           </tr>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Charges
                             </td>
                             <td width="60%">
@@ -229,9 +189,7 @@
                 <div class="col-lg-6">
                   <div class="row">
                     <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-hover table-striped"
-                      >
+                      <table class="table table-bordered table-hover table-striped">
                         <thead>
                           <tr>
                             <th>Commodity</th>
@@ -254,9 +212,9 @@
                             <td>{{ item.desc ? item.desc : "-" }}</td>
                             <td>
                               {{
-                                item.amount
-                                  ? (item.amount | number: "1.2-2")
-                                  : "-"
+                              item.amount
+                              ? (item.amount | number: "1.2-2")
+                              : "-"
                               }}
                               {{ currency }}
                             </td>
@@ -272,9 +230,7 @@
                 <div class="col-lg-6">
                   <div class="row">
                     <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-hover table-striped"
-                      >
+                      <table class="table table-bordered table-hover table-striped">
                         <thead>
                           <tr>
                             <th>Account Name</th>
@@ -290,16 +246,12 @@
                             </td>
                             <td>{{ dt.type | titlecase }}</td>
                             <td>
-                              <span *ngIf="dt.trxType === 'debit'"
-                                >{{ dt.amount | number: "1.2-2" }}&nbsp;
-                                {{ dt.currency }}</span
-                              >
+                              <span *ngIf="dt.trxType === 'debit'">{{ dt.amount | number: "1.2-2" }}&nbsp;
+                                {{ dt.currency }}</span>
                             </td>
                             <td>
-                              <span *ngIf="dt.trxType === 'credit'"
-                                >{{ dt.amount | number: "1.2-2" }}&nbsp;
-                                {{ dt.currency }}</span
-                              >
+                              <span *ngIf="dt.trxType === 'credit'">{{ dt.amount | number: "1.2-2" }}&nbsp;
+                                {{ dt.currency }}</span>
                             </td>
                           </tr>
                           <tr>
@@ -337,20 +289,11 @@
 
   <div class="modal-content">
     <div class="modal-body text-dark text-capitalize" id="print_invoice">
-      <table
-        width="100%"
-        border="0"
-        align="center"
-        cellpadding="0"
-        cellspacing="0"
-      >
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
             <td>
-              <h1
-                class="modal-title text-dark font-weight-bold text-6 mb-1 mt-1"
-                id="modal-basic-title"
-              >
+              <h1 class="modal-title text-dark font-weight-bold text-6 mb-1 mt-1" id="modal-basic-title">
                 Sales Invoice
               </h1>
             </td>
@@ -366,18 +309,8 @@
               </p>
             </td>
             <td valign="center" align="right">
-              <img
-                crossorigin="anonymous"
-                *ngIf="logo"
-                [src]="logo"
-                class="mb-2"
-                alt="logo"
-                style="max-width: 100px"
-              />
-              <p
-                *ngIf="tagline && tagline != ''"
-                class="mb-2 font-weight-bold text-dark"
-              >
+              <img crossorigin="anonymous" *ngIf="logo" [src]="logo" class="mb-2" alt="logo" style="max-width: 100px" />
+              <p *ngIf="tagline && tagline != ''" class="mb-2 font-weight-bold text-dark">
                 {{ tagline }}
               </p>
             </td>
@@ -421,11 +354,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <table
-                class="w100 text-dark table-bordered"
-                cellspacing="0"
-                cellpadding="0"
-              >
+              <table class="w100 text-dark table-bordered" cellspacing="0" cellpadding="0">
                 <tbody>
                   <tr>
                     <td class="pl-3 font-weight-bold pt-1 pb-1" width="15%">
@@ -493,11 +422,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <table
-                class="w100 text-dark table-bordered"
-                cellspacing="0"
-                cellpadding="0"
-              >
+              <table class="w100 text-dark table-bordered" cellspacing="0" cellpadding="0">
                 <tbody>
                   <tr>
                     <td class="pl-3 font-weight-bold pt-1 pb-1">
@@ -513,13 +438,11 @@
                   </tr>
                   <tr>
                     <td class="pl-3 pt-1 pb-1" width="50%">
-                      <span
-                        *ngFor="
+                      <span *ngFor="
                           let data of taxes;
                           let j = index;
                           last as isLast
-                        "
-                      >
+                        ">
                         {{ data.name }}: {{ data.tax }}%
                         <span *ngIf="!isLast">,</span>
                       </span>
@@ -540,17 +463,10 @@
           </tr>
           <tr>
             <td colspan="2">
-              <table
-                class="w100 text-dark table-bordered"
-                cellspacing="0"
-                cellpadding="0"
-              >
+              <table class="w100 text-dark table-bordered" cellspacing="0" cellpadding="0">
                 <thead>
                   <tr>
-                    <td
-                      class="pl-3 font-weight-bold pt-1 pb-1 bbw-1px"
-                      width="15%"
-                    >
+                    <td class="pl-3 font-weight-bold pt-1 pb-1 bbw-1px" width="15%">
                       <p class="m-0 text-dark" style="font-weight: 600">
                         Commodity
                       </p>
@@ -568,9 +484,7 @@
                         Description
                       </p>
                     </td>
-                    <td
-                      class="pl-3 font-weight-bold pt-1 pr-3 text-right bbw-1px"
-                    >
+                    <td class="pl-3 font-weight-bold pt-1 pr-3 text-right bbw-1px">
                       <p class="m-0 text-dark" style="font-weight: 600">
                         Amount
                       </p>
@@ -608,12 +522,10 @@
                     <td class="border-0 text-right" colspan="5">
                       <p class="text-5 text-dark">
                         Total Amount:
-                        <span class="text-5 font-weight-bold"
-                          >{{ currency }}
+                        <span class="text-5 font-weight-bold">{{ currency }}
                           {{
-                            finalTotal ? (finalTotal | number: "1.2-2") : "0"
-                          }}</span
-                        >
+                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                          }}</span>
                       </p>
                     </td>
                   </tr>
@@ -631,11 +543,7 @@
                       <h2 class="mb-0 text-dark text-4 font-weight-normal">
                         Powered By
                       </h2>
-                      <img
-                        src="../../../../../../assets/img/logo.png"
-                        width="207"
-                        height="28"
-                      />
+                      <img src="../../../../../../assets/img/logo.png" width="207" height="28" />
                     </td>
                   </tr>
                 </tbody>
@@ -649,11 +557,7 @@
       </table>
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        (click)="modal.dismiss('Cross click')"
-        class="btn btn-default"
-      >
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
         Cancel
       </button>
       <button (click)="generatePDF()" class="btn btn-success ml-2">
