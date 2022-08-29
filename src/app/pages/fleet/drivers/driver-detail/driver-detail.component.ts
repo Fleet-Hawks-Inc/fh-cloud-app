@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HereMapService } from '../../../../services';
+import { DashboardUtilityService, HereMapService } from '../../../../services';
 import { ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -248,6 +248,7 @@ export class DriverDetailComponent implements OnInit {
     states: any = [];
     countryCode = null;
     HosDriverId: number
+    ruleEvent:any
     constructor(
         private hereMap: HereMapService,
         private apiService: ApiService,
@@ -260,6 +261,7 @@ export class DriverDetailComponent implements OnInit {
         private routerMgmtService: RouteManagementServiceService,
         private eldService: ELDService,
         private messageService: MessageService,
+        private dashboardUtil: DashboardUtilityService
     ) {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
@@ -280,6 +282,7 @@ export class DriverDetailComponent implements OnInit {
         this.fetchDriverList();
         this.fetchAssetList();
         this.fetchDriverLogs();
+        this.dashboardUtil.isHosEnableForCarrier()
     }
     fetchVehicleList() {
         this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -773,18 +776,21 @@ export class DriverDetailComponent implements OnInit {
       if(!this.eldDriver.licStateCode){
         if(this.eldDriver.issuedCountry  === null || this.eldDriver.issuedState  === null ){
             this.driverErr = "Please fill the required fields";
+              return false;
           }
       }
       
       if(this.driverData.licenceDetails.issuedState != ''){
         if(this.eldDriver.licStateCode === ''  ){
             this.driverErr = "Please fill the required fields";
+              return false;
           }
       }
     
     if(this.eldDriver.exemption == true){
         if( this.eldDriver.exemptionReason === ''  ){
             this.driverErr = "Please fill the required fields";
+              return false;
         }
     }
     
@@ -907,16 +913,20 @@ export class DriverDetailComponent implements OnInit {
         }
 
         console.log('this.driverObj--0--', this.driverObj)
-        // this.eldService.postData("drivers", {
-        //     HOSDriver: this.driverObj
-        // }).subscribe(result => {
-        //     this.showSuccess();
-        //     // return result
-        // }, error => {
-        //     console.log('error', error)
-        //     this.showError(error)
-        // })
+        this.eldService.postData("drivers", {
+            HOSDriver: this.driverObj
+        }).subscribe(result => {
+            this.showSuccess();
+            // return result
+        }, error => {
+            console.log('error', error)
+            this.showError(error)
+        })
     }
+    }
+    getRuleDataCode($event) {
+       this.ruleEvent = $event
+       console.log(' this.ruleEvent', this.ruleEvent)
     }
 
     showError(error: any) {
@@ -970,13 +980,5 @@ export class DriverDetailComponent implements OnInit {
         console.log('this.homeBaseData',this.homeBaseData)
           });
       }
-
-      getAllDriver() {
-        this.eldService.getData('drivers').subscribe((data) => {
-           
-        console.log('data',data)
-          });
-      }
-
     
 }

@@ -9,7 +9,7 @@
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button *ngIf="!hosAssetID " class="btn btn-sm btn-success mr-3"  (click)="updateEldAssetD()">
+            <button *ngIf="!hosAssetID && util.isHosEnableForCarrier()" class="btn btn-sm btn-success mr-3"  (click)="updateEldAssetD()">
              Enable ELD Asset
             </button>
             <!-- <button *ngIf="hosAssetID " class="btn btn-sm btn-success mr-3"  (click)="updateEldAssetD()">

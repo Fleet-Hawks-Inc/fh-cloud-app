@@ -18,7 +18,7 @@
               icon="fas fa-light fa-location-crosshairs"
               pTooltip="See Live Location"
             ></button>
-            <button *ngIf="!hosVehicleId " class="btn btn-sm btn-success mr-3"  (click)="updateEldVehicle()">
+            <button *ngIf="!hosVehicleId && util.isHosEnableForCarrier() " class="btn btn-sm btn-success mr-3"  (click)="updateEldVehicle()">
               Enable ELD Vehicle
              </button>
 

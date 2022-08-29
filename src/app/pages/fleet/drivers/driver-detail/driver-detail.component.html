@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
-            <button  *ngIf = "!HosDriverId" type="button" class="btn btn-sm btn-success mr-3" (click)="showEldModel()"> Enable ELD
+            <button  *ngIf = "!HosDriverId && dashboardUtil.isHosEnableForCarrier()"  type="button" class="btn btn-sm btn-success mr-3" (click)="showEldModel()"> Enable ELD
               Driver</button>
             <a
               class="text-uppercase btn btn-sm btn-dark mr-2"
@@ -1719,7 +1719,7 @@
           <input type="text" class="form-control" [(ngModel)]="eldDriver.userName " />
 
           <label class="control-label font-weight-bold text-lg-right pt-2">Password
-
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
           </label>
           <input type="text" class="form-control" [(ngModel)] = "eldDriver.password"/>
 
@@ -1744,7 +1744,7 @@
           </label>
           <ng-select [clearable]="false" placeholder="Select Ruleset" [(ngModel)] = "eldDriver.ruleSet"
           required class="form-control populate"
-            required>
+            required (change) = "getRuleDataCode($event)">
             <ng-option  *ngFor="let data of ruleData" [value]="data.code">
               {{ data.value }}</ng-option>
           </ng-select>
@@ -1754,8 +1754,8 @@
           </label>
           <ng-select [clearable]="false" [(ngModel)]="eldDriver.Jurisdiction" required class="form-control populate"
             required>
-            <ng-option value="Canada North">Canada North</ng-option>
-            <ng-option value="Canada South">Canada South</ng-option>
+            <ng-option *ngIf = "ruleEvent == '5' || ruleEvent == '6' " value="Canada North">Canada North</ng-option>
+            <ng-option *ngIf = "ruleEvent == '5' || ruleEvent == '6' " value="Canada South">Canada South</ng-option>
             <ng-option value="USA">USA</ng-option>
           </ng-select>
 
