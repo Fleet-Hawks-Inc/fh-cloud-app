@@ -24,6 +24,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   paymentData = {
     currency: "",
     entityId: null,
+    entityName: '',
     txnDate: moment().format("YYYY-MM-DD"),
     paymentNo: "",
     payroll: {
@@ -229,10 +230,11 @@ export class AddEmployeePaymentComponent implements OnInit {
         .subscribe((result: any) => {
           this.empDetails = result.Items[0];
           this.empDetails.vendorID = result.Items[0].vendor ? result.Items[0].vendor : '';
-          if(this.empDetails.vendorName) {
+          this.paymentData.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName}`;
+          if (this.empDetails.vendorName) {
             this.vendorCompanyName = this.empDetails.vendorName;
           }
-          if(this.empDetails.venAddress && this.empDetails.venAddress.length > 0) {
+          if (this.empDetails.venAddress && this.empDetails.venAddress.length > 0) {
             this.vendorAddress = this.empDetails.venAddress[0];
           }
           let paymentInfo = this.empDetails.paymentDetails;
@@ -264,7 +266,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   fetchPayments() {
-    if(this.paymentData.fromDate && this.paymentData.toDate) {
+    if (this.paymentData.fromDate && this.paymentData.toDate) {
       this.fetchAdvancePayments();
     }
   }
@@ -456,7 +458,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.paymentData.additionTotal -
       this.paymentData.deductionTotal;
     this.paymentData.finalTotal =
-      this.paymentData.subTotal + 
+      this.paymentData.subTotal +
       Number(this.paymentData.gstHstAmt) -
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
@@ -804,7 +806,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     } else {
       this.isVendor = false;
       this.paymentData.gstper = 0,
-      this.paymentData.gstHstAmt = 0
+        this.paymentData.gstHstAmt = 0
       this.paymentData.vendorId = '';
     }
     this.calculateFinalTotal();
