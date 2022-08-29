@@ -8,6 +8,7 @@ import { from } from "rxjs";
 import { elementAt, map } from "rxjs/operators";
 import { ActivatedRoute } from "@angular/router";
 import * as moment from "moment";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 @Component({
   selector: "app-add-receipt",
@@ -111,15 +112,18 @@ export class AddReceiptComponent implements OnInit {
   };
   journalPrev = [];
   convertedText = "";
-
+  sessionID: string
   constructor(
     private listService: ListService,
     private accountService: AccountService,
     private toastr: ToastrService,
     private apiService: ApiService,
     private router: Router,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.ReceiptsSessionID;
+  }
 
   ngOnInit() {
     this.listService.fetchCustomers();
@@ -437,7 +441,7 @@ export class AddReceiptComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toastr.success("Receipt added successfully.");
-          this.router.navigateByUrl("/accounts/receipts/list");
+          this.router.navigateByUrl("/accounts/receipts/list/{{ sessionID }}");
         },
       });
     }

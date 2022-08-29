@@ -24,13 +24,13 @@
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'invoices', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'invoices', 'list',]">
       <i class="fas fa-file-alt"></i>
       <span>Invoices</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'receipts', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'receipts', 'list', generateReceiptsSessionID()]">
       <i class="fab fa-wpforms"></i>
       <span>Receipts</span>
     </a>
