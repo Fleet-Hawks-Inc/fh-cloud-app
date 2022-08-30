@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import Constants from 'src/app/pages/fleet/constants';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+
 declare var $: any;
 
 @Component({
@@ -75,8 +77,8 @@ export class AddSalesReceiptsComponent implements OnInit {
   docs = [];
   filesError = '';
   files: any;
-
-  constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService,) { }
+sessionID: string
+  constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService,private routerMgmtService: RouteManagementServiceService) { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
 
