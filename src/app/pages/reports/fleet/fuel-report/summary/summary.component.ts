@@ -126,13 +126,13 @@ _selectedColumns: any[];
     
      dataColumns = [
         {  field: 'dateTime', header: 'Date/Time', type: "text" },
-        {  field: 'data.useType', header: 'Use Type', type: "text" },
+        {  field: 'unitName', header: 'Use Type', type: "text" },
         {  field: 'unitSearch', header: 'Unit Name', type: "text" },
         {  field: 'data.cardNo', header: 'Fuel Card', type: "text" },
         {  field: 'data.city', header: 'City', type: "text" },
         {  field: 'data.type', header: 'Fuel Type', type: "text" },
         {  field: 'data.qty', header: 'Fuel Quantity', type: "text" },
-        {  field: 'uom', header: 'Litres or Gallons', type: "text" },
+        {  field: 'LtrGl', header: 'Litres or Gallons', type: "text" },
         {  field: 'data.odometer', header: 'Odometer', type: "text" },
         {  field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
         {  field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
@@ -279,6 +279,18 @@ _selectedColumns: any[];
                     this.def_ConsumedLTR = this.fuelConsumeDEF_LTR;
                     this.def_ConsumedGL = this.fuelConsumeDEF_GL;
                 }
+                for(let res of result.Items){
+                   if(res.data.uom === 'L'){
+                    res.LtrGl = res.data.uom === "L" ? "LTR" : null
+                   }
+                   if(res.data.uom === 'litre'){
+                   res.LtrGl = res.data.uom === "litre" ? "LTR" : null
+                   }
+                   if(res.data.uom === 'G'){
+                   res.LtrGl = res.data.uom === "G" ? "GL" : null
+                   }
+                 res.unitName= this.vehicleList[res.unitID] ? this.vehicleList[res.unitID] : "-" 
+               }   
             }
         }
     }
