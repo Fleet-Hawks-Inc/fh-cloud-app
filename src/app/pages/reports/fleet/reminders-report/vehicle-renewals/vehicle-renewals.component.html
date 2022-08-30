@@ -119,9 +119,9 @@
                   <tr>
                     <td *ngFor="let dataColumns of columns" style="height: 50px; cursor: pointer">
                       <div [ngSwitch]="dataColumns.field">
-                        <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'driverName'">
+                        <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'unitName'">
                           <span class="text-capitalize">
-                            {{ vehiclesList[renewals.entityID] }}
+                             {{ get(renewals, dataColumns.field) }}
                           </span>
                         </span>
 
