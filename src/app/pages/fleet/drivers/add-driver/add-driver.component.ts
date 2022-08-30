@@ -198,7 +198,8 @@ export class AddDriverComponent
       relationship: "",
       phone: "",
     },
-    isImport: false
+    isImport: false,
+     HosDriverId:0
   };
 
 
@@ -351,6 +352,7 @@ export class AddDriverComponent
     currency: null,
     default: false
   }
+ 
   constructor(
     private apiService: ApiService,
     private httpClient: HttpClient,
@@ -1425,6 +1427,7 @@ export class AddDriverComponent
     }
     this.driverData[`timeCreated`] = result.timeCreated;
     this.driverData.isImport = result.isImport;
+    this.driverData.HosDriverId = result.HosDriverId
 
   }
 
@@ -1864,5 +1867,12 @@ export class AddDriverComponent
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;
     });
+  }
+  
+  updateEldDriver() {
+    if(this.driverData.HosDriverId >0){
+      
+
+    }
   }
 }

@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { environment } from '../../../../../environments/environment';
-import { ApiService } from '../../../../services';
+import { ApiService, DashboardUtilityService } from '../../../../services';
 import Constants from '../../constants';
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ELDService } from "src/app/services/eld.service";
@@ -270,6 +270,7 @@ export class VehicleDetailComponent implements OnInit {
         private routerMgmtService: RouteManagementServiceService,
         private eldService: ELDService,
         private messageService: MessageService,
+        private util: DashboardUtilityService
     ) {
         this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
     }

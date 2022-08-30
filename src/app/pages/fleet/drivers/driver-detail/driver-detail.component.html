@@ -10,6 +10,8 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
+            <button  *ngIf = "!HosDriverId && dashboardUtil.isHosEnableForCarrier()"  type="button" class="btn btn-sm btn-success mr-3" (click)="showEldModel()"> Enable ELD
+              Driver</button>
             <a
               class="text-uppercase btn btn-sm btn-dark mr-2"
               data-toggle="modal"
@@ -1697,3 +1699,182 @@
     </div>
   </div>
 </div>
+<p-dialog header="Update ELD Driver" [(visible)]="display" [style]="{ width: '450px' }" [modal]="true">
+  <div class="row">
+    <div class="col-lg-12">
+      
+          <label class="control-label font-weight-bold text-lg-right pt-2">Name
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input type="text" class="form-control widstyle" [(ngModel)]="eldDriver.driverFstName "  />
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Last Name
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input [(ngModel)]="eldDriver.driverLstName " type="text" class="form-control" />
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Username
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input type="text" class="form-control" [(ngModel)]="eldDriver.userName " />
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Password
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input type="text" class="form-control" [(ngModel)] = "eldDriver.password"/>
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Confirmation
+
+          </label>
+          <input type="text" class="form-control" />
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Home Base
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <ng-select [clearable]="false" placeholder="Select Ruleset" [(ngModel)] = "eldDriver.homeBaseName"
+          required class="form-control populate"
+            required>
+            <ng-option  *ngFor="let data of homeBaseData.data" [value]="data.HOSHomeBaseId">
+              {{ data.Name }}</ng-option>
+          </ng-select>
+
+
+          <label class="control-label font-weight-bold text-lg-right pt-2" >Ruleset
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <ng-select [clearable]="false" placeholder="Select Ruleset" [(ngModel)] = "eldDriver.ruleSet"
+          required class="form-control populate"
+            required (change) = "getRuleDataCode($event)">
+            <ng-option  *ngFor="let data of ruleData" [value]="data.code">
+              {{ data.value }}</ng-option>
+          </ng-select>
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Jurisdiction
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <ng-select [clearable]="false" [(ngModel)]="eldDriver.Jurisdiction" required class="form-control populate"
+            required>
+            <ng-option *ngIf = "ruleEvent == '5' || ruleEvent == '6' " value="Canada North">Canada North</ng-option>
+            <ng-option *ngIf = "ruleEvent == '5' || ruleEvent == '6' " value="Canada South">Canada South</ng-option>
+            <ng-option value="USA">USA</ng-option>
+          </ng-select>
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">24-Period Starting Time
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <ng-select [clearable]="false" [(ngModel)]="eldDriver.startingTime" required class="form-control populate"
+            required>
+            <ng-option value="Midnight">Midnight</ng-option>
+          </ng-select>
+
+          <input type="checkbox" name="eldDriver.active" [(ngModel)]="eldDriver.active">
+          <label class="labelWidth"> Active </label><br>
+
+          <input type="checkbox" name="eldDriver.personalUse" [(ngModel)]="eldDriver.personalUse">
+          <label class="labelWidth"> Personal Use </label><br>
+
+          <input type="checkbox" name="eldDriver.yardMove" [(ngModel)]="eldDriver.yardMove">
+          <label class="labelWidth"> Yard Move </label><br>
+
+          <input type="checkbox" name="eldDriver.exemption" [(ngModel)]="eldDriver.exemption">
+          <label class="labelWidth"> Exemption </label><br>
+
+          <label class="control-label font-weight-bold text-lg-right pt-2" *ngIf = "eldDriver.exemption === true">Exemption Reason
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input *ngIf = "eldDriver.exemption === true" type="text" class="form-control" [(ngModel)]="eldDriver.exemptionReason " />
+
+          <label class="control-label font-weight-bold text-lg-right pt-2">Units
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <ng-select [clearable]="false" [(ngModel)]="eldDriver.units" required class="form-control populate"
+            required>
+            <ng-option value="Km/Liters">Km/Liters</ng-option>
+            <ng-option value="Miles/Gallons">Miles/Gallons</ng-option>
+          </ng-select>
+
+          <label class="control-label font-weight-bold text-lg-right pt-2" *ngIf = "eldDriver.licStateCode">Registration State
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input type="text" class="form-control" *ngIf = "eldDriver.licStateCode" [(ngModel)] = "eldDriver.licStateCode" />
+          <label
+          class="control-label font-weight-bold text-lg-right pt-2" *ngIf = "!eldDriver.licStateCode"
+          >Country
+          <span class="mandfield text-2 ml-1"
+            ><sup>*</sup></span
+          >
+        </label>
+        
+        <ng-select *ngIf = "!eldDriver.licStateCode"
+          (change)="getLicStates($event)"
+          [(ngModel)]="eldDriver.issuedCountry"
+          placeholder="Select country"
+          name="eldDriver.issuedCountry"
+          class="form-control populate"
+          #conSlt="ngModel"
+          [ngClass]="{
+            error: driverF.submitted && conSlt.invalid
+          }"
+          required
+        >
+          <ng-option value="CA">Canada</ng-option>
+          <ng-option value="US">United States</ng-option>
+        </ng-select>
+
+        <label *ngIf = "!eldDriver.licStateCode"
+        class="control-label font-weight-bold text-lg-right pt-2"
+        >Registration State
+        <span class="mandfield text-2 ml-1"
+          ><sup>*</sup></span
+        >
+      </label>
+      <ng-select *ngIf = "!eldDriver.licStateCode"
+        [(ngModel)]="eldDriver.issuedState"
+        name="eldDriver.issuedState"
+        placeholder="Select Province/State"
+        (change)="getLicenseStateName()"
+        required
+        #ipSlt="ngModel"
+        [ngClass]="{
+          error: driverF.submitted && ipSlt.invalid
+        }"
+      >
+        <ng-option
+          class="text-capitalize"
+          *ngFor="let state of states"
+          value="{{ state.stateCode }}"
+        >
+          {{ state.stateName }}</ng-option
+        >
+      </ng-select>
+          <label class="control-label font-weight-bold text-lg-right pt-2">License Number
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+          </label>
+          <input type="text" class="form-control" [(ngModel)] = "CDL" />
+
+          <input type="checkbox" name="eldDriver.wifi" [(ngModel)]="eldDriver.wifi">
+          <label class="labelWidth"> DVIR WiFi Only </label><br>
+
+          <input type="checkbox" name="eldDriver.allowUseExemption" [(ngModel)]="eldDriver.allowUseExemption">
+          <label class="labelWidth"> Allow to use Exemption </label><br>
+
+          <input type="checkbox" name="eldDriver.allowTakePhoto" [(ngModel)]="eldDriver.allowTakePhoto">
+          <label class="labelWidth"> Allow to take DVIR photo </label><br>
+
+          <label class="error">{{ driverErr }}</label>
+
+        
+
+    </div>
+
+  </div>
+  <ng-template pTemplate="footer">
+    <button type="button" class="btn btn-default mr-2" (click)="display = false">
+      Close
+    </button>
+    <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
+      Save
+    </button>
+  </ng-template>
+  
+</p-dialog>

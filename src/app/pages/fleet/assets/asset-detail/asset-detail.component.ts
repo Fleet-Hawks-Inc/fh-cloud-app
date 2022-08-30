@@ -10,7 +10,7 @@ import { map } from "rxjs/operators";
 import Constants from "src/app/pages/manage/constants";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { environment } from "../../../../../environments/environment";
-import { ApiService } from "../../../../services";
+import { ApiService, DashboardUtilityService } from "../../../../services";
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ELDService } from "src/app/services/eld.service";
 import { MessageService } from 'primeng/api';
@@ -234,6 +234,7 @@ export class AssetDetailComponent implements OnInit {
         private routerMgmtService: RouteManagementServiceService,
         private eldService: ELDService,
         private messageService: MessageService,
+        private util: DashboardUtilityService
     ) {
 
         this.sessionID = this.routerMgmtService.assetUpdateSessionID;

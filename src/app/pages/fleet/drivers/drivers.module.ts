@@ -21,6 +21,9 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -102,7 +105,9 @@ const routes: Routes = [
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    DialogModule,
+    ToastModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

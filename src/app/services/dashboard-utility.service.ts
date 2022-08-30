@@ -166,6 +166,7 @@ export class DashboardUtilityService {
     if (this.refreshCarrier) {
       let result = await this.apiService.getData(`carriers/${ID}`).toPromise()
       this.carrierData = result;
+      console.log('carrierData=---',this.carrierData)
       this.refreshCarrier = false;
     }
     return this.carrierData;
@@ -220,5 +221,22 @@ export class DashboardUtilityService {
 
   clearToast() {
     this.messageService.clear();
+  }
+
+   isHosEnableForCarrier() {
+    if(this.carrierData.Items.length >0){
+      if(this.carrierData.Items[0].hosApiKey ){
+        return true;
+      }
+      else{
+        return false
+      }
+    }
+    else{
+      return false;
+    }
+ // if carrier data is available check if data contains hosAPiKey
+ // if yes return true else return false
+ // if carrier data  length is 0 return false
   }
 }

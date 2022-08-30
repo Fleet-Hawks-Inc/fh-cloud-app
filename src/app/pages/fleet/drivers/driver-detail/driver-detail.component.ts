@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HereMapService } from '../../../../services';
+import { DashboardUtilityService, HereMapService } from '../../../../services';
 import { ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,6 +15,9 @@ import { from } from 'rxjs';
 import { passwordStrength } from 'check-password-strength';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
+
 declare var $: any;
 @Component({
     selector: 'app-driver-detail',
@@ -193,8 +196,59 @@ export class DriverDetailComponent implements OnInit {
         currency: null,
         default: false
     }
-
-
+    eldDriver = {
+        driverId: '',
+        driverFstName: '',
+        driverMdlName: '',
+        driverLstName: '',
+        userName: '',
+        licensePlateNo: '',
+        startingTime: null,
+        Jurisdiction: null,
+        homeBase: null,
+        units: null,
+        active: true,
+        personalUse: true,
+        yardMove: true,
+        exemption: true,
+        exemptionReason:'',
+        wifi: true,
+        allowUseExemption: true,
+        allowTakePhoto: true,
+        ruleSet: null,
+        licStateCode: '',
+        issuedState: null,
+        issuedCountry: null,
+        cntryName: '',
+        stateName: "",
+        formStateCode: '',
+        password: '',
+        confirmPassword: '',
+        homeBaseName: ''
+    
+    }
+    homeBaseData = []
+    driverErr = ''
+    finalState = ''
+    formStateName:any
+    display: any;
+    driverObj = {}
+    startTimeCode: number
+    jurisdictionC: number
+    fuelCode: number
+    persnlUse: number
+    active: number
+    yardM: number
+    exemp: number
+    wifi: number
+    useExemp: number
+    takePhoto: number
+    ruleData:any
+    stateCode = null;
+    states: any = [];
+    countryCode = null;
+    HosDriverId: number
+    ruleEvent:any
     constructor(
         private hereMap: HereMapService,
         private apiService: ApiService,
@@ -204,7 +258,10 @@ export class DriverDetailComponent implements OnInit {
         private httpClient: HttpClient,
         private toastr: ToastrService,
         private countryStateCity: CountryStateCityService,
-        private routerMgmtService: RouteManagementServiceService
+        private routerMgmtService: RouteManagementServiceService,
+        private eldService: ELDService,
+        private messageService: MessageService,
+        private dashboardUtil: DashboardUtilityService
     ) {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
@@ -225,6 +282,7 @@ export class DriverDetailComponent implements OnInit {
         this.fetchDriverList();
         this.fetchAssetList();
         this.fetchDriverLogs();
+        this.dashboardUtil.isHosEnableForCarrier()
     }
     fetchVehicleList() {
         this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -387,6 +445,8 @@ export class DriverDetailComponent implements OnInit {
             .subscribe(async (result: any) => {
                 if (result) {
                     this.driverData = await result[`Items`][0];
+                    this.HosDriverId = this.driverData.HosDriverId
+                    console.log(' this.HosDriverId', this.HosDriverId)
                     this.userName = this.driverData.userName;
                     this.driverDataUpdate = await result[`Items`][0];
                     if (this.driverData.hosDetails.homeTerminal != '') {
@@ -508,7 +568,8 @@ export class DriverDetailComponent implements OnInit {
                     }
                     if (this.driverData.licenceDetails != undefined) {
                         this.liceIssueSate = (this.driverData.licenceDetails.issuedState && this.driverData.licenceDetails.issuedState != '') ? await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry) : '',
-
+                        
+                        this.eldDriver.licStateCode = this.driverData.licenceDetails.issuedState
                             this.liceIssueCountry = (this.driverData.licenceDetails.issuedCountry && this.driverData.licenceDetails.issuedCountry != '') ? await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry) : '';
 
                         this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
@@ -651,7 +712,7 @@ export class DriverDetailComponent implements OnInit {
             }
         }
     }
-    
+
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
@@ -692,4 +753,232 @@ export class DriverDetailComponent implements OnInit {
                 }
             });
     }
+
+    showEldModel() {
+        this.getRuleSetData()
+        this.getHomeBaseData()
+        this.eldDriver.driverId = this.driverID;
+        this.eldDriver.driverFstName = `${this.driverData.firstName} `;
+        this.eldDriver.driverLstName = this.driverData.lastName;
+        this.eldDriver.userName = this.userName;
+        this.display = true;
+    }
+
+  async   submitClick() {
+    if(this.eldDriver.driverFstName  === '' || this.eldDriver.driverLstName === '' || this.eldDriver.userName === '' 
+    || this.eldDriver.ruleSet  === null || this.eldDriver.Jurisdiction === null || this.eldDriver.startingTime === null 
+    || this.eldDriver.units  === null  || this.eldDriver.password  === ''  || this.eldDriver.homeBaseName === ''){
+        this.driverErr = "Please fill the required fields";
+        return false;
+    }else {
+        this.driverErr = "";
+      }
+      if(!this.eldDriver.licStateCode){
+        if(this.eldDriver.issuedCountry  === null || this.eldDriver.issuedState  === null ){
+            this.driverErr = "Please fill the required fields";
+              return false;
+          }
+      }
+      
+      if(this.driverData.licenceDetails.issuedState != ''){
+        if(this.eldDriver.licStateCode === ''  ){
+            this.driverErr = "Please fill the required fields";
+              return false;
+          }
+      }
+    
+    if(this.eldDriver.exemption == true){
+        if( this.eldDriver.exemptionReason === ''  ){
+            this.driverErr = "Please fill the required fields";
+              return false;
+        }
+    }
+    
+    
+        if (this.eldDriver.startingTime == 'Midnight') {
+            this.startTimeCode = 0
+        }
+        if (this.eldDriver.units == 'Km/Liters') {
+            this.fuelCode = 2
+        }
+        else {
+            this.fuelCode = 1
+        }
+        
+        if (this.eldDriver.active == true) {
+            this.active = 1
+        }
+        else {
+            this.active = 0
+        }
+
+        if (this.eldDriver.personalUse == true) {
+            this.persnlUse = 1
+        }
+        else {
+            this.persnlUse = 0
+        }
+
+        if (this.eldDriver.yardMove == true) {
+            this.yardM = 1
+        }
+        else {
+            this.yardM = 0
+        }
+
+        if (this.eldDriver.exemption == true) {
+            this.exemp = 1
+        }
+        else {
+            this.exemp = 0
+        }
+
+        if (this.eldDriver.wifi == true) {
+            this.wifi = 1
+        }
+        else {
+            this.wifi = 0
+        }
+
+
+        if (this.eldDriver.allowUseExemption == true) {
+            this.useExemp = 1
+        }
+        else {
+            this.useExemp = 0
+        }
+
+
+        if (this.eldDriver.allowTakePhoto == true) {
+            this.takePhoto = 1
+        }
+        else {
+            this.takePhoto = 0
+        }
+
+        if (this.eldDriver.Jurisdiction == 'Canada North') {
+            this.jurisdictionC = 2
+        }
+        else if (this.eldDriver.Jurisdiction == 'USA'){
+            this.jurisdictionC = 3
+        } 
+        else{
+            this.jurisdictionC = 1
+        }
+
+        this.formStateName = (this.eldDriver.issuedState && this.eldDriver.issuedState != '') ? await this.countryStateCity.GetStateNameFromCode(this.eldDriver.issuedState, this.eldDriver.issuedCountry) : '',
+        console.log(' this.formStateName==', this.formStateName)   
+        this.eldDriver.formStateCode = this.eldDriver.issuedState
+        console.log('  this.eldDriver.formStateCode=',  this.eldDriver.formStateCode)   
+        if(!this.eldDriver.licStateCode) {
+            this.finalState = this.eldDriver.formStateCode
+        }
+        else{
+            this.finalState = this.eldDriver.licStateCode
+        }
+        let driverIdDigit = this.driverID.match(/(\d+)/g)
+        let digits = parseInt(driverIdDigit.join(''))
+
+        if(this.HosDriverId !=0){
+        this.driverObj = {
+            HOSDriverId :  0,
+            FhIdentifier: this.driverID,
+            ExternalDriverId: digits,
+            Name: this.eldDriver.driverFstName,
+            LastName: this.eldDriver.driverLstName,
+            HOSUserName: this.eldDriver.userName,
+            HOSPassword:this.eldDriver.password,
+            HOSHomeBaseId: this.eldDriver.homeBaseName,
+            IsActive: this.active,
+            HOSRuleSetId: this.eldDriver.ruleSet,
+            PersonalUse: this.persnlUse,
+            YardMove: this.yardM,
+            Exemption: this.exemp,
+            LicenseState:this.finalState,
+            LicenseNumber: this.CDL,
+            Wifi: this.wifi,
+            DistanceUnitCode: this.fuelCode,
+            FuelUnitCode: this.fuelCode,
+            Starting24HTime: this.startTimeCode,
+            AllowDriverExemptionSelection: this.useExemp,
+            JurisdictionCode: this.jurisdictionC,
+      
+            // HOSHomeBaseId:,
+            TakeDVIRPhotoEnabled: this.takePhoto,
+
+        }
+        if(this.eldDriver.exemptionReason){
+            this.driverObj['ExemptionReason'] = `${this.eldDriver.exemptionReason}`
+            console.log('this.driverObj===',this.driverObj)
+        }
+
+        console.log('this.driverObj--0--', this.driverObj)
+        this.eldService.postData("drivers", {
+            HOSDriver: this.driverObj
+        }).subscribe(result => {
+            this.showSuccess();
+            // return result
+        }, error => {
+            console.log('error', error)
+            this.showError(error)
+        })
+    }
+    }
+    getRuleDataCode($event) {
+       this.ruleEvent = $event
+       console.log(' this.ruleEvent', this.ruleEvent)
+    }
+
+    showError(error: any) {
+        this.messageService.add({
+            severity: 'error', summary: 'Error',
+            detail: error.error.message
+        });
+    }
+
+    showSuccess() {
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Success', detail: 'Driver added successfully in ELD'
+        });
+
+
+    }
+    getRuleSetData() {
+        this.httpClient.get('assets/jsonFiles/ruleset.json').subscribe((data) => {
+            this.ruleData = data;
+          });
+        
+    }
+
+      async getLicStates(cntryCode: any) {
+        this.eldDriver.issuedState = null;
+        this.eldDriver.cntryName =
+          await this.countryStateCity.GetSpecificCountryNameByCode(cntryCode);
+    
+        this.states = await this.countryStateCity.GetStatesByCountryCode([
+          cntryCode,
+        ]);
+      }
+
+      async getLicenseStateName() {
+        if (
+            this.eldDriver.issuedState &&
+          this.eldDriver.issuedCountry
+        ) {
+          this.eldDriver.stateName =
+            await this.countryStateCity.GetStateNameFromCode(
+                this.eldDriver.issuedState,
+                this.eldDriver.issuedCountry
+            );
+        }
+      }
+
+      getHomeBaseData() {
+        this.eldService.getData('home-bases').subscribe((data) => {
+            this.homeBaseData = data;
+        console.log('this.homeBaseData',this.homeBaseData)
+          });
+      }
+    
 }
