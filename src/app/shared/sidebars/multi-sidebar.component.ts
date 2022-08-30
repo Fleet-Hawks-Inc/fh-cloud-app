@@ -379,6 +379,9 @@ export class CommonSideBarComponent implements OnInit {
   generateSalesOrderSessionID() {
     return this.routeManagement.salesOrderSessionID;
   }
+  generateSalesReceiptSessionID() {
+    return this.routeManagement.salesReceiptSessionID;
+  }
 }
 
 @Component({

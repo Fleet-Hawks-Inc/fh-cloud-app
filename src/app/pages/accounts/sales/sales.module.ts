@@ -134,9 +134,9 @@ const routes: Routes = [
     data: { title: "Sale Invoices Detail" },
   },
   {
-    path: "receipts/list",
+    path: "receipts/list/:sessionID",
     component: SalesReceiptsListComponent,
-    data: { title: "Sales Receipts List" },
+    data: { title: "Sales Receipts List" , reuseRoute: true },
   },
   {
     path: "receipts/add",
