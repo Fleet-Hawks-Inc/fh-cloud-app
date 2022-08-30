@@ -57,7 +57,7 @@
         </a>
       </li>
       <li>
-        <a class="nav-link" [routerLink]="['/accounts', 'sales', 'invoices', 'list']">
+        <a class="nav-link" [routerLink]="['/accounts', 'sales', 'invoices', 'list', generateSalesInvoiceSessionID()]">
 
           Sales Invoices
         </a>
@@ -69,7 +69,7 @@
         </a>
       </li>
       <li>
-        <a class="nav-link" [routerLink]="['/accounts', 'sales', 'credit-notes', 'list']">
+        <a class="nav-link" [routerLink]="['/accounts', 'sales', 'credit-notes', 'list', generateCreditNoteSessionID()]">
 
           Sales Customer Credit Notes
         </a>

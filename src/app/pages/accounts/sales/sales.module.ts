@@ -114,9 +114,9 @@ const routes: Routes = [
     data: { title: "Sale Order Detail" },
   },
   {
-    path: "invoices/list",
+    path: "invoices/list/:sessionID",
     component: SalesInvoicesListComponent,
-    data: { title: "Sales Invoices List" },
+    data: { title: "Sales Invoices List", reuseRoute: true },
   },
   {
     path: "invoices/add",
@@ -149,9 +149,9 @@ const routes: Routes = [
     data: { title: "Sales Receipt Detail" },
   },
   {
-    path: "credit-notes/list",
+    path: "credit-notes/list/:sessionID",
     component: CreditNotesListComponent,
-    data: { title: "Credit Notes List" },
+    data: { title: "Credit Notes List", reuseRoute: true },
   },
   {
     path: "credit-notes/add",

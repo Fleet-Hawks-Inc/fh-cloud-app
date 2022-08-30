@@ -9,6 +9,7 @@ import { AccountService, ApiService, ListService } from "src/app/services";
 import { Location } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Auth } from "aws-amplify";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 @Component({
   selector: "app-add-credit-note",
@@ -65,7 +66,7 @@ export class AddCreditNoteComponent implements OnInit {
   carrierID: any;
 
   files: any;
-
+sessionID:string;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -73,8 +74,9 @@ export class AddCreditNoteComponent implements OnInit {
     private location: Location,
     private accountService: AccountService,
     private apiService: ApiService,
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+    private routerMgmtService: RouteManagementServiceService)
+     { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
     this.creditID = this.route.snapshot.params[`creditID`];
