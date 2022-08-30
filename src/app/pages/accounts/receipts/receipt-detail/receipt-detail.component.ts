@@ -4,6 +4,7 @@ import Constants from "../../../fleet/constants";
 import { AccountService, AccountUtilityService } from "./../../../../services";
 import * as html2pdf from "html2pdf.js";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-receipt-detail",
   templateUrl: "./receipt-detail.component.html",
@@ -42,13 +43,13 @@ export class ReceiptDetailComponent implements OnInit {
   };
   customerName = "";
   isLoaded = false;
+  sessionID: string;
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
     private accountUtility: AccountUtilityService,
     private modalService: NgbModal,
-  ) {}
-
+    private routerMgmtService: RouteManagementServiceService) { this.sessionID = this.routerMgmtService.ReceiptsSessionID; }
   async ngOnInit() {
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
@@ -125,8 +126,8 @@ export class ReceiptDetailComponent implements OnInit {
     this.modalService
       .open(this.modalContent, ngbModalOptions)
       .result.then(
-        (result) => {},
-        (reason) => {}
+        (result) => { },
+        (reason) => { }
       );
   }
 }

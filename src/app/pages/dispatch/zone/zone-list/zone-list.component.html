@@ -22,11 +22,12 @@
                 [value]="zones"
                 [resizableColumns]="true"
                 columnResizeMode="expand"
+                autoLayout="true"
+                columnResizeMode="fit"
                 scrollDirection="both"
                 [columns]="selectedColumns"
                 [loading]="!loaded"
                 styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                [scrollable]="true"
                 scrollHeight="100%"
                 responsiveLayout="scroll"
               >
@@ -74,7 +75,7 @@
                       *ngFor="let column of dataColumns"
                       [pSortableColumn]="column.field"
                       pResizableColumn
-                      [ngStyle]="{ width: column.width }"
+                     
                     >
                       <span>
                         <div
@@ -99,7 +100,7 @@
                       </span>
                     </th>
                     <th
-                      style="width: 6%"
+                   
                       alignFrozen="right"
                       pFrozenColumn
                       [frozen]="true"
@@ -119,17 +120,17 @@
                   <tr style="cursor: pointer">
                     <td
                       routerLink="/dispatch/zone/detail/{{ zone.id }}"
-                      style="width: 50%"
+                    
                       class="font-weight-bold"
                     >
                       {{ zone.zName | titlecase }}
                     </td>
-                    <td style="width: 50%">
+                    <td >
                       {{ zone.zDesc | titlecase }}
                     </td>
 
                     <td
-                      style="width: 6%; overflow: inherit !important"
+                      style="overflow: inherit !important"
                       pFrozenColumn
                       alignFrozen="right"
                       [frozen]="true"
@@ -149,7 +150,7 @@
                         <p-overlayPanel
                           #op
                           [showCloseIcon]="true"
-                          [style]="{ width: '160px' }"
+                         
                         >
                           <a
                             class="dropdown-item"

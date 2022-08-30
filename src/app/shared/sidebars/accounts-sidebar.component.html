@@ -30,13 +30,13 @@
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'receipts', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'receipts', 'list', generateReceiptsSessionID()]">
       <i class="fab fa-wpforms"></i>
       <span>Receipts</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'fuel-transactions', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'fuel-transactions', 'list' , generateFuelTransactionSessionID()]">
       <i class="fas fa-gas-pump fa-fw"></i>
       <span>Fuel Transactions</span>
     </a>
@@ -51,7 +51,7 @@
     </a>
     <ul class="nav nav-children">
       <li>
-        <a class="nav-link" [routerLink]="['/accounts', 'sales', 'orders', 'list']">
+        <a class="nav-link" [routerLink]="['/accounts', 'sales', 'orders', 'list',generateSalesOrderSessionID()]">
 
           Sales Orders
         </a>

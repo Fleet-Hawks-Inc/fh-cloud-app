@@ -94,9 +94,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 const routes: Routes = [
   {
-    path: "orders/list",
+    path: "orders/list/:sessionID",
     component: SalesOrderListComponent,
-    data: { title: "Sales Order List" },
+    data: { title: "Sales Order List", reuseRoute: true },
   },
   {
     path: "orders/add",
