@@ -1875,6 +1875,9 @@
     <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
       Save
     </button>
+    <!-- <button *ngIf = "!eldDriver.licStateCode"  type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="updateLicenseData() && submitClick()">
+      Save
+    </button> -->
   </ng-template>
   
 </p-dialog>

@@ -196,6 +196,16 @@ export class DriverDetailComponent implements OnInit {
         currency: null,
         default: false
     }
+    
+    licenseDataUpdate = {
+        driverID: '',
+        licenceDetails: {
+            licCntryName:'',
+            licStateName:'',
+            issuedCountry: null,
+            issuedState: '',
+          },
+    }
     eldDriver = {
         driverId: '',
         driverFstName: '',
@@ -248,7 +258,8 @@ export class DriverDetailComponent implements OnInit {
     states: any = [];
     countryCode = null;
     HosDriverId: number
-    ruleEvent:any
+    ruleEvent:any;
+
     constructor(
         private hereMap: HereMapService,
         private apiService: ApiService,
@@ -867,9 +878,7 @@ export class DriverDetailComponent implements OnInit {
         }
 
         this.formStateName = (this.eldDriver.issuedState && this.eldDriver.issuedState != '') ? await this.countryStateCity.GetStateNameFromCode(this.eldDriver.issuedState, this.eldDriver.issuedCountry) : '',
-        console.log(' this.formStateName==', this.formStateName)   
-        this.eldDriver.formStateCode = this.eldDriver.issuedState
-        console.log('  this.eldDriver.formStateCode=',  this.eldDriver.formStateCode)   
+        this.eldDriver.formStateCode = this.eldDriver.issuedState   
         if(!this.eldDriver.licStateCode) {
             this.finalState = this.eldDriver.formStateCode
         }
@@ -911,22 +920,25 @@ export class DriverDetailComponent implements OnInit {
             this.driverObj['ExemptionReason'] = `${this.eldDriver.exemptionReason}`
             console.log('this.driverObj===',this.driverObj)
         }
-
+      
         console.log('this.driverObj--0--', this.driverObj)
         this.eldService.postData("drivers", {
             HOSDriver: this.driverObj
         }).subscribe(result => {
+           
             this.showSuccess();
             // return result
         }, error => {
             console.log('error', error)
             this.showError(error)
         })
+        if(!this.eldDriver.licStateCode){
+            this.updateLicenseData();
+        }
     }
     }
     getRuleDataCode($event) {
        this.ruleEvent = $event
-       console.log(' this.ruleEvent', this.ruleEvent)
     }
 
     showError(error: any) {
@@ -955,7 +967,6 @@ export class DriverDetailComponent implements OnInit {
         this.eldDriver.issuedState = null;
         this.eldDriver.cntryName =
           await this.countryStateCity.GetSpecificCountryNameByCode(cntryCode);
-    
         this.states = await this.countryStateCity.GetStatesByCountryCode([
           cntryCode,
         ]);
@@ -977,8 +988,17 @@ export class DriverDetailComponent implements OnInit {
       getHomeBaseData() {
         this.eldService.getData('home-bases').subscribe((data) => {
             this.homeBaseData = data;
-        console.log('this.homeBaseData',this.homeBaseData)
           });
+      }
+
+      updateLicenseData() {
+       this.licenseDataUpdate.licenceDetails.issuedCountry = this.eldDriver.issuedCountry
+       this.licenseDataUpdate.licenceDetails.issuedState = this.eldDriver.issuedState
+       this.licenseDataUpdate.licenceDetails.licCntryName = this.eldDriver.cntryName
+       this.licenseDataUpdate.licenceDetails.licStateName = this.eldDriver.stateName
+       this.licenseDataUpdate.driverID = this.driverID
+       this.apiService.postData('drivers/added/licenseData',this.licenseDataUpdate).subscribe(result => {
+       })
       }
     
 }
