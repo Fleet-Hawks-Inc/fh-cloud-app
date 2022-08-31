@@ -24,8 +24,8 @@ export class RouteManagementServiceService {
   public ReceiptsSessionID: string;
   public fuelTransactionSessionID: string;
   public salesOrderSessionID: string;
-  public salesReceiptSessionID: string;
-
+  public salesInvoiceSessionID: string;
+  public creditNoteSessionID: string;
   constructor() {
     this.orderUpdateSessionID = uuidv4();
     this.tripUpdateSessionID = uuidv4();
@@ -46,7 +46,8 @@ export class RouteManagementServiceService {
     this.ReceiptsSessionID = uuidv4();
     this.fuelTransactionSessionID = uuidv4();
     this.salesOrderSessionID = uuidv4();
-    this.salesReceiptSessionID = uuidv4();
+    this.salesInvoiceSessionID =uuidv4();
+    this.creditNoteSessionID =uuidv4();
   }
 
   driverUpdated() {
@@ -122,10 +123,13 @@ export class RouteManagementServiceService {
     return this.salesOrderSessionID = uuidv4();
   }
 
-  salesReceiptUpdate() {
-    return this.salesReceiptSessionID = uuidv4();
+  salesInvoiceUpdate() {
+    return this.salesInvoiceSessionID = uuidv4();
   }
 
+  creditNoteUpdate() {
+    return this.creditNoteSessionID = uuidv4();
+  }
 
 
   resetAllCache() {
@@ -148,6 +152,7 @@ export class RouteManagementServiceService {
     this.ReceiptsSessionID = uuidv4();
     this.fuelTransactionSessionID = uuidv4();
     this.salesOrderSessionID = uuidv4();
-    this.salesReceiptSessionID= uuidv4();
+    this.salesInvoiceSessionID =uuidv4();
+    this.creditNoteSessionID =uuidv4();
   }
 }
