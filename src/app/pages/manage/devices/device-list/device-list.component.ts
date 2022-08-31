@@ -128,17 +128,13 @@ export class DeviceListComponent implements OnInit {
   }
   
   resetFilter(){
-  if(this.vehicleIdentification !== '' || this.assetIdentification !== ''){
   this.vehicleIdentification = '';
   this.assetIdentification = '';
   this.devices = [];
-  this.next = "null"
+  this.next = '';
   this.loaded = false;
   this.fetchDevices();
   this.dataMessage = Constants.FETCHING_DATA;
-  }else{
-  return false;
-  }
   }
 
    refreshData() {
