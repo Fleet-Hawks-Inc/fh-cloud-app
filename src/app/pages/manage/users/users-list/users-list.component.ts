@@ -64,7 +64,7 @@ export class UsersListComponent implements OnInit {
   { field: 'userLoginData.userName', header: 'Username', type: 'text' },
   { field: 'userType', header: 'UserType', type: 'text' },
   { field: 'userAccount.department', header: 'Department', type: 'text' },
-  { field: 'userSub', header: 'User Roles', type: 'text' },
+  { field: 'userRoles', header: 'User Roles', type: 'text' },
   { field: 'workPhone', header: 'Phone', type: 'text' },
   { field: 'workEmail', header: 'Email', type: 'text' },
   { field: 'currentStatus', header: 'Status', type: 'text' },
@@ -233,6 +233,19 @@ export class UsersListComponent implements OnInit {
             for(let res of result.Items){
             res.userFullName = res.firstName + ' ' + res.lastName;
             }
+            result.Items.forEach(item => {
+            item.userRoles = '';
+            for(let i=0;i<item.userLoginData.userRoles.length;i++){
+            const index = item.userLoginData.userRoles[i];
+            item.userRoles += this.userRoles[index];
+            if(item.userLoginData.userRoles.length > 1 && i != item.userLoginData.userRoles.length-1){
+            item.userRoles += ' ,';
+            }
+            }
+            if(item.userLoginData.userRoles === 0){
+            item.userRoles += '-';
+            }
+            });
           }
         })
     }

@@ -94,9 +94,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 const routes: Routes = [
   {
-    path: "orders/list",
+    path: "orders/list/:sessionID",
     component: SalesOrderListComponent,
-    data: { title: "Sales Order List" },
+    data: { title: "Sales Order List", reuseRoute: true },
   },
   {
     path: "orders/add",
@@ -114,9 +114,9 @@ const routes: Routes = [
     data: { title: "Sale Order Detail" },
   },
   {
-    path: "invoices/list",
+    path: "invoices/list/:sessionID",
     component: SalesInvoicesListComponent,
-    data: { title: "Sales Invoices List" },
+    data: { title: "Sales Invoices List", reuseRoute: true },
   },
   {
     path: "invoices/add",
@@ -134,9 +134,9 @@ const routes: Routes = [
     data: { title: "Sale Invoices Detail" },
   },
   {
-    path: "receipts/list",
+    path: "receipts/list/:sessionID",
     component: SalesReceiptsListComponent,
-    data: { title: "Sales Receipts List" },
+    data: { title: "Sales Receipts List" , reuseRoute: true },
   },
   {
     path: "receipts/add",
@@ -149,9 +149,9 @@ const routes: Routes = [
     data: { title: "Sales Receipt Detail" },
   },
   {
-    path: "credit-notes/list",
+    path: "credit-notes/list/:sessionID",
     component: CreditNotesListComponent,
-    data: { title: "Credit Notes List" },
+    data: { title: "Credit Notes List", reuseRoute: true },
   },
   {
     path: "credit-notes/add",

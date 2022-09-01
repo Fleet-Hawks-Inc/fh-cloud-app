@@ -94,7 +94,7 @@ export class FuelEntryListComponent implements OnInit {
   dataColumns = [
     { field: "dateTime", header: "Date Time", type: "date" },
     { field: "data.cardNo", header: "Fuel Card #", type: "text" },
-    { field: "unitID", header: "Unit #", type: "text" },
+    { field: "vehAstName", header: "Unit #", type: "text" },
     { field: "data.useType", header: "Use Type", type: "text" },
     { field: "data.type", header: " Type", type: "text" },
     { field: "data.amt", header: "Fuel Amount", type: "text" },
@@ -396,6 +396,9 @@ export class FuelEntryListComponent implements OnInit {
           this.loaded = true;
         } else {
           this.lastEvaluatedKey = "end";
+        }
+        for(let res of result.Items){
+        res.vehAstName = this.vehicleList[res.unitID];
         }
       });
   }

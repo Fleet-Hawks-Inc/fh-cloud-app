@@ -125,14 +125,11 @@
                   <tr>
                     <td *ngFor="let dataColumns of columns" style="height: 40px; cursor: pointer">
                       <div [ngSwitch]="dataColumns.field">
-                        <span *ngSwitchCase="'entityID'">
+                       
+                        <span *ngSwitchCase="'unitName'">
                           <span class="text-capitalize font-weight-bold">
-                            {{ vehiclesList[reminder.entityID] }}
-                          </span>
-                        </span>
-                        <span *ngSwitchCase="'vehicleName'">
-                              {{ get(reminder, dataColumns.field) }}</span
-                            >
+                              {{ get(reminder, dataColumns.field) }}</span>
+                            </span>
                         <span *ngSwitchCase="'serviceTasks'">
                           <span class="text-capitalize">
                             {{ get(reminder, dataColumns.field) }}

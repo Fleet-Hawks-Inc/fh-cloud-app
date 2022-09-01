@@ -4,6 +4,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService, ApiService } from 'src/app/services';
 import * as html2pdf from "html2pdf.js";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 @Component({
   selector: 'app-sales-order-detail',
   templateUrl: './sales-order-detail.component.html',
@@ -42,8 +43,11 @@ export class SalesOrderDetailComponent implements OnInit {
 
   isPDF: boolean = false;
   salePrev: any;
-
-  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute) { }
+  sessionID: string;
+  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute, private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.salesOrderSessionID;
+  }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];

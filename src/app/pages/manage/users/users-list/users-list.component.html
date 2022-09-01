@@ -152,32 +152,13 @@
                                 : "-"
                                 }}
                            </span>
-                           <span *ngSwitchCase="'userSub'">
-                               <span *ngIf="user.userLoginData.userRoles">
-                                <span
-                                  *ngFor="
-                                    let role of user.userLoginData.userRoles;
-                                    let i = index
-                                  "
-                                >
-                                  {{ userRoles[role]
-                                  }}<span
-                                    *ngIf="
-                                      user.userLoginData.userRoles.length > 1 &&
-                                      i !=
-                                        user.userLoginData.userRoles.length - 1
-                                    "
-                                    >,</span
-                                  >
-                                </span>
-                              </span>
-                              <span
-                                *ngIf="
-                                  user.userLoginData.userRoles.length === 0
-                                "
-                              >
-                                -
-                              </span>
+                           <span *ngSwitchCase="'userRoles'">
+                             {{
+                                  (get(user, dataColumns.field)
+                                    ? get(user, dataColumns.field)
+                                    : "-"
+                                  ) | titlecase
+                                }}
                            </span>
                             <span *ngSwitchCase="'currentStatus'">
                               <span class="badge badge-dark p-1">{{

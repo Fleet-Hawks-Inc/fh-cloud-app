@@ -6,26 +6,12 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2">
               <div class="input-group input-group-sm mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="searchedRouteName"
-                  name="searchedRouteName"
-                  (input)="getSuggestions($event.target.value)"
-                  autocomplete="off"
-                  placeholder="Search Route Name"
-                />
+                <input type="text" class="form-control" [(ngModel)]="searchedRouteName" name="searchedRouteName"
+                  (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Route Name" />
               </div>
-              <div
-                *ngIf="suggestedRoutes?.length > 0"
-                class="result-suggestions"
-              >
+              <div *ngIf="suggestedRoutes?.length > 0" class="result-suggestions">
                 <ul>
-                  <li
-                    *ngFor="let data of suggestedRoutes"
-                    style="cursor: pointer"
-                    (click)="searchSelectedRoute(data)"
-                  >
+                  <li *ngFor="let data of suggestedRoutes" style="cursor: pointer" (click)="searchSelectedRoute(data)">
                     {{ data.routeName }}
                   </li>
                 </ul>
@@ -33,200 +19,152 @@
             </div>
 
             <div class="col-md-2 col-lg-2 pl-0">
-              <button
-                type="submit"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-3"
-              >
+              <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <a
-                href="javascript:;"
-                class="btn btn-success btn-sm modal-with-form"
-                style="color: white"
-                (click)="resetFilter()"
-                >Reset</a
-              >
+              <a href="javascript:;" class="btn btn-success btn-sm modal-with-form" style="color: white"
+                (click)="resetFilter()">Reset</a>
             </div>
 
             <div class="col-md-8 col-lg-8 pr-1 text-right">
               <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                  aria-expanded="false">
                   Actions<span class="caret"></span>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  "
-                >
+                  ">
                   <a class="dropdown-item text-1" href="">Import</a>
                   <a class="dropdown-item text-1" href="">Export</a>
                 </div>
               </div>
-              <a
-                href="javascript:;"
-                (click)="refreshData()"
-                data-toggle="tooltip"
-                title="Refresh data"
-                class="btn btn-success btn-sm modal-with-form mr-3"
-              >
-                <i class="fas fa-sync"></i>
-              </a>
-              <a
-                routerLink="/dispatch/routes/add"
-                class="btn btn-success btn-sm modal-with-form"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Route</a
-              >
             </div>
           </div>
         </form>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div class="form-group row pt-3">
-                <div class="col-lg-12">
-                  <table
-                    class="row-border hover table table-bordered table-striped mb-0"
-                  >
-                    <thead>
+              <div class="form-group row">
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="routes" [resizableColumns]="true" columnResizeMode="fit" scrollDirection="both"
+                    [columns]="selectedColumns" autoLayout="true"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Routes</h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ routes.length }} entries
+                          </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/dispatch/routes/add"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th>Route Name</th>
-                        <th>Source Location</th>
-                        <th>Destination Location</th>
-                        <th>Miles</th>
-                        <th>Recurring</th>
-                        <th>Actions</th>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }">
+                          <div [ngSwitch]="dataColumns.field">
+                            <!-- Event Status Filter Customization -->
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngIf="routes.length == 0" class="text-center">
-                        <td colspan="6">{{ dataMessage }}</td>
-                      </tr>
-                      <tr
-                        class="cursorpoint"
-                        *ngFor="let route of routes; let i = index"
-                      >
-                        <td
-                          routerLink="/dispatch/routes/detail/{{
-                            route.routeID
-                          }}"
-                          class="font-weight-bold"
-                        >
-                          {{ route.routeName }}
-                        </td>
-                        <td
-                          routerLink="/dispatch/routes/detail/{{
-                            route.routeID
-                          }}"
-                        >
-                          <span *ngIf="route.stops.length == 0"> - </span>
-                          <span *ngIf="route.stops.length > 0">
-                            {{ route.stops[0].name }}
-                          </span>
-                        </td>
-                        <td
-                          routerLink="/dispatch/routes/detail/{{
-                            route.routeID
-                          }}"
-                        >
-                          <span *ngIf="route.stops.length <= 1"> - </span>
-                          <span *ngIf="route.stops.length > 1">
-                            {{ route.stops[route.stops.length - 1].name }}
-                          </span>
-                        </td>
-                        <td
-                          routerLink="/dispatch/routes/detail/{{
-                            route.routeID
-                          }}"
-                        >
-                          {{ route.miles }} miles
-                        </td>
-                        <td
-                          routerLink="/dispatch/routes/detail/{{
-                            route.routeID
-                          }}"
-                        >
-                          <span *ngIf="route.recurring">
-                            {{ route.recurring.type }}
-                          </span>
-                        </td>
-                        <td>
-                          <div class="dropdown dropright">
-                            <button
-                              class="bg-transparent border-0"
-                              type="button"
-                              id="dropdownMenuButton-{{ i }}"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            >
-                              <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <div
-                              class="dropdown-menu"
-                              attr.aria-labelledby="dropdownMenuButton-{{ i }}"
-                            >
-                              <a
-                                class="dropdown-item"
-                                routerLink="/dispatch/routes/edit/{{
-                                  route.routeID
-                                }}"
-                                >Edit</a
-                              >
-                              <a
-                                class="dropdown-item"
-                                href="javascript:;"
-                                (click)="
-                                  deleteRoute(route.routeID, route.routeNo)
-                                "
-                                >Delete</a
-                              >
-                            </div>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rout let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
+                          style="cursor: pointer" routerLink="/dispatch/routes/detail/{{
+                            rout.routeID
+                          }}">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'routeName'" class="font-weight-bold">
+                              {{ get(rout, dataColumns.field) | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'sourceInfo'">
+                              <span *ngIf="rout.stops.length == 0"> - </span>
+                              <span *ngIf="rout.stops.length > 0">
+                                {{ rout.stops[0].name }}
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'destInfo'">
+                              <span *ngIf="rout.stops.length <= 1"> - </span>
+                              <span *ngIf="rout.stops.length > 1">
+                                {{ rout.stops[rout.stops.length - 1].name }}
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'miles'">
+                              {{ rout.miles }} miles
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              {{ get(rout, dataColumns.field) }}</span>
                           </div>
                         </td>
+                        <td style="text-align: center; width: 108px" pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <button id="btnEdit" pButton routerLink="/dispatch/routes/edit/{{
+                            rout.routeID
+                          }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                          <button id="btnDelete" (click)="
+                          deleteRoute(rout.routeID, rout.routeNo)" pButton type=" button" icon="fas fa-user-slash"
+                            class="p-button-rounded p-button-danger p-button-text"></button>
+                        </td>
                       </tr>
-                    </tbody>
-                  </table>
-                  <div class="row mt-3 dtPaginate" *ngIf="routes.length > 0">
-                    <div class="col-6">
-                      Showing {{ routeStartPoint }} to {{ routeEndPoint }} of
-                      {{ totalRecords }} enteries
-                    </div>
-                    <div class="col-6 text-right">
-                      <button
-                        type="button"
-                        class="btn btn-default mr-2"
-                        (click)="prevResults()"
-                        [disabled]="routePrev"
-                      >
-                        Prev
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-default"
-                        (click)="nextResults()"
-                        [disabled]="routeNext"
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <td colspan="5" class="text-center">
+                        <br />
+                        {{dataMessage}}
+                        <br /><br />
+                      </td>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="
+                          lastEvaluatedKey !== 'end' && routes.length !== 0
+                        ">
+                        <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                          Load More..
+                        </button>
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
+                        Total Records: {{ routes.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>

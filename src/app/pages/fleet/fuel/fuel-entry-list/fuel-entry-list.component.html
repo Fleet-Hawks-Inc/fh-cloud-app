@@ -140,11 +140,11 @@
                             <span *ngSwitchCase="'dateTime'">
                               {{ get(fuel, dataColumns.field) }}
                             </span>
-                            <span *ngSwitchCase="'unitID'">
+                            <span *ngSwitchCase="'vehAstName'">
                               {{
                               (vehicleList[fuel.unitID]
                                 ? vehicleList[fuel.unitID]
-                                : ""
+                                : "-"
                               ) | titlecase
                             }}
                               {{

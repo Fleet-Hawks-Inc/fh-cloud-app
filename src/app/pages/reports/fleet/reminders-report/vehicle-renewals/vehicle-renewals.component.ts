@@ -58,10 +58,10 @@ export class VehicleRenewalsComponent implements OnInit {
   find = _.find;
   
    dataColumns = [
-        {  field: 'entityID', header: 'Vehicle', type: "text" },
+        {  field: 'unitName', header: 'Vehicle', type: "text" },
         {  field: 'status', header: 'Vehicle Renewal Type', type: "text" },
         {  field: 'tasks.dueDate', header: 'Due Date', type: "text" },
-        {  field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+        {  field: 'unitTime', header: 'Send Reminder', type: "text" },
         {  field: 'subscribers', header: 'Subscribers', type: "text" },
     ];
 
@@ -111,6 +111,12 @@ export class VehicleRenewalsComponent implements OnInit {
             this.lastItemSK = 'end'
           }
           this.allData = this.allData.concat(result.Items)
+          
+          for(let res of result.Items){
+          res.reStatus =[];
+          res.unitTime = res.tasks.time + " " + res.tasks.timeUnit + '(s)' + " " + 'Before'
+            
+          }
 
           this.loaded = true;
         }

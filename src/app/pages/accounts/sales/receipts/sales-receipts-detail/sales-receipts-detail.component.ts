@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
-
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-sales-receipts-detail",
   templateUrl: "./sales-receipts-detail.component.html",
@@ -34,13 +34,13 @@ export class SalesReceiptsDetailComponent implements OnInit {
 
   docs = [];
   carrierID = '';
-
+sessionID:string;
   constructor(
     public accountService: AccountService,
     public apiService: ApiService,
     private route: ActivatedRoute,
-    private toaster: ToastrService
-  ) { }
+    private toaster: ToastrService,private routerMgmtService: RouteManagementServiceService)
+     { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];

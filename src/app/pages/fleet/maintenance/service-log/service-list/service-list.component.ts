@@ -97,7 +97,7 @@ export class ServiceListComponent implements OnInit {
     { field: 'unitType', header: 'Unit Type', type: 'text' },
     { field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
     { field: 'odometer', header: 'Odometer', type: 'text' },
-    { field: 'taskList', header: 'Service Task', type: 'text' },
+    { field: 'taskName', header: 'Service Task', type: 'text' },
     { field: 'completionDate', header: 'Completion Date', type: 'text' },
     { field: 'logsTotal', header: 'Total', type: 'text' },
     { field: 'currentStatus', header: 'Status', type: 'text' },
@@ -106,7 +106,6 @@ export class ServiceListComponent implements OnInit {
     this.fetchTasks();
     this.setToggleOptions();
     this.fetchAllVehiclesIDs();
-    this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
   }
@@ -148,14 +147,6 @@ export class ServiceListComponent implements OnInit {
       this.vehiclesObject = result.Items;
 
     });
-  }
-
-  fetchAllVendorsIDs() {
-    this.apiService
-      .getData("contacts/get/list/vendor")
-      .subscribe((result: any) => {
-        this.vendorsObject = result;
-      });
   }
 
   fetchAllIssuesIDs() {
@@ -215,12 +206,24 @@ export class ServiceListComponent implements OnInit {
             }
             this.logs = this.logs.concat(result.Items)
             this.loaded = true;
+            
+            
             for(let data of result.Items){
             data.logsTotal = (data.allServiceParts.total + data.allServiceTasks.total) + ' ' + data.allServiceParts.currency
             for(let item of data.allServiceTasks.serviceTaskList){
             data.taskList = item.taskName ? item.taskName : '-';
             }
             }
+            result.Items.forEach(element => {
+            element.taskName = '';
+            for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
+            const element2 = element.allServiceTasks.serviceTaskList[i];
+            element.taskName += element2.taskName;
+            if (i < element.allServiceTasks.serviceTaskList.length - 1) {
+            element.taskName += ' ,';
+            }
+          }
+        })
           }
         });
     }
