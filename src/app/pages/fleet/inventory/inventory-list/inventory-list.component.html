@@ -57,7 +57,7 @@
                   *ngFor="let data of allVendors | async"
                   [value]="data.contactID"
                 >
-                  {{ data.companyName }}</ng-option
+                  {{ data.companyName | titlecase }}</ng-option
                 >
               </ng-select>
             </div>
@@ -68,7 +68,7 @@
                 style="width: 100%"
                 placeholder="Search items by category"
               >
-                <ng-option value="belts">belts</ng-option>
+                <ng-option value="belts">Belts</ng-option>
                 <ng-option value="brakes">Brakes</ng-option>
                 <ng-option value="electrical">Electrical</ng-option>
                 <ng-option value="filters">Filters</ng-option>

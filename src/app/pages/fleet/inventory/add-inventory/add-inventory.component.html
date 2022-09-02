@@ -124,7 +124,7 @@
                           <ng-option
                             *ngFor="let item of categories"
                             value="{{ item.value }}"
-                            >{{ item.name }}</ng-option
+                            >{{ item.name | titlecase }}</ng-option
                           >
                         </ng-select>
 
@@ -409,7 +409,7 @@
                               *ngFor="let warehouse of warehouses"
                               value="{{ warehouse.warehouseID }}"
                             >
-                              {{ warehouse.warehouseName }}
+                              {{ warehouse.warehouseName | titlecase }}
                             </ng-option>
                           </optgroup>
                         </ng-select>
@@ -537,7 +537,7 @@
                               *ngFor="let vendor of vendors | async"
                               value="{{ vendor.contactID }}"
                             >
-                              {{ vendor.companyName }}
+                              {{ vendor.companyName | titlecase }}
                             </ng-option>
                           </optgroup>
                         </ng-select>
