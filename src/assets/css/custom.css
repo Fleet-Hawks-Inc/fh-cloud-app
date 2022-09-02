@@ -4496,3 +4496,9 @@ ul.simple-post-list.settings-list li:last-child a {
   border: 1px solid #4caf50 !important;
   height: 21px !important;
 }
+@media only screen and (min-width: 768px) {
+  html.sidebar-left-collapsed .sidebar-left .nano.hovered {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+  }
+}

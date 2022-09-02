@@ -304,6 +304,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
         if (!this.paymentData.settlementIds.includes(element.sttlID)) {
           let obj = {
             settlementId: element.sttlID,
+            setNo: element.setNo,
             status: element.status,
             paidAmount:
               element.status === "unpaid"
