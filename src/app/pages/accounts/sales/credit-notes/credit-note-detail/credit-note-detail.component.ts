@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-credit-note-detail",
   templateUrl: "./credit-note-detail.component.html",
@@ -28,13 +29,14 @@ export class CreditNoteDetailComponent implements OnInit {
   customers = [];
   docs = [];
   carrierID = '';
-
+sessionID: string;
   constructor(
     public accountService: AccountService,
     public apiService: ApiService,
     private route: ActivatedRoute,
-    private toaster: ToastrService
-  ) { }
+    private toaster: ToastrService,
+    private routerMgmtService: RouteManagementServiceService)
+     { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
     this.creditID = this.route.snapshot.params[`creditID`];

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild  } from '@angular/core';
 import { ApiService } from 'src/app/services';
-import { result, map } from 'lodash';
+import { result, map, last } from 'lodash';
 import { resourceUsage } from 'process';
 import Constants from 'src/app/pages/fleet/constants';
 import * as moment from 'moment';
@@ -74,8 +74,8 @@ export class ServicelogsComponent implements OnInit {
         {  field: 'unitType', header: 'Unit Type', type: "text" },
         {  field: 'unitName', header: 'Vehicle/Asset', type: "text" },
         {  field: 'odometer', header: 'Odometer', type: "text" },
-        {  field: 'vendorID', header: 'Vendor', type: "text" },
-        {  field: 'serviceTaskList', header: 'Service Task', type: "text" },
+        {  field: 'vendorName', header: 'Vendor', type: "text" },
+        {  field: 'taskName', header: 'Service Task', type: "text" },
         {  field: 'completionDate', header: 'Service Date', type: "text" },
         {  field: 'currentStatus', header: 'Status', type: "text" },
         {  field: 'allServiceTasks.subTotal', header: 'Service Cost', type: "text" },
@@ -160,7 +160,17 @@ export class ServicelogsComponent implements OnInit {
               }
             })
           }
-        })
+          result.Items.forEach(element => {
+          element.taskName = '';
+        for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
+          const element2 = element.allServiceTasks.serviceTaskList[i];
+         element.taskName += element2.taskName;
+          if (i < element.allServiceTasks.serviceTaskList.length - 1) {
+            element.taskName += ' & ';
+          }
+        }
+       })      
+       })
     }
   }
   fetchAllVendorsIDs() {

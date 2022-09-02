@@ -12,7 +12,7 @@ import { map } from "rxjs/operators";
 import { Location } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute } from "@angular/router";
-
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-add-sales-order",
   templateUrl: "./add-sales-order.component.html",
@@ -70,7 +70,7 @@ export class AddSalesOrderComponent implements OnInit {
   carrierID: any;
 
   sOrNo: string = '';
-
+  sessionID: string;
   constructor(
     public apiService: ApiService,
     private route: ActivatedRoute,
@@ -78,8 +78,11 @@ export class AddSalesOrderComponent implements OnInit {
     private accountService: AccountService,
     private toaster: ToastrService,
     private location: Location,
-    public listService: ListService
-  ) { }
+    public listService: ListService,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.salesOrderSessionID;
+  }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];

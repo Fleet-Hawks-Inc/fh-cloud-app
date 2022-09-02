@@ -20,9 +20,9 @@ export class ZoneListComponent implements OnInit {
   ngOnInit(): void {
     this.initData();
     this.dataColumns = [
-      { width: "50%", field: "zName", header: "Zone Name", type: "text" },
+      { field: "zName", header: "Zone Name", type: "text" },
       {
-        width: "50%",
+        
         field: "zDesc",
         header: "Zone Description",
         type: "text",

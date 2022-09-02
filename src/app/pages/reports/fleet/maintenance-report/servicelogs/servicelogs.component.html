@@ -124,10 +124,10 @@
                         <span *ngSwitchCase="'odometer'">
                           {{ log.odometer ? log.odometer : "-" }}
                         </span>
-                        <span *ngSwitchCase="'vendorID'">
-                          {{ vendorsObject[log.vendorID] }}
+                        <span *ngSwitchCase="'vendorName'">
+                       <span>  {{ get(log, dataColumns.field) }}</span> 
                         </span>
-                        <span *ngSwitchCase="'serviceTaskList'">
+                        <span *ngSwitchCase="'taskName'">
                           <span title="Service Task" *ngFor="
                                   let task of log.allServiceTasks
                                     .serviceTaskList;
@@ -161,6 +161,9 @@
                           {{ log.allServiceTasks.subTotal.toFixed(2) }}
                           {{ log.allServiceTasks.currency }}
                         </span>
+                          <span *ngSwitchDefault>
+                              {{ get(log, dataColumns.field) }}</span
+                            >
                       </div>
                     </td>
                   </tr>

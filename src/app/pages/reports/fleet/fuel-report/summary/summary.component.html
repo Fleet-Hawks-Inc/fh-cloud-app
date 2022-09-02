@@ -166,7 +166,7 @@
                               <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                               <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
 
-                              <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="csvExport()" pTooltip="Excel"></button>
+                              <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
 
                               <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                               </p-multiSelect>
@@ -201,7 +201,7 @@
                                       | titlecase
                                   }}
                                 </span>
-                                <span *ngSwitchCase="'unitSearch'">
+                                <span *ngSwitchCase="'unitName'">
                                   {{
                                     (vehicleList[fuelEntry.unitID]
                                       ? vehicleList[fuelEntry.unitID]
@@ -215,7 +215,7 @@
                                     ) | titlecase
                                   }}
                                 </span>
-                                <span *ngSwitchCase="'uom'">
+                                <span *ngSwitchCase="'LtrGl'">
                                   <span *ngIf="fuelEntry.data.uom === 'L'">
                                     {{
                                       fuelEntry.data.uom === "L" ? "LTR" : null

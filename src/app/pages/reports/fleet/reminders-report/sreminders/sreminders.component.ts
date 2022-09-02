@@ -64,7 +64,7 @@ export class SremindersComponent implements OnInit {
   
   
   dataColumns = [
-        {  field: 'vehicleName', header: 'Vehicle', type: "text" },
+        {  field: 'unitName', header: 'Vehicle', type: "text" },
         {  field: 'serviceTasks', header: 'Service Task', type: "text" },
         {  field: 'createdDate', header: 'Next Due', type: "text" },
         {  field: 'subscribers', header: 'Subscribers', type: "text" },
@@ -116,7 +116,6 @@ export class SremindersComponent implements OnInit {
           this.loaded = true;
   
           for(let res of result.Items){
-            res.vehicleName = this.vehiclesList[res.entityID];
             res.serviceTasks = [];
              
             if(res.status === "'dueSoon'" ){

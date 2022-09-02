@@ -4,7 +4,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService, ApiService } from 'src/app/services';
 import * as html2pdf from "html2pdf.js";
 import { ToastrService } from 'ngx-toastr';
-
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 @Component({
   selector: 'app-sales-invoice-detail',
   templateUrl: './sales-invoice-detail.component.html',
@@ -52,7 +52,8 @@ export class SalesInvoiceDetailComponent implements OnInit {
   chargeAmount: string;
   isPDF: boolean = false;
   emailDisabled = false;
-  constructor(public accountService: AccountService, private toaster: ToastrService, private modalService: NgbModal, public apiService: ApiService, private route: ActivatedRoute) { }
+  sessionID: string
+  constructor(public accountService: AccountService, private toaster: ToastrService, private modalService: NgbModal, public apiService: ApiService, private route: ActivatedRoute, private routerMgmtService: RouteManagementServiceService) { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];

@@ -14,6 +14,10 @@ import { AddRouteComponent } from "./add-route/add-route.component";
 import { RouteListComponent } from "./route-list/route-list.component";
 import { RouteDetailComponent } from "./route-detail/route-detail.component";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TableModule } from 'primeng/table';
 const routes: Routes = [
   {
     path: "list",
@@ -46,7 +50,11 @@ const routes: Routes = [
     NgxSpinnerModule,
     ChartsModule,
     MatExpansionModule,
+    AutoCompleteModule,
+    ButtonModule,
+    OverlayPanelModule,
+    TableModule
   ],
   providers: [unsavedChangesGuard],
 })
-export class RouteModule {}
+export class RouteModule { }

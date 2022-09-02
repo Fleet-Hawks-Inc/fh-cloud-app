@@ -55,9 +55,9 @@ export class ContactRenewalsComponent implements OnInit {
   find = _.find;
 
   dataColumns = [
-    { field: 'entityID', header: 'Contact', type: "text" },
+    { field: 'driverName', header: 'Contact', type: "text" },
     { field: 'status', header: 'Contact Renewal Type', type: "text" },
-    { field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+    { field: 'unitTime', header: 'Send Reminder', type: "text" },
     { field: 'tasks.dueDate', header: 'Expiration Date', type: "text" },
     { field: 'subscribers', header: 'Subscribers', type: "text" },
   ];
@@ -167,6 +167,12 @@ export class ContactRenewalsComponent implements OnInit {
             this.empData = this.empData.concat(result.Items)
 
             this.loaded = true;
+            
+            for(let res of result.Items){
+              res.driverName = this.mergedList[res.entityID];
+              console.log('driver',res.driverName);
+              res.unitTime =  'Every' + " " + res.tasks.time + " " + res.tasks.timeUnit + '(S)'
+            }
           }
         });
     }

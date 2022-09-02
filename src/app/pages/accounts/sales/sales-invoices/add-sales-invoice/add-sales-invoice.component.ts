@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 @Component({
   selector: 'app-add-sales-invoice',
   templateUrl: './add-sales-invoice.component.html',
@@ -128,8 +129,8 @@ export class AddSalesInvoiceComponent implements OnInit {
   currentUser: any;
   saleID: string;
   pageTitle: string = 'Add';
-
-  constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService,) { }
+sessionID: string;
+  constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService, private routerMgmtService: RouteManagementServiceService) { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
