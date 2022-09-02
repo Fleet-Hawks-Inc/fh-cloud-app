@@ -123,8 +123,12 @@ export class DeletedCustomerComponent implements OnInit {
     
     refreshData(){
     this.customers = [];
+    this.company = null;
+    this.type = null;
     this.lastItemSK = '';
+    this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
+    this.loaded= false;
     }
     
     
