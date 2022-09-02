@@ -154,6 +154,12 @@
                               ) | titlecase
                             }}
                             </span>
+                            <span *ngSwitchCase="'data.useType'">
+                              {{ get(fuel, dataColumns.field) | titlecase }}
+                            </span>
+                            <span *ngSwitchCase="'data.type'">
+                              {{ get(fuel, dataColumns.field) | titlecase }}
+                            </span>
                             <span *ngSwitchDefault>
                               {{ get(fuel, dataColumns.field) }}
                             </span>
