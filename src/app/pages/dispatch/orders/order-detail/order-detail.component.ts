@@ -343,6 +343,7 @@ export class OrderDetailComponent implements OnInit {
   ];
 
   docSelRef: any;
+  currency: any;
   printBtnType: string;
   invDate: any = '';
   invBtnDisableStat = true;
@@ -582,7 +583,8 @@ export class OrderDetailComponent implements OnInit {
         }
         this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
 
-        this.invStatus = result.invStatus ? result.invStatus : 'NA'
+        this.invStatus = result.invStatus ? result.invStatus : 'NA';
+        this.currency = result.charges.freightFee.currency;
 
       },
 
@@ -854,6 +856,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
 
     this.invoiceData[`zeroRated`] = this.zeroRated;
+    this.invoiceData[`currency`] = this.currency;
     this.invoiceData[`brkCurrency`] = this.brokerage.brkCurrency;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
