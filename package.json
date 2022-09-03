@@ -69,7 +69,7 @@
         "jquery": "3.5.1",
         "jquery-validation": "1.19.5",
         "jspdf": "2.4.0",
-        "jspdf-autotable": "3.5.14",
+        "jspdf-autotable": "3.5.25",
         "jspdf-html2canvas": "1.4.9",
         "jstree": "3.3.10",
         "jszip": "3.7.0",
