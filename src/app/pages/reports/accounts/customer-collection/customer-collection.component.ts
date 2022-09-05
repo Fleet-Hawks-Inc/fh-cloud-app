@@ -2,18 +2,13 @@ import { Component, OnInit, ViewChild, Input, TemplateRef } from '@angular/core'
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service'
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-import Constant from "src/app/pages/fleet/constants";
-import { result } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { timeStamp } from 'console';
-import * as html2pdf from "html2pdf.js";
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment'
 import * as _ from "lodash";
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { Table } from 'primeng/table';
 declare var $: any;
-
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';

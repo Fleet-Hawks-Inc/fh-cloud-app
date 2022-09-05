@@ -8,7 +8,6 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from 'src/environments/environment';
-import * as moment from 'moment'
 import * as _ from "lodash";
 import { Table } from 'primeng/table';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";

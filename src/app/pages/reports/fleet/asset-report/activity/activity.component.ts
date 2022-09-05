@@ -5,7 +5,6 @@ import { ToastrService } from "ngx-toastr";
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
-import { result } from 'lodash';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { Table } from 'primeng/table';
 @Component({

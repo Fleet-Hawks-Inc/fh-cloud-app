@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, Input, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services'
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -8,8 +7,6 @@ import * as html2pdf from "html2pdf.js";
 import { DashboardUtilityService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { HereMapService } from 'src/app/services/here-map.service';
-import * as moment from 'moment'
 import * as _ from "lodash";
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { Table } from 'primeng/table';

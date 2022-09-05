@@ -1,12 +1,8 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { ApiService, ListService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
-import { result } from 'lodash';
-import { timeStamp } from 'console';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
 declare var $: any;
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -84,10 +80,8 @@ export class OverviewComponent implements OnInit {
     ];
     
     constructor(private apiService: ApiService, 
-    private router: Router, 
     private listService: ListService,
-    private toastr: ToastrService, 
-    private spinner: NgxSpinnerService) { }
+    private toastr: ToastrService) { }
     
     async ngOnInit(): Promise<void> {
         this.existingInventoryList();

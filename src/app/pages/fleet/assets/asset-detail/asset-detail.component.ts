@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { ColumnMode, SelectionType } from "@swimlane/ngx-datatable";
-import * as moment from "moment";
 
 import { NgxSpinnerService } from "ngx-spinner";
 import { from } from "rxjs";

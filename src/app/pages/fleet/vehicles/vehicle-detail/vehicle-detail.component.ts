@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { ReactiveFormConfig, RxFormBuilder} from '@rxweb/reactive-form-validators';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../services';
