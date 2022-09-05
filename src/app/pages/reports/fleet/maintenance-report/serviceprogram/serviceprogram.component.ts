@@ -1,22 +1,14 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ApiService, HereMapService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import * as moment from 'moment';
-import { map, result } from 'lodash';
-import { constants } from 'buffer';
-import { Overlay, ToastrService } from "ngx-toastr";
-import { ActivatedRoute } from "@angular/router";
-import { NgxSpinnerService } from 'ngx-spinner';
-import * as html2pdf from "html2pdf.js";
-import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { environment } from '../../../../../../environments/environment';
 import * as _ from 'lodash';
-import { HttpClient } from '@angular/common/http';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { Table } from 'primeng/table/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { OverlayPanel } from "primeng/overlaypanel";
-import { Router } from "@angular/router";
+import { ApiService } from 'src/app/services';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -61,12 +53,8 @@ export class ServiceprogramComponent implements OnInit {
   
   constructor(private apiService: ApiService, 
   private toastr: ToastrService,
-   private httpClient: HttpClient,
-  private route: ActivatedRoute,
-  private spinner: NgxSpinnerService,
   protected _sanitizer: DomSanitizer,
-  private hereMap: HereMapService,
-  private modalService: NgbModal,) { }
+  ) { }
 
 
   async ngOnInit() {

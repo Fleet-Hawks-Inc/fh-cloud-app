@@ -10,8 +10,6 @@ import { OnboardDefaultService } from '../../../../services/onboard-default.serv
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import * as moment from 'moment';
-declare var $: any;
 
 @Component({
   selector: 'app-asset-list',
@@ -133,9 +131,7 @@ export class AssetListComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private httpClient: HttpClient,
     private hereMap: HereMapService,
     private dashboardUtilityService: DashboardUtilityService,
     private listService: ListService,

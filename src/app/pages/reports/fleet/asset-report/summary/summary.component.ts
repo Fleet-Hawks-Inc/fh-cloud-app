@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
-import { environment } from '../../../../../../environments/environment';
 import * as moment from 'moment';
 import { ToastrService } from "ngx-toastr";
 import * as _ from 'lodash';

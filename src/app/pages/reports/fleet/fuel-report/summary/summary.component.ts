@@ -1,22 +1,14 @@
 import { Component, OnInit, ElementRef, ViewChild, Input  } from '@angular/core';
 import { ApiService} from 'src/app/services';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { timeStamp } from 'console';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
-import { result } from 'lodash';
 import * as _ from 'lodash';
-import { HttpClient } from '@angular/common/http';
 import { HereMapService } from 'src/app/services/here-map.service';
-import { NgSelectComponent } from '@ng-select/ng-select';
 import { Table } from 'primeng/table/table';
-import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewEncapsulation } from '@angular/core';
-import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -144,12 +136,8 @@ _selectedColumns: any[];
 
 
     constructor(private apiService: ApiService, 
-    private router: Router, 
     private toastr: ToastrService, 
-    private spinner: NgxSpinnerService,
     private hereMap: HereMapService,
-    protected _sanitizer: DomSanitizer,
-    private httpClient: HttpClient,
      private el: ElementRef,
     private modalService: NgbModal,) { }
 

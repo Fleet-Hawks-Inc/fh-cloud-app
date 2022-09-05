@@ -3,7 +3,7 @@ import { ApiService, DashboardUtilityService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { formatDate } from "@angular/common";
 import { NgForm } from "@angular/forms";
-import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import {
   catchError,
@@ -25,7 +25,6 @@ import { ListService } from "../../../../services/list.service";
 import * as moment from "moment";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { ELDService } from "src/app/services/eld.service";
 import { MessageService } from 'primeng/api';
 @Component({
@@ -1088,7 +1087,6 @@ export class AddAssetsComponent implements OnInit {
 
   fetchAssets() {
     this.apiService.getData("assets").subscribe((result: any) => {
-      // this.allAssets = result.Items;
       result.Items.forEach((element) => {
         if (element.isDeleted === 0) {
           this.allAssets.push(element);
