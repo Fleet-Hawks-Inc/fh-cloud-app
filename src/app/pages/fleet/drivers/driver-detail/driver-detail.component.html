@@ -1752,12 +1752,14 @@
           <label class="control-label font-weight-bold text-lg-right pt-2">Jurisdiction
             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
           </label>
-          <ng-select [clearable]="false" [(ngModel)]="eldDriver.Jurisdiction" required class="form-control populate"
+          <input type="text" class="form-control" [(ngModel)]="eldDriver.Jurisdiction"/>
+
+          <!-- <ng-select [clearable]="false" [(ngModel)]="eldDriver.Jurisdiction" required class="form-control populate"
             required>
             <ng-option *ngIf = "ruleEvent == '5' || ruleEvent == '6' " value="Canada North">Canada North</ng-option>
             <ng-option *ngIf = "ruleEvent == '5' || ruleEvent == '6' " value="Canada South">Canada South</ng-option>
             <ng-option value="USA">USA</ng-option>
-          </ng-select>
+          </ng-select> -->
 
           <label class="control-label font-weight-bold text-lg-right pt-2">24-Period Starting Time
             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -1766,8 +1768,9 @@
             required>
             <ng-option value="Midnight">Midnight</ng-option>
           </ng-select>
-
-          <input type="checkbox" name="eldDriver.active" [(ngModel)]="eldDriver.active">
+          <!-- [eldDriver.active] =" driverStatus == 'active'? true : false" -->
+          <input type="checkbox" name="eldDriver.active"
+          [(ngModel)]="eldDriver.active">
           <label class="labelWidth"> Active </label><br>
 
           <input type="checkbox" name="eldDriver.personalUse" [(ngModel)]="eldDriver.personalUse">

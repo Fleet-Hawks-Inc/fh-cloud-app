@@ -17,6 +17,7 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ELDService } from "src/app/services/eld.service";
 import { MessageService } from 'primeng/api';
+import { timeStamp } from 'console';
 
 declare var $: any;
 @Component({
@@ -217,14 +218,14 @@ export class DriverDetailComponent implements OnInit {
         Jurisdiction: null,
         homeBase: null,
         units: null,
-        active: true,
-        personalUse: true,
+        active: false,
+        personalUse: false,
         yardMove: true,
-        exemption: true,
+        exemption: false,
         exemptionReason:'',
-        wifi: true,
-        allowUseExemption: true,
-        allowTakePhoto: true,
+        wifi: false,
+        allowUseExemption: false,
+        allowTakePhoto: false,
         ruleSet: null,
         licStateCode: '',
         issuedState: null,
@@ -286,14 +287,14 @@ export class DriverDetailComponent implements OnInit {
         this.end = moment().format('YYYY-MM-DD');
         this.start = moment().subtract(15, 'days').format('YYYY-MM-DD');
         // this.fetchGroupsbyIDs();
-        this.fetchAllContacts();
-        this.fetchDocuments();
-        this.fetchDriverTrips();
-        this.fetchVehicleList();
-        this.fetchDriverList();
-        this.fetchAssetList();
-        this.fetchDriverLogs();
-        this.dashboardUtil.isHosEnableForCarrier()
+        // this.fetchAllContacts();
+        // this.fetchDocuments();
+        // this.fetchDriverTrips();
+        // this.fetchVehicleList();
+        // this.fetchDriverList();
+        // this.fetchAssetList();
+        // this.fetchDriverLogs();
+        // this.dashboardUtil.isHosEnableForCarrier()
     }
     fetchVehicleList() {
         this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -772,38 +773,54 @@ export class DriverDetailComponent implements OnInit {
         this.eldDriver.driverFstName = `${this.driverData.firstName} `;
         this.eldDriver.driverLstName = this.driverData.lastName;
         this.eldDriver.userName = this.userName;
+        this.eldDriver.Jurisdiction =  this.driverData.hosDetails.optZone
+        if(this.driverStatus == 'active') {
+            this.eldDriver.active = true;
+        }
+
+        if(this.driverData.hosDetails.hosStatus != 'non_Exempted') {
+            this.eldDriver.exemption = true;
+        }
+        if( this.driverData.hosDetails.pcAllowed == true) {
+            this.eldDriver.personalUse = true
+        }
+
+        if( this.driverData.hosDetails.ymAllowed == true) {
+            this.eldDriver.yardMove = true
+        }
+    
         this.display = true;
     }
 
   async   submitClick() {
-    if(this.eldDriver.driverFstName  === '' || this.eldDriver.driverLstName === '' || this.eldDriver.userName === '' 
-    || this.eldDriver.ruleSet  === null || this.eldDriver.Jurisdiction === null || this.eldDriver.startingTime === null 
-    || this.eldDriver.units  === null  || this.eldDriver.password  === ''  || this.eldDriver.homeBaseName === ''){
-        this.driverErr = "Please fill the required fields";
-        return false;
-    }else {
-        this.driverErr = "";
-      }
-      if(!this.eldDriver.licStateCode){
-        if(this.eldDriver.issuedCountry  === null || this.eldDriver.issuedState  === null ){
-            this.driverErr = "Please fill the required fields";
-              return false;
-          }
-      }
+    // if(this.eldDriver.driverFstName  === '' || this.eldDriver.driverLstName === '' || this.eldDriver.userName === '' 
+    // || this.eldDriver.ruleSet  === null || this.eldDriver.Jurisdiction === null || this.eldDriver.startingTime === null 
+    // || this.eldDriver.units  === null  || this.eldDriver.password  === ''  || this.eldDriver.homeBaseName === ''){
+    //     this.driverErr = "Please fill the required fields";
+    //     return false;
+    // }else {
+    //     this.driverErr = "";
+    //   }
+    //   if(!this.eldDriver.licStateCode){
+    //     if(this.eldDriver.issuedCountry  === null || this.eldDriver.issuedState  === null ){
+    //         this.driverErr = "Please fill the required fields";
+    //           return false;
+    //       }
+    //   }
       
-      if(this.driverData.licenceDetails.issuedState != ''){
-        if(this.eldDriver.licStateCode === ''  ){
-            this.driverErr = "Please fill the required fields";
-              return false;
-          }
-      }
+    //   if(this.driverData.licenceDetails.issuedState != ''){
+    //     if(this.eldDriver.licStateCode === ''  ){
+    //         this.driverErr = "Please fill the required fields";
+    //           return false;
+    //       }
+    //   }
     
-    if(this.eldDriver.exemption == true){
-        if( this.eldDriver.exemptionReason === ''  ){
-            this.driverErr = "Please fill the required fields";
-              return false;
-        }
-    }
+    // if(this.eldDriver.exemption == true){
+    //     if( this.eldDriver.exemptionReason === ''  ){
+    //         this.driverErr = "Please fill the required fields";
+    //           return false;
+    //     }
+    // }
     
     
         if (this.eldDriver.startingTime == 'Midnight') {

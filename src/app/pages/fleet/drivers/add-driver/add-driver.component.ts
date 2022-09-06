@@ -36,8 +36,8 @@ import {
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-
-
+import { ELDService } from "src/app/services/eld.service";
+import { MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: "app-add-driver",
@@ -370,7 +370,9 @@ export class AddDriverComponent
     private listService: ListService,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routeMgmntService: RouteManagementServiceService
+    private routeMgmntService: RouteManagementServiceService,
+    private eldService: ELDService,
+    private messageService: MessageService,
   ) {
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
@@ -1870,8 +1872,45 @@ export class AddDriverComponent
   }
   
   updateEldDriver() {
+    let driverIdDigit = this.driverID.match(/(\d+)/g)
+    let digits = parseInt(driverIdDigit.join(''))
     if(this.driverData.HosDriverId >0){
+      const driverData = {
+        HOSDriverId: this.driverData.HosDriverId,
+        FhIdentifier: this.driverID,
+        ExternalDriverId: digits,
+        Name: this.driverData.firstName,
+        LastName: this.driverData.lastName,
+        HOSUserName: this.driverData.userName,
+        // HOSPassword:this.eldDriver.password,
+        LicenseNumber:this.driverData.CDL_Number,
+        LicenseState:  this.driverData.licenceDetails.issuedState
+        
+        // HOSHomeBaseId: this.eldDriver.homeBaseName,
+        // IsActive: this.active,
+        // HOSRuleSetId: this.eldDriver.ruleSet,
+        // PersonalUse: this.persnlUse,
+        // YardMove: this.yardM,
+        // Exemption: this.exemp,
+        // Wifi: this.wifi,
+        // DistanceUnitCode: this.fuelCode,
+        // FuelUnitCode: this.fuelCode,
+        // Starting24HTime: this.startTimeCode,
+        // AllowDriverExemptionSelection: this.useExemp,
+        // JurisdictionCode: this.jurisdictionC,
       
+      }
+
+      this.eldService.postData("drivers", {
+        HOSDriver: this.driverData
+    }).subscribe(result => {
+      console.log('result', result)
+        // this.showSuccess()
+        this.cancel();
+      }, error => {
+          console.log('error', error)
+          // this.showError(error)
+      })
 
     }
   }
