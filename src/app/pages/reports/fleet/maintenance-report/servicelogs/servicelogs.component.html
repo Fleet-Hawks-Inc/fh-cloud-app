@@ -12,7 +12,7 @@
             <div class="col-md-2 col-lg-2 pr-0">
               <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category" (change)="categoryChange()">
                 <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
-                  {{ data.name }}
+                  {{ data.name | titlecase }}
                 </ng-option>
               </ng-select>
             </div>
@@ -29,20 +29,20 @@
 
               <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Vehicle" *ngIf="category == 'vehicle'">
                 <ng-option *ngFor="let data of vehiclesData" value="{{ data.vehicleID }}">
-                  {{ data.vehicleIdentification }}
+                  {{ data.vehicleIdentification | titlecase }}
                 </ng-option>
               </ng-select>
 
               <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Asset" *ngIf="category == 'asset'">
                 <ng-option *ngFor="let data of assetsData" value="{{ data.assetID }}">
-                  {{ data.assetIdentification }}
+                  {{ data.assetIdentification | titlecase }}
                 </ng-option>
               </ng-select>
             </div>
             <div class="col-md-2 col-lg-2 pr-0">
               <ng-select [(ngModel)]="taskID" name="taskID" placeholder="search by service task">
                 <ng-option *ngFor="let item of tasks" value="{{ item.taskID }}">
-                  <div title="{{ item.taskName }}">{{ item.taskName }}</div>
+                  <div title="{{ item.taskName }}">{{ item.taskName | titlecase }}</div>
                 </ng-option>
               </ng-select>
             </div>

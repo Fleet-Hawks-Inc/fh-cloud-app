@@ -8,14 +8,14 @@
               <!-- <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
                      </ng-option> -->
               <ng-option *ngFor="let data of record" value="{{ data.vehicleID }}">
-                {{ data.vehicleIdentification }}
+                {{ data.vehicleIdentification | titlecase }}
               </ng-option>
             </ng-select>
           </div>
           <div class="col-md-2 col-lg-2 pr-0">
             <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important" placeholder="Search task">
               <ng-option *ngFor="let data of tasksData | keyvalue" value="{{ data.key }}">
-                {{ data.value }}
+                {{ data.value | titlecase }}
               </ng-option>
             </ng-select>
           </div>

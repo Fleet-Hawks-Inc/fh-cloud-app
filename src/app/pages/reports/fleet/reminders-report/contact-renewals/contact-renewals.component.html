@@ -6,10 +6,10 @@
           <div class="col-md-2 col-lg-2 pr-0">
             <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100%" class="text-capitalize" placeholder="Search by contact">
               <ng-option *ngFor="let driver of drivers" value="{{ driver.driverID }}">
-                {{ driver.firstName }}
+                {{ driver.firstName | titlecase }}
               </ng-option>
               <ng-option *ngFor="let emp of employees" value="{{ emp.entityID }}">
-                {{ emp.firstName }} {{ emp.lastName }}
+                {{ emp.firstName | titlecase }} {{ emp.lastName | titlecase }}
               </ng-option>
             </ng-select>
           </div>
@@ -17,7 +17,7 @@
           <div class="col-md-2 col-lg-2 pr-0">
             <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important" placeholder="Contact Renewal Type">
               <ng-option *ngFor="let data of tasks | keyvalue" value="{{ data.key }}">
-                {{ data.value }}
+                {{ data.value | titlecase }}
               </ng-option>
             </ng-select>
           </div>
