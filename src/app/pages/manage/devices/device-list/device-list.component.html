@@ -227,6 +227,9 @@
                           }}"
                         >
                           <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'deviceName'">
+                              {{device.deviceName | titlecase}}
+                            </span>
                             <span *ngSwitchCase="'vehicle.vehicleIdentification'">
                               <span
                                 *ngIf="
@@ -244,7 +247,7 @@
                                     vehicleId: device.vehicle.vehicleID
                                   }"
                                 >
-                                  {{ device.vehicle.vehicleIdentification }}</a
+                                  {{ device.vehicle.vehicleIdentification | titlecase }}</a
                                 >
                               </span>
                               <ng-template #elseBlock>
@@ -260,7 +263,7 @@
                                     }"
                                     queryParamsHandling="merge"
                                   >
-                                    {{ device.asset.assetIdentification }}</a
+                                    {{ device.asset.assetIdentification | titlecase}}</a
                                   >
                                 </span>
                               </ng-template>
