@@ -102,7 +102,7 @@
                             <ng-option
                               *ngFor="let vehicle of vehicles"
                               [value]="vehicle.vehicleID"
-                              >{{ vehicle.vehicleIdentification }}
+                              >{{ vehicle.vehicleIdentification | titlecase}}
                             </ng-option>
                           </ng-select>
                         </div>
@@ -127,7 +127,7 @@
                             <ng-option
                               *ngFor="let asset of assets"
                               [value]="asset.assetID"
-                              >{{ asset.assetIdentification }}
+                              >{{ asset.assetIdentification | titlecase}}
                             </ng-option>
                           </ng-select>
                         </div>

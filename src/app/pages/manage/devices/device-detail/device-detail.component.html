@@ -69,7 +69,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Device Name
                             </td>
-                            <td>{{ device.deviceName }}</td>
+                            <td>{{ device.deviceName | titlecase }}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -93,7 +93,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Description
                             </td>
-                            <td>{{ device.description }}</td>
+                            <td>{{ device.description | titlecase}}</td>
                           </tr>
                           <!-- <tr>
                                     <td class="back-color-gray font-weight-bold">Date Added</td>
@@ -150,7 +150,7 @@
                                   routerLink="/fleet/vehicles/detail/{{
                                     device.vehicle.vehicleID
                                   }}"
-                                  >{{ device.vehicle.vehicleIdentification }}</a
+                                  >{{ device.vehicle.vehicleIdentification | titlecase}}</a
                                 >
                               </td>
                             </tr>
@@ -176,7 +176,7 @@
                                   routerLink="/fleet/assets/detail/{{
                                     device.asset.assetID
                                   }}"
-                                  >{{ device.asset.assetIdentification }}</a
+                                  >{{ device.asset.assetIdentification | titlecase}}</a
                                 >
                               </td>
                             </tr>
