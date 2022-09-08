@@ -590,7 +590,7 @@
                                 name="newcarrierID" (open)="dropdownOpen()" (close)="dropdownClose()"
                                 placeholder="Select Carrier">
                                 <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
-                                  carrier.companyName }}</ng-option>
+                                  carrier.companyName | titlecase }}</ng-option>
                               </ng-select>
                             </td>
                             <td>
