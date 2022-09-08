@@ -41,21 +41,21 @@
               <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Select Driver"
                 *ngIf="tripsFiltr.category == 'driver'">
                 <ng-option value="{{ data.key }}" *ngFor="let data of driversObject | keyvalue">
-                  {{ data.value }}
+                  {{ data.value | titlecase}}
                 </ng-option>
               </ng-select>
 
               <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Select Vehicle"
                 *ngIf="tripsFiltr.category == 'vehicle'">
                 <ng-option value="{{ data.key }}" *ngFor="let data of vehiclesObject | keyvalue">
-                  {{ data.value }}
+                  {{ data.value | titlecase}}
                 </ng-option>
               </ng-select>
 
               <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Select Asset"
                 *ngIf="tripsFiltr.category == 'asset'">
                 <ng-option value="{{ data.key }}" *ngFor="let data of assetsObject | keyvalue">
-                  {{ data.value }}
+                  {{ data.value | titlecase}}
                 </ng-option>
               </ng-select>
 

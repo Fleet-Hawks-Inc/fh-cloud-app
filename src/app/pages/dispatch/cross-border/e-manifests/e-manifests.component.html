@@ -25,14 +25,14 @@
               <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Driver"
                 *ngIf="filterCategory == 'driver'">
                 <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}">
-                  {{ data.value }}
+                  {{ data.value | titlecase }}
                 </ng-option>
               </ng-select>
 
               <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Vehicle"
                 *ngIf="filterCategory == 'vehicle'">
                 <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}">
-                  {{ data.value }}
+                  {{ data.value | titlecase }}
                 </ng-option>
               </ng-select>
 
