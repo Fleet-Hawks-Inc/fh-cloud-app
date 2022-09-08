@@ -19,7 +19,7 @@
                     <ng-select name="vehicle" [clearable]="false" placeholder="Search by vehicle"
                       [(ngModel)]="filter.unitNumber">
                       <ng-option *ngFor="let vehicle of vehicles | keyvalue" value="{{ vehicle.key }}">
-                        {{ vehicle.value }}
+                        {{ vehicle.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
@@ -35,7 +35,7 @@
                     <ng-select name="asset" [clearable]="false" placeholder="Search by asset"
                       [(ngModel)]="filter.unitNumber">
                       <ng-option *ngFor="let asset of assets | keyvalue" value="{{ asset.key }}">
-                        {{ asset.value }}
+                        {{ asset.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
@@ -66,7 +66,7 @@
                   <div class="col-md-2 col-lg-2 pr-0">
                     <ng-select name="searchValue" placeholder="Search by expense type" [(ngModel)]="filter.typeId">
                       <ng-option *ngFor="let data of categories | keyvalue" value="{{ data.key }}">
-                        {{ data.value }}
+                        {{ data.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
@@ -186,19 +186,10 @@
                             </span>
 
                             <span *ngSwitchCase="'categoryID'">
-                              {{
-                              categories[exptran.categoryID]
-                              ? categories[exptran.categoryID]
-                              : "-"
-                              }}
+                               {{(categories[exptran.categoryID] ? categories[exptran.categoryID]: "-") | titlecase}}
                             </span>
-
                             <span *ngSwitchCase="'vendorID'">
-                              {{
-                              vendors[exptran.vendorID]
-                              ? vendors[exptran.vendorID]
-                              : "-"
-                              }}
+                              {{(vendors[exptran.vendorID] ? vendors[exptran.vendorID]: "-") | titlecase}}
                             </span>
 
                             <span *ngSwitchCase="'tripID'">
@@ -209,23 +200,15 @@
                               : "-"
                               }}<br />
                               <span *ngIf="exptran.unitType === 'vehicle'"><strong>Vehicle: </strong>
-                                {{
-                                exptran.unitID
-                                ? vehicles[exptran.unitID]
-                                : "NA"
-                                }}</span>
-                              <span *ngIf="exptran.unitType === 'asset'"><strong>Asset: </strong>{{
-                                exptran.unitID ? assets[exptran.unitID] : "NA"
-                                }}</span>
+                                {{(exptran.unitID ? vehicles[exptran.unitID] : "NA") | titlecase }}</span>
+                              <span *ngIf="exptran.unitType === 'asset'"><strong>Asset: </strong>
+                              {{(exptran.unitID ? assets[exptran.unitID] : "NA") | titlecase}}
+                              </span>
                             </span>
 
                             <span *ngSwitchCase="'recurring'">
-                              <span *ngIf="dataColumns.recurring.interval" class="text-capitalize">
-                                {{
-                                dataColumns.recurring.status
-                                ? dataColumns.recurring.interval
-                                : "-"
-                                }}
+                              <span *ngIf="dataColumns.recurring.interval">
+                                {{(dataColumns.recurring.status ? dataColumns.recurring.interval: "-") | titlecase}}
                               </span>
                             </span>
 
@@ -244,7 +227,7 @@
                             </span>
 
                             <span *ngSwitchDefault>
-                              {{ get(exptran, dataColumns.field) }}</span>
+                              {{ get(exptran, dataColumns.field) | titlecase}}</span>
                           </div>
                         </td>
                         <td style="text-align: center; width: 108px" pFrozenColumn alignFrozen="right" [frozen]="true">

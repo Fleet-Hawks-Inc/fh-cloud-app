@@ -90,11 +90,7 @@
                         <i class="fas fa-map-marker-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          {{
-                            expenseData.vendorID
-                              ? vendors[expenseData.vendorID]
-                              : "-"
-                          }}
+                          {{(expenseData.vendorID ? vendors[expenseData.vendorID] : "-") | titlecase}}
                         </p>
                         <p class="mb-0">VENDOR</p>
                       </div>
@@ -181,8 +177,8 @@
                               Unit Type, Unit Name
                             </td>
                             <td>
-                              {{ expenseData.unitType }},
-                              {{ units[expenseData.unitID] }}
+                              {{ expenseData.unitType | titlecase}},
+                              {{ units[expenseData.unitID] | titlecase}}
                             </td>
                           </tr>
                           <tr>
