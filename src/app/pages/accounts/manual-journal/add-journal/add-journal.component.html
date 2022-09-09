@@ -180,7 +180,7 @@
                               <ng-select [(ngModel)]="data.contactID" name="currency{{ i }}"
                                 placeholder="Select contact">
                                 <ng-option *ngFor="let item of contacts" value="{{ item.contactID }}">{{
-                                  item.companyName }}</ng-option>
+                                  item.companyName | titlecase}}</ng-option>
                               </ng-select>
                             </td>
                             <td>

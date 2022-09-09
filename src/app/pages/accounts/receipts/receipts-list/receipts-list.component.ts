@@ -71,7 +71,7 @@ export class ReceiptsListComponent implements OnInit {
       {field: 'customerID', header: 'Customer', type: "text" },
       {field: 'paymentMode', header: 'Payment', type: "text" },
       {field: 'accountID', header: 'Account', type: "text" },
-      {field: 'recAmount', header: 'Account', type: "text" },
+      {field: 'recAmount', header: 'Amount', type: "text" },
 
     ];
     this._selectedColumns = this.dataColumns;

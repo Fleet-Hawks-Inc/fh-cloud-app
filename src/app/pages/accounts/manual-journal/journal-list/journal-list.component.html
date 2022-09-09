@@ -119,11 +119,11 @@
                             </span>
 
                             <span *ngSwitchCase="'Created By'">
-                              {{ journal[dataColumns.field] }}
+                              {{ journal[dataColumns.field] | titlecase}}
                             </span>
 
                             <span *ngSwitchDefault>
-                              {{ get(journal, dataColumns.field) }}</span>
+                              {{ get(journal, dataColumns.field) | titlecase}}</span>
                           </div>
                         </td>
                         <td style="text-align: center; width: 126px" pFrozenColumn alignFrozen="right" [frozen]="true">
