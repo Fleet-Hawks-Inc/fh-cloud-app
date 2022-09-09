@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-2 col-lg-2">
               <ng-select [(ngModel)]="filter.customer" placeholder="Select customer" name="customer">
-                <ng-option value="{{ data.key }}" *ngFor="let data of customersObjects | keyvalue">{{ data.value }}
+                <ng-option value="{{ data.key }}" *ngFor="let data of customersObjects | keyvalue">{{ data.value | titlecase }}
                 </ng-option>
               </ng-select>
             </div>
@@ -154,6 +154,9 @@
                               <span *ngSwitchCase="'Date'">
                                 {{ journal[dataColumns.field] }}
                               </span>
+                              <span *ngSwitchCase="'paymentMode'">
+                                {{ journal[dataColumns.field] | titlecase}}
+                              </span>
 
                               <span *ngSwitchCase="'paidInvoices'">
                                 <span *ngFor="
@@ -179,11 +182,7 @@
                               </span>
 
                               <span *ngSwitchCase="'accountID'">
-                                {{
-                                accountsObject[journal.accountID]
-                                ? accountsObject[journal.accountID]
-                                : "-"
-                                }}
+                                {{(accountsObject[journal.accountID] ? accountsObject[journal.accountID]: "-") | titlecase}}
                               </span>
 
                               <span *ngSwitchCase="'recAmount'">

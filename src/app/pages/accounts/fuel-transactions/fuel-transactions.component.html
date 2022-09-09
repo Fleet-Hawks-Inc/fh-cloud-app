@@ -6,9 +6,9 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-1">
               <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%" placeholder="Search by Unit">
-                <ng-option *ngFor="let data of vehicleList | keyvalue" [value]="data.key">{{ data.value }}
+                <ng-option *ngFor="let data of vehicleList | keyvalue" [value]="data.key">{{ data.value | titlecase }}
                 </ng-option>
-                <ng-option *ngFor="let data of assetList | keyvalue" [value]="data.key">{{ data.value }}</ng-option>
+                <ng-option *ngFor="let data of assetList | keyvalue" [value]="data.key">{{ data.value | titlecase }}</ng-option>
               </ng-select>
             </div>
             <div class="col-lg-3 col-md-3">
