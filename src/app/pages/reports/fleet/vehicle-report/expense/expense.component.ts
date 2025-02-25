@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
 import * as _ from 'lodash';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AccountService } from "src/app/services";
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
   styleUrls: ['./expense.component.css']
 })
 export class ExpenseComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  environment = environment.isFeatureEnabled;
   data = []
   allData = [];
   vehicleData = []
@@ -50,10 +56,59 @@ export class ExpenseComponent implements OnInit {
   lastExpPay = ''
   totalExpense = 0
   totalDriverPay = 0
-  constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
+  get = _.get;
+  _selectedColumns: any[];
+  _fuelSelectedColumns: any[];
+  _mainSelectedColumns: any[];
+  _driSelectedColumns: any[];
+  
+      dataColumns = [
+        {  field: 'tripNo', header: 'Trip', type: "text" },
+        {  field: 'orderName', header: 'Order', type: "text" },
+        {  field: 'orderType', header: 'Type', type: "text" },
+        {  field: 'driverName', header: 'Driver', type: "text" },
+        {  field: 'location', header: 'Location', type: "text" },
+        {  field: 'date', header: 'Date', type: "text" },
+        {  field: 'miles', header: 'Total Miles', type: "text" },
+    ];
+    
+      dataColumnsFuel= [
+        {  field: 'vehicle', header: 'Vehicle', type: "text" },
+        {  field: 'data.cardNo', header: 'Fuel Card', type: "text" },
+        {  field: 'data.type', header: 'Fuel Type', type: "text" },
+        {  field: 'dateTime', header: 'Date/Time', type: "text" },
+        {  field: 'data.country', header: 'Status', type: "text" },
+        {  field: 'data.amt', header: 'Status', type: "text" },
+    ];
+    
+     dataColumnsMain= [
+        {   field: 'vehicle', header: 'Vehicles', type: "text" },
+        {   field: 'completionDate', header: 'Completion Date/Odometer', type: "text" },
+        {   field: 'allServiceTasks', header: 'Service Task(s)', type: "text" },
+        {   field: 'allServiceParts', header: 'Total', type: "text" },
+    ];
+    
+     dataColumnsDriver= [
+        {   field: 'paymentNo', header: 'Payment', type: "text" },
+        {   field: 'txnDate', header: 'Date', type: "text" },
+        {   field: 'payMode', header: 'Payment Mode Information', type: "text" },
+        {   field: 'settlementName', header: 'Settlement', type: "text" },
+        {   field: 'entityName', header: 'Paid To', type: "text" },
+        {   field: 'finalAmount', header: 'Amount', type: "text" },
+    ];
+   
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private route: ActivatedRoute, 
+  private spinner: NgxSpinnerService, 
+  private accountService: AccountService,) {
   }
 
   ngOnInit(): void {
+    this.setToggleOptions();
+    this.setToggleOptionsFuel();
+    this.setToggleOptionsMain();
+    this.setToggleOptionsdr();
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
@@ -63,8 +118,65 @@ export class ExpenseComponent implements OnInit {
     this.fetchSlogByVehicle();
     this.fetchExpensePayment()
   }
+   //trip table
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
 
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+    
+    // fuel table
+    setToggleOptionsFuel() {
+        this.fuelSelectedColumns = this.dataColumnsFuel;
+    }
+    
+      @Input() get fuelSelectedColumns(): any[] {
+        return this._fuelSelectedColumns;
+    }
+    
+    set fuelSelectedColumns(val: any[]) {
+        //restore original order
+        this._fuelSelectedColumns = this.dataColumnsFuel.filter(col => val.includes(col));
+    }
+    
+    // maintenance table
+    
+     setToggleOptionsMain() {
+        this.mainSelectedColumns = this.dataColumnsMain;
+    }
+    
+      @Input() get mainSelectedColumns(): any[] {
+        return this._mainSelectedColumns;
+    }
+    
+    set mainSelectedColumns(val: any[]) {
+        //restore original order
+        this._mainSelectedColumns = this.dataColumnsMain.filter(col => val.includes(col));
+    }
 
+   // Driver payment table 
+    
+     setToggleOptionsdr() {
+        this.drSelectedColumns = this.dataColumnsDriver;
+    }
+    
+     @Input() get drSelectedColumns(): any[] {
+        return this._driSelectedColumns;
+    }
+    
+    set drSelectedColumns(val: any[]) {
+        //restore original order
+        this._driSelectedColumns = this.dataColumnsDriver.filter(col => val.includes(col));
+    }
+
+   
   async fetchDriverPayment() {
     const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`)
       .toPromise();
@@ -170,6 +282,10 @@ export class ExpenseComponent implements OnInit {
 
     });
   }
+ 
+ clear(table: Table) {
+        table.clear();
+    }
 
   fetchTrpByVehicle() {
     if (this.lastItemSK !== 'end') {
@@ -269,7 +385,6 @@ export class ExpenseComponent implements OnInit {
         obj["Vehicle Name/Number"] = element.vehicleName;
         obj["Expense Type"] = element.categoryName;
         obj["Amount"] = element.finalTotal + " " + element.currency;
-
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
