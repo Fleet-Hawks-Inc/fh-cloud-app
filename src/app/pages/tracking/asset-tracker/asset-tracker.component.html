@@ -13,10 +13,8 @@
 
                     </div>
                     <div class="col header-buttons">
-                        <button pButton (click)="showTrafficLayer()" class="mr-1" pTooltip="Show traffic"
-                            icon="fas fa-truck-fast" pRipple tooltipPosition="left" pTooltip="Show Traffic"> </button>
-                        <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left"
-                            icon="pi pi-refresh" pTooltip="Refresh" (click)="refreshData()"></button>
+                        <button pButton (click)="showTrafficLayer()" class="mr-1" pTooltip="Show traffic" icon="fas fa-truck-fast" pRipple tooltipPosition="left" pTooltip="Show Traffic"> </button>
+                        <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refreshData()"></button>
                     </div>
                 </div>
 
@@ -26,18 +24,16 @@
             </header>
             <section class="m-2">
                 <p-accordion>
+
                     <p-accordionTab header="Asset Tracker" [selected]="true">
                         <div class="row mb-3 bg-white">
                             <div class="col-lg-4 p-3">
                                 <label>Duration</label>
-                                <p-dropdown class="m-1" [options]="durations" [(ngModel)]="selectedDuration"
-                                    (onChange)="updateAssetData()" optionLabel="name"></p-dropdown>
+                                <p-dropdown class="m-1" [options]="durations" [(ngModel)]="selectedDuration" (onChange)="updateAssetData()" optionLabel="name"></p-dropdown>
                                 <button *ngIf="markerPositions.length>0" pButton (click)="clearRoutes()">Clear
                                     route</button><br /><br />
-                                <p-table *ngIf="locationData.length>0" [columns]="cols" columnResizeMode="expand"
-                                    [resizableColumns]="true" [paginator]="true" [rows]="10" [value]="locationData"
-                                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                    [loading]="loading" responsiveLayout="scroll">
+                                <p-table *ngIf="locationData.length>0" [columns]="cols" columnResizeMode="expand" [resizableColumns]="true" [paginator]="true" [rows]="10" [value]="locationData" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [loading]="loading"
+                                    responsiveLayout="scroll">
                                     <ng-template pTemplate="header" let-columns>
                                         <tr>
                                             <th *ngFor="let col of columns" pResizableColumn style="width:10%">
@@ -48,8 +44,7 @@
                                     </ng-template>
                                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                                         <tr>
-                                            <td *ngFor="let col of columns" (click)="onRowSelect(rowData)"
-                                                style="width:10%;cursor: pointer;">
+                                            <td *ngFor="let col of columns" (click)="onRowSelect(rowData)" style="width:10%;cursor: pointer;">
                                                 {{rowData[col.field]}}
                                             </td>
 
@@ -62,51 +57,63 @@
                                         </div>
                                     </ng-template>
                                 </p-table>
-                                <div class="text-center mr-4 alert alert-info"
-                                    *ngIf="locationData.length === 0 && loading!=true">
-                                    <br>
-                                    <p>There is NO Asset Tracker data available for the selected duration. Please update
-                                        the duration and try again. </p>
+                                <div *ngIf="locationData.length>0">
+                                    <div class="field-checkbox">
+                                        <p-checkbox [binary]="true" (onChange)="getMovingAlarm($event)"></p-checkbox>
+                                        <label>Moving Activity</label>
+                                    </div>
+                                    <div class="field-checkbox">
+                                        <p-checkbox [binary]="true" (onChange)="getStoppedAlarms($event)"></p-checkbox>
+                                        <label>Stopped Activity</label>
+                                    </div>
+                                    <div class="text-center mr-4 alert alert-info" *ngIf="locationData.length === 0 && loading!=true">
+                                        <br>
+                                        <p>There is NO Asset Tracker data available for the selected duration. Please update the duration and try again. </p>
+                                    </div>
+
+
+
                                 </div>
                             </div>
                             <div class=" col-lg-8">
                                 <div class="p-3 text-dark">
-                                    <google-map [width]="width" [height]="height" [options]="mapOptions"
-                                        *ngIf="!loading">
+                                    <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="!loading">
                                         <map-traffic-layer *ngIf="showTraffic" [autoRefresh]="true"></map-traffic-layer>
-                                        <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions"
-                                            [position]="markerPosition.location" [options]="markerOptions"
-                                            (mapClick)="openInfoWindow(marker,markerPosition.data)"></map-marker>
-                                        <map-marker [position]="startMarker" [options]="startMarkerOptions">
-                                        </map-marker>
+
+                                        <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition.location" [options]="markerOptions" (mapMouseover)="openInfoWindow(marker,markerPosition.data)"></map-marker>
+                                        <map-marker [position]="startMarker" [options]="startMarkerOptions"></map-marker>
+                                        <map-marker #marker2="mapMarker" *ngFor="let alarms of movingAssetPositions" [position]="alarms.location" (mapMouseover)="openAlarmInfo(marker2,alarms.data)" [options]="alarmMovingOptions"></map-marker>
+                                        <map-marker #marker1="mapMarker" *ngFor="let stopped of stoppedAssetPositions" [position]="stopped.location" (mapMouseover)="openAlarmInfo(marker1,stopped.data)" [options]="alarmStoppedOptions"></map-marker>
+
+
+
 
                                         <map-marker [position]="endMarker" [options]="endMarkerOptions"></map-marker>
                                         <map-polyline [options]="polylineOptions"></map-polyline>
                                         <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
-                                        <!-- <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults " [directions]="directionsResults"></map-directions-renderer> -->
                                     </google-map>
                                 </div>
                             </div>
+                            <div class="text-center mr-4 alert alert-info" *ngIf="locationData.length === 0 && loading!=true">
+                                <br>
+                                <p>There is NO Asset Tracker data available for the selected duration. Please update the duration and try again. </p>
+                            </div>
+
                         </div>
                     </p-accordionTab>
 
                     <p-accordionTab header="Temperature">
                         <label>Duration</label>
-                        <p-dropdown id="assetRangeDrp" class="m-3" [options]="durations"
-                            [(ngModel)]="selectedSensorDuration" (onChange)="updateSensorData()" optionLabel="name">
+                        <p-dropdown id="assetRangeDrp" class="m-3" [options]="durations" [(ngModel)]="selectedSensorDuration" (onChange)="updateSensorData()" optionLabel="name">
                         </p-dropdown><br><br>
                         <p-tabView *ngIf="sensorData.length> 0">
                             <p-tabPanel header="Table View">
                                 <div class="card">
-                                    <p-table id="sensorTable" #sensorDT [resizableColumns]="true"
-                                        [columns]="sensorDataCols" [paginator]="true" [rows]="10" [value]="sensorData"
-                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                        [loading]="sensorLoading" autoLayout="true" style="height: 500px;">
+                                    <p-table id="sensorTable" #sensorDT [resizableColumns]="true" [columns]="sensorDataCols" [paginator]="true" [rows]="10" [value]="sensorData" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [loading]="sensorLoading" autoLayout="true"
+                                        style="height: 500px;">
                                         <ng-template pTemplate="caption">
 
-                                            <button type="button" pButton pRipple icon="pi pi-file-excel"
-                                                (click)="sensorDT.exportCSV()" class="mr-2" pTooltip="Export to Excel"
-                                                tooltipPosition="bottom"></button>
+                                            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="sensorDT.exportCSV()" class="mr-2" pTooltip="Export to Excel" tooltipPosition="bottom"></button>
 
 
                                         </ng-template>
@@ -140,23 +147,18 @@
                             <p-tabPanel header="Graph View">
 
                                 <div style="height:500px">
-                                    <p-selectButton [options]="tempMetric" (onChange)="changeTempMetric($event)"
-                                        [(ngModel)]="selectedMetric" optionLabel="name" optionValue="code">
+                                    <p-selectButton [options]="tempMetric" (onChange)="changeTempMetric($event)" [(ngModel)]="selectedMetric" optionLabel="name" optionValue="code">
                                     </p-selectButton>
-                                    <div echarts [options]="chartOptionFahrenheit" *ngIf="showFahrenheit"
-                                        style="height:500px"></div>
-                                    <div echarts [options]="chartOptionCelsius" *ngIf="!showFahrenheit"
-                                        style="height:500px"></div>
+                                    <div echarts [options]="chartOptionFahrenheit" *ngIf="showFahrenheit" style="height:500px"></div>
+                                    <div echarts [options]="chartOptionCelsius" *ngIf="!showFahrenheit" style="height:500px"></div>
                                 </div>
 
                             </p-tabPanel>
 
                         </p-tabView><br><br>
-                        <div class="text-center mr-4 alert alert-info"
-                            *ngIf="sensorData.length === 0 && sensorLoading!=true">
+                        <div class="text-center mr-4 alert alert-info" *ngIf="sensorData.length === 0 && sensorLoading!=true">
                             <br>
-                            <p>There is NO data available for selected duration. Please update the duration and try
-                                again or check the Temperature and Humidity sensor connectivity. </p>
+                            <p>There is NO data available for selected duration. Please update the duration and try again or check the Temperature and Humidity sensor connectivity. </p>
                         </div>
 
                     </p-accordionTab>

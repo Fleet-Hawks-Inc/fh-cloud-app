@@ -30,13 +30,14 @@ import { TitleComponent, TooltipComponent, GridComponent, ToolboxComponent, Data
 import { CanvasRenderer } from 'echarts/renderers';
 import { TabViewModule } from 'primeng/tabview';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CheckboxModule } from 'primeng/checkbox';
 echarts.use([TitleComponent, TooltipComponent, ToolboxComponent, GridComponent, DataZoomComponent, LineChart, CanvasRenderer]);
 @NgModule({
   declarations: [AssetTrackerComponent, VehicleDashCamTrackerComponent],
   imports: [
     CommonModule,
     TrackingRoutingModule,
-
+    CheckboxModule,
     GoogleMapsModule,
     ButtonModule,
     TooltipModule,
